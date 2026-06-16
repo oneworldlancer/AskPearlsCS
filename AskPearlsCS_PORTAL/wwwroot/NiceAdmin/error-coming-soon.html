@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coming Soon - NiceAdmin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="NiceAdmin - Bootstrap Admin Template">
+  <meta name="keywords" content="admin, dashboard, bootstrap">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts - Nunito Sans + Poppins + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="css2?family=JetBrains+Mono:wght@400;500;600&family=Nunito+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="vendors/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="vendors/remixicon/remixicon.css" rel="stylesheet">
+  <link href="vendors/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="vendors/phosphor-icons/phosphor-icons.css" rel="stylesheet">
+  <link href="vendors/lucide-icons/lucide.css" rel="stylesheet">
+  <link href="vendors/simple-datatables/style.css" rel="stylesheet">
+  <link href="vendors/quill/quill.snow.css" rel="stylesheet">
+  <link href="vendors/quill/quill.bubble.css" rel="stylesheet">
+  <link href="vendors/choices.js/choices.min.css" rel="stylesheet">
+  <link href="vendors/flatpickr/flatpickr.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+    * Template Name: NiceAdmin - Bootstrap Admin Template
+    * Template URL: https://bootstrapmade.com/flex-admin-bootstrap-template/
+    * Updated: Apr 8, 2026 with Bootstrap v5.3.8
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+<body>
+  <div class="na-error-page na-error-coming-soon">
+    <div class="na-error-shell">
+      <header class="na-error-head">
+        <a href="index.html" class="na-error-logo"><img src="assets/img/logo.webp" alt="NiceAdmin"><span>NiceAdmin</span></a>
+        <span class="na-error-status">Launching Soon</span>
+      </header>
+
+      <div class="na-error-layout">
+        <div class="na-error-main">
+          <h2 class="na-error-title">A new experience is on the way</h2>
+          <p class="na-error-text">We are preparing the next release of NiceAdmin. Join the waitlist and get notified as soon as it goes live.</p>
+
+          <div class="na-countdown">
+            <div class="na-count-item"><strong data-countdown="days">00</strong><span>Days</span></div>
+            <div class="na-count-item"><strong data-countdown="hours">00</strong><span>Hours</span></div>
+            <div class="na-count-item"><strong data-countdown="minutes">00</strong><span>Minutes</span></div>
+            <div class="na-count-item"><strong data-countdown="seconds">00</strong><span>Seconds</span></div>
+          </div>
+
+          <form class="na-newsletter-form">
+            <input type="email" class="form-control" placeholder="Enter your email" required="">
+            <button type="submit" class="btn btn-primary">Notify Me</button>
+          </form>
+        </div>
+
+        <aside class="na-error-side">
+          <h6>Release Highlights</h6>
+          <div class="na-error-step"><i class="bi bi-check2"></i> New dashboard modules</div>
+          <div class="na-error-step"><i class="bi bi-check2"></i> Faster data tables</div>
+          <div class="na-error-step"><i class="bi bi-check2"></i> Updated widget library</div>
+          <div class="na-error-social mt-2">
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+            <a href="#"><i class="bi bi-facebook"></i></a>
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+            <a href="#"><i class="bi bi-instagram"></i></a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendors/apexcharts/apexcharts.min.js"></script>
+  <script src="vendors/chart.js/chart.umd.js"></script>
+  <script src="vendors/echarts/echarts.min.js"></script>
+  <script src="vendors/simple-datatables/simple-datatables.js"></script>
+  <script src="vendors/quill/quill.js"></script>
+  <script src="vendors/tinymce/tinymce.min.js"></script>
+  <script src="vendors/choices.js/choices.min.js"></script>
+  <script src="vendors/flatpickr/flatpickr.min.js"></script>
+  <script src="vendors/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS Files -->
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <!-- App Sidebar Toggle (for app pages with sidebars) -->
+  <script src="assets/js/apps-sidebar-toggle.js"></script>
+
+  <script>
+    (function() {
+      const targetDate = new Date();
+      targetDate.setDate(targetDate.getDate() + 30);
+
+      function updateCountdown() {
+        const now = new Date();
+        const diff = targetDate - now;
+        if (diff <= 0) return;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        document.querySelector('[data-countdown="days"]').textContent = String(days).padStart(2, '0');
+        document.querySelector('[data-countdown="hours"]').textContent = String(hours).padStart(2, '0');
+        document.querySelector('[data-countdown="minutes"]').textContent = String(minutes).padStart(2, '0');
+        document.querySelector('[data-countdown="seconds"]').textContent = String(seconds).padStart(2, '0');
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+  </script>
+<script defer="" src="../../../beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"68c5ca450bae485a842ff76066d69420","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+
+</html>
