@@ -1,0 +1,27 @@
+.form-control:valid {
+    /*background-color: #96d3ec !important;*/
+    background-color: white !important;
+}
+
+.form-control:invalid {
+    /*background-color: #96d3ec !important;*/
+    background-color: #ffffcc !important;
+}
+
+
+/*.form-floating > .form-control,
+.form-floating > .form-control-plaintext {
+    padding: 0rem 0.75rem !important;
+}
+
+.form-floating > .form-control,
+.form-floating > .form-control-plaintext,
+.form-floating > .form-select {*/
+    /*height: calc(2.5rem + 2px) !important;*/
+    /*height: calc(0.5rem + 1px) !important;
+    line-height: 1 !important;
+}
+
+.form-floating > label {
+    padding: 0.5rem 0.75rem !important;
+}*/

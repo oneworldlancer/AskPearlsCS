@@ -1,0 +1,47 @@
+/*
+#div_PageHTMLContent {
+    scroll-behavior: smooth;
+}*/
+
+.divHighlight:hover {
+    background-color: #cae9f9 !important;
+    color: black;
+    /*background-color: red;*/
+    /*opacity: 0.5;*/
+}
+
+.divHighlightMenu:hover {
+    /*background-color: #152365 !important;*/
+    background-color: #83b2ec !important;
+    /* background-color: #dde9f5 !important;
+    color: #0a75bb !important;*/
+}
+
+.div_RenderBody {
+  /*  margin-top: 0px !important;
+    padding-top: 0px !important;*/
+}
+.div_TextTruncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /*  margin-top: 0px !important;
+    padding-top: 0px !important;*/
+}
+
+/*#div_PageHTMLContent {
+    margin-top: 10px;
+}
+
+.div_PageHTMLContent {
+    margin-top: 10px;
+}*/
+
+/*.table td, .table th {
+    font-size: 12px;
+}
+
+
+table td, table th {
+    font-size: 12px;
+}*/

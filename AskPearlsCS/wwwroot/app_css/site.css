@@ -1,0 +1,24 @@
+html {
+    position: relative;
+    min-height: 100%;
+    font-size: 14px;
+    background-color: #f6f9ff;
+   /* scroll-behavior: smooth;*/
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/*html {
+  position: relative;
+  min-height: 100%;
+}*/
+
+body {
+    /*  margin-bottom: 60px;*/
+   background-color: #f6f9ff;
+   color: #444444; 
+}

@@ -1,0 +1,43 @@
+.topLeft {
+    vertical-align: top !important;
+    text-align: left !important;
+}
+
+
+.topRight {
+    vertical-align: top !important;
+    text-align: right !important;
+}
+
+.bottomLeft {
+    vertical-align: bottom !important;
+    text-align: left !important;
+}
+
+
+
+.bottomRight {
+    vertical-align: bottom !important;
+    text-align: right !important;
+}
+
+
+
+.middleCenter {
+    vertical-align: middle !important;
+    text-align: center !important;
+}
+
+.topCenter {
+    vertical-align: top !important;
+    text-align: center !important;
+}
+
+
+.bottomCenter {
+    vertical-align: bottom !important;
+    text-align: center !important;
+}
+
+
+

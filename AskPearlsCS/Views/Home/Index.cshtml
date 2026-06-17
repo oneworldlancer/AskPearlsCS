@@ -1,8 +1,9 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
- @{
+@{
     Layout = null;
- }
+}
+
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -20,20 +21,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="guest/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="guest/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="guest/assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="guest/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="guest/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="GuestView/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="GuestView/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="GuestView/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="GuestView/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="GuestView/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
-    
-    <!-- Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
-    
-    
     <!-- Main CSS File -->
-    <link href="guest/assets/css/main.css" rel="stylesheet">
+    <link href="GuestView/assets/css/main.css" rel="stylesheet">
+    <link href="~/app_css/app_input_css.css" rel="stylesheet" />
+    <link href="~/app_css/app_link_css.css" rel="stylesheet" />
+    <link href="~/app_css/app_scrollbar_css.css" rel="stylesheet" />
+
+
+
+
+    <script src="~/guest/assets/vendor/purecounter/purecounter_vanilla.js"></script>
 
     <!-- =======================================================
   * Template Name: QuickStart
@@ -44,13 +47,36 @@
   ======================================================== -->
 
     <style>
-            body {
-                font-family: 'Poppins', sans-serif;
-                background: #f8fafc;
-                margin: 0;
-                padding: 40px;
-                text-align: center;
+            /* Hide scrollbar for a specific element in Firefox */
+            html, body {
+                scrollbar-width: none; /* Hide scrollbar */
+                overflow-y: scroll; /* Enable scrolling */
             }
+
+                /* Optional: Hide scrollbar for other browsers */
+                html::-webkit-scrollbar, body::-webkit-scrollbar {
+                    display: none; /* Chrome, Safari, Opera */
+                }
+
+
+            #loom-companion-mv3 {
+                display: none;
+            }
+
+            ::-webkit-scrollbar {
+                width: 0px;
+                height: 0px;
+            }
+
+        
+        
+            /*body {
+                            font-family: 'Poppins', sans-serif;
+                             background: #f8fafc;
+                            margin: 0;
+                            padding: 40px;
+                            text-align: center ;
+                                    }*/
 
             .section-title {
                 font-size: 40px;
@@ -76,10 +102,10 @@
             .pricing-item-card {
                 background: #d9ffc1;
                 border-radius: 20px;
-                border-color:whitesmoke;
-                    padding: 30px;
+                border-color: whitesmoke;
+                padding: 30px;
                 /* width: 300px; */
-                box-shadow: 0 10px 30px #c0fb9b;
+                box-shadow: 0 5px 10px #c0fb9b;
                 /* box-shadow: 0 10px 30px rgba(0,0,0,0.08); */
                 transition: 0.3s;
             }
@@ -140,6 +166,191 @@
                         color: #16a34a;
                         margin-right: 10px;
                     }
+
+            .counts .count-box {
+                display: flex;
+                align-items: center;
+                padding: 30px;
+                width: 100%;
+                background: #fff;
+                box-shadow: 0px 0 30px rgba(1, 41, 112, 0.08);
+            }
+
+ 
+                .counts .count-box p {
+                    padding: 0;
+                    margin: 0;
+                    font-family: "Nunito", sans-serif;
+                    font-size: 14px;
+                }
+
+            /*   *, ::after, ::before {
+                            box-sizing: border-box;
+                        }
+
+                        p {
+                            display: block;
+                            margin-block-start: 1em;
+                            margin-block-end: 1em;
+                            margin-inline-start: 0px;
+                            margin-inline-end: 0px;
+                            unicode-bidi: isolate;
+                        } */
+
+            .section-title h2:after {
+                content: "";
+                position: absolute;
+                display: block;
+                width: 50px;
+                height: 3px;
+                background: var(--accent-color);
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: auto;
+            }
+
+
+
+            #preloader {
+                margin: 0px !important;
+                padding: 0px !important;
+                width: 0px !important;
+                height: 0px !important;
+                display: none !important;
+            }
+
+
+            .form-control {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            input.form-control {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            .form-control-sm {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            input.form-control-sm {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            textarea {
+                background: #ffffcc !important;
+                border: 1px solid #3c8116;
+                white-space: pre;
+                height: 100px;
+                min-height: 100px;
+            }
+
+
+                textarea.form-control {
+                    background: #ffffcc !important;
+                    border: 1px solid #3c8116;
+                    white-space: pre;
+                    height: 100px;
+                    min-height: 100px;
+                }
+
+
+                input[type=text], input[type=text]:focus, input[type=email]:focus, input[type=url]:focus, input[type=password]:focus, input[type=number]:focus, textarea, textarea:focus {
+                    /*background-color: lightblue;*/
+                    background-color: #ffffcc !important;
+                    border: 1px solid #3c8116;
+                }
+
+
+            input[type=text], input[type=email], input[type=password], input[type=url], input[type=number], textarea {
+                /*background-color: lightblue;*/
+                /*background: blue;*/
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+                /*   border:  1px solid lightblue ;*/
+            }
+
+
+            input:-webkit-autofill,
+            input:-webkit-autofill:hover,
+            input:-webkit-autofill:focus,
+            input:-webkit-autofill:active,
+            textarea {
+                /*-webkit-box-shadow: 0 0 0 30px white inset !important;*/
+                /*-webkit-box-shadow: 0 0 0 30px #3c8116 inset !important;*/
+                -webkit-box-shadow: 0 0 0 30px white inset !important;
+                color: black;
+            }
+
+
+
+            input[type=text]:not(:placeholder-shown),
+            input[type=number]:not(:placeholder-shown),
+            input[type=url]:not(:placeholder-shown),
+            input[type=email]:not(:placeholder-shown),
+            input[type=password]:not(:placeholder-shown),
+            textarea {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+
+            /* input:placeholder-shown,
+            input[type=text]:not(:placeholder-shown),
+            input[type=number]:not(:placeholder-shown),
+            input[type=url]:not(:placeholder-shown),
+            input[type=email]:not(:placeholder-shown),
+            input[type=password]:not(:placeholder-shown),
+            textarea {
+                background-color: #ffffff !important;
+                border: 1px solid #3c8116;
+            } */
+
+
+            .textarea, .textarea:focus, .textarea:empty {
+                /*-fx-background-color: #ffffcc !important;*/
+            }
+
+            textarea, textarea:focus, textarea:empty {
+                /* -fx-background-color: #ffffcc !important;*/
+            }
+
+
+            /*
+            input[type=checkbox] {
+                   background-color: #ffffff !important;
+                 color: #0a65bb   !important;
+                 width:18px;
+                 height:18px;
+                 margin:0px;
+                 padding:0px;
+            }
+            */
+
+            .txtError {
+                background-color: white !important;
+                border: 1px solid red !important;
+            }
+
+            .txtDisabled {
+                background-color: whitesmoke !important;
+                /* border: 1px solid red !important;*/
+            }
+
+            input[type=text].txtError {
+                background-color: white !important;
+                border: 1px solid red !important;
+            }
+
+            input[type=text].txtDisabled {
+                background-color: whitesmoke !important;
+                /* border: 1px solid red !important;*/
+            }
+
     </style>
 
 
@@ -149,6 +360,7 @@
 
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
             @* logo *@
             <a href="/" class="d-flex align-items-center me-auto">
                 <img src="app_img/logo-default.png" style="width:auto;height:100px;margin-right: 8px;" alt="">
@@ -157,12 +369,12 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a href="index.html#hero" class="active">Home</a></li>
-                    <li><a href="index.html#about">About</a></li>
-                    <li><a href="index.html#features">Features</a></li>
-                    <li><a href="index.html#services">Services</a></li>
-                    <li><a href="index.html#pricing">Pricing</a></li>
-                   @*  <li class="dropdown">
+                    @* <li><a href="#hero" class="active">Home</a></li> *@
+                    <li><a href="#features">Portal</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    @*  <li class="dropdown">
                         <a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                         <ul>
                             <li><a href="#">Dropdown 1</a></li>
@@ -181,12 +393,12 @@
                             <li><a href="#">Dropdown 4</a></li>
                         </ul>
                     </li> *@
-                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="#contact">Contact Us ᚠᚷᛃ</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
-            <a class="btn-getstarted" href="index.html#about">Get Started</a>
+            <a class="btn-getstarted" href="index.html#about" style="text-decoration:none;">Get Started</a>
 
         </div>
     </header>
@@ -196,24 +408,168 @@
         <!-- Hero Section -->
         <section id="hero" class="hero section">
             <div class="hero-bg">
-                <img src="guest/assets/img/hero-bg-light.webp" alt="">
+                <img src="~/app_img/hero-bg-light.webp" alt="">
             </div>
             <div class="container text-center">
                 <div class="d-flex flex-column justify-content-center align-items-center">
                     @* <span style="font-family:'Poppins';color:black;">Ask</span><span style="font-family:'Poppins';color:#0d6438;">Pearls</span> style="width:auto;height:50px;margin-top:-10px;margin-left: 2px;"*@
-                    <h1 data-aos="fade-up">Welcome to <img id="img_logo_welcome" src="app_img/logo-text-color.png"  alt=""></h1>
+                    <h1 data-aos="fade-up">Welcome to <img id="img_logo_welcome" src="app_img/logo-text-color.png" alt=""></h1>
                     <p data-aos="fade-up" data-aos-delay="100">Turn conversations into real customers with AI-powered chat<br></p>
                     <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
                         <a href="#about" class="btn-get-started">Get Started</a>
                         <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
                     </div>
-                    <img src="guest/assets/img/hero-services-img.webp" class="img-fluid hero-img" alt="" data-aos="zoom-out" data-aos-delay="300">
+                    <img src="app_img/hero-services-img.webp" class="img-fluid hero-img" alt="" data-aos="zoom-out" data-aos-delay="300">
                 </div>
             </div>
 
-        </section><!-- /Hero Section -->
+        </section>
+        <!-- /Hero Section -->
+        <!-- ======= Trust-Bar Section ======= -->
+        <section id="trust" class="about mt-0">
+
+
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+
+                     
+                <div class="container-fluid d-flex justify-content-center" style="width:100%;">
+
+                    <div class="d-flex flex-column flex-md-row m-0 p-3 shadow card" style="background-color:white;color:gray;">
+
+                        <div class="d-flex flex-row">
+
+                            <div class="m-0 p-1" style="width:60px;">
+                                <!-- React -->
+                                <img src="~/app_img/img_fast_delivery.png" style="width:auto;height:45px;margin-left:-2px;margin-top:3px;" />
+
+                            </div>
+                            <div class="m-0 mt-3 p-1 fs-6 fw-medium">AI Powered</div>
+
+                        </div>
+                    
+                        <span class="m-3 p-1 fw-bold text-muted d-none d-md-block" style="opacity:.3;">|</span>
+  
+                        <div class="d-flex flex-row">
+
+                            <div class="m-0 p-1" style="width:60px;">
+                                <!-- .NET -->
+                                <img src="~/app_img/img_integration.png" style="width:auto;height:45px;" />
+
+                            </div>
+                            <div class="m-0 mt-3 p-1 fs-6 fw-medium">Easy Integrations</div>
+
+                        </div>
+                     
+                        <span class="m-3 p-1 fw-bold text-muted d-none d-md-block" style="opacity:.3;">|</span>
+  
+                        <div class="d-flex flex-row">
+
+                            <div class="m-0 p-1" style="width:60px;">
+                                <!-- Azure -->
+                                <img src="~/app_img/img_growth.png" style="width:auto;height:40px;margin-top:3px;" />
+
+
+
+                            </div>
+                            <div class="m-0 mt-3 p-1 fs-6 fw-medium">Lead Growth</div>
+
+                        </div>
+                     
+                        <span class="m-3 p-1 fw-bold text-muted d-none d-md-block" style="opacity:.3;">|</span>
+
+
+                        <div class="d-flex flex-row">
+
+                            <div class="m-0 p-1" style="width:60px;">
+                                <!-- SQL Server -->
+                                <img src="~/app_img/img_support.png" style="width:auto;height:40px;" />
+
+                            </div>
+                            <div class="m-0 mt-3 p-1 fs-6 fw-medium">24/7 Support</div>
+
+                        </div>
+
+                   
+                    </div>
+                </div>
+                   
+            </div>
+
+      
+               
+               
+            <div class="container mt-3" data-aos="fade-up" data-aos-delay="200">
+
+                 
+                <div class="container-fluid d-flex">
+
+                    <div class="d-flex flex-column flex-md-row m-3 mb-0 p-3" style="width:100%;">
+
+                        <div class="col-12 col-md-6 d-flex flex-column">
+
+                            <div class="m-0 p-1">
+                                <h2 style="color:#1E201E;font-weight:bold;">Why Businesses Choose AskPearls?</h2>
+                                <div class="mt-3 mb-3" style="width:100%;border-top:1px inset whitesmoke;height:1px;opacity:.3;"></div>
+                                <div class="topLeft" style="text-align:left;margin-left:0px;">
+                                    
+                                    <ul style="list-style:none;">
+                                        <li class="mb-2" style="margin-left:-20px;">◼ Missing leads after business hours</li>
+                                        <li class="mb-2" style="margin-left:-20px;line-height:20px;">◼ Slow response times</li>
+                                        <li class="mb-2" style="margin-left:-20px;">◼ High support costs</li>
+                                        <li class="mb-2" style="margin-left:-20px;">◼ Repetitive customer questions</li>
+                                        <li class="mb-2" style="margin-left:-20px;">◼ Visitors leaving without converting</li>
+                                        <li class="mb-2" style="margin-left:-20px;">◼ Lack of visibility into customer inquiries</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+    
+
+                        </div>
+                     
+                        <div class="m-3" style="width:1px;border-left:1px inset whitesmoke;height:90%;opacity:.3;"></div>
+
+                        <div class="col-12 col-md-6 d-flex flex-column">
+
+                            <div class="m-0 p-1">
+                                @*  #0e6235 *@
+                                <h2 style="color:#3c8116;font-weight:bold;">What You Get With AskPearls</h2>
+                                <div class="mt-3 mb-3" style="width:100%;border-top:1px inset whitesmoke;height:1px;opacity:.3;"></div>
+                                 
+                                <div class="topLeft">
+                                    <ul style="list-style:none;">
+                                        <li class="mb-2" style="margin-left:-20px;"><span style="color:green;">✔ </span>AI answers visitors instantly</li>
+                                        <li class="mb-2" style="margin-left:-20px;"><span style="color:green;">✔ </span>Captures leads automatically</li>
+                                        <li class="mb-2" style="margin-left:-20px;"><span style="color:green;">✔ </span>Works 24/7 without breaks</li>
+                                        <li class="mb-2" style="margin-left:-20px;"><span style="color:green;">✔ </span>Integrates with your existing tools</li>
+                                        <li class="mb-2" style="margin-left:-20px;"><span style="color:green;">✔ </span>Setup in minutes</li>
+                                        <li class="mb-2" style="margin-left:-20px;"><span style="color:green;">✔ </span>Detailed analytics & insights</li>
+
+                                    </ul>
+                                </div>
+                            </div>
+
+    
+
+                        </div>
+
+                     
+         
+
+
+                    </div>
+                </div>
+                   
+            </div>
+
+      
+               
+               
+        </section>
+        <!-- End Trust-Bar Section -->
         <!-- Featured Services Section -->
-        <section id="featured-services" class="featured-services section light-background">
+        <section id="featured-services" class="featured-services section light-background d-none">
 
             <div class="container">
 
@@ -256,7 +612,7 @@
 
         </section><!-- /Featured Services Section -->
         <!-- About Section -->
-        <section id="about" class="about section">
+        <section id="about" class="about section d-none">
 
             <div class="container">
 
@@ -280,15 +636,15 @@
                     <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
                         <div class="row gy-4">
                             <div class="col-lg-6">
-                                <img src="guest/assets/img/about-company-1.jpg" class="img-fluid" alt="">
+                                <img src="GuestView/assets/img/about-company-1.jpg" class="img-fluid" alt="">
                             </div>
                             <div class="col-lg-6">
                                 <div class="row gy-4">
                                     <div class="col-lg-12">
-                                        <img src="guest/assets/img/about-company-2.jpg" class="img-fluid" alt="">
+                                        <img src="GuestView/assets/img/about-company-2.jpg" class="img-fluid" alt="">
                                     </div>
                                     <div class="col-lg-12">
-                                        <img src="guest/assets/img/about-company-3.jpg" class="img-fluid" alt="">
+                                        <img src="GuestView/assets/img/about-company-3.jpg" class="img-fluid" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -301,34 +657,34 @@
             </div>
         </section><!-- /About Section -->
         <!-- Clients Section -->
-        <section id="clients" class="clients section">
+        <section id="clients" class="clients section d-none">
 
             <div class="container" data-aos="fade-up">
 
                 <div class="row gy-4">
 
                     <div class="col-xl-2 col-md-3 col-6 client-logo">
-                        <img src="guest/assets/img/clients/client-1.png" class="img-fluid" alt="">
+                        <img src="GuestView/assets/img/clients/client-1.png" class="img-fluid" alt="">
                     </div><!-- End Client Item -->
 
                     <div class="col-xl-2 col-md-3 col-6 client-logo">
-                        <img src="guest/assets/img/clients/client-2.png" class="img-fluid" alt="">
+                        <img src="GuestView/assets/img/clients/client-2.png" class="img-fluid" alt="">
                     </div><!-- End Client Item -->
 
                     <div class="col-xl-2 col-md-3 col-6 client-logo">
-                        <img src="guest/assets/img/clients/client-3.png" class="img-fluid" alt="">
+                        <img src="GuestView/assets/img/clients/client-3.png" class="img-fluid" alt="">
                     </div><!-- End Client Item -->
 
                     <div class="col-xl-2 col-md-3 col-6 client-logo">
-                        <img src="guest/assets/img/clients/client-4.png" class="img-fluid" alt="">
+                        <img src="GuestView/assets/img/clients/client-4.png" class="img-fluid" alt="">
                     </div><!-- End Client Item -->
 
                     <div class="col-xl-2 col-md-3 col-6 client-logo">
-                        <img src="guest/assets/img/clients/client-5.png" class="img-fluid" alt="">
+                        <img src="GuestView/assets/img/clients/client-5.png" class="img-fluid" alt="">
                     </div><!-- End Client Item -->
 
                     <div class="col-xl-2 col-md-3 col-6 client-logo">
-                        <img src="guest/assets/img/clients/client-6.png" class="img-fluid" alt="">
+                        <img src="GuestView/assets/img/clients/client-6.png" class="img-fluid" alt="">
                     </div><!-- End Client Item -->
 
                 </div>
@@ -337,7 +693,7 @@
 
         </section><!-- /Clients Section -->
         <!-- Features Section -->
-        <section id="features" class="features section">
+        <section id="features" class="features section d-none">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
@@ -396,15 +752,15 @@
                         <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
 
                             <div class="tab-pane fade active show" id="features-tab-1">
-                                <img src="guest/assets/img/tabs-1.jpg" alt="" class="img-fluid">
+                                <img src="GuestView/assets/img/tabs-1.jpg" alt="" class="img-fluid">
                             </div><!-- End Tab Content Item -->
 
                             <div class="tab-pane fade" id="features-tab-2">
-                                <img src="guest/assets/img/tabs-2.jpg" alt="" class="img-fluid">
+                                <img src="GuestView/assets/img/tabs-2.jpg" alt="" class="img-fluid">
                             </div><!-- End Tab Content Item -->
 
                             <div class="tab-pane fade" id="features-tab-3">
-                                <img src="guest/assets/img/tabs-3.jpg" alt="" class="img-fluid">
+                                <img src="GuestView/assets/img/tabs-3.jpg" alt="" class="img-fluid">
                             </div><!-- End Tab Content Item -->
                         </div>
 
@@ -416,14 +772,14 @@
 
         </section><!-- /Features Section -->
         <!-- Features Details Section -->
-        <section id="features-details" class="features-details section">
+        <section id="features-details" class="features-details section d-none">
 
             <div class="container">
 
                 <div class="row gy-4 justify-content-between features-item">
 
                     <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                        <img src="guest/assets/img/features-1.jpg" class="img-fluid" alt="">
+                        <img src="GuestView/assets/img/features-1.jpg" class="img-fluid" alt="">
                     </div>
 
                     <div class="col-lg-5 d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">
@@ -460,7 +816,7 @@
                     </div>
 
                     <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="200">
-                        <img src="guest/assets/img/features-2.jpg" class="img-fluid" alt="">
+                        <img src="GuestView/assets/img/features-2.jpg" class="img-fluid" alt="">
                     </div>
 
                 </div><!-- Features Item -->
@@ -474,7 +830,7 @@
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
                 <h2>Services</h2>
-                <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+                <p>Smart AI tools that simplify support, boost engagement, and drive business growth</p>
             </div><!-- End Section Title -->
 
             <div class="container">
@@ -482,22 +838,26 @@
                 <div class="row g-5">
 
                     <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                        <div class="service-item item-cyan position-relative">
-                            <i class="bi bi-activity icon"></i>
+                        <div class="service-item item-teal position-relative">
+                            <div class="icon">
+                                <img src="~/app_img/img_logo_color.png" style="width:50px;height:auto;" />
+                            </div>
                             <div>
-                                <h3>Nesciunt Mete</h3>
-                                <p>Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure perferendis tempore et consequatur.</p>
+                                <h3>AI Customer Support Chatbot</h3>
+                                <p>Deliver instant, intelligent customer support 24/7 with AI-powered conversations.</p>
                                 <a href="#" class="read-more stretched-link">Learn More <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
                     </div><!-- End Service Item -->
 
                     <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="service-item item-orange position-relative">
-                            <i class="bi bi-broadcast icon"></i>
+                        <div class="service-item item-teal position-relative">
+                            <div class="icon">
+                                <img src="~/app_img/img_logo_color.png" style="width:50px;height:auto;" />
+                            </div>
                             <div>
-                                <h3>Eosle Commodi</h3>
-                                <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic non ut nesciunt dolorem.</p>
+                                <h3>AI Lead Capture & Qualification</h3>
+                                <p>Capture, qualify, and route leads automatically to maximize conversion opportunities.</p>
                                 <a href="#" class="read-more stretched-link">Learn More <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
@@ -505,43 +865,51 @@
 
                     <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
                         <div class="service-item item-teal position-relative">
-                            <i class="bi bi-easel icon"></i>
+                            <div class="icon">
+                                <img src="~/app_img/img_logo_color.png" style="width:50px;height:auto;" />
+                            </div>
                             <div>
-                                <h3>Ledo Markt</h3>
-                                <p>Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas adipisci eos earum corrupti.</p>
+                                <h3>CRM & Business Tool Integration</h3>
+                                <p>Connect AskPearls with your CRM, email, and business applications seamlessly.</p>
                                 <a href="#" class="read-more stretched-link">Learn More <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
                     </div><!-- End Service Item -->
 
                     <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
-                        <div class="service-item item-red position-relative">
-                            <i class="bi bi-bounding-box-circles icon"></i>
+                        <div class="service-item item-teal position-relative">
+                            <div class="icon">
+                                <img src="~/app_img/img_logo_color.png" style="width:50px;height:auto;" />
+                            </div>
                             <div>
-                                <h3>Asperiores Commodi</h3>
-                                <p>Non et temporibus minus omnis sed dolor esse consequatur. Cupiditate sed error ea fuga sit provident adipisci neque.</p>
+                                <h3>AI Knowledge Base Assistant</h3>
+                                <p>Turn your FAQs, documents, and resources into an intelligent self-service experience.</p>
                                 <a href="#" class="read-more stretched-link">Learn More <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
                     </div><!-- End Service Item -->
 
                     <div class="col-lg-6" data-aos="fade-up" data-aos-delay="500">
-                        <div class="service-item item-indigo position-relative">
-                            <i class="bi bi-calendar4-week icon"></i>
+                        <div class="service-item item-teal position-relative">
+                            <div class="icon">
+                                <img src="~/app_img/img_logo_color.png" style="width:50px;height:auto;" />
+                            </div>
                             <div>
-                                <h3>Velit Doloremque.</h3>
-                                <p>Cumque et suscipit saepe. Est maiores autem enim facilis ut aut ipsam corporis aut. Sed animi at autem alias eius labore.</p>
+                                <h3>Omnichannel Customer Messaging</h3>
+                                <p>Manage customer conversations across website, email, and messaging channels.</p>
                                 <a href="#" class="read-more stretched-link">Learn More <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
                     </div><!-- End Service Item -->
 
                     <div class="col-lg-6" data-aos="fade-up" data-aos-delay="600">
-                        <div class="service-item item-pink position-relative">
-                            <i class="bi bi-chat-square-text icon"></i>
+                        <div class="service-item item-teal position-relative">
+                            <div class="icon">
+                                <img src="~/app_img/img_logo_color.png" style="width:50px;height:auto;" />
+                            </div>
                             <div>
-                                <h3>Dolori Architecto</h3>
-                                <p>Hic molestias ea quibusdam eos. Fugiat enim doloremque aut neque non et debitis iure. Corrupti recusandae ducimus enim.</p>
+                                <h3>AI Analytics & Performance Insights</h3>
+                                <p>Gain actionable insights from customer interactions and support performance data.</p>
                                 <a href="#" class="read-more stretched-link">Learn More <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
@@ -553,7 +921,7 @@
 
         </section><!-- /Services Section -->
         <!-- More Features Section -->
-        <section id="more-features" class="more-features section">
+        <section id="more-features" class="more-features section d-none">
 
             <div class="container">
 
@@ -602,7 +970,7 @@
                     </div>
 
                     <div class="features-image col-lg-5 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="200">
-                        <img src="guest/assets/img/features-3.jpg" alt="">
+                        <img src="GuestView/assets/img/features-3.jpg" alt="">
                     </div>
 
                 </div>
@@ -611,12 +979,12 @@
 
         </section><!-- /More Features Section -->
         <!-- Pricing Section -->
-        <section id="pricingxx" class="pricing section">
+        <section id="pricing" class="pricing section">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
                 <h2>Pricing</h2>
-                <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+                <p>Scale your customer support effortlessly with plans tailored to your business needs</p>
             </div><!-- End Section Title -->
 
             <div class="container">
@@ -629,7 +997,7 @@
                             <h3>FREE</h3>
                             <p class="description">Perfect for trying AskPearls</p>
                             <h4><sup>$</sup>0<span> / month</span></h4>
-                            <a href="#" class="cta-btn">Start a free trial</a>
+                            <a href="#" class="cta-btn" style="text-decoration:none;">Start a free trial</a>
                             <p class="text-center small">No credit card required</p>
                             <ul>
                                 <li><i class="fa-solid fa-check"></i>1 AI Chat Agent</li>
@@ -638,7 +1006,7 @@
                                 <li><i class="fa-solid fa-check"></i>Email Notifications</li>
                                 <li><i class="fa-solid fa-check"></i>Dashboard Access</li>
                
-@*                                 <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
+                                @*                                 <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
                                 <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
                                 <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
                                 <li class="na"><i class="bi bi-x"></i> <span>Pharetra massa massa ultricies</span></li>
@@ -656,7 +1024,7 @@
                             <h3>PRO</h3>
                             <p class="description">Capture and engage more leads</p>
                             <h4><sup>$</sup>29<span> / month</span></h4>
-                            <a href="#" class="cta-btn">Start a free trial</a>
+                            <a href="#" class="cta-btn" style="text-decoration:none;">Start a free trial</a>
                             <p class="text-center small">No credit card required</p>
                             <ul>
                                 <li><i class="fa-solid fa-check"></i>1,000 Conversations</li>
@@ -665,13 +1033,13 @@
                                 <li><i class="fa-solid fa-check"></i>Basic Analytics</li>
                                 <li><i class="fa-solid fa-check"></i>2 Team Members</li>
                                 <li><i class="fa-solid fa-check"></i>Integrations</li>
-@*                                 <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
+                                @*                                 <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
                                 <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
                                 <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
                                 <li><i class="bi bi-check"></i> <span>Pharetra massa massa ultricies</span></li>
                                 <li><i class="bi bi-check"></i> <span>Massa ultricies mi quis hendrerit</span></li>
                                 <li><i class="bi bi-check"></i> <span>Voluptate id voluptas qui sed aperiam rerum</span></li> *@
-                                <li class="na"><i class="bi bi-x"></i> <span>Iure nihil dolores recusandae odit voluptatibus</span></li>
+                                @*   <li class="na"><i class="bi bi-x"></i> <span>Iure nihil dolores recusandae odit voluptatibus</span></li> *@
                             </ul>
                         </div>
                     </div><!-- End Pricing Item -->
@@ -682,7 +1050,7 @@
                             <h3>BUSINESS</h3>
                             <p class="description">Scale and automate your growth</p>
                             <h4><sup>$</sup>79<span> / month</span></h4>
-                            <a href="#" class="cta-btn">Start a free trial</a>
+                            <a href="#" class="cta-btn" style="text-decoration:none;">Start a free trial</a>
                             <p class="text-center small">No credit card required</p>
                             <ul>
                                 <li><i class="fa-solid fa-check"></i>5,000 Conversations</li>
@@ -691,7 +1059,7 @@
                                 <li><i class="fa-solid fa-check"></i>5 Team Members</li>
                                 <li><i class="fa-solid fa-check"></i>All Integrations</li>
                                 <li><i class="fa-solid fa-check"></i>Priority Support</li>
-@*                                 <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
+                                @*                                 <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
                                 <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
                                 <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
                                 <li><i class="bi bi-check"></i> <span>Pharetra massa massa ultricies</span></li>
@@ -707,79 +1075,61 @@
             </div>
 
         </section><!-- /Pricing Section -->
-      
-     
-        <section id="pricing" class="pricing section">
-        
-        <h2 class="section-title">
-            Simple Pricing. <span>Powerful Conversations.</span>
-        </h2>
-        <p class="subtitle">
-            Choose the perfect plan for your business. Upgrade anytime.
-        </p>
-            @* class="container" *@
-            <div >
+        <!-- /Pricing Section -->
+        <!-- ======= Counts Section ======= -->
+        <section id="counts" class="counts">
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-            <!-- FREE -->
-            <div class="card">
-                <div class="icon"><i class="fa-solid fa-gift"></i></div>
-                <div class="plan">FREE</div>
-                <p>Perfect for trying AskPearls</p>
-                <div class="price">$0<span style="font-size:16px;">/month</span></div>
+                <div class="row gy-4">
 
-                <a href="#" class="btn btn-outline">Get Started</a>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="count-box">
+                            <i class="bi bi-emoji-smile me-1" style="color:#3c8116;font-size:40px; display:block;"></i>
+                            <div class="m-3">
+                                <strong data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter" style="color:#0e6235;font-size:40px;"></strong>
+                                <p style="font-size:medium;font-weight:bold;">Happy Clients</p>
+                            </div>
+                        </div>
+                    </div>
 
-                <ul class="features">
-                    <li><i class="fa-solid fa-check"></i>1 AI Chat Agent</li>
-                    <li><i class="fa-solid fa-check"></i>100 Conversations</li>
-                    <li><i class="fa-solid fa-check"></i>Basic Lead Capture</li>
-                    <li><i class="fa-solid fa-check"></i>Email Notifications</li>
-                    <li><i class="fa-solid fa-check"></i>Dashboard Access</li>
-                </ul>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="count-box">
+                            <i class="bi bi-journal-richtext" style="color: #ee6c20;font-size:40px; display:block;"></i>
+                            <div class="m-3">
+                                <strong data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter" style="color:#0e6235;font-size:40px;">
+                                </strong>
+                                <p style="font-size:medium;font-weight:bold;">Projects</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="count-box">
+                            <i class="bi bi-headset" style="color: #15be56;font-size:40px; display:block;"></i>
+                            <div class="m-3">
+                                <strong data-purecounter-start="0" data-purecounter-end="1463" data-purecounter-duration="1" class="purecounter" style="color:#0e6235;font-size:40px;">
+                                </strong>
+                                <p style="font-size:medium;font-weight:bold;">Hours Of Support</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="count-box">
+                            <i class="bi bi-people" style="color: #bb0852;font-size:40px; display:block;"></i>
+                            <div class="m-3">
+                                <strong data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1" class="purecounter" style="color:#0e6235;font-size:40px;">
+                                </strong>
+                                <p style="font-size:medium;font-weight:bold;">Hard Workers</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
-
-            <!-- PRO -->
-            <div class="card popular">
-                <div class="icon"><i class="fa-solid fa-rocket"></i></div>
-                <div class="plan">PRO</div>
-                <p>Capture and engage more leads</p>
-                <div class="price">$29<span style="font-size:16px;">/month</span></div>
-
-                <a href="#" class="btn">Start Free Trial</a>
-
-                <ul class="features">
-                    <li><i class="fa-solid fa-check"></i>1,000 Conversations</li>
-                    <li><i class="fa-solid fa-check"></i>Advanced Lead Capture</li>
-                    <li><i class="fa-solid fa-check"></i>Chat + Email Alerts</li>
-                    <li><i class="fa-solid fa-check"></i>Basic Analytics</li>
-                    <li><i class="fa-solid fa-check"></i>2 Team Members</li>
-                    <li><i class="fa-solid fa-check"></i>Integrations</li>
-                </ul>
-            </div>
-
-            <!-- BUSINESS -->
-            <div class="card">
-                <div class="icon"><i class="fa-solid fa-building"></i></div>
-                <div class="plan">BUSINESS</div>
-                <p>Scale and automate your growth</p>
-                <div class="price">$79<span style="font-size:16px;">/month</span></div>
-
-                <a href="#" class="btn">Start Free Trial</a>
-
-                <ul class="features">
-                    <li><i class="fa-solid fa-check"></i>5,000 Conversations</li>
-                    <li><i class="fa-solid fa-check"></i>Automation Workflows</li>
-                    <li><i class="fa-solid fa-check"></i>Advanced Analytics</li>
-                    <li><i class="fa-solid fa-check"></i>5 Team Members</li>
-                    <li><i class="fa-solid fa-check"></i>All Integrations</li>
-                    <li><i class="fa-solid fa-check"></i>Priority Support</li>
-                </ul>
-            </div>
-
-        </div>
-        
         </section>
-        
+        <!-- End Counts Section -->
         <!-- Faq Section -->
         <section id="faq" class="faq section">
 
@@ -797,49 +1147,49 @@
                         <div class="faq-container">
 
                             <div class="faq-item faq-active">
-                                <h3>Non consectetur a erat nam at lectus urna duis?</h3>
+                                <h3>1. What is  <b>&nbsp;AskPearls&nbsp;</b> ?</h3>
                                 <div class="faq-content">
-                                    <p>Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non.</p>
+                                    <p>  <b>AskPearls</b>   is an AI-powered customer support and lead capture platform that helps businesses engage website visitors, answer questions instantly, and convert more leads 24/7 without increasing support costs.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
                             </div><!-- End Faq item-->
 
                             <div class="faq-item">
-                                <h3>Feugiat scelerisque varius morbi enim nunc faucibus?</h3>
+                                <h3>2. How does  <b>&nbsp;AskPearls&nbsp;</b>  capture leads?</h3>
                                 <div class="faq-content">
-                                    <p>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.</p>
+                                    <p>  <b>AskPearls</b>   automatically engages visitors through intelligent conversations, collects contact information, qualifies leads, and routes them to your team so no opportunity is missed.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
                             </div><!-- End Faq item-->
 
                             <div class="faq-item">
-                                <h3>Dolor sit amet consectetur adipiscing elit pellentesque?</h3>
+                                <h3>3. Can  <b>&nbsp;AskPearls&nbsp;</b>  work when my team is offline?</h3>
                                 <div class="faq-content">
-                                    <p>Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis convallis tellus. Urna molestie at elementum eu facilisis sed odio morbi quis</p>
+                                    <p>Yes. <b>AskPearls</b> operates 24/7, answering customer questions, capturing leads, and providing support even outside business hours, weekends, and holidays.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
                             </div><!-- End Faq item-->
 
                             <div class="faq-item">
-                                <h3>Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla?</h3>
+                                <h3>4. Is <b>&nbsp;AskPearls&nbsp;</b> easy to integrate with my website?</h3>
                                 <div class="faq-content">
-                                    <p>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.</p>
+                                    <p>Absolutely. <b>AskPearls</b> can be added to your website with a simple installation process and can integrate with popular CRM systems, forms, and business tools.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
                             </div><!-- End Faq item-->
 
                             <div class="faq-item">
-                                <h3>Tempus quam pellentesque nec nam aliquam sem et tortor?</h3>
+                                <h3>5. Can I customize the AI responses?</h3>
                                 <div class="faq-content">
-                                    <p>Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse in est ante in. Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl suscipit adipiscing bibendum est. Purus gravida quis blandit turpis cursus in</p>
+                                    <p>Yes. You can train   <b>AskPearls</b>   using your business information, FAQs, products, and services to ensure responses match your brand voice and customer needs.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
                             </div><!-- End Faq item-->
 
                             <div class="faq-item">
-                                <h3>Perspiciatis quod quo quos nulla quo illum ullam?</h3>
+                                <h3>6. How can  <b>&nbsp;AskPearls&nbsp;</b>  help my business grow?</h3>
                                 <div class="faq-content">
-                                    <p>Enim ea facilis quaerat voluptas quidem et dolorem. Quis et consequatur non sed in suscipit sequi. Distinctio ipsam dolore et.</p>
+                                    <p>By providing instant responses, improving customer engagement, reducing support workload, and capturing more qualified leads,   <b>AskPearls</b>   helps businesses increase conversions and scale efficiently.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
                             </div><!-- End Faq item-->
@@ -859,7 +1209,7 @@
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
                 <h2>Testimonials</h2>
-                <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+                <p>Trusted by businesses worldwide to power smarter customer conversations</p>
             </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -898,10 +1248,11 @@
                                     <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                                 </div>
                                 <p>
-                                    Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
+                                    <b>AskPearls</b>  transformed our customer support. The AI assistant responds instantly, captures leads automatically, and helps our team stay productive around the clock. Highly recommended!
+
                                 </p>
                                 <div class="profile mt-auto">
-                                    <img src="guest/assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                                    <img src="GuestView/assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
                                     <h3>Saul Goodman</h3>
                                     <h4>Ceo &amp; Founder</h4>
                                 </div>
@@ -914,10 +1265,11 @@
                                     <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                                 </div>
                                 <p>
-                                    Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
+                                    We saw a noticeable increase in qualified leads within weeks of using  <b>AskPearls</b> . The setup was simple, and the AI handles customer inquiries with impressive accuracy.
+
                                 </p>
                                 <div class="profile mt-auto">
-                                    <img src="guest/assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                                    <img src="GuestView/assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
                                     <h3>Sara Wilsson</h3>
                                     <h4>Designer</h4>
                                 </div>
@@ -930,10 +1282,11 @@
                                     <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                                 </div>
                                 <p>
-                                    Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
+                                    <b>AskPearls</b>  helped us provide 24/7 support without hiring additional staff. Customers get immediate answers, and our team can focus on more important tasks.
+
                                 </p>
                                 <div class="profile mt-auto">
-                                    <img src="guest/assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                                    <img src="GuestView/assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
                                     <h3>Jena Karlis</h3>
                                     <h4>Store Owner</h4>
                                 </div>
@@ -946,10 +1299,10 @@
                                     <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                                 </div>
                                 <p>
-                                    Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
+                                    The AI chatbot feels like an extension of our team. It engages visitors, answers common questions, and improves the overall customer experience effortlessly.
                                 </p>
                                 <div class="profile mt-auto">
-                                    <img src="guest/assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                                    <img src="GuestView/assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
                                     <h3>Matt Brandon</h3>
                                     <h4>Freelancer</h4>
                                 </div>
@@ -962,10 +1315,10 @@
                                     <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                                 </div>
                                 <p>
-                                    Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
+                                    From lead capture to automated support,  <b>AskPearls</b>  delivers exactly what modern businesses need. Reliable, easy to use, and a great investment for growth.
                                 </p>
                                 <div class="profile mt-auto">
-                                    <img src="guest/assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
+                                    <img src="GuestView/assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
                                     <h3>John Larson</h3>
                                     <h4>Entrepreneur</h4>
                                 </div>
@@ -985,7 +1338,7 @@
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
                 <h2>Contact</h2>
-                <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+                <p>Have a question? We'd love to hear from you and help your business succeed</p>
             </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -996,7 +1349,7 @@
                         <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
                             <i class="bi bi-geo-alt"></i>
                             <h3>Address</h3>
-                            <p>A108 Adam Street, New York, NY 535022</p>
+                            <p>Sarasota, FL 34249 - United States</p>
                         </div>
                     </div><!-- End Info Item -->
 
@@ -1004,7 +1357,7 @@
                         <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
                             <i class="bi bi-telephone"></i>
                             <h3>Call Us</h3>
-                            <p>+1 5589 55488 55</p>
+                            <p><b>+2 0122 1977 230</b></p>
                         </div>
                     </div><!-- End Info Item -->
 
@@ -1012,7 +1365,7 @@
                         <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
                             <i class="bi bi-envelope"></i>
                             <h3>Email Us</h3>
-                            <p>info@example.com</p>
+                            <p><a href="mailto:HelpDesk@AskPearls.com"><strong>HelpDesk</strong>@@AskPearls.com</a></p>
                         </div>
                     </div><!-- End Info Item -->
 
@@ -1069,13 +1422,13 @@
             <div class="row gy-4">
                 <div class="col-lg-4 col-md-6 footer-about">
                     <a href="index.html" class="logo d-flex align-items-center">
-                        <span class="sitename">QuickStart</span>
+                        <span class="sitename">AskPearls</span>
                     </a>
                     <div class="footer-contact pt-3">
-                        <p>A108 Adam Street</p>
-                        <p>New York, NY 535022</p>
-                        <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-                        <p><strong>Email:</strong> <span>info@example.com</span></p>
+                        <p>Sarasota, FL 34249</p>
+                        <p>United States</p>
+                        <p class="mt-3"><strong>Phone:</strong> <span><b>+2 0122 1977 230</b></span></p>
+                        <p><strong>Email:</strong> <span><a href="mailto:HelpDesk@AskPearls.com"><strong>HelpDesk</strong>@@AskPearls.com</a></span></p>
                     </div>
                     <div class="social-links d-flex mt-4">
                         <a href=""><i class="bi bi-twitter-x"></i></a>
@@ -1116,19 +1469,17 @@
                         <div class="error-message"></div>
                         <div class="sent-message">Your subscription request has been sent. Thank you!</div>
                     </form>
+                    <div style="width:100%;text-align:center;"><div style="width:100px;margin:auto;">  <img src="~/app_img/oneworldlancer_sigil.png" style="width:auto;height:100px;" /></div></div>
+                  
                 </div>
 
             </div>
         </div>
 
         <div class="container copyright text-center mt-4">
-            <p>© <span>Copyright</span> <strong class="px-1 sitename">QuickStart</strong><span>All Rights Reserved</span></p>
+            <p>Patent Pending. © <span>Copyright</span> <strong class="px-1 sitename">AskPearls</strong><span>All Rights Reserved</span></p>
             <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you've purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> | <a href="https://bootstrapmade.com/tools/">DevTools</a>
+                Developed by <strong>ᚠᚷᛃ 35833</strong> | <a href="https://OneWorldLancer.com/"><strong>OneWorldLancer</strong></a>
             </div>
         </div>
 
@@ -1138,18 +1489,24 @@
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <!-- Preloader -->
-    <div id="preloader"></div>
+    @* <div id="preloader"></div> *@
 
     <!-- Vendor JS Files -->
-    <script src="guest/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="guest/assets/vendor/php-email-form/validate.js"></script>
-    <script src="guest/assets/vendor/aos/aos.js"></script>
-    <script src="guest/assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="guest/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="GuestView/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="GuestView/assets/vendor/php-email-form/validate.js"></script>
+    <script src="GuestView/assets/vendor/aos/aos.js"></script>
+    <script src="GuestView/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="GuestView/assets/vendor/swiper/swiper-bundle.min.js"></script>
 
     <!-- Main JS File -->
-    <script src="guest/assets/js/main.js"></script>
-
+    <script src="GuestView/assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        new PureCounter();
+        // $("#preloader").remove();
+       
+        });
+    </script>
 </body>
 
 </html>

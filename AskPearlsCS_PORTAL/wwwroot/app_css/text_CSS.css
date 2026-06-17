@@ -1,0 +1,6 @@
+.txt_Vertical {
+    margin-bottom:50px;
+    transform:rotate(180deg);
+    writing-mode:vertical-lr;
+    text-align:center;
+}

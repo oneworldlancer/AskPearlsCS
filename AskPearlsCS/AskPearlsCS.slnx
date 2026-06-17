@@ -5,5 +5,5 @@
   <Project Path="../AskPearlsCS_CDN/AskPearlsCS_CDN.csproj" Id="c92ae422-3ae1-490a-9bc5-9d6d0b48b27a" />
   <Project Path="../AskPearlsCS_DOMAIN/AskPearlsCS_DOMAIN.csproj" Id="513cdf8b-8b25-4f4e-963b-33286f292b1f" />
   <Project Path="../AskPearlsCS_PORTAL/AskPearlsCS_PORTAL.csproj" Id="73adba71-8709-4d35-a534-3a27418c856e" />
-  <Project Path="AskPearlsCS.csproj" />
+  <Project Path="AskPearlsCS_WEB.csproj" />
 </Solution>

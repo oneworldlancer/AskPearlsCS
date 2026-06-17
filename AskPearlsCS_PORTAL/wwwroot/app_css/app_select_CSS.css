@@ -1,0 +1,40 @@
+select option[data-default] {
+    color: #888 !important;
+}
+
+
+/*
+We have this so that when the select is greyed, its options aren't
+*/
+select {
+    /*color: green;*/
+    background-color: #ffffcc !important;
+    border: 1px solid #0a75bb;
+}
+
+
+    select option[value] {
+        color: black;
+        background-color: #ffffff !important;
+        padding: 10px !important;
+    }
+
+
+    select option {
+        color: black;
+        background-color: whitesmoke !important;
+        padding: 5px !important;
+    }
+
+    /*
+Grey-out an element with the class, and option elements with blank values
+*/
+        select option[value=""] {
+            color: #888 !important;
+        }
+
+    select.form-select {
+        background-color: #ffffcc !important;
+        border: 1px solid #0a75bb;
+    }
+
