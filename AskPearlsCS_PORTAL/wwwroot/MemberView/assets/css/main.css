@@ -90,126 +90,295 @@
 # Global Colors - Light Mode
 --------------------------------------------------------------*/
 :root {
-  /* Core palette */
-  --background-color: #f5f7ff;
+    /* ==========================================================
+     Core
+  ========================================================== */
+
+    --background-color: #F8FCFA;
+    --surface-color: #FFFFFF;
+    --card-bg: #FFFFFF;
+    --default-color: #374151;
+    --heading-color: #111827;
+    --muted-color: #6B7280;
+    --light-color: #9CA3AF;
+    --accent-color: #25D366;
+    --contrast-color: #FFFFFF;
+    /* ==========================================================
+     Brand Shades
+  ========================================================== */
+
+    --accent-hover: #1FC75D;
+    --accent-active: #18B553;
+    --accent-soft: rgba(37,211,102,.08);
+    /* ==========================================================
+     Borders
+  ========================================================== */
+
+    --border-color: #E4ECE8;
+    --border-color-light: #F2F7F4;
+    --border-color-dark: #D8E5DE;
+    /* ==========================================================
+     Status
+  ========================================================== */
+
+    --success-color: #25D366;
+    --success-color-light: rgba(37,211,102,.12);
+    --warning-color: #F4B740;
+    --warning-color-light: rgba(244,183,64,.12);
+    --danger-color: #EF5A67;
+    --danger-color-light: rgba(239,90,103,.12);
+    --info-color: #128C7E;
+    --info-color-light: rgba(18,140,126,.12);
+    /* ==========================================================
+     Navigation
+  ========================================================== */
+
+    --nav-color: #374151;
+    --nav-hover-color: #25D366;
+    --nav-mobile-background-color: #FFFFFF;
+    --nav-dropdown-background-color: #FFFFFF;
+    --nav-dropdown-color: #374151;
+    --nav-dropdown-hover-color: #25D366;
+    /* ==========================================================
+     Header
+  ========================================================== */
+
+    --header-bg: rgba(255,255,255,.92);
+    --header-shadow: 0 1px 0 rgba(17,24,39,.05);
+    --header-border: #EDF2EF;
+    /* ==========================================================
+     Sidebar
+  ========================================================== */
+
+    --sidebar-bg: #FFFFFF;
+    --sidebar-border: #E8EFEB;
+    --sidebar-color: #374151;
+    --sidebar-muted-color: #7A8794;
+    --sidebar-hover-bg: rgba(37,211,102,.08);
+    --sidebar-active-bg: #25D366;
+    --sidebar-active-color: #FFFFFF;
+    /* ==========================================================
+     Cards
+  ========================================================== */
+
+    --card-border: #E7EFEB;
+    --card-shadow: 0 10px 30px rgba(17,24,39,.05);
+    /* ==========================================================
+     Tables
+  ========================================================== */
+
+    --table-header-bg: #F8FCFA;
+    --table-hover-bg: #F2FBF5;
+    --table-stripe-bg: #FCFEFD;
+    /* ==========================================================
+     Forms
+  ========================================================== */
+
+    --input-bg: #FFFFFF;
+    --input-border: #DDE8E3;
+    --input-focus-border: #25D366;
+    --input-focus-ring: rgb(37 211 102 / .18);
+    /* ==========================================================
+     Bootstrap
+  ========================================================== */
+
+    --bs-body-bg: var(--background-color);
+    --bs-body-color: var(--default-color);
+    /* Core palette */
+    /*--background-color: #f5f7ff;
   --default-color: #2d3a4e;
   --heading-color: #012970;
   --accent-color: #4154f1;
   --surface-color: #ffffff;
-  --contrast-color: #ffffff;
-  /* Extended text colors */
-  --muted-color: #667085;
-  --light-color: #98a2b3;
-  /* Borders */
-  --border-color: #dbe3ff;
+  --contrast-color: #ffffff;*/
+    /* Extended text colors */
+    /*--muted-color: #667085;
+  --light-color: #98a2b3;*/
+    /* Borders */
+    /*--border-color: #dbe3ff;
   --border-color-light: #ebefff;
-  --border-color-dark: #c7d3ff;
-  /* Status colors */
-  --success-color: #21a66c;
+  --border-color-dark: #c7d3ff;*/
+    /* Status colors */
+    /*--success-color: #21a66c;
   --success-color-light: #dcf8ea;
   --warning-color: #ec9f05;
   --warning-color-light: #fff3d8;
   --danger-color: #e74c63;
   --danger-color-light: #ffe3e8;
   --info-color: #2f80ed;
-  --info-color-light: #e4efff;
-  /* Navigation colors */
-  --nav-color: var(--default-color);
+  --info-color-light: #e4efff;*/
+    /* Navigation colors */
+    /*--nav-color: var(--default-color);
   --nav-hover-color: var(--accent-color);
   --nav-mobile-background-color: var(--surface-color);
   --nav-dropdown-background-color: var(--surface-color);
   --nav-dropdown-color: var(--default-color);
-  --nav-dropdown-hover-color: var(--accent-color);
-  /* Header */
-  --header-bg: rgba(255, 255, 255, 0.9);
+  --nav-dropdown-hover-color: var(--accent-color);*/
+    /* Header */
+    /*--header-bg: rgba(255, 255, 255, 0.9);
   --header-shadow: 0 1px 0 rgb(1 41 112 / 0.08);
-  --header-border: var(--border-color);
-  /* Sidebar */
-  --sidebar-bg: #fdfdff;
+  --header-border: var(--border-color);*/
+    /* Sidebar */
+    /*--sidebar-bg: #fdfdff;
   --sidebar-border: #d8e0ff;
   --sidebar-color: #253047;
   --sidebar-muted-color: #64748b;
   --sidebar-hover-bg: rgba(65, 84, 241, 0.1);
   --sidebar-active-bg: #4154f1;
-  --sidebar-active-color: #ffffff;
-  /* Cards */
-  --card-bg: #ffffff;
+  --sidebar-active-color: #ffffff;*/
+    /* Cards */
+    /*--card-bg: #ffffff;
   --card-shadow: var(--shadow-md);
-  --card-border: var(--border-color);
-  /* Tables */
-  --table-header-bg: #eff3ff;
+  --card-border: var(--border-color);*/
+    /* Tables */
+    /*--table-header-bg: #eff3ff;
   --table-hover-bg: #e7eeff;
-  --table-stripe-bg: #f8faff;
-  /* Forms */
-  --input-bg: #ffffff;
+  --table-stripe-bg: #f8faff;*/
+    /* Forms */
+    /*--input-bg: #ffffff;
   --input-border: var(--border-color);
   --input-focus-border: var(--accent-color);
-  --input-focus-ring: rgb(65 84 241 / 0.25);
+  --input-focus-ring: rgb(65 84 241 / 0.25);*/
 }
 
 /*--------------------------------------------------------------
 # Dark Mode Palette
 --------------------------------------------------------------*/
-[data-theme=dark] {
+[data-theme="dark"] {
+    /* ===== Core ===== */
+
+    --background-color: #08120F;
+    --surface-color: #0D1915;
+    --card-bg: #12231D;
+    --default-color: #D7E6DE;
+    --heading-color: #FFFFFF;
+    --muted-color: #9CB7AE;
+    --light-color: #6E8B82;
+    --accent-color: #25D366;
+    --contrast-color: #FFFFFF;
+    /* ===== Brand Shades ===== */
+
+    --accent-hover: #1FC75D;
+    --accent-active: #18B553;
+    --accent-soft: rgba(37,211,102,.12);
+    /* ===== Borders ===== */
+
+    --border-color: #1E3830;
+    --border-color-light: #27463C;
+    --border-color-dark: #163028;
+    /* ===== Status ===== */
+
+    --success-color: #25D366;
+    --success-color-light: rgba(37,211,102,.18);
+    --warning-color: #F6C453;
+    --warning-color-light: rgba(246,196,83,.18);
+    --danger-color: #F45D6A;
+    --danger-color-light: rgba(244,93,106,.18);
+    --info-color: #4DB6AC;
+    --info-color-light: rgba(77,182,172,.18);
+    /* ===== Navigation ===== */
+
+    --nav-color: var(--default-color);
+    --nav-hover-color: var(--accent-color);
+    --nav-mobile-background-color: #0D1915;
+    --nav-dropdown-background-color: #12231D;
+    --nav-dropdown-color: var(--default-color);
+    --nav-dropdown-hover-color: var(--accent-color);
+    /* ===== Header ===== */
+
+    --header-bg: rgba(8,18,15,.88);
+    --header-shadow: 0 1px 0 rgba(37,211,102,.08);
+    --header-border: var(--border-color);
+    /* ===== Sidebar ===== */
+
+    --sidebar-bg: #091511;
+    --sidebar-border: var(--border-color);
+    --sidebar-color: var(--default-color);
+    --sidebar-muted-color: #8EA79E;
+    --sidebar-hover-bg: rgba(37,211,102,.10);
+    --sidebar-active-bg: #25D366;
+    --sidebar-active-color: #08120F;
+    /* ===== Cards ===== */
+
+    --card-border: #1F3B31;
+    --card-shadow: 0 20px 50px rgba(0,0,0,.38);
+    /* ===== Tables ===== */
+
+    --table-header-bg: #11211B;
+    --table-hover-bg: #173028;
+    --table-stripe-bg: #10211B;
+    /* ===== Forms ===== */
+
+    --input-bg: #10201A;
+    --input-border: var(--border-color);
+    --input-focus-border: var(--accent-color);
+    --input-focus-ring: rgb(37 211 102 / .25);
+    /* ===== Bootstrap ===== */
+
+    --bs-body-bg: var(--background-color);
+    --bs-body-color: var(--default-color);
+}
+
+/*[data-theme=dark] {*/
   /* Core palette */
-  --background-color: #081427;
+  /*--background-color: #081427;
   --default-color: #bfd2ee;
   --heading-color: #eaf2ff;
   --accent-color: #4f8efc;
   --surface-color: #0f203d;
-  --contrast-color: #ffffff;
+  --contrast-color: #ffffff;*/
   /* Extended text colors */
-  --muted-color: #87a4cc;
-  --light-color: #6f88ae;
+  /*--muted-color: #87a4cc;
+  --light-color: #6f88ae;*/
   /* Borders */
-  --border-color: #274166;
+  /*--border-color: #274166;
   --border-color-light: #203857;
-  --border-color-dark: #35547f;
+  --border-color-dark: #35547f;*/
   /* Status colors (adjusted for dark mode) */
-  --success-color: #3dd598;
+  /*--success-color: #3dd598;
   --success-color-light: rgba(61, 213, 152, 0.2);
   --warning-color: #f9b233;
   --warning-color-light: rgba(249, 178, 51, 0.2);
   --danger-color: #ff6b8f;
   --danger-color-light: rgba(255, 107, 143, 0.2);
   --info-color: #67b7ff;
-  --info-color-light: rgba(103, 183, 255, 0.2);
+  --info-color-light: rgba(103, 183, 255, 0.2);*/
   /* Navigation colors */
-  --nav-color: var(--default-color);
+  /*--nav-color: var(--default-color);
   --nav-hover-color: var(--accent-color);
   --nav-mobile-background-color: var(--surface-color);
   --nav-dropdown-background-color: var(--surface-color);
   --nav-dropdown-color: var(--default-color);
-  --nav-dropdown-hover-color: var(--accent-color);
+  --nav-dropdown-hover-color: var(--accent-color);*/
   /* Header */
-  --header-bg: rgba(13, 28, 52, 0.9);
+  /*--header-bg: rgba(13, 28, 52, 0.9);
   --header-shadow: 0 1px 0 rgb(116 158 219 / 0.2);
-  --header-border: var(--border-color);
+  --header-border: var(--border-color);*/
   /* Sidebar */
-  --sidebar-bg: #0c1a34;
+  /*--sidebar-bg: #0c1a34;
   --sidebar-border: var(--border-color);
   --sidebar-color: #bfd2ee;
   --sidebar-muted-color: #88a5cf;
   --sidebar-hover-bg: rgba(79, 142, 252, 0.16);
   --sidebar-active-bg: #3f7ff2;
-  --sidebar-active-color: #ffffff;
+  --sidebar-active-color: #ffffff;*/
   /* Cards */
-  --card-bg: #102445;
+  /*--card-bg: #102445;
   --card-shadow: 0 12px 28px -20px rgb(2 8 28 / 0.48), 0 6px 14px -10px rgb(7 17 45 / 0.4);
-  --card-border: var(--border-color);
+  --card-border: var(--border-color);*/
   /* Tables */
-  --table-header-bg: #0d203f;
+  /*--table-header-bg: #0d203f;
   --table-hover-bg: #12305a;
-  --table-stripe-bg: #112a50;
+  --table-stripe-bg: #112a50;*/
   /* Forms */
-  --input-bg: #0d1f3e;
+  /*--input-bg: #0d1f3e;
   --input-border: var(--border-color);
   --input-focus-border: var(--accent-color);
-  --input-focus-ring: rgb(79 142 252 / 0.3);
+  --input-focus-ring: rgb(79 142 252 / 0.3);*/
   /* Bootstrap overrides */
-  --bs-body-color: var(--default-color);
+  /*--bs-body-color: var(--default-color);
   --bs-body-bg: var(--background-color);
-}
+}*/
 
 /*--------------------------------------------------------------
 # Color Utility Classes
@@ -394,7 +563,7 @@ html {
 --------------------------------------------------------------*/
 body {
   margin: 0;
-  font-family: var(--default-font);
+/*  font-family: var(--default-font);
   font-size: 0.9375rem;
   font-weight: 400;
   line-height: 1.6;
@@ -402,7 +571,7 @@ body {
   background-color: var(--background-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: hidden;*/
 }
 
 /*--------------------------------------------------------------
@@ -3296,7 +3465,7 @@ button {
 # Structured utility footer with status signal,
 # compact nav links, and right-aligned credits.
 --------------------------------------------------------------*/
-.footer {
+/*.footer {
   margin-top: auto;
   padding: 10px var(--spacing-lg);
   background: color-mix(in srgb, var(--surface-color), var(--background-color) 18%);
@@ -3431,14 +3600,26 @@ button {
   .footer-version {
     display: none;
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # Main Content Area
 --------------------------------------------------------------*/
+.main-Splalsh {
+  margin-top: var(--header-height);
+  max-height: calc(100vh - var(--header-height) - 50);
+  /*max-height: calc(100vh - var(--header-height) - 200);*/
+  display: flex;
+   overflow-x: hidden; 
+   /*flex-direction: column;
+  overflow-x: hidden;
+  transition: margin-left var(--transition-base);*/
+}
+
+
 .main {
   margin-top: var(--header-height);
-  min-height: calc(100vh - var(--header-height));
+  max-height: calc(100vh - var(--header-height) - 100);
   display: flex;
   flex-direction: column;
   overflow-x: hidden;

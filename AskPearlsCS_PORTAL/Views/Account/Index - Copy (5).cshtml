@@ -1,0 +1,591 @@
+﻿@{
+    // ViewData["Title"] = "Home Page";
+    Layout = null;
+}
+@*
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+ *@
+<!DOCTYPE html>
+<html lang="en" class="h-100" data-bs-theme="auto">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author"
+          content="Mark Otto, Jacob Thornton, and Bootstrap contributors" />
+    <meta name="generator" content="Astro v5.13.2" />
+    <title>Sticky Footer Navbar Template · Bootstrap v5.3</title>
+    <link rel="canonical"
+          href="https://getbootstrap.com/docs/5.3/examples/sticky-footer-navbar/" />
+    <script src="splash/assets/js/color-modes.js"></script>
+    <link href="splash/assets/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <meta name="theme-color" content="#712cf9" />
+    <link href="splash/sticky-footer-navbar.css" rel="stylesheet" />
+
+    
+  <!-- Template Main CSS File -->
+  <link href="MemberView/assets/css/main.css" rel="stylesheet">
+
+
+
+    <style>
+        .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+        }
+        @@media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+        }
+        }
+
+        .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: #0000001a;
+        border: solid rgba(0, 0, 0, 0.15);
+        border-width: 1px 0;
+        box-shadow: inset 0 0.5em 1.5em #0000001a, inset 0 0.125em 0.5em #00000026;
+        }
+
+        .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+        }
+
+        .bi {
+        vertical-align: -0.125em;
+        fill: currentColor;
+        }
+
+        .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+        }
+
+        .bd-mode-toggle {
+        z-index: 1500;
+        }
+
+        .bd-mode-toggle .bi {
+        width: 1em;
+        height: 1em;
+        }
+
+        .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column h-100">
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+        <symbol id="check2" viewBox="0 0 16 16">
+            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path>
+        </symbol>
+        <symbol id="circle-half" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"></path>
+        </symbol>
+        <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+            <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"></path>
+            <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"></path>
+        </symbol>
+        <symbol id="sun-fill" viewBox="0 0 16 16">
+            <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"></path>
+        </symbol>
+    </svg>
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+        <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+                id="bd-theme"
+                type="button"
+                aria-expanded="false"
+                data-bs-toggle="dropdown"
+                aria-label="Toggle theme (auto)">
+            <svg class="bi my-1 theme-icon-active" aria-hidden="true">
+                <use href="#circle-half"></use>
+            </svg>
+            <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow"
+            aria-labelledby="bd-theme-text">
+            <li>
+                <button type="button"
+                        class="dropdown-item d-flex align-items-center"
+                        data-bs-theme-value="light"
+                        aria-pressed="false">
+                    <svg class="bi me-2 opacity-50" aria-hidden="true">
+                        <use href="#sun-fill"></use>
+                    </svg>
+                    Light
+                    <svg class="bi ms-auto d-none" aria-hidden="true">
+                        <use href="#check2"></use>
+                    </svg>
+                </button>
+            </li>
+            <li>
+                <button type="button"
+                        class="dropdown-item d-flex align-items-center"
+                        data-bs-theme-value="dark"
+                        aria-pressed="false">
+                    <svg class="bi me-2 opacity-50" aria-hidden="true">
+                        <use href="#moon-stars-fill"></use>
+                    </svg>
+                    Dark
+                    <svg class="bi ms-auto d-none" aria-hidden="true">
+                        <use href="#check2"></use>
+                    </svg>
+                </button>
+            </li>
+            <li>
+                <button type="button"
+                        class="dropdown-item d-flex align-items-center active"
+                        data-bs-theme-value="auto"
+                        aria-pressed="true">
+                    <svg class="bi me-2 opacity-50" aria-hidden="true">
+                        <use href="#circle-half"></use>
+                    </svg>
+                    Auto
+                    <svg class="bi ms-auto d-none" aria-hidden="true">
+                        <use href="#check2"></use>
+                    </svg>
+                </button>
+            </li>
+        </ul>
+    </div>
+ 
+    <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <button class="sidebar-toggle" title="Toggle Sidebar" aria-label="Toggle sidebar">
+        <span class="menu-lines" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+
+      <a href="/" class="header-brand" aria-label="NiceAdmin home">
+        <span class="header-logo">
+          <img src="MemberView/assets/img/logo.webp" alt="NiceAdmin">
+        </span>
+        <span class="header-context">
+          <strong class="header-context-title">NiceAdmin</strong>
+        </span>
+      </a>
+    </div>
+
+    <div class="header-search-wrap">
+      <form class="search-form" action="search-results.html" method="GET">
+        <i class="bi bi-search search-icon"></i>
+        <input type="search" name="q" placeholder="Search projects, invoices, users..." autocomplete="off">
+        <kbd class="search-shortcut">/</kbd>
+      </form>
+    </div>
+
+    <div class="header-right">
+      <div class="header-actions-desktop">
+        <div class="header-action-wrap dropdown lang-dropdown">
+          <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Language">
+            <img src="MemberView/assets/flag/us.png" alt="EN" class="lang-flag">
+            <span class="lang-code">EN</span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end lang-menu">
+            <div class="menu-title">Select Language</div>
+            <a class="lang-item active" href="#">
+              <img src="MemberView/assets/flag/us.png" alt="EN" class="lang-flag">
+              <span class="lang-copy">
+                <span class="lang-name">English</span>
+                <span class="lang-meta">United States</span>
+              </span>
+              <i class="bi bi-check2"></i>
+            </a>
+            <a class="lang-item" href="#">
+              <img src="MemberView/assets/flag/fr.png" alt="FR" class="lang-flag">
+              <span class="lang-copy">
+                <span class="lang-name">Français</span>
+                <span class="lang-meta">France</span>
+              </span>
+            </a>
+            <a class="lang-item" href="#">
+              <img src="MemberView/assets/flag/de.png" alt="DE" class="lang-flag">
+              <span class="lang-copy">
+                <span class="lang-name">Deutsch</span>
+                <span class="lang-meta">Germany</span>
+              </span>
+            </a>
+            <a class="lang-item" href="#">
+              <img src="MemberView/assets/flag/es.png" alt="ES" class="lang-flag">
+              <span class="lang-copy">
+                <span class="lang-name">Español</span>
+                <span class="lang-meta">Spain</span>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div class="header-action-wrap dropdown quickaccess-dropdown">
+          <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Quick Access">
+            <i class="ph-light ph-squares-four"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end quickaccess-menu">
+            <div class="menu-title">Quick Access</div>
+            <a href="dashboard-projects.html" class="quickaccess-featured">
+              <span class="quickaccess-featured-icon"><i class="bi bi-lightning-charge"></i></span>
+              <span class="quickaccess-featured-copy">
+                <strong>Create New Workspace</strong>
+                <small>Launch projects, assign team, set timeline</small>
+              </span>
+            </a>
+            <div class="quickaccess-grid">
+              <a href="apps-calendar.html" class="quickaccess-item">
+                <i class="bi bi-calendar3"></i>
+                <span>Calendar</span>
+                <small>Events</small>
+              </a>
+              <a href="apps-kanban.html" class="quickaccess-item">
+                <i class="bi bi-kanban"></i>
+                <span>Kanban</span>
+                <small>Boards</small>
+              </a>
+              <a href="apps-chat.html" class="quickaccess-item">
+                <i class="bi bi-chat-dots"></i>
+                <span>Chat</span>
+                <small>Inbox</small>
+              </a>
+              <a href="apps-email.html" class="quickaccess-item">
+                <i class="bi bi-envelope"></i>
+                <span>Email</span>
+                <small>Campaigns</small>
+              </a>
+              <a href="apps-file-manager.html" class="quickaccess-item">
+                <i class="bi bi-folder2-open"></i>
+                <span>Files</span>
+                <small>Assets</small>
+              </a>
+              <a href="apps-support.html" class="quickaccess-item">
+                <i class="bi bi-headset"></i>
+                <span>Support</span>
+                <small>Tickets</small>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-action-wrap dropdown notification-dropdown">
+          <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
+            <i class="bi bi-bell"></i>
+            <span class="header-badge">4</span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end notification-menu">
+            <div class="notification-header">
+              <div>
+                <h6>Notifications</h6>
+                <span>4 unread</span>
+              </div>
+              <a href="#" data-notification-action="mark-all-read">Mark all read</a>
+            </div>
+            <div class="notification-summary">
+              <a href="activity.html" class="notification-summary-item">
+                <strong>7</strong>
+                <span>Today</span>
+              </a>
+              <a href="notifications.html" class="notification-summary-item">
+                <strong>23</strong>
+                <span>This week</span>
+              </a>
+              <a href="roles.html" class="notification-summary-item">
+                <strong>3</strong>
+                <span>Approvals</span>
+              </a>
+            </div>
+            <div class="notification-list">
+              <div class="notification-item unread">
+                <span class="notification-dot"></span>
+                <div class="notification-icon info"><i class="bi bi-rocket-takeoff"></i></div>
+                <div class="notification-content">
+                  <div class="notification-title">Deploy ready</div>
+                  <div class="notification-text">Sprint release passed QA validation.</div>
+                  <span class="notification-time">5m ago</span>
+                </div>
+              </div>
+              <div class="notification-item unread">
+                <span class="notification-dot"></span>
+                <img src="MemberView/assets/img/avatars/avatar-2.webp" alt="" class="notification-avatar">
+                <div class="notification-content">
+                  <div class="notification-title">Mia sent feedback</div>
+                  <div class="notification-text">Please review updated dashboard spacing.</div>
+                  <span class="notification-time">21m ago</span>
+                </div>
+              </div>
+              <div class="notification-item unread">
+                <span class="notification-dot"></span>
+                <div class="notification-icon warning"><i class="bi bi-exclamation-triangle"></i></div>
+                <div class="notification-content">
+                  <div class="notification-title">Storage alert</div>
+                  <div class="notification-text">Media bucket reached 81% usage.</div>
+                  <span class="notification-time">58m ago</span>
+                </div>
+              </div>
+              <div class="notification-item unread">
+                <span class="notification-dot"></span>
+                <div class="notification-icon success"><i class="bi bi-check2-circle"></i></div>
+                <div class="notification-content">
+                  <div class="notification-title">Payment received</div>
+                  <div class="notification-text">Invoice #INV-3921 settled successfully.</div>
+                  <span class="notification-time">2h ago</span>
+                </div>
+              </div>
+            </div>
+            <div class="notification-footer">
+              <a href="notifications.html">Open notification center <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-action-wrap dropdown messages-dropdown">
+          <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Messages">
+            <i class="bi bi-chat-left-text"></i>
+            <span class="header-badge">5</span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end messages-menu">
+            <div class="notification-header">
+              <div>
+                <h6>Messages</h6>
+                <span>5 unread</span>
+              </div>
+              <a href="apps-chat.html">Open chat</a>
+            </div>
+            <div class="message-channels">
+              <a href="apps-chat.html" class="message-channel active">Direct</a>
+              <a href="apps-chat.html" class="message-channel">Team</a>
+              <a href="apps-chat.html" class="message-channel">Clients</a>
+            </div>
+            <div class="notification-list">
+              <a href="apps-chat.html" class="notification-item unread">
+                <span class="notification-dot"></span>
+                <img src="MemberView/assets/img/avatars/avatar-2.webp" alt="" class="notification-avatar">
+                <div class="notification-content">
+                  <div class="notification-title">Mia Rodriguez</div>
+                  <div class="notification-text">Can you review the analytics wireframe today?</div>
+                  <span class="notification-time">2m ago</span>
+                </div>
+              </a>
+              <a href="apps-chat.html" class="notification-item unread">
+                <span class="notification-dot"></span>
+                <img src="MemberView/assets/img/avatars/avatar-3.webp" alt="" class="notification-avatar">
+                <div class="notification-content">
+                  <div class="notification-title">Dev Channel</div>
+                  <div class="notification-text">Build passed. Ready for production deploy.</div>
+                  <span class="notification-time">12m ago</span>
+                </div>
+              </a>
+              <a href="apps-chat.html" class="notification-item unread">
+                <span class="notification-dot"></span>
+                <img src="MemberView/assets/img/avatars/avatar-4.webp" alt="" class="notification-avatar">
+                <div class="notification-content">
+                  <div class="notification-title">Sarah Kim</div>
+                  <div class="notification-text">Shared file: Q1-forecast-report.pdf</div>
+                  <span class="notification-time">35m ago</span>
+                </div>
+              </a>
+            </div>
+            <div class="notification-footer">
+              <a href="apps-chat.html">View all messages <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <button class="header-action theme-toggle" title="Toggle Theme">
+          <i class="ph-light ph-moon-stars theme-icon-dark"></i>
+          <i class="ph-light ph-sun theme-icon-light"></i>
+        </button>
+
+        <div class="header-action-wrap dropdown user-dropdown">
+          <button class="dropdown-toggle user-trigger" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="MemberView/assets/img/profile-img.webp" alt="User" class="user-avatar">
+            <div class="user-brief">
+              <span class="user-name">John Doe</span>
+              <span class="user-role">Product Admin</span>
+            </div>
+          </button>
+
+          <div class="dropdown-menu dropdown-menu-end user-menu">
+            <div class="user-menu-header">
+              <img src="MemberView/assets/img/profile-img.webp" alt="User" class="user-menu-avatar">
+              <div class="user-menu-info">
+                <div class="user-menu-name">John Doe</div>
+                <div class="user-menu-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b8d2d7d0d696dcd7ddf8ddc0d9d5c8d4dd96dbd7d5">[email&#160;protected]</a></div>
+              </div>
+            </div>
+            <div class="user-menu-body">
+              <a class="user-menu-item" href="profile.html">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+              <a class="user-menu-item" href="settings.html">
+                <i class="bi bi-sliders"></i>
+                <span>Preferences</span>
+              </a>
+              <a class="user-menu-item" href="activity.html">
+                <i class="bi bi-activity"></i>
+                <span>Activity Log</span>
+              </a>
+              <a class="user-menu-item" href="invoice-list.html">
+                <i class="bi bi-credit-card"></i>
+                <span>Billing</span>
+              </a>
+            </div>
+            <div class="user-menu-footer">
+              <a class="user-menu-logout" href="auth-login.html">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions-mobile">
+        <button class="header-action search-toggle" title="Search">
+          <i class="bi bi-search"></i>
+        </button>
+
+        <button class="header-action mobile-menu-toggle" title="More">
+          <i class="bi bi-three-dots"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+ 
+    
+    <header class="d-none">
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Fixed navbar</a>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarCollapse"
+                        aria-controls="navbarCollapse"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2"
+                               type="search"
+                               placeholder="Search"
+                               aria-label="Search" />
+                        <button class="btn btn-outline-success" type="submit">
+                            Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Begin page content -->
+   <main class="flex-shrink-0">
+      <div class="container">
+        <h1 class="mt-5">Sticky footer with fixed navbar</h1>
+        <p class="lead">
+          Pin a footer to the bottom of the viewport in desktop browsers with
+          this custom HTML and CSS. A fixed navbar has been added with
+          <code class="small">padding-top: 60px;</code> on the
+          <code class="small">main &gt; .container</code>.
+        </p>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <p>
+          Back to
+          <a href="../examples/sticky-footer/">the default sticky footer</a>
+          minus the navbar.
+        </p>
+      </div>
+    </main>
+   <footer class="footer mt-auto py-3 bg-body-tertiary">
+        <div class="container">
+            <span class="text-body-secondary">Place sticky footer content here.</span>
+        </div>
+    </footer>
+    <script src="splash/assets/dist/js/bootstrap.bundle.min.js"
+            class="astro-vvvwv3sm"></script>
+</body>
+</html>
