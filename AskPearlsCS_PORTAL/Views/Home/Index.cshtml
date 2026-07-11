@@ -64,10 +64,11 @@
                     <span></span>
                 </span>
             </button>
-
-            <a href="/" class="header-brand" aria-label="Ask Pearls home">
+@*            *@
+            <a href="/" class="header-brand header-logo" aria-label="Ask Pearls home">
                 @* <span class="header-logo"> *@
-                    <img src="~/app_img/logo-default.png" style="width:auto;height:60px;" alt="AskPearls">
+                 
+                <img id="img_logo_portal" src="~/app_img/logo-default-light.png" style="width:auto;height:60px;" alt="AskPearls">
                     @* <img src="MemberView/assets/img/logo.webp" alt="Ask Pearls"> *@
                 @* </span> *@
                @*  <span class="header-context">
@@ -782,7 +783,43 @@
                                 @* <div class="col-1 bg-success"></div> *@
 
          
-                <div class="fauth-card col-12 col-lg-5" style="height: 100%;">
+                @*fauth-card  class="text-center middleCenter mt-5" style="display:flex;flex-direction:column;" *@
+                <div class="text-center middleCenter col-12 col-lg-5" style="height: 100%;display:flex;flex-direction:column;">
+@* style="color:white;font-weight:normal;" *@
+                    <span class="display-5">
+                        Welcome to <img src="~/app_img/logo-text-color.png" style="width:auto;height:50px;"/>
+                    </span>
+@* style="color:white;font-weight:normal;" *@
+                    <span class="display-5" >Development Portal</span>
+
+                    @* justify-content:space-between; *@
+                    <div class="mt-5 middleCenter" style="width:300px;display:block;flex-direction:row;margin:auto;">
+                        <div class="col-4"></div>
+
+                        @* margin:auto;width:120px; height:50px;*@
+                        @*   <button type="button" class="btn btn-primary btn-sm" style="width:160px;height:40px;background-color:#152365;"
+                            onclick="location.href='@Url.Action("Register", "Account")'">
+                        New member ?
+                    </button>
+                     <div style="width:20px;">
+                    </div> *@
+
+                        @*height:50px; style="margin:auto;width:120px;"*@
+                        <button type="button" class="btn btn-sm col-4  btn-primary" style="color:white;width:200px;height:40px;background-color:#152365"
+                                onclick="location.href='@Url.Action("Login", "Account")'">
+                            Login
+                        </button>
+                        <div class="col-4"></div>
+
+
+                    </div>
+
+                </div>
+
+      
+
+
+                <div class="fauth-card col-12 col-lg-5 d-none" style="height: 100%;">
                                     <div class="fauth-card-head">
                                         <span class="fauth-kicker"><i class="bi bi-stars"></i> Get Started</span>
                                         <h1 class="fauth-title">Create account</h1>
