@@ -22,21 +22,18 @@ input {
 }*/
 
 .form-control {
-
     background-color: #ffffcc !important;
     border: 1px solid #3c8116;
-
 }
+
 input.form-control {
     background-color: #ffffcc !important;
     border: 1px solid #3c8116;
 }
 
 .form-control-sm {
-
     background-color: #ffffcc !important;
     border: 1px solid #3c8116;
-
 }
 
 input.form-control-sm {
@@ -62,11 +59,11 @@ textarea {
     }
 
 
-input[type=text],input[type=text]:focus, input[type=email]:focus, input[type=url]:focus, input[type=password]:focus, input[type=number]:focus, textarea, textarea:focus {
-    /*background-color: lightblue;*/
-    background-color: #ffffcc !important;
-    border: 1px solid #3c8116;
-}
+    input[type=text], input[type=text]:focus, input[type=email]:focus, input[type=url]:focus, input[type=password]:focus, input[type=number]:focus, textarea, textarea:focus {
+        /*background-color: lightblue;*/
+        background-color: #ffffcc !important;
+        border: 1px solid #3c8116;
+    }
 
 
 input[type=text], input[type=email], input[type=password], input[type=url], input[type=number], textarea {

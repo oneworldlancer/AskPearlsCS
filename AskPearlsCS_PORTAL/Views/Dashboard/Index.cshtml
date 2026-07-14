@@ -28,6 +28,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="css2?family=JetBrains+Mono:wght@400;500;600&family=Nunito+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 
+  
+         
+    <!-- APP CSS Files -->
+    <link href="~/app_css/app_align_CSS.css" rel="stylesheet">
+    <link href="~/app_css/app_link_CSS.css" rel="stylesheet">
+    <link href="~/app_css/app_scrollbar_css.css" rel="stylesheet" />
+
+    
+    
+    
+    
     <!-- Vendor CSS Files -->
     <link href="MemberView/vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="MemberView/vendors/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -43,6 +54,47 @@
 
     <!-- Template Main CSS File -->
     <link href="MemberView/assets/css/main.css" rel="stylesheet">
+
+    
+    <style>
+            .form-control {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            input.form-control {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            .form-control-sm {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            input.form-control-sm {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+        
+            input[type=text], input[type=text]:focus, input[type=email]:focus, input[type=url]:focus, input[type=password]:focus, input[type=number]:focus, textarea, textarea:focus {
+                /*background-color: lightblue;*/
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+
+            input[type=text], input[type=email], input[type=password], input[type=url], input[type=number], textarea {
+                /*background-color: lightblue;*/
+                /*background: blue;*/
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+                /*   border:  1px solid lightblue ;*/
+            }
+
+    </style>
+
 
     <!-- =======================================================
     * Template Name: NiceAdmin - Bootstrap Admin Template
@@ -407,15 +459,35 @@
     </div>
 
     <!-- Sidebar -->
-    <aside class="sidebar" style="margin-bottom:45px;">
-        <div class="sidebar-shell">
+    <aside class="sidebar" style="margin-bottom:55px;-ms-overflow-style: none;scrollbar-width: none;">
+        <div class="sidebar-shell" style="-ms-overflow-style: none;scrollbar-width: none;">
             <button class="sidebar-close" type="button" aria-label="Close sidebar">
                 <i class="bi bi-x-lg"></i>
             </button>
 
-            <!-- Sidebar Navigation -->
-            <nav class="sidebar-nav">
+
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+              
                 <ul class="nav-menu">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            <span class="nav-icon"><i class="ph-light ph-squares-four"></i></span>
+                            <span class="nav-text">DashboardXXX</span>
+                            <span class="nav-meta">Home</span>
+                        </a>
+                    </li>
+
+                   </ul>
+            </div>
+
+       
+
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar-nav" style="-ms-overflow-style: none;scrollbar-width: none;">
+                <ul class="nav-menu" >
 
                     <li class="nav-item">
                         <a class="nav-link active" href="index.html">
@@ -751,6 +823,10 @@
                         <i class="ph-light ph-bell"></i>
                         <span>Alerts</span>
                     </a>
+                </div>
+                @* class="d-none" *@
+                <div class="text-center">
+                    <small>Developed by </small><a href="https://oneworldlancer.com" target="_blank" style="text-decoration:underline;font-weight:bold;font-size:small;">OneWorldLancer</a>
                 </div>
             </div>
         </div>
@@ -1158,15 +1234,82 @@
         </footer>
     </main>
         @* background-color:#152365; *@
-    <footer id="footer" class="footer text-center mt-auto" style="padding-top:5px;height:50px;
+    <footer id="footer" class="footer text-center mt-auto" style="padding:5px;height:50px;
             font-size:small;">
-            XXX-FOOTER
+          
+            @{
+                var _iYear = DateTime.Now.Year;
+            }
+
+       
+            @* class="d-block d-lg-none" *@
+    <div >
+
+        <div class="row">
+
+            <div class="d-none col-3" style="padding-left:10px;padding-top:15px;padding-right:10px;">
+
+                <div class="flex-row">
+                    <img src="~/app_img/img_x2.png" style="width:20px;height:20px;margin:5px;" />
+                    <span>
+                        For further information please <a href="https://AskPearls.com" target="_blank" style="text-decoration:underline;">click here</a> to visit our website.
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="col-12 text-center" style="padding-top:0px;">
+                <div>
+                            @* color:white; style="color:white;"*@
+                    <strong><span ><a href="https://AskPearls.com" target="_blank" style="text-decoration:underline;">AskPearls Limited</a></span></strong>
+                </div>
+                @* class="copyright" *@
+                <div>
+
+                    @* style="color:white;" *@   <span>
+                    Patent Pending. &copy; Copyright @{
+
+                    @_iYear.ToString()
+                    ;
+
+                }
+                . All Rights reserved.
+            </span>
+        </div>
+
+        @* class="copyright" *@
+        @*   <div>
+                    <span style="color:white;">&copy; Copyright @{DateTime.Now.Year.ToString(); }. All Rights reserved.</span>
+                </div> *@
+
+        @* class="credits" *@
+                @* style="color:whitesmoke;" color:white; href="mailto:HelpDesk@oneworldlancer.com" *@    
+                <div class="d-none">
+          <small>Developed by <strong>ᚠᚷᛃ 35833</strong> | </small><a href="https://oneworldlancer.com" target="_blank" style="text-decoration:underline;font-weight:bold;">OneWorldLancer</a>
+        </div>
+    </div>
+
+    
+    <div class="d-none col-3" style="padding-left:10px;padding-top:15px;padding-right:10px;">
+
+        <div class="flex-row">
+            <img src="~/app_img/img_x1.png" style="width:20px;height:20px;margin:5px;" />
+            <span>4289 Express Lane - Suite EG6026, Sarasota, FL 34249, United States.</span>
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
         </footer>
     </div>
     <!-- Back to Top -->
-    <a href="#" class="back-to-top">
+    @* <a href="#" class="back-to-top">
         <i class="bi bi-arrow-up"></i>
-    </a>
+    </a> *@
 
     <!-- Vendor JS Files -->
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>

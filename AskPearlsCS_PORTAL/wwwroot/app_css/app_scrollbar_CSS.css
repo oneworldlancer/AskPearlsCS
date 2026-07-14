@@ -21,6 +21,18 @@ div {
     scrollbar-width: none; /* Firefox */
 }
 
+/* Hide scrollbar for IE, Edge and Firefox */
+nav {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+aside {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
 iframe {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
