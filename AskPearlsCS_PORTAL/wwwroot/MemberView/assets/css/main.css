@@ -31254,6 +31254,10 @@ textarea.form-control {
 #img_logo_portal {
 
 }
+
+i {
+    color: gray;
+}
 /* Dark mode adjustments */
 [data-theme=dark] .footer {
     background: #3c8116;
@@ -31264,11 +31268,17 @@ textarea.form-control {
   border-top: 1px solid var(--border-color);*/
 }
 
+[data-theme=dark] aside img {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
 
-/*[data-theme=dark] #img_logo_portal {
+[data-theme=dark] #img_logo_portal {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
 
-}*/
-
+[data-theme=dark] i {
+    color: white;
+}
 
 [data-theme=dark] .table-scroll-wrapper::after {
     background: linear-gradient(to right, transparent, var(--surface-color));

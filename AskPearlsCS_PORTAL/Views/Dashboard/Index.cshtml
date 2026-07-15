@@ -109,6 +109,16 @@
     <!-- Header -->
     <header class="header">
         <div class="header-left">
+          
+
+            <a href="/Dashboard" class="header-brand" aria-label="NiceAdmin home">
+               @*  <span class="header-logo"> *@
+                <img id="img_logo_portal" src="~/app_img/logo-default-light.png" style="width:auto;height:60px;" alt="AskPearls">
+                @* </span> *@
+                @* <span class="header-context">
+                    <strong class="header-context-title">NiceAdmin</strong>
+                </span> *@
+            </a>
             <button class="sidebar-toggle" title="Toggle Sidebar" aria-label="Toggle sidebar">
                 <span class="menu-lines" aria-hidden="true">
                     <span></span>
@@ -116,15 +126,6 @@
                     <span></span>
                 </span>
             </button>
-
-            <a href="index.html" class="header-brand" aria-label="NiceAdmin home">
-                <span class="header-logo">
-                    <img src="MemberView/assets/img/logo.webp" alt="NiceAdmin">
-                </span>
-                <span class="header-context">
-                    <strong class="header-context-title">NiceAdmin</strong>
-                </span>
-            </a>
         </div>
 
         <div class="header-search-wrap">
@@ -459,7 +460,7 @@
     </div>
 
     <!-- Sidebar -->
-    <aside class="sidebar" style="margin-bottom:55px;-ms-overflow-style: none;scrollbar-width: none;">
+    <aside class="sidebar" style="margin-bottom:50px;-ms-overflow-style: none;scrollbar-width: none;">
         <div class="sidebar-shell" style="-ms-overflow-style: none;scrollbar-width: none;">
             <button class="sidebar-close" type="button" aria-label="Close sidebar">
                 <i class="bi bi-x-lg"></i>
@@ -468,9 +469,42 @@
 
 
             <!-- Sidebar Footer -->
-            <div class="sidebar-footer">
+            <div class="sidebar-footer d-none" style="">
+
+
+
+                
+                    <div class="mb-4" id="div_About" style="cursor:pointer;"
+                    @{
+                       @*  if (iRolePermissionModel.Page_AboutUs)
+                        {
+                                    @:onclick="BSRVideo();"
+                        } *@
+                    }>
+
+                        @* *@
+                        <table class="middleCenter" style="width:100%;padding:5px;">
+                            <tr>
+                                <td class="bottomCenter">
+
+                                    <img src="~/app_img/img_meun_about_black.png" style="width:30px;height:30px;" />
+                                </td>
+
+                            </tr>
+                            <tr>
+
+                                <td class="topCenter">
+                                    @* class="fs-5" *@   <span style="color:white;">About BSR Building Portal</span>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </div>
+
+
               
-                <ul class="nav-menu">
+              @*   <ul class="nav-menu">
 
                     <li class="nav-item">
                         <a class="nav-link active" href="index.html">
@@ -480,14 +514,1089 @@
                         </a>
                     </li>
 
-                   </ul>
+                   </ul> *@
             </div>
 
        
 
             <!-- Sidebar Navigation -->
             <nav class="sidebar-nav" style="-ms-overflow-style: none;scrollbar-width: none;">
-                <ul class="nav-menu" >
+               
+                
+                
+                
+                
+                    <div class="mb-4" id="div_About" style="cursor:pointer;"
+                    @{
+                       @*  if (iRolePermissionModel.Page_AboutUs)
+                        {
+                                    @:onclick="BSRVideo();"
+                        } *@
+                    }>
+
+                        @* *@
+                        <table class="middleCenter" style="width:100%;padding:5px;">
+                            <tr>
+                                <td class="bottomCenter">
+
+                                    <img src="~/app_img/img_meun_about_black.png" style="width:30px;height:30px;" />
+                                </td>
+
+                            </tr>
+                            <tr>
+
+                                <td class="topCenter">
+                                    @* class="fs-5" *@   <span >About BSR Building Portal</span>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </div>
+
+
+              
+                
+                    
+
+                    <div class="mb-4" id="div_Building">
+
+                        @*      onclick="open_MenuHeaderItemList('collapseBuilding');" *@
+                        <div id="div_CollapseBuilding" data-bs-toggle="collapse" data-bs-target="#collapseBuilding" aria-expanded="false" aria-controls="collapseBuilding">
+
+                            <div id="div_Building_Collapse" style="cursor:pointer;">
+
+                                <table class="middleCenter" style="width:100%;padding:5px;">
+                                    <tr>
+                                        <td class="bottomCenter">
+
+                                                <img src="~/app_img/img_meun_about_black.png" style="width:30px;height:30px;" />
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td class="topCenter">
+                                            <span >BUILDINGS</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                        <div class="collapse" id="collapseBuilding" data-mnuid="building">
+
+                            <div class="col-12" id="div_Building_MenuList">
+
+                                <div class="middleCenter mt-1" style="width:100%;">
+
+                                    @*      onclick="load_PageContent_Static_ByPageTokenID('building_new')" *@
+                                    <div id="div_building_new" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px #00000000;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_BuildingNew)
+                                        {
+                                                    @:onclick="load_PageContent_Static_ByPageTokenID('building_new')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                    @* <img src="~/app_img/img_setting_white.png" style="width:20px;height:20px;" /> *@
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Create new</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+
+                                    <div id="div_building_list" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_BuildingList)
+                                        {
+                                                    @:onclick="load_PageContent_Static_ByPageTokenID('building_list')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                    @* <img src="~/app_img/img_setting_white.png" style="width:20px;height:20px;" /> *@
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >List</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                                           <div class="mb-4" id="div_ViewBuilding">
+
+                        @*      onclick="open_MenuHeaderItemList('collapseViewBuilding');" *@
+                        @* data-bs-target="#collapseViewBuilding" *@
+                        @* data-bs-toggle="collapse" *@
+
+@* ADD-REMOVE-TOGGLE-COLLAPSE-EXPAND data-bs-target="#collapseViewBuilding" *@
+
+                        <div id="div_CollapseViewBuilding" data-bs-toggle="collapse" data-bs-target="#collapseViewBuilding" aria-expanded="false" aria-controls="collapseViewBuilding">
+@* opacity:.5; *@
+                            <div id="div_ViewBuilding_Collapse" data-bs-target="#collapseViewBuilding" style="cursor:pointer;">
+
+                                <table class="middleCenter" style="width:100%;padding:5px;">
+                                    <tr>
+                                        <td class="bottomCenter">
+
+                                            <img src="~/app_img/img_meun_about_black.png" style="width:30px;height:30px;" />
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td class="topCenter">
+                                            <span >VIEW BUILDING</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                        </div>
+                        @* *@
+                        <div class="collapse" id="collapseViewBuilding" data-mnuid="viewbuilding">
+
+                            <div class="col-12" id="div_ViewBuilding_MenuList">
+
+                                <div class="middleCenter mt-1" style="width:100%;">
+
+                                    @* background-color:#18a6ff; *@
+                                    <div id="div_building_summary" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px #00000000;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_BuildingSummaryInformation)
+                                        {
+                                                    @:onclick="load_PageContent_Dynamic_ByPageTokenID('building_summary')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Summary Information</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+          
+                                    <div id="div_building_summary_upload_result" class="mb-1 divHighlightMenu" style="cursor:not-allowed;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px #00000000;"
+                                    @{
+                                        @* if (iRolePermissionModel.Page_BuildingSummaryInformation)
+                                        {
+                                                    @:onclick="load_PageContent_Dynamic_ByPageTokenID('building_summary')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Summary Upload Result</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+                            
+
+                                    <div id="div_building_document_upload" class="mb-1 divHighlightMenu" style="cursor:not-allowed;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px #00000000;"
+                                         @{
+                                             @* if (iRolePermissionModel.Page_BuildingSummaryInformation)
+                                        {
+                                                    @:onclick="load_PageContent_Dynamic_ByPageTokenID('building_summary')"
+                                        } *@
+                                         }
+>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Document Upload</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+
+                                    @*                                  *@
+                                    <div id="div_building_golden" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_BuildingGoldenDocument)
+                                        {
+                                                    @:onclick="load_PageContent_Dynamic_ByPageTokenID('building_golden')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Golden Thread Documents</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+                                    @*  *@
+                                    <div id="div_building_resident" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_BuildingResidentEngagement)
+                                        {
+                                                    @:onclick="load_PageContent_Dynamic_ByPageTokenID('building_resident')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                        <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Resident Engagement</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+
+                                    @*                                 *@
+                                    <div id="div_building_gap" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_BuildingGapAnalysis)
+                                        {
+                                                    @:onclick="load_PageContent_Dynamic_ByPageTokenID('building_gap')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                     <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Gap Analysis</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+
+@* style="background-color:#f6f9ff;" *@
+                                    <div style="background-color:red;">
+
+                                     
+
+                              
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+                                        @*    *@
+                                        <div id="div_building_report" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;"
+                                        @{
+                                            @* if (iRolePermissionModel.Page_BuildingOccurenceReport)
+                                            {
+                                                        @:onclick="load_PageContent_Dynamic_ByPageTokenID('building_report')"
+                                            } *@
+                                        }>
+
+                                            <table style="padding:5px;">
+                                                <tr>
+                                                    <td style="width:20px;padding-top:5px;">
+
+                                                            <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                    </td>
+                                                    <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                        <span style="color:gray;">Occurrence Reporting</span>
+                                                   </td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+
+                                        <div id="div_building_engagement" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;"
+                                        @{
+                                           @*  if (iRolePermissionModel.Page_BuildingEngagement)
+                                            {
+                                                        @:onclick="load_PageContent_Dynamic_ByPageTokenID('building_engagement')"
+                                            } *@
+                                        }>
+
+                                            <table style="padding:5px;">
+                                                <tr>
+                                                    <td style="width:20px;padding-top:5px;">
+
+                                                        <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                    </td>
+                                                    <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                        <span style="color:gray;">Resident Engagement</span>
+                                                   </td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+
+                                        @*                                   *@
+                                        <div id="div_building_safety" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;"
+                                        @{
+                                            @* if (iRolePermissionModel.Page_BuildingSafetyManagment)
+                                            {
+                                                        @:onclick="load_PageContent_Dynamic_ByPageTokenID('building_safety')"
+                                            } *@
+                                        }>
+
+                                            <table style="padding:5px;">
+                                                <tr>
+                                                    <td style="width:20px;padding-top:5px;">
+
+                                                        <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                    </td>
+                                                    <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                        <span style="color:gray;">Safety Management System</span>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+
+                                        @*  *@
+                                        <div id="div_building_system" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;"
+                                        @{
+                                           @*  if (iRolePermissionModel.Page_BuildingSystemTesting)
+                                            {
+                                                        @:onclick="load_PageContent_Dynamic_ByPageTokenID('building_system')"
+                                            } *@
+                                        }>
+
+                                            <table style="padding:5px;">
+                                                <tr>
+                                                    <td style="width:20px;padding-top:5px;">
+
+                                                        <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                    </td>
+                                                    <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                        <span style="color:gray;">System Testing</span>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+
+                                        @*                                      *@
+                                        <div id="div_building_risk" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;"
+                                        @{
+                                           @*  if (iRolePermissionModel.Page_BuildingRiskAssement)
+                                            {
+                                                        @:onclick="load_PageContent_Dynamic_ByPageTokenID('building_risk')"
+                                            } *@
+                                        }>
+
+                                            <table style="padding:5px;">
+                                                <tr>
+                                                    <td style="width:20px;padding-top:5px;">
+
+                                                        <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                    </td>
+                                                    <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                        <span style="color:gray;">Building Quality</span>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+
+
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+
+
+                            @*   <div class="card card-body">
+                            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                            </div> *@
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="mb-4" id="div_WorkPermit">
+
+                        @*      onclick="open_MenuHeaderItemList('collapseWorkPermit');" *@
+                        <div id="div_CollapseWorkPermit" data-bs-toggle="collapse" data-bs-target="#collapseWorkPermit" aria-expanded="false" aria-controls="collapseWorkPermit">
+
+                            <div id="div_WorkPermit_Collapse" style="cursor:pointer;">
+
+                                <table class="middleCenter" style="width:100%;padding:5px;">
+                                    <tr>
+                                        <td class="bottomCenter">
+
+                                            <img src="~/app_img/img_meun_about_black.png" style="width:35px;height:35px;" />
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td class="topCenter">
+                                            <span >PERMIT TO WORK</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                        <div class="collapse" id="collapseWorkPermit" data-mnuid="workpermit">
+
+                            <div class="col-12" id="div_WorkPermit_MenuList">
+
+                                <div class="middleCenter mt-1" style="width:100%;">
+
+                                    @*      onclick="load_PageContent_Static_ByPageTokenID('WorkPermit_new')" *@
+                                    <div id="div_workpermit" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px #00000000;"
+                                    @{
+                                        @* if (iRolePermissionModel.Page_WorkProcedure)
+                                        {
+                                                    @:onclick="load_PageContent_Static_ByPageTokenID('workpermit')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                    @* <img src="~/app_img/img_setting_white.png" style="width:20px;height:20px;" /> *@
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Procedure</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+                                    @*    onclick="load_PageContent_Static_ByPageTokenID('WorkPermit_list')" *@
+                                    <div id="div_workpermitform" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_WorkForm)
+                                        {
+                                                    @:onclick="load_PageContent_Static_ByPageTokenID('workpermitform')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                    @* <img src="~/app_img/img_setting_white.png" style="width:20px;height:20px;" /> *@
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Form</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+
+
+                            @*   <div class="card card-body">
+                            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                            </div> *@
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="mb-4" id="div_Admin">
+
+
+                        <div id="div_CollapseAdmin" data-bs-toggle="collapse" data-bs-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
+
+                            <div id="div_Admin_Collapse" style="cursor:pointer;">
+
+                                <table class="middleCenter" style="width:100%;padding:5px;">
+                                    <tr>
+                                        <td class="bottomCenter">
+
+                                            <img src="~/app_img/img_meun_about_black.png" style="width:30px;height:30px;" />
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td class="topCenter">
+                                            <span >ADMIN</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                        <div class="collapse" id="collapseAdmin" data-mnuid="admin">
+
+                            <div class="col-12" id="div_Admin_MenuList">
+
+
+                                <div class="middleCenter mt-1" style="width:100%;">
+
+
+                                    <div id="div_profile" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px #00000000;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_ProfileInfo)
+                                        {
+                                                    @:onclick="load_PageContent_Static_ByPageTokenID('profile')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                    @* <img src="~/app_img/img_setting_white.png" style="width:20px;height:20px;" /> *@
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Personal Info</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+@*  onclick="load_PageContent_Static_ByPageTokenID('password')" *@
+                                    <div id="div_password" class="mb-1 divHighlightMenu" style="display:block;cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px #00000000;"
+                                         onclick="load_PageContent_Static_ByPageTokenID('password')">
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Change Password</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+
+                                    <div id="div_usermanager" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;display:block;"
+                                    @{
+                                       @*  if ( iRolePermissionModel.Page_UserManagement )
+                                        {
+                                                    @:onclick="load_PageContent_Static_ByPageTokenID('usermanager')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                                                               <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >
+                                                     User Management
+                                                    </span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+                                      
+                                    <div id="div_usermanager" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;display:block;"
+                                    @{
+                                       @*  if ( iRolePermissionModel.Page_UserManagement )
+                                        {
+                                                    //@:onclick="load_PageContent_Static_ByPageTokenID('auditlogmanager')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                                                               <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >
+                                                     Audit Log
+                                                    </span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+                                    <div id="div_signaturemanager" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;display:block;"
+                                    @{
+                                           @*   if (iRolePermissionModel.Page_SignatureManagement)
+                                        {
+                                                    @:onclick="load_PageContent_Static_ByPageTokenID('signaturemanager')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                                                               <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >
+                                                     Signature Management
+                                                    </span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+                              
+
+
+                                    <div id="div_invite" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;display:block;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_InviteUser)
+                                        {
+                                                    @:onclick="load_PageContent_Static_ByPageTokenID('invite')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                    @* <img src="~/app_img/img_setting_white.png" style="width:20px;height:20px;" /> *@
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >
+                                                        Invite Users
+                                                    </span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+
+
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="mb-4" id="div_Subscription">
+
+
+                        <div id="div_CollapseSubscription" data-bs-toggle="collapse" data-bs-target="#collapseSubscription" aria-expanded="false" aria-controls="collapseSubscription">
+
+                            <div id="div_Subscription_Collapse" style="cursor:pointer;">
+
+                                <table class="middleCenter" style="width:100%;padding:5px;">
+                                    <tr>
+                                        <td class="bottomCenter">
+
+                                            <img src="~/app_img/img_meun_about_black.png" style="width:auto;height:35px;" />
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td class="topCenter">
+                                            <span >SUBSCRIPTION</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                        <div class="collapse" id="collapseSubscription" data-mnuid="subscription">
+
+                            <div class="col-12" id="div_Subscription_MenuList">
+
+
+
+                                <div class="middleCenter mt-1" style="width:100%;">
+
+
+                                    <div id="div_subscription" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px #00000000;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_Subscription)
+                                        {
+                                                    @:onclick="load_PageContent_Static_ByPageTokenID('subscription')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                    @* <img src="~/app_img/img_setting_white.png" style="width:20px;height:20px;" /> *@
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Subscrpitoin & Billing</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+
+                                </div>
+
+                          
+                            
+
+                                <div class="middleCenter mt-1" style="width:100%;">
+
+
+                                    <div id="div_shoppingcart" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px #00000000;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_ShoppingCart)
+                                        {
+                                            @:onclick="load_PageContent_Static_ByPageTokenID('shoppingcart')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                    @* <img src="~/app_img/img_setting_white.png" style="width:20px;height:20px;" /> *@
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Shopping Cart</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+
+                                </div>
+
+                          
+                            
+                            
+                            
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="mb-4" id="div_HowTo" onclick="load_PageContent_Static_ByPageTokenID('howto')">
+
+                        @* data-bs-toggle="collapse" data-bs-target="#collapseHowTo" aria-expanded="false" aria-controls="collapseHowTo" *@
+                        <div id="div_CollapseHowTo" >
+
+                            <div id="div_HowTo_Collapse" style="cursor:pointer;">
+
+                                <table class="middleCenter" style="width:100%;padding:5px;">
+                                    <tr>
+                                        <td class="bottomCenter">
+
+                                            <img src="~/app_img/img_meun_about_black.png" style="width:auto;height:35px;" />
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td class="topCenter">
+                                            <span >BSR PORTAL HOW-TO</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                     
+
+                    </div>
+                        
+                
+                 
+                  
+                    
+                    <div class="mb-4" id="div_Forums">
+
+
+                        <div id="div_CollapseForums" data-bs-toggle="collapse" data-bs-target="#collapseForums" aria-expanded="false" aria-controls="collapseForums">
+
+                            <div id="div_Forums_Collapse" style="cursor:not-allowed;">
+
+                                <table class="middleCenter" style="width:100%;padding:5px;">
+                                    <tr>
+                                        <td class="bottomCenter">
+
+                                            <img src="~/app_img/img_meun_about_black.png" style="width:auto;height:35px;" />
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td class="topCenter">
+                                            <span >
+                                                @* BSR Building Managers' Forum *@
+                                                BSR FORUMS
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                        </div>
+ 
+
+                    </div>
+
+                
+                    
+                    
+                    <div class="mb-4" id="div_HelpSupport">
+
+
+                        <div id="div_CollapseSupport" data-bs-toggle="collapse" data-bs-target="#collapseSupport" aria-expanded="false" aria-controls="collapseSupport">
+
+                            <div id="div_Support_Collapse" style="cursor:pointer;">
+
+                                <table class="middleCenter" style="width:100%;padding:5px;">
+                                    <tr>
+                                        <td class="bottomCenter">
+
+                                            <img src="~/app_img/img_meun_about_black.png" style="width:30px;height:30px;" />
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td class="topCenter">
+                                            <span >HELP & SUPPORT</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                        <div class="collapse" id="collapseSupport" data-mnuid="support">
+
+                            <div class="col-12" id="div_Support_MenuList">
+
+
+
+                                <div class="middleCenter mt-1" style="width:100%;">
+
+
+                                    <div id="div_terms" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px #00000000;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_Terms)
+                                        {
+                                                    @:onclick="load_PageContent_Static_ByPageTokenID('terms')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                    @* <img src="~/app_img/img_setting_white.png" style="width:20px;height:20px;" /> *@
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Terms of use</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+                                    @*
+                                    <div class="mb-1 divHighlightMenu" style="width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;">
+
+                                    <table style="padding:5px;">
+                                    <tr>
+                                    <td style="width:20px;padding-top:5px;">
+
+                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                    </td>
+                                    <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                    <span >FAQ</span>
+                                    </td>
+                                    </tr>
+
+                                    </table>
+                                    </div>
+                                    *@
+
+
+
+                                    <div id="div_contactus" class="mb-1 divHighlightMenu" style="cursor:pointer;width:100%;height:30px;padding-left:30px;background-color:#00000000;border:solid 1px#00000000;"
+                                    @{
+                                       @*  if (iRolePermissionModel.Page_ContactUs)
+                                        {
+                                                    @:onclick="load_PageContent_Static_ByPageTokenID('contactus')"
+                                        } *@
+                                    }>
+
+                                        <table style="padding:5px;">
+                                            <tr>
+                                                <td style="width:20px;padding-top:5px;">
+
+                                                    @* <img src="~/app_img/img_setting_white.png" style="width:20px;height:20px;" /> *@
+                                                    <i class="bi bi-circle-fill" style="font-size:xx-small;"></i>
+                                                </td>
+                                                <td  class="topLeft"  style="padding-left:5px;padding-top:5px;">
+                                                    <span >Contact us</span>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                    </div>
+
+             
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <ul class="nav-menu d-none" >
 
                     <li class="nav-item">
                         <a class="nav-link active" href="index.html">
@@ -796,7 +1905,7 @@
 
             <!-- Sidebar Footer -->
             <div class="sidebar-footer">
-                <div class="sidebar-account">
+                <div class="sidebar-account d-none">
                     <a href="profile.html" class="sidebar-account-main">
                         <img src="MemberView/assets/img/profile-img.webp" alt="User" class="sidebar-account-avatar">
                         <div class="sidebar-account-meta">
@@ -841,7 +1950,17 @@
         <main class="main vh-100">
         <div class="main-content page-dashboard">
             <div class="page-dashboard nd-dashboard">
-                <section class="nd-topbar">
+      <section>
+                <div class="page-header">
+            <h1 class="page-title">Sales Dashboard</h1>
+            <nav class="breadcrumb">
+                <a href="index.html" class="breadcrumb-item">Home</a>
+                <a href="index.html" class="breadcrumb-item">Dashboards</a>
+                <span class="breadcrumb-item active">Sales</span>
+            </nav>
+        </div>
+</section>
+   <section class="nd-topbar">
                     <div>
                         <h1 class="nd-title">Executive Operations Dashboard</h1>
                         <p class="nd-subtitle">Unified delivery, growth, and reliability signals for daily decision-making.</p>
@@ -1333,230 +2452,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-        var rootStyles = getComputedStyle(document.documentElement);
-        var accentColor = rootStyles.getPropertyValue('--accent-color').trim();
-        var successColor = rootStyles.getPropertyValue('--success-color').trim();
-        var warningColor = rootStyles.getPropertyValue('--warning-color').trim();
-        var infoColor = rootStyles.getPropertyValue('--info-color').trim();
-        var borderColor = rootStyles.getPropertyValue('--border-color').trim();
-        var mutedColor = rootStyles.getPropertyValue('--muted-color').trim();
-        var surfaceColor = rootStyles.getPropertyValue('--surface-color').trim();
-        var seriesMap = {
-        monthly: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        revenue: [72, 78, 74, 81, 85, 88, 94, 91, 97, 103, 99, 108],
-        costs: [46, 49, 47, 52, 56, 57, 61, 60, 63, 67, 65, 71],
-        totals: {
-        revenue: '$94.2K',
-        expenses: '$57.6K',
-        profit: '$36.6K'
-        }
-        },
-        weekly: {
-        categories: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6'],
-        revenue: [16, 18, 17, 19, 21, 23],
-        costs: [10, 11, 10, 12, 13, 14],
-        totals: {
-        revenue: '$45.8K',
-        expenses: '$27.3K',
-        profit: '$18.5K'
-        }
-        },
-        daily: {
-        categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        revenue: [4.2, 4.8, 4.4, 5.1, 5.6, 3.2, 2.7],
-        costs: [2.5, 2.8, 2.6, 3.1, 3.3, 2.1, 1.8],
-        totals: {
-        revenue: '$30.0K',
-        expenses: '$18.2K',
-        profit: '$11.8K'
-        }
-        }
-        };
-
-        function setSummary(period) {
-        var totals = seriesMap[period].totals;
-        var rev = document.getElementById('summaryRevenue');
-        var exp = document.getElementById('summaryExpenses');
-        var prof = document.getElementById('summaryProfit');
-        if (rev) rev.textContent = totals.revenue;
-        if (exp) exp.textContent = totals.expenses;
-        if (prof) prof.textContent = totals.profit;
-        }
-        var revenueTarget = document.querySelector('#revenueChart');
-        var trafficTarget = document.querySelector('#trafficChart');
-        var revenueChart;
-        if (revenueTarget && typeof ApexCharts !== 'undefined') {
-        revenueChart = new ApexCharts(revenueTarget, {
-        chart: {
-        type: 'area',
-        height: 320,
-        toolbar: {
-        show: false
-        },
-        zoom: {
-        enabled: false
-        },
-        fontFamily: 'inherit'
-        },
-        series: [{
-        name: 'Revenue',
-        data: seriesMap.monthly.revenue
-        },
-        {
-        name: 'Costs',
-        data: seriesMap.monthly.costs
-        }
-        ],
-        colors: [accentColor, warningColor],
-        stroke: {
-        width: [2.5, 2.5],
-        curve: 'smooth'
-        },
-        fill: {
-        type: 'gradient',
-        gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.28,
-        opacityTo: 0.02,
-        stops: [0, 100]
-        }
-        },
-        dataLabels: {
-        enabled: false
-        },
-        xaxis: {
-        categories: seriesMap.monthly.categories,
-        axisBorder: {
-        show: false
-        },
-        axisTicks: {
-        show: false
-        },
-        labels: {
-        style: {
-        colors: mutedColor,
-        fontSize: '12px'
-        }
-        }
-        },
-        yaxis: {
-        labels: {
-        style: {
-        colors: mutedColor,
-        fontSize: '12px'
-        }
-        }
-        },
-        grid: {
-        borderColor: borderColor,
-        strokeDashArray: 4,
-        xaxis: {
-        lines: {
-        show: false
-        }
-        }
-        },
-        legend: {
-        position: 'top',
-        horizontalAlign: 'left',
-        labels: {
-        colors: mutedColor
-        }
-        },
-        tooltip: {
-        y: {
-        formatter: function(val) {
-        return '$' + val.toFixed(1) + 'K';
-        }
-        }
-        }
-        });
-        revenueChart.render();
-        }
-        if (trafficTarget && typeof ApexCharts !== 'undefined') {
-        var trafficChart = new ApexCharts(trafficTarget, {
-        chart: {
-        type: 'donut',
-        height: 250,
-        fontFamily: 'inherit'
-        },
-        series: [38, 24, 21, 17],
-        labels: ['Inbound', 'Outbound', 'Partners', 'Community'],
-        colors: [accentColor, successColor, warningColor, infoColor],
-        legend: {
-        show: false
-        },
-        stroke: {
-        width: 3,
-        colors: [surfaceColor]
-        },
-        dataLabels: {
-        enabled: false
-        },
-        plotOptions: {
-        pie: {
-        donut: {
-        size: '70%',
-        labels: {
-        show: true,
-        name: {
-        show: true,
-        color: mutedColor
-        },
-        value: {
-        show: true,
-        fontSize: '20px',
-        fontWeight: 700,
-        color: accentColor,
-        formatter: function(val) {
-        return val + '%';
-        }
-        },
-        total: {
-        show: true,
-        label: 'Total',
-        color: mutedColor,
-        formatter: function() {
-        return '100%';
-        }
-        }
-        }
-        }
-        }
-        }
-        });
-        trafficChart.render();
-        }
-        document.querySelectorAll('.nd-period-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-        document.querySelectorAll('.nd-period-btn').forEach(function(i) {
-        i.classList.remove('active');
-        });
-        btn.classList.add('active');
-        var period = btn.getAttribute('data-period');
-        if (!period || !revenueChart) return;
-        revenueChart.updateOptions({
-        xaxis: {
-        categories: seriesMap[period].categories
-        }
-        });
-        revenueChart.updateSeries([{
-        name: 'Revenue',
-        data: seriesMap[period].revenue
-        },
-        {
-        name: 'Costs',
-        data: seriesMap[period].costs
-        }
-        ]);
-        setSummary(period);
-        });
-        });
-        setSummary('monthly');
+        
         });
     </script>
-    <script defer="" src="../../../beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"68c5ca450bae485a842ff76066d69420","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 
 </html>

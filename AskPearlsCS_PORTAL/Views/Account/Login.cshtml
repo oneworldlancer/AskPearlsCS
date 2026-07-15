@@ -106,13 +106,7 @@ input[type=text], input[type=email], input[type=password], input[type=url], inpu
     <!-- Header -->
     <header class="header">
         <div class="header-left">
-            <button class="sidebar-toggle d-none" title="Toggle Sidebar" aria-label="Toggle sidebar">
-                <span class="menu-lines" aria-hidden="true">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </span>
-            </button>
+           
             @*            *@
             <a href="/" class="header-brand header-logo" aria-label="Ask Pearls home">
                 @* <span class="header-logo"> *@
@@ -124,7 +118,13 @@ input[type=text], input[type=email], input[type=password], input[type=url], inpu
                     <strong class="header-context-title">Ask Pearls</strong>
                 </span> *@
             </a>
-        </div>
+       <button class="sidebar-toggle d-none" title="Toggle Sidebar" aria-label="Toggle sidebar">
+                <span class="menu-lines" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>  </div>
 
         <div class="header-search-wrap">
             <form class="search-form" action="search-results.html" method="GET">
