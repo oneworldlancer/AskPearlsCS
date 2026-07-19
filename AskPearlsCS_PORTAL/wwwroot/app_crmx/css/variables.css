@@ -1,0 +1,9 @@
+:root {
+    --sidebar-width: 80px;
+    --chat-width: 340px;
+    --profile-width: 360px;
+    --bg: #f5f7fb;
+    --surface: #fff;
+    --primary: #22c55e;
+    --text: #1f2937;
+}

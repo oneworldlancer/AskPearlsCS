@@ -35,8 +35,10 @@
     <link href="~/app_css/app_link_CSS.css" rel="stylesheet">
     <link href="~/app_css/app_scrollbar_css.css" rel="stylesheet" />
 
+
+<link href="~/app_crm/css/layout.css" rel="stylesheet" />
     
-    
+ <link href="~/app_css/app_portal_chat_crm_css.css" rel="stylesheet" /> 
     
     
     <!-- Vendor CSS Files -->
@@ -2445,76 +2447,31 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div> *@
      <div class="modal-header m-0 p-0" style="width: 100%;">
-            <div class="chat-sidebar-header">
-                <h2 class="chat-sidebar-title">Messages</h2>
-                <div class="chat-search">
-                    <i class="bi bi-search chat-search-icon"></i>
-                    <input type="text" class="form-control" placeholder="Search conversations...">
-                </div>
-            </div>
-                <!-- Chat Header -->
-          <div class="chat-header" style="width: 100%;">
-            <!-- Mobile Sidebar Toggle -->
-            <button class="chat-sidebar-toggle" id="chatSidebarToggle" aria-label="Open conversations">
-              <i class="bi bi-chat-left-text"></i>
-            </button>
+          
+     </div>  
+           
+     <div class="modal-body h-100 w-100  m-0 p-0 g-0" style="width: 100%;height: 100%;overflow: hidden;">
+        @* container-fluid class="vh-100 vw-100 g-0" *@
+       
+        <div  class="h-100 w-100 g-0"  style="width: 100%;background-color:red;">
 
-            <div class="chat-header-user">
-              <div class="chat-header-avatar">
-                <img src="../memberview/assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
-              </div>
-              <div class="chat-header-info">
-                <h5>Sarah Wilson</h5>
-                <span><i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i> Online</span>
-              </div>
-            </div>
-            <div class="chat-header-actions">
-              <button class="chat-header-btn" title="Voice Call">
-                <i class="bi bi-telephone"></i>
-              </button>
-              <button class="chat-header-btn" title="Video Call">
-                <i class="bi bi-camera-video"></i>
-              </button>
-              <button class="chat-header-btn" title="User Info" id="toggleInfoBtn">
-                <i class="bi bi-info-circle"></i>
-              </button>
-              <div class="dropdown">
-                <button class="chat-header-btn" data-bs-toggle="dropdown" data-bs-strategy="fixed">
-                  <i class="bi bi-three-dots-vertical"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="#"><i class="bi bi-search me-2"></i> Search Messages</a></li>
-                  <li><a class="dropdown-item" href="#"><i class="bi bi-bell-slash me-2"></i> Mute Notifications</a></li>
-                  <li><a class="dropdown-item" href="#"><i class="bi bi-pin me-2"></i> Pin Conversation</a></li>
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
-                  <li><a class="dropdown-item" href="#"><i class="bi bi-archive me-2"></i> Archive Chat</a></li>
-                  <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i> Delete Chat</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
+         <div class="d-flex flex-row g-0 chat-layout" style="width: 100%;height: 100%;overflow: hidden;background-color:blue;">
 
+            <!-- Conversation List -->
+         @* col-auto  *@ 
+         <div class="conversation-column" style="height:100%;background-color:yellow;">
+              
          
-      @*   <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
-      </div>  
-      
-      <div class="modal-body m-0 p-0">
-     
-      <!-- Chat Container -->
-      <div class="chat-container m-0 p-0">
-        <!-- Mobile Sidebar Overlay -->
-        <div class="chat-sidebar-overlay" id="chatSidebarOverlay"></div>
+  <!-- Mobile Sidebar Overlay -->
+      @*   <div class="chat-sidebar-overlay" id="chatSidebarOverlay"></div> *@
 
         <!-- Chat Sidebar -->
-        <div class="chat-sidebar" id="chatSidebar">
+        <div class="chat-sidebarx flex-column" id="chatSidebarx" style="height:100%;">
           <!-- Mobile Close Button -->
-          <button class="chat-sidebar-close" id="chatSidebarClose" aria-label="Close sidebar">
+         @*  <button class="chat-sidebar-close" id="chatSidebarClose" aria-label="Close sidebar">
             <i class="bi bi-x-lg"></i>
-          </button>
-
+          </button> *@
+         <div style="height:165px;background-color:green;">
           <div class="chat-sidebar-header">
             <h2 class="chat-sidebar-title">Messages</h2>
             <div class="chat-search">
@@ -2528,12 +2485,15 @@
             <button class="chat-tab">Unread <span class="badge bg-primary">3</span></button>
             <button class="chat-tab">Groups</button>
           </div>
+</div>
 
-          <div class="chat-list">
-            <!-- Chat Item 1 - Active -->
+@*  overscroll-behavior: contain; background-color:red;*@
+          <div id="div_Chat_UserList" class="chat-listX" style="height:500px;overflow-y:auto !important;">
+          
+              <!-- Chat Item 1 - Active -->
             <div class="chat-item active" data-chat="1">
               <div class="chat-item-avatar">
-                <img src="assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
+                <img src="../memberview/assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
                 <span class="chat-item-status online"></span>
               </div>
               <div class="chat-item-content">
@@ -2550,7 +2510,7 @@
             <!-- Chat Item 2 -->
             <div class="chat-item" data-chat="2">
               <div class="chat-item-avatar">
-                <img src="assets/img/avatars/avatar-2.webp" alt="Mike Johnson">
+                <img src="../memberview/assets/img/avatars/avatar-2.webp" alt="Mike Johnson">
                 <span class="chat-item-status away"></span>
               </div>
               <div class="chat-item-content">
@@ -2568,7 +2528,7 @@
             <!-- Chat Item 3 -->
             <div class="chat-item" data-chat="3">
               <div class="chat-item-avatar">
-                <img src="assets/img/avatars/avatar-3.webp" alt="Emily Davis">
+                <img src="../memberview/assets/img/avatars/avatar-3.webp" alt="Emily Davis">
                 <span class="chat-item-status online"></span>
               </div>
               <div class="chat-item-content">
@@ -2586,7 +2546,7 @@
             <!-- Chat Item 4 -->
             <div class="chat-item" data-chat="4">
               <div class="chat-item-avatar">
-                <img src="assets/img/avatars/avatar-4.webp" alt="Design Team">
+                <img src="../memberview/assets/img/avatars/avatar-4.webp" alt="Design Team">
                 <span class="chat-item-status online"></span>
               </div>
               <div class="chat-item-content">
@@ -2603,7 +2563,7 @@
             <!-- Chat Item 5 -->
             <div class="chat-item" data-chat="5">
               <div class="chat-item-avatar">
-                <img src="assets/img/avatars/avatar-5.webp" alt="David Brown">
+                <img src="../memberview/assets/img/avatars/avatar-5.webp" alt="David Brown">
                 <span class="chat-item-status offline"></span>
               </div>
               <div class="chat-item-content">
@@ -2620,7 +2580,7 @@
             <!-- Chat Item 6 -->
             <div class="chat-item" data-chat="6">
               <div class="chat-item-avatar">
-                <img src="assets/img/avatars/avatar-6.webp" alt="Lisa Anderson">
+                <img src="../memberview/assets/img/avatars/avatar-6.webp" alt="Lisa Anderson">
                 <span class="chat-item-status busy"></span>
               </div>
               <div class="chat-item-content">
@@ -2637,7 +2597,7 @@
             <!-- Chat Item 7 -->
             <div class="chat-item" data-chat="7">
               <div class="chat-item-avatar">
-                <img src="assets/img/avatars/avatar-7.webp" alt="Product Team">
+                <img src="../memberview/assets/img/avatars/avatar-7.webp" alt="Product Team">
                 <span class="chat-item-status online"></span>
               </div>
               <div class="chat-item-content">
@@ -2654,7 +2614,7 @@
             <!-- Chat Item 8 -->
             <div class="chat-item" data-chat="8">
               <div class="chat-item-avatar">
-                <img src="assets/img/avatars/avatar-8.webp" alt="James Wilson">
+                <img src="../memberview/assets/img/avatars/avatar-8.webp" alt="James Wilson">
                 <span class="chat-item-status offline"></span>
               </div>
               <div class="chat-item-content">
@@ -2668,294 +2628,264 @@
               </div>
             </div>
           </div>
+     
+    
+  
+
+</div>
+            </div>
+
+            <!-- Chat -->
+            <div  class="chat-column" style="background-color:orange;">
+
+                <header class="chat-header">
+                    chat-header
+                </header>
+
+                <section class="chat-body" style="-ms-overflow-style: none;scrollbar-width: none;">
+                                                                                                                 <div class="conversation-item">
+
+                                                                                                                                        <div class="avatar">
+                                                                                                                                        </div>
+
+                                                                                                                                        <div class="conversation-info">
+                                                                                                                                        </div>
+
+                                                                                                                                        <div class="conversation-meta">
+                                                                                                                                        </div>
+
+                                                                                                                                    </div>
+
+                    
+                    
+                    
+                    
+                    
+                    
+                    chat-body
+                     <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+              
+                  END MESSAGES
+                  </section>
+
+                <footer class="chat-footer">
+                    chat-footer
+                </footer>
+
+            </div>
+            <!--<main class="col chat-column">
+                ...
+            </main>-->
+            <!-- Customer -->
+        @* col-auto  *@  
+        <div class="customer-column d-none d-lg-block" style="background-color:lime;">
+                
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>
+             Customer List
+               <br/>      end
+            
+           
+           </div>
+
         </div>
 
-        <!-- Chat Main -->
-        <div class="chat-main" id="chatMain">
-          <!-- Chat Header -->
-          <div class="chat-header">
-            <!-- Mobile Sidebar Toggle -->
-            <button class="chat-sidebar-toggle" id="chatSidebarToggle" aria-label="Open conversations">
-              <i class="bi bi-chat-left-text"></i>
-            </button>
+    </div>
 
-            <div class="chat-header-user">
-              <div class="chat-header-avatar">
-                <img src="assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
-              </div>
-              <div class="chat-header-info">
-                <h5>Sarah Wilson</h5>
-                <span><i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i> Online</span>
-              </div>
-            </div>
-            <div class="chat-header-actions">
-              <button class="chat-header-btn" title="Voice Call">
-                <i class="bi bi-telephone"></i>
-              </button>
-              <button class="chat-header-btn" title="Video Call">
-                <i class="bi bi-camera-video"></i>
-              </button>
-              <button class="chat-header-btn" title="User Info" id="toggleInfoBtn">
-                <i class="bi bi-info-circle"></i>
-              </button>
-              <div class="dropdown">
-                <button class="chat-header-btn" data-bs-toggle="dropdown" data-bs-strategy="fixed">
-                  <i class="bi bi-three-dots-vertical"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="#"><i class="bi bi-search me-2"></i> Search Messages</a></li>
-                  <li><a class="dropdown-item" href="#"><i class="bi bi-bell-slash me-2"></i> Mute Notifications</a></li>
-                  <li><a class="dropdown-item" href="#"><i class="bi bi-pin me-2"></i> Pin Conversation</a></li>
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
-                  <li><a class="dropdown-item" href="#"><i class="bi bi-archive me-2"></i> Archive Chat</a></li>
-                  <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i> Delete Chat</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- Chat Messages -->
-          <div class="chat-messages" id="chatMessages">
-            <!-- Date Divider -->
-            <div class="message-date-divider">
-              <span>Today</span>
-            </div>
-
-            <!-- Received Message -->
-            <div class="message-group received">
-              <div class="message-avatar">
-                <img src="assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
-              </div>
-              <div class="message-content">
-                <div class="message-bubble">Hi there! How's the project going?</div>
-                <span class="message-time">9:30 AM</span>
-              </div>
-            </div>
-
-            <!-- Sent Message -->
-            <div class="message-group sent">
-              <div class="message-content">
-                <div class="message-bubble">Hey Sarah! It's going well. Just finished the dashboard design.</div>
-                <span class="message-status seen"><i class="bi bi-check2-all"></i> Seen</span>
-              </div>
-            </div>
-
-            <!-- Received Message -->
-            <div class="message-group received">
-              <div class="message-avatar">
-                <img src="assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
-              </div>
-              <div class="message-content">
-                <div class="message-bubble">That's great! Can you share the latest mockups?</div>
-                <span class="message-time">9:35 AM</span>
-              </div>
-            </div>
-
-            <!-- Sent Message with File -->
-            <div class="message-group sent">
-              <div class="message-content">
-                <div class="message-bubble">Sure thing! Here are the files:</div>
-                <div class="message-file">
-                  <div class="message-file-icon">
-                    <i class="bi bi-file-earmark-pdf"></i>
-                  </div>
-                  <div class="message-file-info">
-                    <div class="message-file-name">Dashboard-Design-v2.pdf</div>
-                    <div class="message-file-size">2.4 MB</div>
-                  </div>
-                  <button class="message-file-download">
-                    <i class="bi bi-download"></i>
-                  </button>
-                </div>
-                <span class="message-status seen"><i class="bi bi-check2-all"></i> Seen</span>
-              </div>
-            </div>
-
-            <!-- Received Message -->
-            <div class="message-group received">
-              <div class="message-avatar">
-                <img src="assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
-              </div>
-              <div class="message-content">
-                <div class="message-bubble">Perfect! Let me take a look at these.</div>
-                <span class="message-time">9:42 AM</span>
-              </div>
-            </div>
-
-            <!-- Received Message with multiple bubbles -->
-            <div class="message-group received">
-              <div class="message-avatar">
-                <img src="assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
-              </div>
-              <div class="message-content">
-                <div class="message-bubble">The design looks amazing! I love the new color scheme.</div>
-                <div class="message-bubble">Just a few minor suggestions:</div>
-                <div class="message-bubble">1. Could we make the sidebar a bit narrower?<br>2. The charts could use more contrast<br>3. Maybe add some icons to the navigation</div>
-                <span class="message-time">10:15 AM</span>
-              </div>
-            </div>
-
-            <!-- Sent Message -->
-            <div class="message-group sent">
-              <div class="message-content">
-                <div class="message-bubble">Great feedback! I'll work on those changes today.</div>
-                <span class="message-status seen"><i class="bi bi-check2-all"></i> Seen</span>
-              </div>
-            </div>
-
-            <!-- Received Message -->
-            <div class="message-group received">
-              <div class="message-avatar">
-                <img src="assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
-              </div>
-              <div class="message-content">
-                <div class="message-bubble">Sure, I'll send the files right away!</div>
-                <span class="message-time">10:28 AM</span>
-              </div>
-            </div>
-
-            <!-- Typing Indicator -->
-            <div class="typing-indicator" id="typingIndicator" style="display: none;">
-              <img src="assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
-              <div class="typing-dots">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Chat Input -->
-          <div class="chat-input d-none">
-            <div class="chat-input-wrapper">
-              <div class="chat-input-actions">
-                <button class="chat-input-btn" title="Attach File">
-                  <i class="bi bi-paperclip"></i>
-                </button>
-                <button class="chat-input-btn" title="Send Image">
-                  <i class="bi bi-image"></i>
-                </button>
-              </div>
-              <div class="chat-input-field">
-                <textarea id="messageInput" rows="1" placeholder="Type a message..."></textarea>
-              </div>
-              <div class="chat-input-actions">
-                <button class="chat-input-btn" title="Emoji">
-                  <i class="bi bi-emoji-smile"></i>
-                </button>
-              </div>
-              <button class="chat-send-btn" id="sendBtn" title="Send Message">
-                <i class="bi bi-send"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Chat Info Panel -->
-        <div class="chat-info" id="chatInfo">
-          <div class="chat-info-header">
-            <h6>Contact Info</h6>
-            <button class="chat-info-close" id="closeInfoBtn">
-              <i class="bi bi-x-lg"></i>
-            </button>
-          </div>
-          <div class="chat-info-body">
-            <div class="chat-info-profile">
-              <img src="assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
-              <h5>Sarah Wilson</h5>
-              <span>UI/UX Designer</span>
-            </div>
-
-            <div class="chat-info-section">
-              <div class="chat-info-section-title">Contact Details</div>
-              <div class="chat-info-item">
-                <i class="bi bi-envelope"></i>
-                <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dfacbeadbeb7f1a8b6b3acb0b19fbaa7beb2afb3baf1bcb0b2">[email&#160;protected]</a></span>
-              </div>
-              <div class="chat-info-item">
-                <i class="bi bi-telephone"></i>
-                <span>+1 (555) 123-4567</span>
-              </div>
-              <div class="chat-info-item">
-                <i class="bi bi-geo-alt"></i>
-                <span>San Francisco, CA</span>
-              </div>
-            </div>
-
-            <div class="chat-info-section">
-              <div class="chat-info-section-title">Shared Media</div>
-              <div class="chat-info-media">
-                <img src="assets/img/gallery/gallery-thumb-1.webp" alt="Shared media">
-                <img src="assets/img/gallery/gallery-thumb-2.webp" alt="Shared media">
-                <img src="assets/img/gallery/gallery-thumb-3.webp" alt="Shared media">
-                <img src="assets/img/gallery/gallery-thumb-4.webp" alt="Shared media">
-                <img src="assets/img/gallery/gallery-thumb-5.webp" alt="Shared media">
-                <img src="assets/img/gallery/gallery-thumb-6.webp" alt="Shared media">
-              </div>
-            </div>
-
-            <div class="chat-info-section">
-              <div class="chat-info-section-title">Shared Files</div>
-              <div class="message-file">
-                <div class="message-file-icon">
-                  <i class="bi bi-file-earmark-pdf"></i>
-                </div>
-                <div class="message-file-info">
-                  <div class="message-file-name">Dashboard-Design.pdf</div>
-                  <div class="message-file-size">2.4 MB</div>
-                </div>
-                <button class="message-file-download">
-                  <i class="bi bi-download"></i>
-                </button>
-              </div>
-              <div class="message-file mt-2">
-                <div class="message-file-icon">
-                  <i class="bi bi-file-earmark-zip"></i>
-                </div>
-                <div class="message-file-info">
-                  <div class="message-file-name">Assets.zip</div>
-                  <div class="message-file-size">15.8 MB</div>
-                </div>
-                <button class="message-file-download">
-                  <i class="bi bi-download"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
    
       </div>
       <div class="modal-footer">
-   
-          <!-- Chat Input -->
-          <div class="chat-input" style="width: 100%;">
-            <div class="chat-input-wrapper">
-              <div class="chat-input-actions">
-                <button class="chat-input-btn" title="Attach File">
-                  <i class="bi bi-paperclip"></i>
-                </button>
-                <button class="chat-input-btn" title="Send Image">
-                  <i class="bi bi-image"></i>
-                </button>
-              </div>
-              <div class="chat-input-field">
-                <textarea id="messageInput" rows="1" placeholder="Type a message..."></textarea>
-              </div>
-              <div class="chat-input-actions">
-                <button class="chat-input-btn" title="Emoji">
-                  <i class="bi bi-emoji-smile"></i>
-                </button>
-              </div>
-              <button class="chat-send-btn" id="sendBtn" title="Send Message">
-                <i class="bi bi-send"></i>
-              </button>
-            </div>
-          </div>
-          @*   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button> *@
+ 
       </div>
     </div>
   </div>

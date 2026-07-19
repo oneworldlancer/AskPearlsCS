@@ -1,0 +1,28 @@
+﻿/* Target smartphones in portrait mode (most common mobile query) */
+
+    #div_Chat_UserList {
+ 
+        background-color:red !important;
+        }
+
+
+/* Target all mobile devices and smaller tablets */
+/*@media only screen and (max-width: 768px) {*/
+@media (max-width: 768px) {
+
+    /* Your mobile and tablet CSS rules go here */
+
+    #div_Chat_UserList {
+        background-color: lightseagreen !important;
+    }
+}
+
+/*@media only screen and (max-width: 440px) {*/
+@media (max-width: 440px) {
+    /* Your mobile-specific CSS rules go here */
+
+
+    #div_Chat_UserList {
+        background-color: black !important;
+    }
+}
