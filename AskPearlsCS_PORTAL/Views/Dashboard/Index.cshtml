@@ -2450,31 +2450,117 @@
           
      </div>  
            
-     <div class="modal-body h-100 w-100  m-0 p-0 g-0" style="width: 100%;height: 100%;overflow: hidden;">
+     <div class="modal-body m-0 p-0 g-0" style="width: 100%;height: 100%;overflow: hidden;">
         @* container-fluid class="vh-100 vw-100 g-0" *@
        
-        <div  class="h-100 w-100 g-0"  style="width: 100%;background-color:red;">
+        <div  style="width: 100%;height: 100%;">
+ 
 
-         <div class="d-flex flex-row g-0 chat-layout" style="width: 100%;height: 100%;overflow: hidden;background-color:blue;">
+         <div class="d-flex flex-row chat-layout g-0 m-0 p-0" style="width: 100%;height: 100%;overflow: hidden;background-color:blue;">
 
             <!-- Conversation List -->
-         @* col-auto  *@ 
-         <div class="conversation-column" style="height:100%;background-color:yellow;">
-              
-         
+     
   <!-- Mobile Sidebar Overlay -->
       @*   <div class="chat-sidebar-overlay" id="chatSidebarOverlay"></div> *@
-
+@* style="" *@
         <!-- Chat Sidebar -->
-        <div class="chat-sidebarx flex-column" id="chatSidebarx" style="height:100%;">
-          <!-- Mobile Close Button -->
+        <div class="chat-sidebarx flex-column"  >
+        @* width:100px; *@
+          <div id="div_Chat_MenuList"  class="flex-column" style="height:100%;background-color:yellow;">
+   
+              <div class="mb-1"  style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_logo_transparent.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;"/>
+   </div>
+           </div>
+          
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_search.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_filter.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+           
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_filter.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+           
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_filter.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+           
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_filter.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+           
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_filter.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+           
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_filter.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+           
+           </div>
+       
+
+
+
+
+
+  <!-- Mobile Close Button -->
          @*  <button class="chat-sidebar-close" id="chatSidebarClose" aria-label="Close sidebar">
             <i class="bi bi-x-lg"></i>
           </button> *@
-         <div style="height:165px;background-color:green;">
+      
+  
+
+</div>
+         
+@* class="d-none" *@
+<div id="div_Chat_WidgetList"  style="background-color:red;">
+   @* class="d-none" *@ 
+   
+   <div  style="height:165px;background-color:green;">
           <div class="chat-sidebar-header">
+         @* justify-content-between *@     <div class="flex-row  m-0 p-0">
             <h2 class="chat-sidebar-title">Messages</h2>
-            <div class="chat-search">
+        @* class="float-end" *@   
+       @*  <button id="btn_Close_WidgetList"  type="button" aria-label="Close sidebar">
+               close me
+            </button> *@
+          </div>
+          
+          <div class="chat-search">
               <i class="bi bi-search chat-search-icon"></i>
               <input type="text" class="form-control" placeholder="Search conversations...">
             </div>
@@ -2488,7 +2574,7 @@
 </div>
 
 @*  overscroll-behavior: contain; background-color:red;*@
-          <div id="div_Chat_UserList" class="chat-listX" style="height:500px;overflow-y:auto !important;">
+          <div id="div_Chat_UserList" class="chat-listX" style="height:550px;overflow-y:auto !important;">
           
               <!-- Chat Item 1 - Active -->
             <div class="chat-item active" data-chat="1">
@@ -2629,14 +2715,13 @@
             </div>
           </div>
      
-    
-  
-
-</div>
+   
             </div>
-
+            
+            
             <!-- Chat -->
-            <div  class="chat-column" style="background-color:orange;">
+     @* style="background-color:orange;" *@     
+     <div  id="div_Chat_MessageList"  class="chat-column" style="width:100%;">
 
                 <header class="chat-header">
                     chat-header
@@ -2737,8 +2822,9 @@
                 ...
             </main>-->
             <!-- Customer -->
-        @* col-auto  *@  
-        <div class="customer-column d-none d-lg-block" style="background-color:lime;">
+        @* col-auto  d-none d-lg-block *@  
+        <div id="div_Chat_UserInfoContainer"  class="customer-column" style="background-color:lime;">
+        <div id="div_Chat_UserInfoList"   style="background-color:red;height:690px;overflow-y:auto;">
                 
              Customer List
                <br/>
@@ -2877,10 +2963,22 @@
             
            
            </div>
+           </div>
 
         </div>
 
-    </div>
+
+        </div>
+       
+     
+
+
+
+
+@*         <div  class="h-100 w-100 g-0"  style="width: 100%;background-color:red;">
+
+
+    </div> *@
 
    
       </div>

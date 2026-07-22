@@ -1,9 +1,54 @@
 ﻿/* Target smartphones in portrait mode (most common mobile query) */
 
-    #div_Chat_UserList {
- 
-        background-color:red !important;
-        }
+#div_Chat_MenuList {
+    width: 75px !important;
+    background-color: white !important;
+
+    padding:5px;
+}
+
+
+/*#div_Chat_MenuList {
+    width: 75px !important;
+    max-width: 75px !important;
+    border-radius: 10px;
+
+}
+*/
+
+#div_Chat_WidgetList {
+    width: 500px !important;
+    max-width: 500px !important;
+    padding: 5px;
+    margin-left: 0px !important;
+    margin-left: 0px !important;
+    border-radius: 10px;
+    background-color: red !important;
+}
+
+
+
+
+#div_Chat_MessageList {
+    /*    width: 100% !important;
+        max-width: 100% !important;*/
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: darkmagenta !important;
+}
+
+
+
+
+#div_Chat_UserInfoContainer {
+    width: 500px !important;
+    max-width: 500px !important;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: limegreen !important;
+}
 
 
 /* Target all mobile devices and smaller tablets */
@@ -12,8 +57,60 @@
 
     /* Your mobile and tablet CSS rules go here */
 
-    #div_Chat_UserList {
+    #div_Chat_WidgetList {
+        /*display: none;*/
+
+        width: 85% !important;
+        max-width: 85% !important;
+        position: absolute;
+        z-index: 900;
+        top: 0;
+        left: 75px;
+        padding: 5px;
+        margin-left: 0px;
+        margin-right: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         background-color: lightseagreen !important;
+    }
+
+
+
+    #div_Chat_MessageList {
+        /* display: none;*/
+
+        padding: 5px;
+        margin-left: 30px;
+        margin-right: 0px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: darkmagenta !important;
+    }
+
+
+    #div_Chat_UserInfoContainer {
+        /* display: none;*/
+
+        display: block !important;
+        width: 85% !important;
+        max-width: 85% !important;
+        position: absolute;
+        z-index: 1000;
+        top: 0;
+        left: 75px;
+        padding: 5px;
+        margin-left: 0px;
+        margin-right: 0px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: lightseagreen !important;
+    }
+
+
+    .chat-column {
+        background-color: rgb(0 0 0 / 0.3); /* 60% dim level */
+        /* background-color: rgb(0 0 0 / 0.5);*/
+        /* width: 100% !important;
+        max-width: 100% !important;*/
     }
 }
 
@@ -22,7 +119,8 @@
     /* Your mobile-specific CSS rules go here */
 
 
-    #div_Chat_UserList {
-        background-color: black !important;
+    #div_Chat_WidgetList {
+      /*  max-width: 70px  !important;
+        background-color: black !important;*/
     }
 }

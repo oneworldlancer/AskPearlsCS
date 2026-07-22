@@ -17498,8 +17498,8 @@ textarea.form-control {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  -o-object-fit: cover;
-  object-fit: cover;
+/*  -o-object-fit: cover;
+  object-fit: cover;*/
 }
 
 .chat-item-status {
@@ -18344,7 +18344,7 @@ textarea.form-control {
   }
 
   .chat-item {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem;/* 1rem;*/
     min-height: 64px;
   }
 
