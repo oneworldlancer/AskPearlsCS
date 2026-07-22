@@ -2723,9 +2723,52 @@ style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 
      @* style="background-color:orange;" *@     
      <div  id="div_Chat_MessageList"  class="chat-column" style="width:100%;">
 
-                <header class="chat-header">
+              @*   <header class="chat-header">
                     chat-header
-                </header>
+                </header> *@
+
+                  <div class="chat-header">
+            <!-- Mobile Sidebar Toggle -->
+            <button class="chat-sidebar-toggle" id="chatSidebarToggle" aria-label="Open conversations">
+              <i class="bi bi-chat-left-text"></i>
+            </button>
+
+            <div class="chat-header-user">
+              <div class="chat-header-avatar">
+                <img src="~/MemberView/assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
+              </div>
+              <div class="chat-header-info">
+                <h5>Sarah Wilson</h5>
+                <span><i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i> Online</span>
+              </div>
+            </div>
+            <div class="chat-header-actions">
+              <button class="chat-header-btn" title="Voice Call">
+                <i class="bi bi-telephone"></i>
+              </button>
+              <button class="chat-header-btn" title="Video Call">
+                <i class="bi bi-camera-video"></i>
+              </button>
+              <button class="chat-header-btn" title="User Info" id="toggleInfoBtn">
+                <i class="bi bi-info-circle"></i>
+              </button>
+              <div class="dropdown">
+                <button class="chat-header-btn" data-bs-toggle="dropdown" data-bs-strategy="fixed">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="#"><i class="bi bi-search me-2"></i> Search Messages</a></li>
+                  <li><a class="dropdown-item" href="#"><i class="bi bi-bell-slash me-2"></i> Mute Notifications</a></li>
+                  <li><a class="dropdown-item" href="#"><i class="bi bi-pin me-2"></i> Pin Conversation</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item" href="#"><i class="bi bi-archive me-2"></i> Archive Chat</a></li>
+                  <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i> Delete Chat</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
 
                 <section class="chat-body" style="-ms-overflow-style: none;scrollbar-width: none;">
                                                                                                                  <div class="conversation-item">
@@ -2813,8 +2856,32 @@ style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 
                   END MESSAGES
                   </section>
 
-                <footer class="chat-footer">
-                    chat-footer
+                <footer class="chat-footer p-0 m-0 g-0">
+                      <!-- Chat Input -->
+          <div class="chat-input p-0 m-0 g-0">
+            <div class="chat-input-wrapper">
+              <div class="chat-input-actions">
+                <button class="chat-input-btn" title="Attach File">
+                  <i class="bi bi-paperclip"></i>
+                </button>
+                <button class="chat-input-btn" title="Send Image">
+                  <i class="bi bi-image"></i>
+                </button>
+              </div>
+              <div class="chat-input-field">
+                <textarea id="messageInput" rows="1" placeholder="Type a message..."></textarea>
+              </div>
+              <div class="chat-input-actions">
+                <button class="chat-input-btn" title="Emoji">
+                  <i class="bi bi-emoji-smile"></i>
+                </button>
+              </div>
+              <button class="chat-send-btn" id="sendBtn" title="Send Message">
+                <i class="bi bi-send"></i>
+              </button>
+            </div>
+          </div>
+      
                 </footer>
 
             </div>
@@ -2826,141 +2893,7 @@ style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 
         <div id="div_Chat_UserInfoContainer"  class="customer-column" style="background-color:lime;">
         <div id="div_Chat_UserInfoList"   style="background-color:red;height:690px;overflow-y:auto;">
                 
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>
-             Customer List
-               <br/>      end
-            
+    
            
            </div>
            </div>
@@ -2982,8 +2915,9 @@ style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 
 
    
       </div>
-      <div class="modal-footer">
- 
+      <div class="modal-footer m-0 p-0 g-0" style="background-color:lightgray;">
+          <span class="form-text mx-auto middleCenter" style="margin:10px;font-size:small;text-align:center;">Chat Widget - AskPearls Limited</span>
+     @*    FOOTER *@
       </div>
     </div>
   </div>
