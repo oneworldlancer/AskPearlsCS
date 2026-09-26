@@ -109,7 +109,7 @@
 
 <body class="vh-100">
     <!-- Header -->
-    <header class="header">
+    <header class="header d-none">
         <div class="header-left">
           
 
@@ -462,7 +462,7 @@
     </div>
 
     <!-- Sidebar -->
-    <aside class="sidebar" style="margin-bottom:50px;-ms-overflow-style: none;scrollbar-width: none;">
+    <aside class="sidebar" style="width:90px !important;margin-bottom:50px;-ms-overflow-style: none;scrollbar-width: none;">
         <div class="sidebar-shell" style="-ms-overflow-style: none;scrollbar-width: none;">
             <button class="sidebar-close" type="button" aria-label="Close sidebar">
                 <i class="bi bi-x-lg"></i>
@@ -2438,7 +2438,7 @@
   Launch demo modal
 </button> *@
 
-<!-- Modal -->
+<!-- Modals -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
@@ -2486,7 +2486,14 @@ style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 
               <div >
      <img src="~/app_img/img_chat_filter.png" 
 style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
-   </div>
+ 
+  <!-- Trigger Button -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bottomModal">
+  Filter-Modal
+</button>
+
+
+</div>
            </div>
           
            
@@ -2923,6 +2930,54 @@ style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 
   </div>
 </div>
 
+
+
+<!-- Modal Container with custom 'modal-bottom' class -->
+<style>
+    /* Position the modal container at the very bottom */
+.modal-bottom .modal-dialog {
+  position: fixed;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Set the initial hidden position below the viewport */
+.modal-bottom.fade .modal-dialog {
+  transform: translate3d(0, 100%, 0);
+  transition: transform 0.3s ease-out;
+}
+
+/* Slide it up to its final position when active */
+.modal-bottom.show .modal-dialog {
+  transform: translate3d(0, 0, 0);
+}
+
+/* Round only the top corners of the modal sheet */
+.modal-bottom .modal-content {
+  border-radius: 1rem 1rem 0 0;
+  border: none;
+}
+
+
+
+</style>
+<div class="modal fade modal-bottom" id="bottomModal" data-bs-backdrop="static" tabindex="10000" aria-labelledby="bottomModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bottomModalLabel">Bottom Sheet Modal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>This modal slides gracefully from the bottom of the screen.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

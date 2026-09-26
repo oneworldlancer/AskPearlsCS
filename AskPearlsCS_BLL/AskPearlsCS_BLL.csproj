@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AskPearlsCS_DAL\AskPearlsCS_DAL.csproj" />
+    <ProjectReference Include="..\AskPearlsCS_DOMAIN\AskPearlsCS_DOMAIN.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 </Project>

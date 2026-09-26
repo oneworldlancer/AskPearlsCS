@@ -1,0 +1,377 @@
+﻿/* =========================================================
+   AskPearls Widget
+   widget.css
+   ========================================================= */
+
+:host {
+    --askpearls-primary: #6366f1;
+    --askpearls-primary-hover: #4f46e5;
+    --askpearls-background: #ffffff;
+    --askpearls-surface: #f8fafc;
+    --askpearls-text: #111827;
+    --askpearls-text-muted: #64748b;
+    --askpearls-border: #e5e7eb;
+    --askpearls-user-message: #6366f1;
+    --askpearls-user-text: #ffffff;
+    --askpearls-bot-message: #f1f5f9;
+    --askpearls-bot-text: #111827;
+    --askpearls-radius: 18px;
+    --askpearls-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+    --askpearls-font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--askpearls-font);
+}
+
+
+/* =========================================================
+   Root
+   ========================================================= */
+
+.askpearls-widget {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 2147483647;
+    font-family: var(--askpearls-font);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--askpearls-text);
+}
+
+
+/* =========================================================
+   Launcher Button
+   ========================================================= */
+
+.askpearls-launcher {
+    width: 60px;
+    height: 60px;
+    border: 0;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ffffff;
+    background: linear-gradient( 135deg, var(--askpearls-primary), var(--askpearls-primary-hover) );
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .askpearls-launcher:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 35px rgba(99, 102, 241, 0.45);
+    }
+
+    .askpearls-launcher:active {
+        transform: scale(0.96);
+    }
+
+.askpearls-launcher-icon {
+    font-size: 25px;
+    line-height: 1;
+    font-weight: 600;
+}
+
+.askpearls-launcher-hidden {
+    display: none;
+}
+
+
+/* =========================================================
+   Chat Window
+   ========================================================= */
+
+.askpearls-chat {
+    position: absolute;
+    right: 0;
+    bottom: 76px;
+    width: 380px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--askpearls-background);
+    border: 1px solid var(--askpearls-border);
+    border-radius: var(--askpearls-radius);
+    box-shadow: var(--askpearls-shadow);
+    animation: askpearls-chat-open 0.22s ease-out;
+}
+
+@keyframes askpearls-chat-open {
+
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* =========================================================
+   Header
+   ========================================================= */
+
+.askpearls-header {
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    color: #ffffff;
+    background: linear-gradient( 135deg, var(--askpearls-primary), var(--askpearls-primary-hover) );
+}
+
+.askpearls-header-info {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.askpearls-avatar {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--askpearls-primary);
+    background: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.askpearls-title {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.askpearls-status {
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+    .askpearls-status span {
+        width: 7px;
+        height: 7px;
+        display: inline-block;
+        border-radius: 50%;
+        background: #22c55e;
+    }
+
+
+/* =========================================================
+   Close Button
+   ========================================================= */
+
+.askpearls-close {
+    width: 34px;
+    height: 34px;
+    border: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #ffffff;
+    background: transparent;
+    font-size: 25px;
+    line-height: 1;
+    transition: background 0.15s ease;
+}
+
+    .askpearls-close:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+
+/* =========================================================
+   Messages Area
+   ========================================================= */
+
+.askpearls-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 16px;
+    background: var(--askpearls-surface);
+    scroll-behavior: smooth;
+}
+
+    .askpearls-messages::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .askpearls-messages::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .askpearls-messages::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background: #cbd5e1;
+    }
+
+
+/* =========================================================
+   Message
+   ========================================================= */
+
+.askpearls-message {
+    max-width: 78%;
+    margin-bottom: 12px;
+    padding: 11px 14px;
+    border-radius: 16px;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   Bot Message
+   ========================================================= */
+
+.askpearls-message-bot {
+    margin-right: auto;
+    color: var(--askpearls-bot-text);
+    background: var(--askpearls-bot-message);
+    border-bottom-left-radius: 5px;
+}
+
+
+/* =========================================================
+   User Message
+   ========================================================= */
+
+.askpearls-message-user {
+    margin-left: auto;
+    color: var(--askpearls-user-text);
+    background: var(--askpearls-user-message);
+    border-bottom-right-radius: 5px;
+}
+
+
+/* =========================================================
+   Input Area
+   ========================================================= */
+
+.askpearls-input-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: var(--askpearls-background);
+    border-top: 1px solid var(--askpearls-border);
+}
+
+
+/* =========================================================
+   Input
+   ========================================================= */
+
+.askpearls-input {
+    min-width: 0;
+    flex: 1;
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--askpearls-border);
+    border-radius: 12px;
+    outline: none;
+    color: var(--askpearls-text);
+    background: var(--askpearls-surface);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+    .askpearls-input::placeholder {
+        color: var(--askpearls-text-muted);
+    }
+
+    .askpearls-input:focus {
+        border-color: var(--askpearls-primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+    }
+
+
+/* =========================================================
+   Send Button
+   ========================================================= */
+
+.askpearls-send {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    cursor: pointer;
+    color: #ffffff;
+    background: var(--askpearls-primary);
+    font-size: 17px;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+    .askpearls-send:hover {
+        background: var(--askpearls-primary-hover);
+        transform: translateY(-1px);
+    }
+
+    .askpearls-send:active {
+        transform: scale(0.95);
+    }
+
+
+/* =========================================================
+   Mobile
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .askpearls-widget {
+        right: 14px;
+        bottom: 14px;
+        left: 14px;
+    }
+
+    .askpearls-chat {
+        right: 0;
+        bottom: 70px;
+        width: 100%;
+        height: min( 650px, calc(100vh - 100px) );
+        border-radius: 18px;
+    }
+
+    .askpearls-launcher {
+        margin-left: auto;
+    }
+}
+
+
+/* =========================================================
+   Reduced Motion
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .askpearls-chat {
+        animation: none;
+    }
+
+    .askpearls-launcher,
+    .askpearls-send,
+    .askpearls-close {
+        transition: none;
+    }
+}

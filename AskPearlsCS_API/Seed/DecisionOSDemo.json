@@ -1,0 +1,27 @@
+{
+  "title": "Find your best sofa",
+  "questions": [
+    {
+      "key": "people",
+      "text": "How many people will use the sofa?",
+      "answers": [
+        { "text": "1-2", "value": "small", "recommendations": [{ "key": "oslo", "score": 10 }] },
+        { "text": "3-4", "value": "medium", "recommendations": [{ "key": "oslo", "score": 30 }, { "key": "luna", "score": 20 }] },
+        { "text": "5+", "value": "large", "recommendations": [{ "key": "luna", "score": 30 }] }
+      ]
+    },
+    {
+      "key": "priority",
+      "text": "What matters most?",
+      "answers": [
+        { "text": "Comfort", "value": "comfort", "recommendations": [{ "key": "oslo", "score": 30 }] },
+        { "text": "Design", "value": "design", "recommendations": [{ "key": "luna", "score": 30 }] },
+        { "text": "Price", "value": "price", "recommendations": [{ "key": "oslo", "score": 20 }] }
+      ]
+    }
+  ],
+  "recommendations": [
+    { "key": "oslo", "name": "Oslo Modular Sofa", "description": "A comfortable modular sofa for flexible living spaces.", "url": "#" },
+    { "key": "luna", "name": "Luna Designer Sofa", "description": "A design-focused sofa for larger spaces.", "url": "#" }
+  ]
+}
