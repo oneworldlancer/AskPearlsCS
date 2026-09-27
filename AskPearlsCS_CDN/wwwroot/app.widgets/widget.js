@@ -15,14 +15,22 @@
     const currentScript = document.currentScript;
 
     if (!currentScript) {
-        console.error("AskPearls: Unable to find the current script.");
+
+        console.error(
+            "AskPearls: Unable to find the current script."
+        );
+
         return;
     }
 
-    const publicKey = currentScript.dataset.widget;
+
+    const publicKey =
+        currentScript.dataset.widget;
+
 
     const apiUrl =
-        (currentScript.dataset.apiUrl || "https://api.askpearls.com")
+        (currentScript.dataset.apiUrl ||
+            "https://api.askpearls.com")
             .replace(/\/+$/, "");
 
 
@@ -40,9 +48,11 @@
        2. CREATE WIDGET HOST
        ========================================================= */
 
-    const host = document.createElement("div");
+    const host =
+        document.createElement("div");
 
-    host.id = "askpearls-widget-host";
+    host.id =
+        "askpearls-widget-host";
 
     document.body.appendChild(host);
 
@@ -51,16 +61,20 @@
        3. CREATE SHADOW DOM
        ========================================================= */
 
-    const shadow = host.attachShadow
-        ? host.attachShadow({ mode: "open" })
-        : host;
+    const shadow =
+        host.attachShadow
+            ? host.attachShadow({
+                mode: "open"
+            })
+            : host;
 
 
     /* =========================================================
        4. WIDGET STYLES
        ========================================================= */
 
-    const style = document.createElement("style");
+    const style =
+        document.createElement("style");
 
     style.textContent = `
 
@@ -72,6 +86,11 @@
             box-sizing: border-box;
         }
 
+
+        /* =====================================================
+           CARD
+           ===================================================== */
+
         .ap-card {
 
             position: fixed;
@@ -80,13 +99,16 @@
             bottom: 24px;
 
             width: 360px;
-            max-width: calc(100vw - 32px);
+
+            max-width:
+                calc(100vw - 32px);
 
             background: #ffffff;
 
             color: #172033;
 
-            border: 1px solid #e5e7eb;
+            border:
+                1px solid #e5e7eb;
 
             border-radius: 18px;
 
@@ -104,7 +126,9 @@
         }
 
 
-        /* Header */
+        /* =====================================================
+           HEADER
+           ===================================================== */
 
         .ap-head {
 
@@ -140,7 +164,21 @@
         }
 
 
-        /* Body */
+        .ap-subtitle {
+
+            margin-top: 7px;
+
+            font-size: 13px;
+
+            line-height: 1.45;
+
+            opacity: 0.92;
+        }
+
+
+        /* =====================================================
+           BODY
+           ===================================================== */
 
         .ap-body {
 
@@ -148,7 +186,9 @@
         }
 
 
-        /* Progress */
+        /* =====================================================
+           PROGRESS
+           ===================================================== */
 
         .ap-progress {
 
@@ -170,11 +210,14 @@
 
             background: #0d6efd;
 
-            transition: width 0.3s ease;
+            transition:
+                width 0.3s ease;
         }
 
 
-        /* Question */
+        /* =====================================================
+           QUESTION
+           ===================================================== */
 
         .ap-question {
 
@@ -188,7 +231,9 @@
         }
 
 
-        /* Answers */
+        /* =====================================================
+           ANSWERS
+           ===================================================== */
 
         .ap-options {
 
@@ -208,7 +253,8 @@
 
             padding: 12px 14px;
 
-            border: 1px solid #d0d5dd;
+            border:
+                1px solid #d0d5dd;
 
             border-radius: 10px;
 
@@ -235,19 +281,24 @@
 
         .ap-answer:hover {
 
-            border-color: #0d6efd;
+            border-color:
+                #0d6efd;
 
-            background: #f5f9ff;
+            background:
+                #f5f9ff;
         }
 
 
         .ap-answer:active {
 
-            transform: scale(0.99);
+            transform:
+                scale(0.99);
         }
 
 
-        /* Result */
+        /* =====================================================
+           RESULT
+           ===================================================== */
 
         .ap-result-label {
 
@@ -273,7 +324,7 @@
         }
 
 
-        .ap-result-text {
+        .ap-result-short {
 
             font-size: 14px;
 
@@ -281,25 +332,189 @@
 
             color: #475467;
 
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
 
-        /* CTA */
+        /* =====================================================
+           MATCH
+           ===================================================== */
+
+        .ap-match {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            margin-bottom: 10px;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background: #e8f7ed;
+
+            color: #198754;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           RESULT IMAGE
+           ===================================================== */
+
+        .ap-result-image {
+
+            width: 100%;
+
+            height: 170px;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+
+        /* =====================================================
+           SECTION TITLE
+           ===================================================== */
+
+        .ap-section-title {
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color: #172033;
+
+            margin:
+                16px 0 8px;
+        }
+
+
+        /* =====================================================
+           REASONS
+           ===================================================== */
+
+        .ap-reasons {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+
+        .ap-reason {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 8px;
+
+            font-size: 13px;
+
+            line-height: 1.4;
+
+            color: #344054;
+        }
+
+
+        .ap-check {
+
+            flex:
+                0 0 auto;
+
+            width: 18px;
+
+            height: 18px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #e8f7ed;
+
+            color: #198754;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           HIGHLIGHTS
+           ===================================================== */
+
+        .ap-highlights {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 6px;
+        }
+
+
+        .ap-highlight {
+
+            padding: 5px 8px;
+
+            border-radius: 6px;
+
+            background: #f2f4f7;
+
+            color: #475467;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           ACTIONS
+           ===================================================== */
+
+        .ap-result-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-top: 18px;
+        }
+
 
         .ap-cta {
 
             display: inline-block;
 
-            padding: 11px 16px;
+            padding:
+                11px 16px;
 
-            background: #0d6efd;
+            background:
+                #0d6efd;
 
-            color: #ffffff;
+            color:
+                #ffffff;
 
             border-radius: 9px;
 
-            text-decoration: none;
+            text-decoration:
+                none;
 
             font-size: 14px;
 
@@ -309,177 +524,113 @@
 
         .ap-cta:hover {
 
-            background: #0b5ed7;
+            background:
+                #0b5ed7;
 
-            color: #ffffff;
+            color:
+                #ffffff;
         }
 
 
-        /* Loading */
+        .ap-restart {
+
+            display: inline-block;
+
+            padding:
+                11px 12px;
+
+            background:
+                #ffffff;
+
+            color:
+                #475467;
+
+            border:
+                1px solid #d0d5dd;
+
+            border-radius:
+                9px;
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+        }
+
+
+        .ap-restart:hover {
+
+            background:
+                #f9fafb;
+        }
+
+
+        /* =====================================================
+           LOADING
+           ===================================================== */
 
         .ap-loading {
 
-            text-align: center;
+            text-align:
+                center;
 
-            padding: 30px 10px;
+            padding:
+                30px 10px;
 
-            color: #667085;
+            color:
+                #667085;
 
-            font-size: 14px;
+            font-size:
+                14px;
         }
 
 
-        /* Error */
+        /* =====================================================
+           ERROR
+           ===================================================== */
 
         .ap-error {
 
-            padding: 20px;
+            padding:
+                20px;
 
-            color: #b42318;
+            color:
+                #b42318;
 
-            background: #fef3f2;
+            background:
+                #fef3f2;
 
-            font-size: 14px;
+            font-size:
+                14px;
 
-            line-height: 1.5;
+            line-height:
+                1.5;
         }
 
 
-
-        /* =========================================================
-   Rich Recommendation
-   ========================================================= */
-
-.ap-result-image {
-    width: 100%;
-    height: 170px;
-    object-fit: cover;
-    display: block;
-}
-
-.ap-match {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 10px;
-    padding: 6px 10px;
-    border-radius: 20px;
-    background: #e8f7ed;
-    color: #198754;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.ap-result-label {
-    font-size: 13px;
-    color: #667085;
-    margin-bottom: 6px;
-}
-
-.ap-result-name {
-    font-size: 22px;
-    line-height: 1.3;
-    font-weight: 700;
-    color: #172033;
-    margin-bottom: 8px;
-}
-
-.ap-result-short {
-    font-size: 14px;
-    line-height: 1.5;
-    color: #475467;
-    margin-bottom: 14px;
-}
-
-.ap-section-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #172033;
-    margin: 16px 0 8px;
-}
-
-.ap-reasons {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.ap-reason {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    font-size: 13px;
-    line-height: 1.4;
-    color: #344054;
-}
-
-.ap-check {
-    flex: 0 0 auto;
-    width: 18px;
-    height: 18px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: #e8f7ed;
-    color: #198754;
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.ap-highlights {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.ap-highlight {
-    padding: 5px 8px;
-    border-radius: 6px;
-    background: #f2f4f7;
-    color: #475467;
-    font-size: 11px;
-}
-
-.ap-result-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 18px;
-}
-
-.ap-restart {
-    display: inline-block;
-    padding: 11px 12px;
-    background: #ffffff;
-    color: #475467;
-    border: 1px solid #d0d5dd;
-    border-radius: 9px;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.ap-restart:hover {
-    background: #f9fafb;
-}
-
-
-
-
-        /* Mobile */
+        /* =====================================================
+           MOBILE
+           ===================================================== */
 
         @media (max-width: 480px) {
 
             .ap-card {
 
-                right: 12px;
+                right:
+                    12px;
 
-                bottom: 12px;
+                bottom:
+                    12px;
 
-                width: calc(100vw - 24px);
+                width:
+                    calc(100vw - 24px);
 
-                max-width: none;
+                max-width:
+                    none;
             }
         }
 
@@ -493,7 +644,8 @@
        5. ROOT CONTAINER
        ========================================================= */
 
-    const root = document.createElement("div");
+    const root =
+        document.createElement("div");
 
     shadow.appendChild(root);
 
@@ -508,9 +660,13 @@
 
     const answers = {};
 
+
     const sessionId =
-        window.crypto && window.crypto.randomUUID
+        window.crypto &&
+            window.crypto.randomUUID
+
             ? window.crypto.randomUUID()
+
             : "session-" + Date.now();
 
 
@@ -521,11 +677,31 @@
     function escapeHtml (value) {
 
         return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
     }
 
 
@@ -536,57 +712,129 @@
 
 
     /* =========================================================
-       8. SEND ANALYTICS EVENT
+       8. GET WIDGET INFORMATION
        ========================================================= */
 
-    function sendEvent (eventType, payload) {
+    function getWidgetTitle () {
 
-        fetch(`${ apiUrl }/api/events`, {
+        if (
+            config &&
+            config.widget &&
+            config.widget.title
+        ) {
 
-            method: "POST",
+            return config.widget.title;
+        }
 
-            headers: {
-                "Content-Type": "application/json"
-            },
 
-            body: JSON.stringify({
+        return "Find Your Perfect Match";
+    }
 
-                publicKey: publicKey,
 
-                sessionId: sessionId,
+    function getWidgetSubtitle () {
 
-                eventType: eventType,
+        if (
+            config &&
+            config.widget &&
+            config.widget.subtitle
+        ) {
 
-                payload: payload || {}
+            return config.widget.subtitle;
+        }
 
-            })
 
-        })
-            .then(function (response) {
+        return "";
+    }
 
-                if (!response.ok) {
 
-                    console.warn(
-                        "AskPearls: Event request failed:",
-                        response.status
-                    );
-                }
+    function getWidgetName () {
 
-            })
-            .catch(function (error) {
+        if (
+            config &&
+            config.widget &&
+            config.widget.name
+        ) {
 
-                console.warn(
-                    "AskPearls: Unable to send event.",
-                    error
-                );
+            return config.widget.name;
+        }
 
-            });
 
+        return "DecisionOS Widget";
     }
 
 
     /* =========================================================
-       9. SHOW LOADING
+       9. SEND ANALYTICS EVENT
+       ========================================================= */
+
+    function sendEvent (
+        eventType,
+        payload
+    ) {
+
+        fetch(
+            `${ apiUrl }/api/events`,
+            {
+
+                method:
+                    "POST",
+
+                headers:
+                {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify({
+
+                        publicKey:
+                            publicKey,
+
+                        sessionId:
+                            sessionId,
+
+                        eventType:
+                            eventType,
+
+                        payload:
+                            payload || {}
+
+                    })
+
+            }
+        )
+
+            .then(
+                function (response) {
+
+                    if (!response.ok) {
+
+                        console.warn(
+                            "AskPearls: Event request failed:",
+                            response.status
+                        );
+
+                    }
+
+                }
+            )
+
+            .catch(
+                function (error) {
+
+                    console.warn(
+                        "AskPearls: Unable to send event.",
+                        error
+                    );
+
+                }
+            );
+    }
+
+
+    /* =========================================================
+       10. SHOW LOADING
        ========================================================= */
 
     function showLoading () {
@@ -602,14 +850,14 @@
                     </div>
 
                     <div class="ap-title">
-                        Find Your Perfect Sofa
+                        Loading...
                     </div>
 
                 </div>
 
                 <div class="ap-loading">
 
-                    Loading...
+                    Loading DecisionOS...
 
                 </div>
 
@@ -620,7 +868,7 @@
 
 
     /* =========================================================
-       10. SHOW ERROR
+       11. SHOW ERROR
        ========================================================= */
 
     function showError (message) {
@@ -636,7 +884,9 @@
                     </div>
 
                     <div class="ap-title">
-                        Find Your Perfect Sofa
+                        ${ escapeHtml(
+            getWidgetTitle()
+        ) }
                     </div>
 
                 </div>
@@ -654,16 +904,14 @@
 
 
     /* =========================================================
-       11. RENDER CURRENT QUESTION
+       12. RENDER CURRENT QUESTION
        ========================================================= */
 
     function render () {
 
+
         /*
          * Safety check.
-         *
-         * This prevents the exact ".map is undefined"
-         * error we were getting before.
          */
 
         if (!config) {
@@ -676,7 +924,15 @@
         }
 
 
-        if (!Array.isArray(config.questions)) {
+        /*
+         * Validate questions.
+         */
+
+        if (
+            !Array.isArray(
+                config.questions
+            )
+        ) {
 
             console.error(
                 "AskPearls: config.questions is not an array.",
@@ -691,11 +947,14 @@
         }
 
 
-        /* -----------------------------------------------------
-           Are we finished?
-           ----------------------------------------------------- */
+        /*
+         * Are we finished?
+         */
 
-        if (questionIndex >= config.questions.length) {
+        if (
+            questionIndex >=
+            config.questions.length
+        ) {
 
             showRecommendation();
 
@@ -703,12 +962,14 @@
         }
 
 
-        /* -----------------------------------------------------
-           Get current question
-           ----------------------------------------------------- */
+        /*
+         * Get current question.
+         */
 
         const question =
-            config.questions[ questionIndex ];
+            config.questions[
+            questionIndex
+            ];
 
 
         if (!question) {
@@ -726,13 +987,17 @@
         }
 
 
-        /* -----------------------------------------------------
-           Make sure options is an array
-           ----------------------------------------------------- */
+        /*
+         * Make sure options is an array.
+         */
 
         const options =
-            Array.isArray(question.options)
+            Array.isArray(
+                question.options
+            )
+
                 ? question.options
+
                 : [];
 
 
@@ -751,23 +1016,58 @@
         }
 
 
-        /* -----------------------------------------------------
-           Progress
-           ----------------------------------------------------- */
+        /*
+         * Progress.
+         */
 
         const totalQuestions =
             config.questions.length;
 
+
         const currentNumber =
             questionIndex + 1;
 
+
         const progress =
-            (currentNumber / totalQuestions) * 100;
+            (
+                currentNumber /
+                totalQuestions
+            ) * 100;
 
 
-        /* -----------------------------------------------------
-           Render
-           ----------------------------------------------------- */
+        /*
+         * Widget information.
+         */
+
+        const title =
+            getWidgetTitle();
+
+
+        const subtitle =
+            getWidgetSubtitle();
+
+
+        const subtitleHtml =
+            subtitle
+
+                ? `
+
+                    <div class="ap-subtitle">
+
+                        ${ escapeHtml(
+                    subtitle
+                ) }
+
+                    </div>
+
+                `
+
+                : "";
+
+
+        /*
+         * Render.
+         */
 
         root.innerHTML = `
 
@@ -776,15 +1076,20 @@
                 <div class="ap-head">
 
                     <div class="ap-brand">
+
                         AskPearls DecisionOS
+
                     </div>
 
                     <div class="ap-title">
+
                         ${ escapeHtml(
-            config.title ||
-            "Find Your Perfect Match"
+            title
         ) }
+
                     </div>
+
+                    ${ subtitleHtml }
 
                 </div>
 
@@ -792,15 +1097,22 @@
                 <div class="ap-body">
 
 
+                    <!-- PROGRESS -->
+
                     <div class="ap-progress">
 
                         <div
                             class="ap-progress-bar"
-                            style="width:${ progress }%">
+                            style="
+                                width:${ progress }%;
+                            "
+                        >
                         </div>
 
                     </div>
 
+
+                    <!-- QUESTION NUMBER -->
 
                     <div
                         style="
@@ -810,11 +1122,15 @@
                         "
                     >
 
-                        Question ${ currentNumber }
-                        of ${ totalQuestions }
+                        Question
+                        ${ currentNumber }
+                        of
+                        ${ totalQuestions }
 
                     </div>
 
+
+                    <!-- QUESTION -->
 
                     <div class="ap-question">
 
@@ -825,29 +1141,35 @@
                     </div>
 
 
+                    <!-- OPTIONS -->
+
                     <div class="ap-options">
 
-                        ${ options.map(function (option) {
+                        ${ options
+                .map(
+                    function (option) {
 
-            return `
+                        return `
 
-                                <button
-                                    type="button"
-                                    class="ap-answer"
-                                    data-value="${ escapeAttr(
-                option.value
-            ) }"
-                                >
+                                        <button
+                                            type="button"
+                                            class="ap-answer"
+                                            data-value="${ escapeAttr(
+                            option.value
+                        ) }"
+                                        >
 
-                                    ${ escapeHtml(
-                option.text
-            ) }
+                                            ${ escapeHtml(
+                            option.text
+                        ) }
 
-                                </button>
+                                        </button>
 
-                            `;
+                                    `;
 
-        }).join("") }
+                    }
+                )
+                .join("") }
 
                     </div>
 
@@ -860,200 +1182,278 @@
 
 
         /* =====================================================
-           12. ANSWER BUTTON EVENTS
+           ANSWER BUTTON EVENTS
            ===================================================== */
 
         root
-            .querySelectorAll(".ap-answer")
-            .forEach(function (button) {
+            .querySelectorAll(
+                ".ap-answer"
+            )
+            .forEach(
+                function (button) {
 
-                button.addEventListener(
-                    "click",
-                    function () {
+                    button.addEventListener(
+                        "click",
+                        function () {
 
-                        const value =
-                            this.dataset.value;
-
-
-                        /* Save answer */
-
-                        answers[ question.key ] =
-                            value;
+                            const value =
+                                this.dataset.value;
 
 
-                        /* Send analytics */
+                            /*
+                             * Save answer.
+                             */
 
-                        sendEvent(
-                            "question_answered",
-                            {
-                                questionKey:
-                                    question.key,
-
-                                answerValue:
-                                    value,
-
-                                questionIndex:
-                                    questionIndex
-                            }
-                        );
+                            answers[
+                                question.key
+                            ] = value;
 
 
-                        /* Next question */
+                            /*
+                             * Send analytics.
+                             */
 
-                        questionIndex++;
+                            sendEvent(
+                                "question_answered",
+                                {
+
+                                    questionKey:
+                                        question.key,
+
+                                    answerValue:
+                                        value,
+
+                                    questionIndex:
+                                        questionIndex
+
+                                }
+                            );
 
 
-                        render();
+                            /*
+                             * Next question.
+                             */
 
-                    }
-                );
+                            questionIndex++;
 
-            });
+
+                            render();
+
+                        }
+                    );
+
+                }
+            );
 
     }
 
 
-
     /* =========================================================
-   13. DECISION / RECOMMENDATION
-   ========================================================= */
-
-
-    /* =========================================================
-       CALCULATE SCORE FOR EACH RECOMMENDATION
+       13. DECISION ENGINE
        ========================================================= */
+
+
+    /*
+     * ============================================================
+     *
+     * DECISIONOS MVP SCORING MODEL
+     *
+     * Every question has a maximum possible score of 50.
+     *
+     * Example:
+     *
+     * 2 questions
+     *
+     * 2 × 50
+     *
+     * = 100 maximum possible points
+     *
+     *
+     * Example visitor:
+     *
+     * users    = large
+     * priority = comfort
+     *
+     *
+     * Oslo:
+     *
+     * large   = 40
+     * comfort = 45
+     *
+     * total = 85
+     *
+     * match = 85 / 100 = 85%
+     *
+     * ============================================================
+     */
+
 
     function calculateRecommendationScores () {
 
+
+        /*
+         * Get recommendations.
+         */
+
         const recommendations =
-            Array.isArray(config.recommendations)
+            Array.isArray(
+                config.recommendations
+            )
+
                 ? config.recommendations
+
                 : [];
 
-        return recommendations.map(function (recommendation) {
 
-            let score = 0;
+        /*
+         * Maximum points allowed
+         * per question.
+         */
 
-            let maximumScore = 0;
-
-            const matchedReasons = [];
-
-            const rules =
-                Array.isArray(recommendation.rules)
-                    ? recommendation.rules
-                    : [];
+        const MAX_SCORE_PER_QUESTION =
+            50;
 
 
-            /* =====================================================
-               GROUP RULES BY QUESTION
-               ===================================================== */
+        /*
+         * Calculate maximum possible
+         * score for this widget.
+         *
+         * Example:
+         *
+         * 2 questions × 50 = 100
+         */
 
-            const rulesByQuestion = {};
+        const maximumScore =
+            Array.isArray(
+                config.questions
+            )
 
-            rules.forEach(function (rule) {
+                ? config.questions.length *
+                MAX_SCORE_PER_QUESTION
 
-                if (!rule || !rule.questionKey) {
-                    return;
-                }
-
-                if (!rulesByQuestion[ rule.questionKey ]) {
-
-                    rulesByQuestion[ rule.questionKey ] = [];
-
-                }
-
-                rulesByQuestion[ rule.questionKey ].push(rule);
-
-            });
+                : 0;
 
 
-            /* =====================================================
-               PROCESS EACH QUESTION
-               ===================================================== */
+        /*
+         * Calculate every recommendation.
+         */
 
-            if (Array.isArray(config.questions)) {
+        return recommendations.map(
+            function (recommendation) {
 
-                config.questions.forEach(function (question) {
+                let score = 0;
 
-                    if (!question || !question.key) {
-                        return;
-                    }
-
-
-                    const questionRules =
-                        rulesByQuestion[ question.key ] || [];
+                const matchedReasons = [];
 
 
-                    /* -------------------------------------------------
-                       Find maximum possible score for this question
-                       for this recommendation.
-                       ------------------------------------------------- */
+                /*
+                 * Get rules.
+                 */
 
-                    if (questionRules.length > 0) {
+                const rules =
+                    Array.isArray(
+                        recommendation.rules
+                    )
 
-                        let questionMaximum = 0;
+                        ? recommendation.rules
 
-                        questionRules.forEach(function (rule) {
+                        : [];
+
+
+                /*
+                 * Evaluate rules.
+                 */
+
+                rules.forEach(
+                    function (rule) {
+
+
+                        /*
+                         * Validate rule.
+                         */
+
+                        if (
+                            !rule ||
+                            !rule.questionKey
+                        ) {
+
+                            return;
+                        }
+
+
+                        /*
+                         * Visitor answer.
+                         */
+
+                        const visitorAnswer =
+                            answers[
+                            rule.questionKey
+                            ];
+
+
+                        /*
+                         * No answer.
+                         */
+
+                        if (
+                            visitorAnswer ===
+                            undefined ||
+
+                            visitorAnswer ===
+                            null
+                        ) {
+
+                            return;
+                        }
+
+
+                        /*
+                         * Does rule match?
+                         */
+
+                        if (
+                            String(
+                                visitorAnswer
+                            ) ===
+                            String(
+                                rule.answerValue
+                            )
+                        ) {
+
+
+                            /*
+                             * Get points.
+                             */
 
                             const points =
-                                Number(rule.score);
+                                Number(
+                                    rule.score
+                                );
+
+
+                            /*
+                             * Add points.
+                             */
 
                             if (
-                                !isNaN(points) &&
-                                points > questionMaximum
+                                !isNaN(
+                                    points
+                                )
                             ) {
 
-                                questionMaximum =
+                                score +=
                                     points;
 
                             }
 
-                        });
 
-                        maximumScore +=
-                            questionMaximum;
-                    }
+                            /*
+                             * Add reason.
+                             */
 
-
-                    /* -------------------------------------------------
-                       Get visitor's answer
-                       ------------------------------------------------- */
-
-                    const visitorAnswer =
-                        answers[ question.key ];
-
-
-                    if (
-                        visitorAnswer === undefined ||
-                        visitorAnswer === null
-                    ) {
-
-                        return;
-                    }
-
-
-                    /* -------------------------------------------------
-                       Find matching rule
-                       ------------------------------------------------- */
-
-                    questionRules.forEach(function (rule) {
-
-                        if (
-                            String(visitorAnswer) ===
-                            String(rule.answerValue)
-                        ) {
-
-                            const points =
-                                Number(rule.score);
-
-                            if (!isNaN(points)) {
-
-                                score += points;
-
-                            }
-
-
-                            if (rule.reason) {
+                            if (
+                                rule.reason
+                            ) {
 
                                 matchedReasons.push(
                                     rule.reason
@@ -1063,58 +1463,84 @@
 
                         }
 
-                    });
-
-                });
-
-            }
+                    }
+                );
 
 
-            /* =====================================================
-               RETURN CALCULATION
-               ===================================================== */
+                /*
+                 * Calculate match percentage.
+                 */
 
-            let percentage = 0;
+                let percentage = 0;
 
-            if (maximumScore > 0) {
+
+                if (
+                    maximumScore > 0
+                ) {
+
+                    percentage =
+                        Math.round(
+                            (
+                                score /
+                                maximumScore
+                            ) * 100
+                        );
+
+                }
+
+
+                /*
+                 * Protect percentage.
+                 *
+                 * It should never be
+                 * below 0 or above 100.
+                 */
 
                 percentage =
-                    Math.round(
-                        (score / maximumScore) * 100
+                    Math.max(
+                        0,
+                        Math.min(
+                            100,
+                            percentage
+                        )
                     );
 
+
+                /*
+                 * Return calculation.
+                 */
+
+                return {
+
+                    recommendation:
+                        recommendation,
+
+                    score:
+                        score,
+
+                    maximumScore:
+                        maximumScore,
+
+                    percentage:
+                        percentage,
+
+                    matchedReasons:
+                        matchedReasons
+
+                };
+
             }
-
-
-            return {
-
-                recommendation:
-                    recommendation,
-
-                score:
-                    score,
-
-                maximumScore:
-                    maximumScore,
-
-                percentage:
-                    percentage,
-
-                matchedReasons:
-                    matchedReasons
-
-            };
-
-        });
+        );
 
     }
 
 
     /* =========================================================
-       GET BEST RECOMMENDATION
+       14. GET BEST RECOMMENDATION
        ========================================================= */
 
     function getBestRecommendation () {
+
 
         const results =
             calculateRecommendationScores();
@@ -1126,24 +1552,28 @@
         ) {
 
             return null;
-
         }
 
 
-        /* =====================================================
-           SORT BY HIGHEST SCORE
-           ===================================================== */
+        /*
+         * Sort highest score first.
+         */
 
-        results.sort(function (a, b) {
+        results.sort(
+            function (a, b) {
 
-            return b.score - a.score;
+                return (
+                    b.score -
+                    a.score
+                );
 
-        });
+            }
+        );
 
 
-        /* =====================================================
-           DEBUG
-           ===================================================== */
+        /*
+         * Development debug.
+         */
 
         console.log(
             "AskPearls DecisionOS - Recommendation Scores:",
@@ -1157,14 +1587,15 @@
 
 
     /* =========================================================
-       SHOW RECOMMENDATION
+       15. SHOW RECOMMENDATION
        ========================================================= */
 
     function showRecommendation () {
 
-        /* =====================================================
-           GET BEST RECOMMENDATION
-           ===================================================== */
+
+        /*
+         * Calculate best result.
+         */
 
         const result =
             getBestRecommendation();
@@ -1177,13 +1608,12 @@
             );
 
             return;
-
         }
 
 
-        /* =====================================================
-           RESULT DATA
-           ===================================================== */
+        /*
+         * Result.
+         */
 
         const recommendation =
             result.recommendation;
@@ -1202,14 +1632,18 @@
 
 
         const matchedReasons =
-            Array.isArray(result.matchedReasons)
+            Array.isArray(
+                result.matchedReasons
+            )
+
                 ? result.matchedReasons
+
                 : [];
 
 
-        /* =====================================================
-           SAFE VALUES
-           ===================================================== */
+        /*
+         * Safe recommendation values.
+         */
 
         const recommendationName =
             recommendation.name ||
@@ -1228,12 +1662,15 @@
 
         const shortDescription =
             recommendation.shortDescription ||
+
             recommendation.description ||
+
             "This recommendation matches your preferences.";
 
 
         const ctaText =
             recommendation.ctaText ||
+
             "View Recommendation";
 
 
@@ -1241,8 +1678,18 @@
             Array.isArray(
                 recommendation.highlights
             )
+
                 ? recommendation.highlights
+
                 : [];
+
+
+        /*
+         * Widget title.
+         */
+
+        const widgetTitle =
+            getWidgetTitle();
 
 
         /* =====================================================
@@ -1252,49 +1699,64 @@
         let reasonsHtml = "";
 
 
-        if (matchedReasons.length > 0) {
+        if (
+            matchedReasons.length > 0
+        ) {
 
             reasonsHtml =
                 matchedReasons
-                    .map(function (reason) {
+                    .map(
+                        function (reason) {
 
-                        return `
+                            return `
 
-                        <div class="ap-reason">
+                                <div class="ap-reason">
 
-                            <span class="ap-check">
-                                ✓
-                            </span>
+                                    <span class="ap-check">
 
-                            <span>
-                                ${ escapeHtml(reason) }
-                            </span>
+                                        ✓
 
-                        </div>
+                                    </span>
 
-                    `;
+                                    <span>
 
-                    })
+                                        ${ escapeHtml(
+                                reason
+                            ) }
+
+                                    </span>
+
+                                </div>
+
+                            `;
+
+                        }
+                    )
                     .join("");
 
         }
+
         else {
 
             reasonsHtml = `
 
-            <div class="ap-reason">
+                <div class="ap-reason">
 
-                <span class="ap-check">
-                    ✓
-                </span>
+                    <span class="ap-check">
 
-                <span>
-                    Good overall match
-                </span>
+                        ✓
 
-            </div>
+                    </span>
 
-        `;
+                    <span>
+
+                        Good overall match
+
+                    </span>
+
+                </div>
+
+            `;
 
         }
 
@@ -1306,23 +1768,29 @@
         let highlightsHtml = "";
 
 
-        if (highlights.length > 0) {
+        if (
+            highlights.length > 0
+        ) {
 
             highlightsHtml =
                 highlights
-                    .map(function (highlight) {
+                    .map(
+                        function (highlight) {
 
-                        return `
+                            return `
 
-                        <span class="ap-highlight">
+                                <span class="ap-highlight">
 
-                            ${ escapeHtml(highlight) }
+                                    ${ escapeHtml(
+                                highlight
+                            ) }
 
-                        </span>
+                                </span>
 
-                    `;
+                            `;
 
-                    })
+                        }
+                    )
                     .join("");
 
         }
@@ -1339,13 +1807,17 @@
 
             imageHtml = `
 
-            <img
-                class="ap-result-image"
-                src="${ escapeAttr(imageUrl) }"
-                alt="${ escapeAttr(recommendationName) }"
-            >
+                <img
+                    class="ap-result-image"
+                    src="${ escapeAttr(
+                imageUrl
+            ) }"
+                    alt="${ escapeAttr(
+                recommendationName
+            ) }"
+                >
 
-        `;
+            `;
 
         }
 
@@ -1386,170 +1858,188 @@
 
         root.innerHTML = `
 
-        <div class="ap-card">
+            <div class="ap-card">
 
-            ${ imageHtml }
-
-            <div class="ap-head">
-
-                <div class="ap-brand">
-
-                    AskPearls DecisionOS
-
-                </div>
-
-                <div class="ap-title">
-
-                    Your Sofa Match
-
-                </div>
-
-            </div>
+                ${ imageHtml }
 
 
-            <div class="ap-body">
+                <div class="ap-head">
+
+                    <div class="ap-brand">
+
+                        AskPearls DecisionOS
+
+                    </div>
 
 
-                <!-- MATCH -->
+                    <div class="ap-title">
 
-                <div class="ap-match">
+                        Your Sofa Match
 
-                    ✓ ${ matchPercentage }% Match
+                    </div>
 
                 </div>
 
 
-                <!-- POINTS -->
-
-                <div
-                    style="
-                        font-size:12px;
-                        color:#667085;
-                        margin-bottom:12px;
-                    "
-                >
-
-                    Decision score:
-                    <strong>
-                        ${ score }
-                    </strong>
-                    points
-
-                </div>
+                <div class="ap-body">
 
 
-                <!-- RECOMMENDATION -->
+                    <!-- MATCH -->
 
-                <div class="ap-result-label">
+                    <div class="ap-match">
 
-                    We recommend:
+                        ✓
+                        ${ matchPercentage }%
+                        Match
 
-                </div>
+                    </div>
 
 
-                <div class="ap-result-name">
+                    <!-- SCORE -->
 
-                    ${ escapeHtml(
+                    <div
+                        style="
+                            font-size:12px;
+                            color:#667085;
+                            margin-bottom:12px;
+                        "
+                    >
+
+                        Decision score:
+
+                        <strong>
+
+                            ${ score }
+
+                        </strong>
+
+                        /
+
+                        ${ maximumScore }
+
+                    </div>
+
+
+                    <!-- RECOMMENDATION -->
+
+                    <div class="ap-result-label">
+
+                        We recommend:
+
+                    </div>
+
+
+                    <div class="ap-result-name">
+
+                        ${ escapeHtml(
             recommendationName
         ) }
 
-                </div>
+                    </div>
 
 
-                <!-- DESCRIPTION -->
+                    <!-- DESCRIPTION -->
 
-                <div class="ap-result-short">
+                    <div class="ap-result-short">
 
-                    ${ escapeHtml(
+                        ${ escapeHtml(
             shortDescription
         ) }
 
-                </div>
+                    </div>
 
 
-                <!-- WHY -->
+                    <!-- WHY -->
 
-                ${ matchedReasons.length > 0
+                    ${ matchedReasons.length > 0
 
                 ? `
 
-                            <div class="ap-section-title">
+                                <div class="ap-section-title">
 
-                                Why it matches you
+                                    Why it matches you
 
-                            </div>
+                                </div>
 
-                            <div class="ap-reasons">
 
-                                ${ reasonsHtml }
+                                <div class="ap-reasons">
 
-                            </div>
+                                    ${ reasonsHtml }
 
-                        `
+                                </div>
+
+                            `
 
                 : ""
             }
 
 
-                <!-- HIGHLIGHTS -->
+                    <!-- HIGHLIGHTS -->
 
-                ${ highlights.length > 0
+                    ${ highlights.length > 0
 
                 ? `
 
-                            <div class="ap-section-title">
+                                <div class="ap-section-title">
 
-                                Highlights
+                                    Highlights
 
-                            </div>
+                                </div>
 
-                            <div class="ap-highlights">
 
-                                ${ highlightsHtml }
+                                <div class="ap-highlights">
 
-                            </div>
+                                    ${ highlightsHtml }
 
-                        `
+                                </div>
+
+                            `
 
                 : ""
             }
 
 
-                <!-- ACTIONS -->
+                    <!-- ACTIONS -->
 
-                <div class="ap-result-actions">
-
-                    <a
-                        href="${ escapeAttr(productUrl) }"
-                        class="ap-cta"
-                        id="ap-result-cta"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-
-                        ${ escapeHtml(ctaText) }
-
-                    </a>
+                    <div class="ap-result-actions">
 
 
-                    <button
-                        type="button"
-                        class="ap-restart"
-                        id="ap-restart"
-                    >
+                        <a
+                            href="${ escapeAttr(
+                productUrl
+            ) }"
+                            class="ap-cta"
+                            id="ap-result-cta"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
 
-                        Start Again
+                            ${ escapeHtml(
+                ctaText
+            ) }
 
-                    </button>
+                        </a>
+
+
+                        <button
+                            type="button"
+                            class="ap-restart"
+                            id="ap-restart"
+                        >
+
+                            Start Again
+
+                        </button>
+
+
+                    </div>
+
 
                 </div>
-
 
             </div>
 
-        </div>
-
-    `;
+        `;
 
 
         /* =====================================================
@@ -1577,6 +2067,9 @@
 
                             score:
                                 score,
+
+                            maximumScore:
+                                maximumScore,
 
                             matchPercentage:
                                 matchPercentage,
@@ -1609,22 +2102,45 @@
                 "click",
                 function () {
 
-                    questionIndex = 0;
+
+                    /*
+                     * Reset question.
+                     */
+
+                    questionIndex =
+                        0;
 
 
-                    Object.keys(answers)
-                        .forEach(function (key) {
+                    /*
+                     * Clear answers.
+                     */
 
-                            delete answers[ key ];
+                    Object.keys(
+                        answers
+                    )
+                        .forEach(
+                            function (key) {
 
-                        });
+                                delete
+                                    answers[ key ];
 
+                            }
+                        );
+
+
+                    /*
+                     * Track restart.
+                     */
 
                     sendEvent(
                         "widget_restarted",
                         {}
                     );
 
+
+                    /*
+                     * Render first question.
+                     */
 
                     render();
 
@@ -1637,17 +2153,24 @@
 
 
     /* =========================================================
-       14. LOAD CONFIGURATION FROM API
+       16. LOAD CONFIGURATION FROM API
        ========================================================= */
 
     async function load () {
 
+
         showLoading();
 
 
+        /*
+         * API URL.
+         */
+
         const url =
             `${ apiUrl }/api/widgets/` +
-            encodeURIComponent(publicKey);
+            encodeURIComponent(
+                publicKey
+            );
 
 
         console.log(
@@ -1655,6 +2178,10 @@
             url
         );
 
+
+        /*
+         * Request configuration.
+         */
 
         const response =
             await fetch(url);
@@ -1669,13 +2196,17 @@
         }
 
 
+        /*
+         * Parse JSON.
+         */
+
         config =
             await response.json();
 
 
-        /* -----------------------------------------------------
-           DEBUG
-        ----------------------------------------------------- */
+        /*
+         * Debug.
+         */
 
         console.log(
             "AskPearls: Widget configuration loaded:",
@@ -1683,9 +2214,9 @@
         );
 
 
-        /* -----------------------------------------------------
-           Validate configuration
-        ----------------------------------------------------- */
+        /* =====================================================
+           VALIDATE CONFIGURATION
+           ===================================================== */
 
         if (!config) {
 
@@ -1696,7 +2227,31 @@
         }
 
 
-        if (!Array.isArray(config.questions)) {
+        /*
+         * Widget object.
+         */
+
+        if (
+            !config.widget ||
+            typeof config.widget !== "object"
+        ) {
+
+            throw new Error(
+                "Widget configuration does not contain a valid widget object."
+            );
+
+        }
+
+
+        /*
+         * Questions.
+         */
+
+        if (
+            !Array.isArray(
+                config.questions
+            )
+        ) {
 
             throw new Error(
                 "Widget configuration does not contain a valid questions array."
@@ -1705,7 +2260,15 @@
         }
 
 
-        if (!Array.isArray(config.recommendations)) {
+        /*
+         * Recommendations.
+         */
+
+        if (
+            !Array.isArray(
+                config.recommendations
+            )
+        ) {
 
             throw new Error(
                 "Widget configuration does not contain a valid recommendations array."
@@ -1714,25 +2277,63 @@
         }
 
 
-        /* -----------------------------------------------------
-           Track widget loaded
-        ----------------------------------------------------- */
+        /*
+         * Validate widget key.
+         *
+         * We don't require it to be identical
+         * to the script publicKey yet, but we
+         * can warn during development.
+         */
+
+        if (
+            config.widget.key &&
+            config.widget.key !== publicKey
+        ) {
+
+            console.warn(
+                "AskPearls: Widget configuration key does not match the script public key.",
+                {
+                    scriptKey:
+                        publicKey,
+
+                    configurationKey:
+                        config.widget.key
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           TRACK WIDGET LOADED
+           ===================================================== */
 
         sendEvent(
             "widget_loaded",
             {
-                title: config.title,
+
+                widgetKey:
+                    config.widget.key,
+
+                widgetName:
+                    config.widget.name,
+
+                title:
+                    config.widget.title,
+
                 questionCount:
                     config.questions.length,
+
                 recommendationCount:
                     config.recommendations.length
+
             }
         );
 
 
-        /* -----------------------------------------------------
-           Render first question
-        ----------------------------------------------------- */
+        /* =====================================================
+           RENDER FIRST QUESTION
+           ===================================================== */
 
         render();
 
@@ -1740,24 +2341,27 @@
 
 
     /* =========================================================
-       15. START WIDGET
+       17. START WIDGET
        ========================================================= */
 
     load()
-        .catch(function (error) {
 
-            console.error(
-                "AskPearls:",
-                error
-            );
+        .catch(
+            function (error) {
+
+                console.error(
+                    "AskPearls:",
+                    error
+                );
 
 
-            showError(
-                "Unable to load the AskPearls widget. " +
-                "Please try again later."
-            );
+                showError(
+                    "Unable to load the AskPearls widget. " +
+                    "Please try again later."
+                );
 
-        });
+            }
+        );
 
 
 })(window, document);

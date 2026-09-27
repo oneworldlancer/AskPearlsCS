@@ -92,3 +92,41 @@ public class Subscription : Entity
     public string Plan { get; set; } = "Free";
     public string Status { get; set; } = "Active";
 }
+
+
+
+
+public class Recommendation : Entity
+{
+    public int WidgetVersionId { get; set; }
+
+    public string Key { get; set; } = string.Empty;
+
+    public string Name { get; set; } = string.Empty;
+
+    public string? ImageUrl { get; set; }
+
+    public string? Url { get; set; }
+
+    public string? ShortDescription { get; set; }
+
+    public string? Description { get; set; }
+
+    public string? CtaText { get; set; }
+
+    public string? HighlightsJson { get; set; }
+
+    public int SortOrder { get; set; }
+
+    public bool IsActive { get; set; } = true;
+
+
+    /*
+     * Navigation
+     */
+
+    public WidgetVersion? WidgetVersion { get; set; }
+
+    public ICollection<DecisionRule> DecisionRules { get; set; }
+        = new List<DecisionRule>();
+}
