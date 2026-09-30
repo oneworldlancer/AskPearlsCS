@@ -11,8 +11,4 @@
     <ProjectReference Include="..\AskPearlsCS_DOMAIN\AskPearlsCS_DOMAIN.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
 </Project>
