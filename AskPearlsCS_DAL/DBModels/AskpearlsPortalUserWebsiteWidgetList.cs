@@ -23,6 +23,16 @@ public partial class AskpearlsPortalUserWebsiteWidgetList
 
     public string? WidgetTokenId { get; set; }
 
+    public string? WidgetCode { get; set; }
+
+    public string? WidgetType { get; set; }
+
+    public string? WidgetName { get; set; }
+
+    public string? WidgetTitle { get; set; }
+
+    public string? WidgetDescription { get; set; }
+
     public string? WebsiteTokenId { get; set; }
 
     public string? WebsiteName { get; set; }

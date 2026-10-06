@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using AskPearlsCS_DAL.DBModels;
-
 using Microsoft.EntityFrameworkCore;
+using AskPearlsCS_DAL.DBModels;
 
 namespace AskPearlsCS_DAL.DBContext;
 
@@ -1844,7 +1842,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadDay");
             entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadMonth");
             entity.Property(e => e.UploadTime)
-                .HasDefaultValue(new DateTime(2026, 9, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadTime")
+                .HasDefaultValue(new DateTime(2026, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadTime")
                 .HasColumnType("smalldatetime");
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadYear");
             entity.Property(e => e.UpostId)
@@ -10568,7 +10566,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadDay");
             entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadMonth");
             entity.Property(e => e.UploadTime)
-                .HasDefaultValue(new DateTime(2026, 9, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadTime")
+                .HasDefaultValue(new DateTime(2026, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadTime")
                 .HasColumnType("smalldatetime");
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadYear");
             entity.Property(e => e.UpostId).HasColumnName("UPostID");

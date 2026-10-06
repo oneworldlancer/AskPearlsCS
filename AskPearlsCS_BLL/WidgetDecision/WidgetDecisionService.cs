@@ -28,174 +28,176 @@ namespace AskPearlsCS_BLL.WidgetDecision
         public async Task<DecisionResult> EvaluateAsync(
             DecisionEvaluationRequest request)
         {
-            // ---------------------------------------------------------
-            // 1. Find widget
-            // ---------------------------------------------------------
+            return null;
 
-            var widget = await _dbContext.AskpearlsPortalUserWebsiteWidgetLists
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x =>
-                    x.WidgetPublicKey == request.WidgetKey &&
-                    x.WidgetStatus  == "Published");
+            //////////// ---------------------------------------------------------
+            //////////// 1. Find widget
+            //////////// ---------------------------------------------------------
 
-            if (widget == null)
-            {
-                return new DecisionResult
-                {
-                    Success = false
-                };
-            }
+            //////////var widget = await _dbContext.AskpearlsPortalUserWebsiteWidgetLists
+            //////////    .AsNoTracking()
+            //////////    .FirstOrDefaultAsync(x =>
+            //////////        x.WidgetPublicKey == request.WidgetKey &&
+            //////////        x.WidgetStatus  == "Published");
 
-            // ---------------------------------------------------------
-            // 2. Find published widget version
-            // ---------------------------------------------------------
+            //////////if (widget == null)
+            //////////{
+            //////////    return new DecisionResult
+            //////////    {
+            //////////        Success = false
+            //////////    };
+            //////////}
 
-            var widgetVersion = await _dbContext.AskpearlsPortalUserWebsiteWidgetVersionLists
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x =>
-                    x.WidgetTokenId == widget.WidgetTokenId &&
-                    x.WidgetPublishedVersion == widget.WidgetPublishedVersion &&
-                    x.WidgetStatus == "Published");
+            //////////// ---------------------------------------------------------
+            //////////// 2. Find published widget version
+            //////////// ---------------------------------------------------------
 
-            if (widgetVersion == null)
-            {
-                return new DecisionResult
-                {
-                    Success = false
-                };
-            }
+            //////////var widgetVersion = await _dbContext.AskpearlsPortalUserWebsiteWidgetVersionLists
+            //////////    .AsNoTracking()
+            //////////    .FirstOrDefaultAsync(x =>
+            //////////        x.WidgetTokenId == widget.WidgetTokenId &&
+            //////////        x.WidgetPublishedVersion == widget.WidgetPublishedVersion &&
+            //////////        x.WidgetStatus == "Published");
 
-            // ---------------------------------------------------------
-            // 3. Load questions
-            // ---------------------------------------------------------
+            //////////if (widgetVersion == null)
+            //////////{
+            //////////    return new DecisionResult
+            //////////    {
+            //////////        Success = false
+            //////////    };
+            //////////}
 
-            var questions = await _dbContext.AskpearlsPortalUserwidgetQuestionLists
-                .AsNoTracking()
-                .Where(x =>
-                    x.WidgetVersionId == widgetVersion.Id)
-                .OrderBy(x => x.SortOrder)
-                .ToListAsync();
+            //////////// ---------------------------------------------------------
+            //////////// 3. Load questions
+            //////////// ---------------------------------------------------------
 
-            // ---------------------------------------------------------
-            // 4. Load recommendation items
-            // ---------------------------------------------------------
+            //////////var questions = await _dbContext.AskpearlsPortalUserwidgetQuestionLists
+            //////////    .AsNoTracking()
+            //////////    .Where(x =>
+            //////////        x.WidgetVersionId == widgetVersion.Id)
+            //////////    .OrderBy(x => x.SortOrder)
+            //////////    .ToListAsync();
 
-            var recommendationItems =
-                await _dbContext.RecommendationItems
-                    .AsNoTracking()
-                    .Where(x =>
-                        x.WidgetVersionId == widgetVersion.Id &&
-                        x.IsActive)
-                    .OrderBy(x => x.SortOrder)
-                    .ToListAsync();
+            //////////// ---------------------------------------------------------
+            //////////// 4. Load recommendation items
+            //////////// ---------------------------------------------------------
 
-            // ---------------------------------------------------------
-            // 5. Load decision rules
-            // ---------------------------------------------------------
+            //////////var recommendationItems =
+            //////////    await _dbContext.RecommendationItems
+            //////////        .AsNoTracking()
+            //////////        .Where(x =>
+            //////////            x.WidgetVersionId == widgetVersion.Id &&
+            //////////            x.IsActive)
+            //////////        .OrderBy(x => x.SortOrder)
+            //////////        .ToListAsync();
 
-            var decisionRules =
-                await _dbContext.DecisionRules
-                    .AsNoTracking()
-                    .Where(x =>
-                        x.WidgetVersionId == widgetVersion.Id)
-                    .ToListAsync();
+            //////////// ---------------------------------------------------------
+            //////////// 5. Load decision rules
+            //////////// ---------------------------------------------------------
 
-            // ---------------------------------------------------------
-            // 6. Convert DB questions → DecisionOS questions
-            // ---------------------------------------------------------
+            //////////var decisionRules =
+            //////////    await _dbContext.DecisionRules
+            //////////        .AsNoTracking()
+            //////////        .Where(x =>
+            //////////            x.WidgetVersionId == widgetVersion.Id)
+            //////////        .ToListAsync();
 
-            var decisionQuestions =
-                questions
-                    .Select(x => new DecisionQuestion
-                    {
-                        Key = x.Key
-                    })
-                    .ToList();
+            //////////// ---------------------------------------------------------
+            //////////// 6. Convert DB questions → DecisionOS questions
+            //////////// ---------------------------------------------------------
 
-            // ---------------------------------------------------------
-            // 7. Convert DB recommendations → DecisionOS
-            // ---------------------------------------------------------
+            //////////var decisionQuestions =
+            //////////    questions
+            //////////        .Select(x => new DecisionQuestion
+            //////////        {
+            //////////            Key = x.Key
+            //////////        })
+            //////////        .ToList();
 
-            var decisionRecommendations =
-                recommendationItems
-                    .Select(recommendation =>
-                    {
-                        var rules = decisionRules
-                            .Where(rule =>
-                                rule.RecommendationItemId ==
-                                recommendation.Id)
-                            .Select(rule =>
-                            {
-                                var question =
-                                    questions.FirstOrDefault(q =>
-                                        q.Id == rule.QuestionId);
+            //////////// ---------------------------------------------------------
+            //////////// 7. Convert DB recommendations → DecisionOS
+            //////////// ---------------------------------------------------------
 
-                                var answer =
-                                    question == null
-                                        ? null
-                                        : _dbContext.Answers
-                                            .AsNoTracking()
-                                            .FirstOrDefault(a =>
-                                                a.Id == rule.AnswerId);
+            //////////var decisionRecommendations =
+            //////////    recommendationItems
+            //////////        .Select(recommendation =>
+            //////////        {
+            //////////            var rules = decisionRules
+            //////////                .Where(rule =>
+            //////////                    rule.RecommendationItemId ==
+            //////////                    recommendation.Id)
+            //////////                .Select(rule =>
+            //////////                {
+            //////////                    var question =
+            //////////                        questions.FirstOrDefault(q =>
+            //////////                            q.Id == rule.QuestionId);
 
-                                return new DecisionRuleInput
-                                {
-                                    QuestionKey =
-                                        question?.Key ?? string.Empty,
+            //////////                    var answer =
+            //////////                        question == null
+            //////////                            ? null
+            //////////                            : _dbContext.Answers
+            //////////                                .AsNoTracking()
+            //////////                                .FirstOrDefault(a =>
+            //////////                                    a.Id == rule.AnswerId);
 
-                                    AnswerValue =
-                                        answer?.Value ?? string.Empty,
+            //////////                    return new DecisionRuleInput
+            //////////                    {
+            //////////                        QuestionKey =
+            //////////                            question?.Key ?? string.Empty,
 
-                                    Score =
-                                        rule.Score,
+            //////////                        AnswerValue =
+            //////////                            answer?.Value ?? string.Empty,
 
-                                    Reason =
-                                        rule.Reason
-                                };
-                            })
-                            .Where(x =>
-                                !string.IsNullOrWhiteSpace(
-                                    x.QuestionKey))
-                            .ToList();
+            //////////                        Score =
+            //////////                            rule.Score,
 
-                        return new DecisionRecommendation
-                        {
-                            Key = recommendation.Key,
+            //////////                        Reason =
+            //////////                            rule.Reason
+            //////////                    };
+            //////////                })
+            //////////                .Where(x =>
+            //////////                    !string.IsNullOrWhiteSpace(
+            //////////                        x.QuestionKey))
+            //////////                .ToList();
 
-                            Name = recommendation.Name,
+            //////////            return new DecisionRecommendation
+            //////////            {
+            //////////                Key = recommendation.Key,
 
-                            ImageUrl =
-                                recommendation.ImageUrl,
+            //////////                Name = recommendation.Name,
 
-                            Url =
-                                recommendation.Url,
+            //////////                ImageUrl =
+            //////////                    recommendation.ImageUrl,
 
-                            ShortDescription =
-                                recommendation.ShortDescription,
+            //////////                Url =
+            //////////                    recommendation.Url,
 
-                            Description =
-                                recommendation.Description,
+            //////////                ShortDescription =
+            //////////                    recommendation.ShortDescription,
 
-                            CtaText =
-                                recommendation.CtaText,
+            //////////                Description =
+            //////////                    recommendation.Description,
 
-                            Highlights =
-                                ParseHighlights(
-                                    recommendation.HighlightsJson),
+            //////////                CtaText =
+            //////////                    recommendation.CtaText,
 
-                            Rules = rules
-                        };
-                    })
-                    .ToList();
+            //////////                Highlights =
+            //////////                    ParseHighlights(
+            //////////                        recommendation.HighlightsJson),
 
-            // ---------------------------------------------------------
-            // 8. Run DecisionOS
-            // ---------------------------------------------------------
+            //////////                Rules = rules
+            //////////            };
+            //////////        })
+            //////////        .ToList();
 
-            return _decisionEngine.Evaluate(
-                decisionQuestions,
-                decisionRecommendations,
-                request.Answers);
+            //////////// ---------------------------------------------------------
+            //////////// 8. Run DecisionOS
+            //////////// ---------------------------------------------------------
+
+            //////////return _decisionEngine.Evaluate(
+            //////////    decisionQuestions,
+            //////////    decisionRecommendations,
+            //////////    request.Answers);
         }
 
         private static List<string> ParseHighlights(
