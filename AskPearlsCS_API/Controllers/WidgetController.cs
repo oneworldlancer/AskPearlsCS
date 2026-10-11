@@ -1,4 +1,5 @@
 //using AskPearls.Infrastructure;
+using AskPearlsCS_BLL.app_Service;
 using AskPearlsCS_BLL.DecisionOSManager;
 
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,126 @@ namespace AskPearlsCS_API.Controllers;
 [ApiController]
 [Route("api/widgets")]
 public class WidgetController : ControllerBase
-//public class WidgetController(AskPearlsDbContext db) : ControllerBase
+//public class WidgetController(DBContextModel db) : ControllerBase
 {
+
+    private readonly IWidget_Service _widgetService;
+    private readonly IWidgetVersion_Service _widgetVersionService;
+    private readonly IQuestion_Service _questionService;
+
+    public WidgetController(
+       IWidget_Service widgetService,
+       IWidgetVersion_Service widgetVersionService,
+       IQuestion_Service questionService)
+    {
+        _widgetService = widgetService;
+        _widgetVersionService = widgetVersionService;
+        _questionService = questionService;
+    }
+
+
+
     [HttpGet("{publicKey}")]
     public async Task<IActionResult> GetPublished(string publicKey)
+    {
+        if (string.IsNullOrWhiteSpace(publicKey))
+        {
+            return BadRequest(new
+            {
+                message = "Widget public key is required."
+            });
+        }
+
+        var widget = await _widgetService
+            .GetPublishedWidgetAsync(publicKey);
+
+        if (widget == null)
+        {
+            return NotFound(new
+            {
+                message = "Published widget was not found."
+            });
+        }
+
+        return Ok(widget);
+    }
+
+
+
+
+    [HttpGet("{publicKey}/version")]
+    public async Task<IActionResult> GetPublishedVersion(
+    string publicKey)
+    {
+        if (string.IsNullOrWhiteSpace(publicKey))
+        {
+            return BadRequest(new
+            {
+                message = "Widget public key is required."
+            });
+        }
+
+        var version = await _widgetVersionService
+            .GetPublishedVersionAsync(publicKey);
+
+        if (version == null)
+        {
+            return NotFound(new
+            {
+                message = "Published widget version was not found."
+            });
+        }
+
+        return Ok(new
+        {
+            version.VersionTokenId,
+            version.VersionNumber,
+            version.Status,
+            version.ConfigurationJson
+        });
+    }
+
+
+
+
+
+    [HttpGet("{publicKey}/questions")]
+    public async Task<IActionResult> GetPublishedQuestions(string publicKey)
+    {
+        if (string.IsNullOrWhiteSpace(publicKey))
+        {
+            return BadRequest(new
+            {
+                message = "Widget public key is required."
+            });
+        }
+
+        var questions =
+            await _questionService.GetPublishedQuestionsAsync(publicKey);
+
+        if (questions.Count == 0)
+        {
+            return NotFound(new
+            {
+                message = "No published questions were found for this widget."
+            });
+        }
+
+        return Ok(new
+        {
+            widgetPublicKey = publicKey,
+            questions
+        });
+    }
+
+
+
+
+
+
+
+    //[HttpGet("{publicKey}")]
+    public async Task<IActionResult> GetPublished_X3(string publicKey)
     {
         if (publicKey != "pk_demo_sofa_finder")
             return NotFound();

@@ -17,33 +17,83 @@ public partial class AskpearlsPortalUserWebsiteWidgetDecisionRuleList
 
     public string? OwnerMobileNumberTokenId { get; set; }
 
+    public string? OrganizationTokenId { get; set; }
+
     public string? CompanyTokenId { get; set; }
 
     public string? CompanyName { get; set; }
 
+    public string? WebsiteTokenId { get; set; }
+
     public string? WidgetTokenId { get; set; }
+
+    public string? DecisionRuleTokenId { get; set; }
+
+    public string? DecisionRuleCode { get; set; }
+
+    public string? DecisionRuleType { get; set; }
+
+    public string? DecisionRuleKey { get; set; }
+
+    public string? DecisionRuleValue { get; set; }
 
     public string? WidgetQuestionTokenId { get; set; }
 
+    public string? WidgetQuestionCode { get; set; }
+
+    public string? WidgetQuestionType { get; set; }
+
+    public string? WidgetQuestionKey { get; set; }
+
+    public string? WidgetQuestionValue { get; set; }
+
     public string? WidgetAnswerTokenId { get; set; }
 
-    public string? WebsiteTokenId { get; set; }
+    public string? WidgetAnswerCode { get; set; }
+
+    public string? WidgetAnswerType { get; set; }
+
+    public string? WidgetAnswerKey { get; set; }
+
+    public string? WidgetAnswerValue { get; set; }
+
+    public string? RecommendationTokenId { get; set; }
+
+    public string? RecommendationCode { get; set; }
+
+    public string? RecommendationType { get; set; }
+
+    public string? RecommendationKey { get; set; }
+
+    public string? RecommendationValue { get; set; }
+
+    public int? DecisionRuleScore { get; set; }
+
+    public string? DecisionRuleReason { get; set; }
+
+    public string? WidgetVersionTokenId4 { get; set; }
+
+    public string? WidgetVersionTokenId3 { get; set; }
+
+    public string? WidgetVersionTokenId2 { get; set; }
+
+    public string? WidgetVersionTokenId1 { get; set; }
 
     public string? WebsiteName { get; set; }
 
     public string? WidgetPublicKey { get; set; }
 
-    public string? WebsiteWidgetVersionTokenId { get; set; }
-
     public string? AnswerValue { get; set; }
 
-    public string? RecommendationKey { get; set; }
-
-    public string? Score { get; set; }
+    public string? WidgetVersionTokenId { get; set; }
 
     public string? WidgetVersionNumber { get; set; }
 
     public string? WidgetConfigurationJson { get; set; }
+
+    public string? WidgetStatusCode { get; set; }
+
+    public string? WidgetStatusText { get; set; }
 
     public string? WidgetStatus { get; set; }
 
@@ -60,28 +110,6 @@ public partial class AskpearlsPortalUserWebsiteWidgetDecisionRuleList
     public string? WebsiteAddress { get; set; }
 
     public string? WebsiteZipCode { get; set; }
-
-    public string? WebsiteType { get; set; }
-
-    public string? WebsiteHeight { get; set; }
-
-    public string? StoreysNumber { get; set; }
-
-    public string? DwellingsNumber { get; set; }
-
-    public string? WebsiteDay { get; set; }
-
-    public string? WebsiteMonth { get; set; }
-
-    public string? WebsiteYear { get; set; }
-
-    public string? WebsiteDate { get; set; }
-
-    public string? WebsiteUprn { get; set; }
-
-    public string? EngcodeTokenId { get; set; }
-
-    public string? Hrbnumber { get; set; }
 
     public string? ImageTokenId { get; set; }
 
@@ -100,6 +128,10 @@ public partial class AskpearlsPortalUserWebsiteWidgetDecisionRuleList
     public string? ActiveStatus { get; set; }
 
     public bool? IsActive { get; set; }
+
+    public DateTime? CreatedAtUtc { get; set; }
+
+    public DateTime? UpdatedAtUtc { get; set; }
 
     public string? UploadDateTimeMilliSec { get; set; }
 

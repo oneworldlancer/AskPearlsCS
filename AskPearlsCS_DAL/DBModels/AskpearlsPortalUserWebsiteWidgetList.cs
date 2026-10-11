@@ -17,6 +17,8 @@ public partial class AskpearlsPortalUserWebsiteWidgetList
 
     public string? OwnerMobileNumberTokenId { get; set; }
 
+    public string? OrganizationTokenId { get; set; }
+
     public string? CompanyTokenId { get; set; }
 
     public string? CompanyName { get; set; }
@@ -39,6 +41,10 @@ public partial class AskpearlsPortalUserWebsiteWidgetList
 
     public string? WidgetPublicKey { get; set; }
 
+    public string? WidgetStatusCode { get; set; }
+
+    public string? WidgetStatusText { get; set; }
+
     public string? WidgetStatus { get; set; }
 
     public string? WidgetPublishedVersion { get; set; }
@@ -59,10 +65,6 @@ public partial class AskpearlsPortalUserWebsiteWidgetList
 
     public string? WebsiteHeight { get; set; }
 
-    public string? StoreysNumber { get; set; }
-
-    public string? DwellingsNumber { get; set; }
-
     public string? WebsiteDay { get; set; }
 
     public string? WebsiteMonth { get; set; }
@@ -70,12 +72,6 @@ public partial class AskpearlsPortalUserWebsiteWidgetList
     public string? WebsiteYear { get; set; }
 
     public string? WebsiteDate { get; set; }
-
-    public string? WebsiteUprn { get; set; }
-
-    public string? EngcodeTokenId { get; set; }
-
-    public string? Hrbnumber { get; set; }
 
     public string? ImageTokenId { get; set; }
 

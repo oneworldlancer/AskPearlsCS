@@ -21,6 +21,10 @@ public partial class AskpearlsPortalUserList
 
     public string? MembershipType { get; set; }
 
+    public string? OrganizationTokenId { get; set; }
+
+    public string? CompanyTokenId { get; set; }
+
     public string? OwnerUserTokenId { get; set; }
 
     public string? Gcmid { get; set; }

@@ -17,6 +17,8 @@ public partial class AskpearlsPortalUserWebsiteList
 
     public string? OwnerMobileNumberTokenId { get; set; }
 
+    public string? OrganizationTokenId { get; set; }
+
     public string? CompanyTokenId { get; set; }
 
     public string? CompanyName { get; set; }
@@ -71,11 +73,15 @@ public partial class AskpearlsPortalUserWebsiteList
 
     public bool? IsNew { get; set; }
 
-    public bool? IsVisible { get; set; }
-
     public string? ActiveStatus { get; set; }
 
     public bool? IsActive { get; set; }
+
+    public bool? IsVisible { get; set; }
+
+    public DateTime? CreatedAtUtc { get; set; }
+
+    public DateTime? UpdatedAtUtc { get; set; }
 
     public string? UploadDateTimeMilliSec { get; set; }
 

@@ -1,2367 +1,967 @@
-/* =========================================================
+
+/* ============================================================
    AskPearls DecisionOS Widget
-   Framework-independent MVP
-   ========================================================= */
+   Framework-independent | Shadow DOM | Server-side scoring
+   ============================================================ */
 
 (function (window, document) {
-
     "use strict";
 
+    // ----------------------------------------------------------
+    // 1. Read configuration from the script element
+    // ----------------------------------------------------------
 
-    /* =========================================================
-       1. READ SCRIPT CONFIGURATION
-       ========================================================= */
+    const script = document.currentScript;
 
-    const currentScript = document.currentScript;
-
-    if (!currentScript) {
-
-        console.error(
-            "AskPearls: Unable to find the current script."
-        );
-
+    if (!script) {
+        console.error("AskPearls: Unable to locate widget script.");
         return;
     }
 
+    const publicKey = (script.dataset.widget || "").trim();
 
-    const publicKey =
-        currentScript.dataset.widget;
+    const apiUrl = (
+        script.dataset.apiUrl || "https://api.askpearls.com"
+    ).replace(/\/+$/, "");
 
-
-    const apiUrl =
-        (currentScript.dataset.apiUrl ||
-            "https://api.askpearls.com")
-            .replace(/\/+$/, "");
-
-
-    if (!publicKey) {
-
+    if (!publicKey || !apiUrl) {
         console.error(
-            "AskPearls: data-widget is required."
+            "AskPearls: data-widget and data-api-url are required."
         );
-
         return;
     }
 
+    // Prevent accidental duplicate initialization.
+    const instanceKey = "__ASKPEARLS_DECISIONOS_" + publicKey;
 
-    /* =========================================================
-       2. CREATE WIDGET HOST
-       ========================================================= */
+    if (window[ instanceKey ]) {
+        return;
+    }
 
-    const host =
-        document.createElement("div");
+    window[ instanceKey ] = true;
 
-    host.id =
-        "askpearls-widget-host";
+    // ----------------------------------------------------------
+    // 2. Create isolated widget container
+    // ----------------------------------------------------------
+
+    const host = document.createElement("div");
+    host.id = "askpearls-decisionos-" +
+        publicKey.replace(/[^a-zA-Z0-9_-]/g, "-");
 
     document.body.appendChild(host);
 
+    const root = host.attachShadow
+        ? host.attachShadow({ mode: "open" })
+        : host;
 
-    /* =========================================================
-       3. CREATE SHADOW DOM
-       ========================================================= */
+    // ----------------------------------------------------------
+    // 3. Widget styles
+    // ----------------------------------------------------------
 
-    const shadow =
-        host.attachShadow
-            ? host.attachShadow({
-                mode: "open"
-            })
-            : host;
-
-
-    /* =========================================================
-       4. WIDGET STYLES
-       ========================================================= */
-
-    const style =
-        document.createElement("style");
+    const style = document.createElement("style");
 
     style.textContent = `
+        :host { all: initial; }
 
-        :host {
-            all: initial;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-
-        /* =====================================================
-           CARD
-           ===================================================== */
+        * { box-sizing: border-box; }
 
         .ap-card {
-
             position: fixed;
-
             right: 24px;
             bottom: 24px;
-
             width: 360px;
-
-            max-width:
-                calc(100vw - 32px);
-
-            background: #ffffff;
-
+            max-width: calc(100vw - 32px);
+            max-height: calc(100vh - 32px);
+            overflow-y: auto;
+            background: #fff;
             color: #172033;
-
-            border:
-                1px solid #e5e7eb;
-
+            border: 1px solid #e5e7eb;
             border-radius: 18px;
-
-            box-shadow:
-                0 18px 50px rgba(0, 0, 0, 0.16);
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
+            box-shadow: 0 18px 50px rgba(0,0,0,.16);
+            font-family: Arial, Helvetica, sans-serif;
             z-index: 2147483647;
-
-            overflow: hidden;
         }
-
-
-        /* =====================================================
-           HEADER
-           ===================================================== */
 
         .ap-head {
-
             padding: 20px;
-
             background: #0d6efd;
-
-            color: #ffffff;
+            color: #fff;
         }
-
 
         .ap-brand {
-
             font-size: 12px;
-
             font-weight: 700;
-
-            opacity: 0.9;
-
+            opacity: .92;
             margin-bottom: 5px;
-
-            letter-spacing: 0.3px;
+            letter-spacing: .3px;
         }
-
 
         .ap-title {
-
             font-size: 20px;
-
             line-height: 1.3;
-
             font-weight: 700;
         }
 
-
         .ap-subtitle {
-
             margin-top: 7px;
-
             font-size: 13px;
-
             line-height: 1.45;
-
-            opacity: 0.92;
         }
 
-
-        /* =====================================================
-           BODY
-           ===================================================== */
-
-        .ap-body {
-
-            padding: 20px;
-        }
-
-
-        /* =====================================================
-           PROGRESS
-           ===================================================== */
+        .ap-body { padding: 20px; }
 
         .ap-progress {
-
             height: 5px;
-
             background: #e9ecef;
-
             border-radius: 10px;
-
             overflow: hidden;
-
             margin-bottom: 18px;
         }
 
-
         .ap-progress-bar {
-
             height: 100%;
-
             background: #0d6efd;
-
-            transition:
-                width 0.3s ease;
+            transition: width .3s ease;
         }
 
-
-        /* =====================================================
-           QUESTION
-           ===================================================== */
+        .ap-question-count {
+            margin-bottom: 9px;
+            color: #667085;
+            font-size: 12px;
+        }
 
         .ap-question {
-
-            font-size: 16px;
-
-            line-height: 1.5;
-
+            font-size: 17px;
+            line-height: 1.45;
             font-weight: 700;
-
-            margin-bottom: 15px;
+            margin-bottom: 17px;
         }
-
-
-        /* =====================================================
-           ANSWERS
-           ===================================================== */
 
         .ap-options {
-
             display: flex;
-
             flex-direction: column;
-
-            gap: 10px;
+            gap: 9px;
         }
-
 
         .ap-answer {
-
-            display: block;
-
             width: 100%;
-
-            padding: 12px 14px;
-
-            border:
-                1px solid #d0d5dd;
-
+            padding: 13px 14px;
+            border: 1px solid #d0d5dd;
             border-radius: 10px;
-
-            background: #ffffff;
-
+            background: #fff;
             color: #172033;
-
-            font-family: inherit;
-
-            font-size: 15px;
-
-            line-height: 1.4;
-
             text-align: left;
-
-            cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.1s ease;
-        }
-
-
-        .ap-answer:hover {
-
-            border-color:
-                #0d6efd;
-
-            background:
-                #f5f9ff;
-        }
-
-
-        .ap-answer:active {
-
-            transform:
-                scale(0.99);
-        }
-
-
-        /* =====================================================
-           RESULT
-           ===================================================== */
-
-        .ap-result-label {
-
-            font-size: 13px;
-
-            color: #667085;
-
-            margin-bottom: 6px;
-        }
-
-
-        .ap-result-name {
-
-            font-size: 22px;
-
-            line-height: 1.3;
-
-            font-weight: 700;
-
-            color: #172033;
-
-            margin-bottom: 10px;
-        }
-
-
-        .ap-result-short {
-
             font-size: 14px;
+            cursor: pointer;
+            transition: background .15s, border-color .15s;
+        }
 
+        .ap-answer:hover,
+        .ap-answer:focus-visible {
+            background: #eff6ff;
+            border-color: #0d6efd;
+            outline: none;
+        }
+
+        .ap-answer:disabled {
+            opacity: .6;
+            cursor: wait;
+        }
+
+        .ap-loading,
+        .ap-error {
+            padding: 22px 20px;
+            font-size: 14px;
             line-height: 1.5;
-
-            color: #475467;
-
-            margin-bottom: 14px;
         }
 
-
-        /* =====================================================
-           MATCH
-           ===================================================== */
-
-        .ap-match {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 6px;
-
-            margin-bottom: 10px;
-
-            padding: 6px 10px;
-
-            border-radius: 20px;
-
-            background: #e8f7ed;
-
-            color: #198754;
-
-            font-size: 13px;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           RESULT IMAGE
-           ===================================================== */
+        .ap-error { color: #b42318; }
 
         .ap-result-image {
-
-            width: 100%;
-
-            height: 170px;
-
-            object-fit: cover;
-
             display: block;
+            width: 100%;
+            max-height: 190px;
+            object-fit: cover;
+            background: #f2f4f7;
         }
 
+        .ap-result-content { padding: 20px; }
 
-        /* =====================================================
-           SECTION TITLE
-           ===================================================== */
+        .ap-match {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #e8f7ed;
+            color: #198754;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .ap-result-label {
+            color: #667085;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .ap-result-name {
+            font-size: 21px;
+            line-height: 1.3;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .ap-result-short {
+            font-size: 14px;
+            line-height: 1.55;
+            color: #475467;
+        }
+
+        .ap-score {
+            margin-top: 12px;
+            color: #667085;
+            font-size: 12px;
+        }
 
         .ap-section-title {
-
+            margin: 18px 0 8px;
             font-size: 14px;
-
             font-weight: 700;
-
-            color: #172033;
-
-            margin:
-                16px 0 8px;
         }
-
-
-        /* =====================================================
-           REASONS
-           ===================================================== */
 
         .ap-reasons {
-
             display: flex;
-
             flex-direction: column;
-
-            gap: 7px;
+            gap: 8px;
         }
 
-
         .ap-reason {
-
             display: flex;
-
-            align-items: flex-start;
-
             gap: 8px;
-
             font-size: 13px;
-
-            line-height: 1.4;
-
+            line-height: 1.45;
             color: #344054;
         }
 
-
-        .ap-check {
-
-            flex:
-                0 0 auto;
-
-            width: 18px;
-
-            height: 18px;
-
-            display: inline-flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background: #e8f7ed;
-
-            color: #198754;
-
-            font-size: 11px;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           HIGHLIGHTS
-           ===================================================== */
+        .ap-check { color: #198754; font-weight: 700; }
 
         .ap-highlights {
-
             display: flex;
-
             flex-wrap: wrap;
-
             gap: 6px;
         }
 
-
         .ap-highlight {
-
             padding: 5px 8px;
-
             border-radius: 6px;
-
             background: #f2f4f7;
-
             color: #475467;
-
             font-size: 11px;
         }
 
-
-        /* =====================================================
-           ACTIONS
-           ===================================================== */
-
         .ap-result-actions {
-
             display: flex;
-
-            align-items: center;
-
+            flex-wrap: wrap;
             gap: 8px;
-
-            margin-top: 18px;
+            margin-top: 20px;
         }
 
+        .ap-cta,
+        .ap-restart {
+            display: inline-block;
+            padding: 11px 13px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
         .ap-cta {
-
-            display: inline-block;
-
-            padding:
-                11px 16px;
-
-            background:
-                #0d6efd;
-
-            color:
-                #ffffff;
-
-            border-radius: 9px;
-
-            text-decoration:
-                none;
-
-            font-size: 14px;
-
-            font-weight: 700;
+            background: #0d6efd;
+            color: #fff;
+            border: 1px solid #0d6efd;
         }
 
-
-        .ap-cta:hover {
-
-            background:
-                #0b5ed7;
-
-            color:
-                #ffffff;
-        }
-
+        .ap-cta:hover { background: #0b5ed7; }
 
         .ap-restart {
-
-            display: inline-block;
-
-            padding:
-                11px 12px;
-
-            background:
-                #ffffff;
-
-            color:
-                #475467;
-
-            border:
-                1px solid #d0d5dd;
-
-            border-radius:
-                9px;
-
-            font-size:
-                13px;
-
-            font-weight:
-                700;
-
-            cursor:
-                pointer;
+            background: #fff;
+            color: #475467;
+            border: 1px solid #d0d5dd;
         }
 
-
-        .ap-restart:hover {
-
-            background:
-                #f9fafb;
-        }
-
-
-        /* =====================================================
-           LOADING
-           ===================================================== */
-
-        .ap-loading {
-
-            text-align:
-                center;
-
-            padding:
-                30px 10px;
-
-            color:
-                #667085;
-
-            font-size:
-                14px;
-        }
-
-
-        /* =====================================================
-           ERROR
-           ===================================================== */
-
-        .ap-error {
-
-            padding:
-                20px;
-
-            color:
-                #b42318;
-
-            background:
-                #fef3f2;
-
-            font-size:
-                14px;
-
-            line-height:
-                1.5;
-        }
-
-
-        /* =====================================================
-           MOBILE
-           ===================================================== */
+        .ap-restart:hover { background: #f9fafb; }
 
         @media (max-width: 480px) {
-
             .ap-card {
-
-                right:
-                    12px;
-
-                bottom:
-                    12px;
-
-                width:
-                    calc(100vw - 24px);
-
-                max-width:
-                    none;
+                right: 12px;
+                bottom: 12px;
+                width: calc(100vw - 24px);
+                max-width: none;
+                max-height: calc(100vh - 24px);
             }
         }
-
     `;
 
+    root.appendChild(style);
 
-    shadow.appendChild(style);
-
-
-    /* =========================================================
-       5. ROOT CONTAINER
-       ========================================================= */
-
-    const root =
-        document.createElement("div");
-
-    shadow.appendChild(root);
-
-
-    /* =========================================================
-       6. WIDGET STATE
-       ========================================================= */
+    // ----------------------------------------------------------
+    // 4. State
+    // ----------------------------------------------------------
 
     let config = null;
-
+    let questions = [];
     let questionIndex = 0;
+    let isSubmitting = false;
 
     const answers = {};
 
-
     const sessionId =
-        window.crypto &&
-            window.crypto.randomUUID
-
+        window.crypto && window.crypto.randomUUID
             ? window.crypto.randomUUID()
+            : "session-" + Date.now() + "-" +
+            Math.random().toString(36).slice(2);
 
-            : "session-" + Date.now();
-
-
-    /* =========================================================
-       7. HTML ESCAPING
-       ========================================================= */
+    // ----------------------------------------------------------
+    // 5. Safe HTML helpers
+    // ----------------------------------------------------------
 
     function escapeHtml (value) {
-
         return String(value ?? "")
-
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-
-            .replace(
-                /</g,
-                "&lt;"
-            )
-
-            .replace(
-                />/g,
-                "&gt;"
-            )
-
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-
-            .replace(
-                /'/g,
-                "&#039;"
-            );
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
-
     function escapeAttr (value) {
-
         return escapeHtml(value);
     }
 
+    function safeHttpUrl (value) {
+        if (!value) return "";
 
-    /* =========================================================
-       8. GET WIDGET INFORMATION
-       ========================================================= */
+        try {
+            const url = new URL(value, window.location.href);
 
-    function getWidgetTitle () {
-
-        if (
-            config &&
-            config.widget &&
-            config.widget.title
-        ) {
-
-            return config.widget.title;
+            if (url.protocol === "https:" ||
+                url.protocol === "http:") {
+                return url.href;
+            }
+        } catch (_) {
+            // Invalid URL.
         }
-
-
-        return "Find Your Perfect Match";
-    }
-
-
-    function getWidgetSubtitle () {
-
-        if (
-            config &&
-            config.widget &&
-            config.widget.subtitle
-        ) {
-
-            return config.widget.subtitle;
-        }
-
 
         return "";
     }
 
-
-    function getWidgetName () {
-
-        if (
-            config &&
-            config.widget &&
-            config.widget.name
-        ) {
-
-            return config.widget.name;
-        }
-
-
-        return "DecisionOS Widget";
+    function getWidgetTitle () {
+        return config?.widget?.title ||
+            config?.widget?.name ||
+            "Find Your Perfect Match";
     }
 
-
-    /* =========================================================
-       9. SEND ANALYTICS EVENT
-       ========================================================= */
-
-    function sendEvent (
-        eventType,
-        payload
-    ) {
-
-        fetch(
-            `${ apiUrl }/api/events`,
-            {
-
-                method:
-                    "POST",
-
-                headers:
-                {
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body:
-                    JSON.stringify({
-
-                        publicKey:
-                            publicKey,
-
-                        sessionId:
-                            sessionId,
-
-                        eventType:
-                            eventType,
-
-                        payload:
-                            payload || {}
-
-                    })
-
-            }
-        )
-
-            .then(
-                function (response) {
-
-                    if (!response.ok) {
-
-                        console.warn(
-                            "AskPearls: Event request failed:",
-                            response.status
-                        );
-
-                    }
-
-                }
-            )
-
-            .catch(
-                function (error) {
-
-                    console.warn(
-                        "AskPearls: Unable to send event.",
-                        error
-                    );
-
-                }
-            );
-    }
-
-
-    /* =========================================================
-       10. SHOW LOADING
-       ========================================================= */
-
-    function showLoading () {
-
-        root.innerHTML = `
-
-            <div class="ap-card">
-
-                <div class="ap-head">
-
-                    <div class="ap-brand">
-                        AskPearls DecisionOS
-                    </div>
-
-                    <div class="ap-title">
-                        Loading...
-                    </div>
-
-                </div>
-
-                <div class="ap-loading">
-
-                    Loading DecisionOS...
-
-                </div>
-
-            </div>
-
-        `;
-    }
-
-
-    /* =========================================================
-       11. SHOW ERROR
-       ========================================================= */
-
-    function showError (message) {
-
-        root.innerHTML = `
-
-            <div class="ap-card">
-
-                <div class="ap-head">
-
-                    <div class="ap-brand">
-                        AskPearls DecisionOS
-                    </div>
-
-                    <div class="ap-title">
-                        ${ escapeHtml(
-            getWidgetTitle()
-        ) }
-                    </div>
-
-                </div>
-
-                <div class="ap-error">
-
-                    ${ escapeHtml(message) }
-
-                </div>
-
-            </div>
-
-        `;
-    }
-
-
-    /* =========================================================
-       12. RENDER CURRENT QUESTION
-       ========================================================= */
-
-    function render () {
-
-
-        /*
-         * Safety check.
-         */
-
-        if (!config) {
-
-            showError(
-                "Widget configuration is not available."
-            );
-
-            return;
-        }
-
-
-        /*
-         * Validate questions.
-         */
-
-        if (
-            !Array.isArray(
-                config.questions
-            )
-        ) {
-
-            console.error(
-                "AskPearls: config.questions is not an array.",
-                config
-            );
-
-            showError(
-                "Widget configuration is invalid."
-            );
-
-            return;
-        }
-
-
-        /*
-         * Are we finished?
-         */
-
-        if (
-            questionIndex >=
-            config.questions.length
-        ) {
-
-            showRecommendation();
-
-            return;
-        }
-
-
-        /*
-         * Get current question.
-         */
-
-        const question =
-            config.questions[
-            questionIndex
-            ];
-
-
-        if (!question) {
-
-            console.error(
-                "AskPearls: Question not found.",
-                questionIndex
-            );
-
-            showError(
-                "Unable to load this question."
-            );
-
-            return;
-        }
-
-
-        /*
-         * Make sure options is an array.
-         */
-
-        const options =
-            Array.isArray(
-                question.options
-            )
-
-                ? question.options
-
-                : [];
-
-
-        if (options.length === 0) {
-
-            console.error(
-                "AskPearls: Question has no options.",
-                question
-            );
-
-            showError(
-                "This question does not have any answers."
-            );
-
-            return;
-        }
-
-
-        /*
-         * Progress.
-         */
-
-        const totalQuestions =
-            config.questions.length;
-
-
-        const currentNumber =
-            questionIndex + 1;
-
-
-        const progress =
-            (
-                currentNumber /
-                totalQuestions
-            ) * 100;
-
-
-        /*
-         * Widget information.
-         */
-
-        const title =
-            getWidgetTitle();
-
-
-        const subtitle =
-            getWidgetSubtitle();
-
-
-        const subtitleHtml =
-            subtitle
-
-                ? `
-
-                    <div class="ap-subtitle">
-
-                        ${ escapeHtml(
-                    subtitle
-                ) }
-
-                    </div>
-
-                `
-
-                : "";
-
-
-        /*
-         * Render.
-         */
-
-        root.innerHTML = `
-
-            <div class="ap-card">
-
-                <div class="ap-head">
-
-                    <div class="ap-brand">
-
-                        AskPearls DecisionOS
-
-                    </div>
-
-                    <div class="ap-title">
-
-                        ${ escapeHtml(
-            title
-        ) }
-
-                    </div>
-
-                    ${ subtitleHtml }
-
-                </div>
-
-
-                <div class="ap-body">
-
-
-                    <!-- PROGRESS -->
-
-                    <div class="ap-progress">
-
-                        <div
-                            class="ap-progress-bar"
-                            style="
-                                width:${ progress }%;
-                            "
-                        >
-                        </div>
-
-                    </div>
-
-
-                    <!-- QUESTION NUMBER -->
-
-                    <div
-                        style="
-                            font-size:12px;
-                            color:#667085;
-                            margin-bottom:8px;
-                        "
-                    >
-
-                        Question
-                        ${ currentNumber }
-                        of
-                        ${ totalQuestions }
-
-                    </div>
-
-
-                    <!-- QUESTION -->
-
-                    <div class="ap-question">
-
-                        ${ escapeHtml(
-            question.text || ""
-        ) }
-
-                    </div>
-
-
-                    <!-- OPTIONS -->
-
-                    <div class="ap-options">
-
-                        ${ options
-                .map(
-                    function (option) {
-
-                        return `
-
-                                        <button
-                                            type="button"
-                                            class="ap-answer"
-                                            data-value="${ escapeAttr(
-                            option.value
-                        ) }"
-                                        >
-
-                                            ${ escapeHtml(
-                            option.text
-                        ) }
-
-                                        </button>
-
-                                    `;
-
-                    }
-                )
-                .join("") }
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-        `;
-
-
-        /* =====================================================
-           ANSWER BUTTON EVENTS
-           ===================================================== */
-
-        root
-            .querySelectorAll(
-                ".ap-answer"
-            )
-            .forEach(
-                function (button) {
-
-                    button.addEventListener(
-                        "click",
-                        function () {
-
-                            const value =
-                                this.dataset.value;
-
-
-                            /*
-                             * Save answer.
-                             */
-
-                            answers[
-                                question.key
-                            ] = value;
-
-
-                            /*
-                             * Send analytics.
-                             */
-
-                            sendEvent(
-                                "question_answered",
-                                {
-
-                                    questionKey:
-                                        question.key,
-
-                                    answerValue:
-                                        value,
-
-                                    questionIndex:
-                                        questionIndex
-
-                                }
-                            );
-
-
-                            /*
-                             * Next question.
-                             */
-
-                            questionIndex++;
-
-
-                            render();
-
-                        }
-                    );
-
-                }
-            );
-
-    }
-
-
-    /* =========================================================
-       13. DECISION ENGINE
-       ========================================================= */
-
-
-    /*
-     * ============================================================
-     *
-     * DECISIONOS MVP SCORING MODEL
-     *
-     * Every question has a maximum possible score of 50.
-     *
-     * Example:
-     *
-     * 2 questions
-     *
-     * 2 × 50
-     *
-     * = 100 maximum possible points
-     *
-     *
-     * Example visitor:
-     *
-     * users    = large
-     * priority = comfort
-     *
-     *
-     * Oslo:
-     *
-     * large   = 40
-     * comfort = 45
-     *
-     * total = 85
-     *
-     * match = 85 / 100 = 85%
-     *
-     * ============================================================
-     */
-
-
-    function calculateRecommendationScores () {
-
-
-        /*
-         * Get recommendations.
-         */
-
-        const recommendations =
-            Array.isArray(
-                config.recommendations
-            )
-
-                ? config.recommendations
-
-                : [];
-
-
-        /*
-         * Maximum points allowed
-         * per question.
-         */
-
-        const MAX_SCORE_PER_QUESTION =
-            50;
-
-
-        /*
-         * Calculate maximum possible
-         * score for this widget.
-         *
-         * Example:
-         *
-         * 2 questions × 50 = 100
-         */
-
-        const maximumScore =
-            Array.isArray(
-                config.questions
-            )
-
-                ? config.questions.length *
-                MAX_SCORE_PER_QUESTION
-
-                : 0;
-
-
-        /*
-         * Calculate every recommendation.
-         */
-
-        return recommendations.map(
-            function (recommendation) {
-
-                let score = 0;
-
-                const matchedReasons = [];
-
-
-                /*
-                 * Get rules.
-                 */
-
-                const rules =
-                    Array.isArray(
-                        recommendation.rules
-                    )
-
-                        ? recommendation.rules
-
-                        : [];
-
-
-                /*
-                 * Evaluate rules.
-                 */
-
-                rules.forEach(
-                    function (rule) {
-
-
-                        /*
-                         * Validate rule.
-                         */
-
-                        if (
-                            !rule ||
-                            !rule.questionKey
-                        ) {
-
-                            return;
-                        }
-
-
-                        /*
-                         * Visitor answer.
-                         */
-
-                        const visitorAnswer =
-                            answers[
-                            rule.questionKey
-                            ];
-
-
-                        /*
-                         * No answer.
-                         */
-
-                        if (
-                            visitorAnswer ===
-                            undefined ||
-
-                            visitorAnswer ===
-                            null
-                        ) {
-
-                            return;
-                        }
-
-
-                        /*
-                         * Does rule match?
-                         */
-
-                        if (
-                            String(
-                                visitorAnswer
-                            ) ===
-                            String(
-                                rule.answerValue
-                            )
-                        ) {
-
-
-                            /*
-                             * Get points.
-                             */
-
-                            const points =
-                                Number(
-                                    rule.score
-                                );
-
-
-                            /*
-                             * Add points.
-                             */
-
-                            if (
-                                !isNaN(
-                                    points
-                                )
-                            ) {
-
-                                score +=
-                                    points;
-
-                            }
-
-
-                            /*
-                             * Add reason.
-                             */
-
-                            if (
-                                rule.reason
-                            ) {
-
-                                matchedReasons.push(
-                                    rule.reason
-                                );
-
-                            }
-
-                        }
-
-                    }
-                );
-
-
-                /*
-                 * Calculate match percentage.
-                 */
-
-                let percentage = 0;
-
-
-                if (
-                    maximumScore > 0
-                ) {
-
-                    percentage =
-                        Math.round(
-                            (
-                                score /
-                                maximumScore
-                            ) * 100
-                        );
-
-                }
-
-
-                /*
-                 * Protect percentage.
-                 *
-                 * It should never be
-                 * below 0 or above 100.
-                 */
-
-                percentage =
-                    Math.max(
-                        0,
-                        Math.min(
-                            100,
-                            percentage
-                        )
-                    );
-
-
-                /*
-                 * Return calculation.
-                 */
-
-                return {
-
-                    recommendation:
-                        recommendation,
-
-                    score:
-                        score,
-
-                    maximumScore:
-                        maximumScore,
-
-                    percentage:
-                        percentage,
-
-                    matchedReasons:
-                        matchedReasons
-
-                };
-
-            }
-        );
-
-    }
-
-
-    /* =========================================================
-       14. GET BEST RECOMMENDATION
-       ========================================================= */
-
-    function getBestRecommendation () {
-
-
-        const results =
-            calculateRecommendationScores();
-
-
-        if (
-            !results ||
-            results.length === 0
-        ) {
-
-            return null;
-        }
-
-
-        /*
-         * Sort highest score first.
-         */
-
-        results.sort(
-            function (a, b) {
-
-                return (
-                    b.score -
-                    a.score
-                );
-
-            }
-        );
-
-
-        /*
-         * Development debug.
-         */
-
-        console.log(
-            "AskPearls DecisionOS - Recommendation Scores:",
-            results
-        );
-
-
-        return results[ 0 ];
-
-    }
-
-
-    /* =========================================================
-       15. SHOW RECOMMENDATION
-       ========================================================= */
-
-    function showRecommendation () {
-
-
-        /*
-         * Calculate best result.
-         */
-
-        const result =
-            getBestRecommendation();
-
-
-        if (!result) {
-
-            showError(
-                "Unable to determine a recommendation."
-            );
-
-            return;
-        }
-
-
-        /*
-         * Result.
-         */
-
-        const recommendation =
-            result.recommendation;
-
-
-        const score =
-            result.score;
-
-
-        const maximumScore =
-            result.maximumScore;
-
-
-        const matchPercentage =
-            result.percentage;
-
-
-        const matchedReasons =
-            Array.isArray(
-                result.matchedReasons
-            )
-
-                ? result.matchedReasons
-
-                : [];
-
-
-        /*
-         * Safe recommendation values.
-         */
-
-        const recommendationName =
-            recommendation.name ||
-            "Recommended Product";
-
-
-        const imageUrl =
-            recommendation.imageUrl ||
+    function getWidgetSubtitle () {
+        return config?.widget?.subtitle ||
+            config?.widget?.description ||
             "";
+    }
+
+    // ----------------------------------------------------------
+    // 6. Analytics
+    // ----------------------------------------------------------
+
+    function sendEvent (eventType, payload) {
+        fetch(`${ apiUrl }/api/events`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                publicKey: publicKey,
+                sessionId: sessionId,
+                eventType: eventType,
+                payload: payload || {}
+            })
+        }).then(response => {
+            if (!response.ok) {
+                console.warn(
+                    "AskPearls analytics returned HTTP",
+                    response.status
+                );
+            }
+        }).catch(error => {
+            // Analytics failure must not block the widget.
+            console.warn(
+                "AskPearls analytics could not be sent.",
+                error
+            );
+        });
+    }
+
+    // ----------------------------------------------------------
+    // 7. Loading and error views
+    // ----------------------------------------------------------
 
 
-        const productUrl =
-            recommendation.url ||
-            "#";
+    function showLoading (message) {
+        const existingCard = root.querySelector(".ap-card");
+
+        if (existingCard) {
+            existingCard.remove();
+        }
+
+        const card = document.createElement("div");
+        card.className = "ap-card";
+        card.setAttribute("role", "status");
+        card.setAttribute("aria-live", "polite");
+
+        const header = document.createElement("div");
+        header.className = "ap-head";
+
+        const brand = document.createElement("div");
+        brand.className = "ap-brand";
+        brand.textContent = "AskPearls DecisionOS";
+
+        const title = document.createElement("div");
+        title.className = "ap-title";
+        title.textContent = "Loading...";
+
+        header.appendChild(brand);
+        header.appendChild(title);
+
+        const body = document.createElement("div");
+        body.className = "ap-loading";
+        body.textContent = message || "Loading DecisionOS...";
+
+        card.appendChild(header);
+        card.appendChild(body);
+
+        root.appendChild(card);
+    }
 
 
-        const shortDescription =
-            recommendation.shortDescription ||
 
+    function showError (message, retry) {
+        const existingCard = root.querySelector(".ap-card");
+
+        if (existingCard) {
+            existingCard.remove();
+        }
+
+        const card = document.createElement("div");
+        card.className = "ap-card";
+        card.setAttribute("role", "alert");
+
+        const header = document.createElement("div");
+        header.className = "ap-head";
+
+        const brand = document.createElement("div");
+        brand.className = "ap-brand";
+        brand.textContent = "AskPearls DecisionOS";
+
+        const title = document.createElement("div");
+        title.className = "ap-title";
+        title.textContent = getWidgetTitle();
+
+        header.appendChild(brand);
+        header.appendChild(title);
+
+        const errorBody = document.createElement("div");
+        errorBody.className = "ap-error";
+        errorBody.textContent = message;
+
+        card.appendChild(header);
+        card.appendChild(errorBody);
+
+        if (retry) {
+            const actions = document.createElement("div");
+            actions.className = "ap-body";
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "ap-restart";
+            button.textContent = "Try Again";
+            button.addEventListener("click", retry);
+
+            actions.appendChild(button);
+            card.appendChild(actions);
+        }
+
+        root.appendChild(card);
+    }
+
+
+    // ----------------------------------------------------------
+    // 8. Normalize question and answer API data
+    // ----------------------------------------------------------
+
+    function getQuestionText (question) {
+        return question.text ||
+            question.title ||
+            question.name ||
+            question.key ||
+            "Choose an answer";
+    }
+
+    function getAnswerKey (answer) {
+        return answer.key ||
+            answer.code ||
+            answer.value ||
+            "";
+    }
+
+    function getAnswerText (answer) {
+        return answer.title ||
+            answer.text ||
+            answer.name ||
+            getAnswerKey(answer);
+    }
+
+    function getQuestionAnswers (question) {
+        if (Array.isArray(question.answers)) {
+            return question.answers;
+        }
+
+        // Supports an API that calls them options.
+        if (Array.isArray(question.options)) {
+            return question.options;
+        }
+
+        return [];
+    }
+
+    // ----------------------------------------------------------
+    // 9. Render current question
+    // ----------------------------------------------------------
+
+    function renderQuestion () {
+        if (!questions.length) {
+            showError("This widget has no published questions.");
+            return;
+        }
+
+        if (questionIndex >= questions.length) {
+            submitAnswers();
+            return;
+        }
+
+        const question = questions[ questionIndex ];
+        const questionAnswers = getQuestionAnswers(question);
+
+        if (!question.key || questionAnswers.length === 0) {
+            showError(
+                "A published question is missing its key or answers."
+            );
+            return;
+        }
+
+        const progress = Math.round(
+            (questionIndex / questions.length) * 100
+        );
+
+        const title = getWidgetTitle();
+        const subtitle = getWidgetSubtitle();
+
+        root.querySelector(".ap-card")?.remove();
+
+        const card = document.createElement("div");
+        card.className = "ap-card";
+
+        card.innerHTML = `
+            <div class="ap-head">
+                <div class="ap-brand">AskPearls DecisionOS</div>
+                <div class="ap-title">${ escapeHtml(title) }</div>
+                ${ subtitle ? `
+                    <div class="ap-subtitle">
+                        ${ escapeHtml(subtitle) }
+                    </div>
+                ` : "" }
+            </div>
+
+            <div class="ap-body">
+                <div class="ap-progress">
+                    <div class="ap-progress-bar"
+                         style="width:${ progress }%"></div>
+                </div>
+
+                <div class="ap-question-count">
+                    Question ${ questionIndex + 1 } of ${ questions.length }
+                </div>
+
+                <div class="ap-question">
+                    ${ escapeHtml(getQuestionText(question)) }
+                </div>
+
+                <div class="ap-options"></div>
+            </div>
+        `;
+
+        const optionsContainer = card.querySelector(".ap-options");
+
+        questionAnswers.forEach(answer => {
+            const key = getAnswerKey(answer);
+
+            if (!key) return;
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "ap-answer";
+            button.textContent = getAnswerText(answer);
+
+            button.addEventListener("click", () => {
+                if (isSubmitting) return;
+
+                // Store the answer key expected by DecisionOS.
+                answers[ question.key ] = key;
+
+                sendEvent("question_answered", {
+                    questionKey: question.key,
+                    answerValue: key,
+                    questionIndex: questionIndex
+                });
+
+                questionIndex++;
+
+                renderQuestion();
+            });
+
+            optionsContainer.appendChild(button);
+        });
+
+        if (!optionsContainer.children.length) {
+            showError("No usable answers were returned for this question.");
+            return;
+        }
+
+        root.appendChild(card);
+    }
+
+    // ----------------------------------------------------------
+    // 10. Submit answers to server-side DecisionOS
+    // ----------------------------------------------------------
+
+    async function submitAnswers () {
+        if (isSubmitting) return;
+
+        isSubmitting = true;
+        showLoading("Calculating your recommendation...");
+
+        sendEvent("evaluation_started", {
+            questionCount: questions.length
+        });
+
+        try {
+            const response = await fetch(
+                `${ apiUrl }/api/decisions/evaluate`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        widgetKey: publicKey,
+                        answers: answers
+                    })
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    `Decision API returned HTTP ${ response.status }`
+                );
+            }
+
+            const decision = await response.json();
+
+            if (!decision || decision.success !== true) {
+                throw new Error(
+                    "DecisionOS could not evaluate these answers."
+                );
+            }
+
+            // API normally serializes this property as camelCase.
+            const best = decision.bestRecommendation ||
+                decision.BestRecommendation;
+
+            if (!best) {
+                throw new Error(
+                    "The API did not return a best recommendation."
+                );
+            }
+
+            sendEvent("recommendation_generated", {
+                recommendationKey: best.key,
+                score: best.score,
+                maximumScore: best.maximumScore ||
+                    decision.maximumScore,
+                percentage: best.percentage
+            });
+
+            renderRecommendation(
+                best,
+                decision.maximumScore
+            );
+
+        } catch (error) {
+            console.error(
+                "AskPearls DecisionOS evaluation failed.",
+                error
+            );
+
+            showError(
+                "We couldn't calculate your recommendation. " +
+                "Please try again.",
+                submitAnswers
+            );
+        } finally {
+            isSubmitting = false;
+        }
+    }
+
+    // ----------------------------------------------------------
+    // 11. Render server recommendation
+    // ----------------------------------------------------------
+
+    function renderRecommendation (recommendation, decisionMaximumScore) {
+        const score = Number(recommendation.score ?? 0);
+
+        const maximumScore = Number(
+            recommendation.maximumScore ??
+            decisionMaximumScore ??
+            0
+        );
+
+        let percentage = recommendation.percentage;
+
+        if (percentage === undefined || percentage === null) {
+            percentage = maximumScore > 0
+                ? Math.round((score / maximumScore) * 100)
+                : 0;
+        }
+
+        percentage = Math.max(
+            0,
+            Math.min(100, Number(percentage) || 0)
+        );
+
+        const imageUrl = safeHttpUrl(recommendation.imageUrl);
+        const productUrl = safeHttpUrl(recommendation.url);
+
+        const name = recommendation.name ||
+            "Your Recommended Product";
+
+        const description = recommendation.shortDescription ||
             recommendation.description ||
-
             "This recommendation matches your preferences.";
 
-
-        const ctaText =
-            recommendation.ctaText ||
-
+        const ctaText = recommendation.ctaText ||
             "View Recommendation";
 
+        const highlights = Array.isArray(recommendation.highlights)
+            ? recommendation.highlights
+            : [];
 
-        const highlights =
-            Array.isArray(
-                recommendation.highlights
-            )
+        const reasons = Array.isArray(recommendation.reasons)
+            ? recommendation.reasons
+            : [];
 
-                ? recommendation.highlights
+        root.querySelector(".ap-card")?.remove();
 
-                : [];
+        const card = document.createElement("div");
+        card.className = "ap-card";
 
+        card.innerHTML = `
+            <div class="ap-head">
+                <div class="ap-brand">AskPearls DecisionOS</div>
+                <div class="ap-title">Your Recommendation</div>
+            </div>
 
-        /*
-         * Widget title.
-         */
+            ${ imageUrl ? `
+                <img class="ap-result-image"
+                     src="${ escapeAttr(imageUrl) }"
+                     alt="${ escapeAttr(name) }"
+                     loading="lazy">
+            ` : "" }
 
-        const widgetTitle =
-            getWidgetTitle();
-
-
-        /* =====================================================
-           BUILD REASONS
-           ===================================================== */
-
-        let reasonsHtml = "";
-
-
-        if (
-            matchedReasons.length > 0
-        ) {
-
-            reasonsHtml =
-                matchedReasons
-                    .map(
-                        function (reason) {
-
-                            return `
-
-                                <div class="ap-reason">
-
-                                    <span class="ap-check">
-
-                                        ✓
-
-                                    </span>
-
-                                    <span>
-
-                                        ${ escapeHtml(
-                                reason
-                            ) }
-
-                                    </span>
-
-                                </div>
-
-                            `;
-
-                        }
-                    )
-                    .join("");
-
-        }
-
-        else {
-
-            reasonsHtml = `
-
-                <div class="ap-reason">
-
-                    <span class="ap-check">
-
-                        ✓
-
-                    </span>
-
-                    <span>
-
-                        Good overall match
-
-                    </span>
-
+            <div class="ap-result-content">
+                <div class="ap-match">
+                    ${ percentage }% match
                 </div>
 
-            `;
+                <div class="ap-result-label">We recommend:</div>
 
+                <div class="ap-result-name">
+                    ${ escapeHtml(name) }
+                </div>
+
+                <div class="ap-result-short">
+                    ${ escapeHtml(description) }
+                </div>
+
+                <div class="ap-score">
+                    Decision score: ${ score } / ${ maximumScore }
+                </div>
+
+                ${ reasons.length ? `
+                    <div class="ap-section-title">
+                        Why it matches you
+                    </div>
+                    <div class="ap-reasons">
+                        ${ reasons.map(reason => `
+                            <div class="ap-reason">
+                                <span class="ap-check">✓</span>
+                                <span>${ escapeHtml(reason) }</span>
+                            </div>
+                        `).join("") }
+                    </div>
+                ` : "" }
+
+                ${ highlights.length ? `
+                    <div class="ap-section-title">Highlights</div>
+                    <div class="ap-highlights">
+                        ${ highlights.map(item => `
+                            <span class="ap-highlight">
+                                ${ escapeHtml(item) }
+                            </span>
+                        `).join("") }
+                    </div>
+                ` : "" }
+
+                <div class="ap-result-actions">
+                    ${ productUrl ? `
+                        <a class="ap-cta"
+                           id="ap-result-cta"
+                           href="${ escapeAttr(productUrl) }"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            ${ escapeHtml(ctaText) }
+                        </a>
+                    ` : "" }
+
+                    <button type="button"
+                            class="ap-restart"
+                            id="ap-restart">
+                        Start Again
+                    </button>
+                </div>
+            </div>
+        `;
+
+        root.appendChild(card);
+
+        const cta = card.querySelector("#ap-result-cta");
+
+        if (cta) {
+            cta.addEventListener("click", () => {
+                sendEvent("recommendation_clicked", {
+                    recommendationKey: recommendation.key,
+                    score: score,
+                    maximumScore: maximumScore,
+                    matchPercentage: percentage,
+                    url: productUrl
+                });
+            });
         }
 
+        card.querySelector("#ap-restart")?.addEventListener(
+            "click",
+            () => {
+                questionIndex = 0;
+                isSubmitting = false;
 
-        /* =====================================================
-           BUILD HIGHLIGHTS
-           ===================================================== */
+                Object.keys(answers).forEach(key => {
+                    delete answers[ key ];
+                });
 
-        let highlightsHtml = "";
-
-
-        if (
-            highlights.length > 0
-        ) {
-
-            highlightsHtml =
-                highlights
-                    .map(
-                        function (highlight) {
-
-                            return `
-
-                                <span class="ap-highlight">
-
-                                    ${ escapeHtml(
-                                highlight
-                            ) }
-
-                                </span>
-
-                            `;
-
-                        }
-                    )
-                    .join("");
-
-        }
-
-
-        /* =====================================================
-           BUILD IMAGE
-           ===================================================== */
-
-        let imageHtml = "";
-
-
-        if (imageUrl) {
-
-            imageHtml = `
-
-                <img
-                    class="ap-result-image"
-                    src="${ escapeAttr(
-                imageUrl
-            ) }"
-                    alt="${ escapeAttr(
-                recommendationName
-            ) }"
-                >
-
-            `;
-
-        }
-
-
-        /* =====================================================
-           ANALYTICS
-           ===================================================== */
-
-        sendEvent(
-            "recommendation_shown",
-            {
-
-                recommendationKey:
-                    recommendation.key,
-
-                score:
-                    score,
-
-                maximumScore:
-                    maximumScore,
-
-                matchPercentage:
-                    matchPercentage,
-
-                answers:
-                    answers,
-
-                matchedReasons:
-                    matchedReasons
-
+                sendEvent("widget_restarted", {});
+                renderQuestion();
             }
         );
 
-
-        /* =====================================================
-           RENDER RESULT
-           ===================================================== */
-
-        root.innerHTML = `
-
-            <div class="ap-card">
-
-                ${ imageHtml }
-
-
-                <div class="ap-head">
-
-                    <div class="ap-brand">
-
-                        AskPearls DecisionOS
-
-                    </div>
-
-
-                    <div class="ap-title">
-
-                        Your Sofa Match
-
-                    </div>
-
-                </div>
-
-
-                <div class="ap-body">
-
-
-                    <!-- MATCH -->
-
-                    <div class="ap-match">
-
-                        ✓
-                        ${ matchPercentage }%
-                        Match
-
-                    </div>
-
-
-                    <!-- SCORE -->
-
-                    <div
-                        style="
-                            font-size:12px;
-                            color:#667085;
-                            margin-bottom:12px;
-                        "
-                    >
-
-                        Decision score:
-
-                        <strong>
-
-                            ${ score }
-
-                        </strong>
-
-                        /
-
-                        ${ maximumScore }
-
-                    </div>
-
-
-                    <!-- RECOMMENDATION -->
-
-                    <div class="ap-result-label">
-
-                        We recommend:
-
-                    </div>
-
-
-                    <div class="ap-result-name">
-
-                        ${ escapeHtml(
-            recommendationName
-        ) }
-
-                    </div>
-
-
-                    <!-- DESCRIPTION -->
-
-                    <div class="ap-result-short">
-
-                        ${ escapeHtml(
-            shortDescription
-        ) }
-
-                    </div>
-
-
-                    <!-- WHY -->
-
-                    ${ matchedReasons.length > 0
-
-                ? `
-
-                                <div class="ap-section-title">
-
-                                    Why it matches you
-
-                                </div>
-
-
-                                <div class="ap-reasons">
-
-                                    ${ reasonsHtml }
-
-                                </div>
-
-                            `
-
-                : ""
-            }
-
-
-                    <!-- HIGHLIGHTS -->
-
-                    ${ highlights.length > 0
-
-                ? `
-
-                                <div class="ap-section-title">
-
-                                    Highlights
-
-                                </div>
-
-
-                                <div class="ap-highlights">
-
-                                    ${ highlightsHtml }
-
-                                </div>
-
-                            `
-
-                : ""
-            }
-
-
-                    <!-- ACTIONS -->
-
-                    <div class="ap-result-actions">
-
-
-                        <a
-                            href="${ escapeAttr(
-                productUrl
-            ) }"
-                            class="ap-cta"
-                            id="ap-result-cta"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-
-                            ${ escapeHtml(
-                ctaText
-            ) }
-
-                        </a>
-
-
-                        <button
-                            type="button"
-                            class="ap-restart"
-                            id="ap-restart"
-                        >
-
-                            Start Again
-
-                        </button>
-
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-        `;
-
-
-        /* =====================================================
-           CTA TRACKING
-           ===================================================== */
-
-        const cta =
-            root.querySelector(
-                "#ap-result-cta"
-            );
-
-
-        if (cta) {
-
-            cta.addEventListener(
-                "click",
-                function () {
-
-                    sendEvent(
-                        "recommendation_clicked",
-                        {
-
-                            recommendationKey:
-                                recommendation.key,
-
-                            score:
-                                score,
-
-                            maximumScore:
-                                maximumScore,
-
-                            matchPercentage:
-                                matchPercentage,
-
-                            url:
-                                productUrl
-
-                        }
-                    );
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           RESTART
-           ===================================================== */
-
-        const restart =
-            root.querySelector(
-                "#ap-restart"
-            );
-
-
-        if (restart) {
-
-            restart.addEventListener(
-                "click",
-                function () {
-
-
-                    /*
-                     * Reset question.
-                     */
-
-                    questionIndex =
-                        0;
-
-
-                    /*
-                     * Clear answers.
-                     */
-
-                    Object.keys(
-                        answers
-                    )
-                        .forEach(
-                            function (key) {
-
-                                delete
-                                    answers[ key ];
-
-                            }
-                        );
-
-
-                    /*
-                     * Track restart.
-                     */
-
-                    sendEvent(
-                        "widget_restarted",
-                        {}
-                    );
-
-
-                    /*
-                     * Render first question.
-                     */
-
-                    render();
-
-                }
-            );
-
-        }
-
+        sendEvent("recommendation_displayed", {
+            recommendationKey: recommendation.key,
+            percentage: percentage
+        });
     }
 
-
-    /* =========================================================
-       16. LOAD CONFIGURATION FROM API
-       ========================================================= */
+    // ----------------------------------------------------------
+    // 12. Load published questions from the API
+    // ----------------------------------------------------------
 
     async function load () {
-
-
-        showLoading();
-
-
-        /*
-         * API URL.
-         */
+        showLoading("Loading published questions...");
 
         const url =
             `${ apiUrl }/api/widgets/` +
-            encodeURIComponent(
-                publicKey
-            );
+            `${ encodeURIComponent(publicKey) }/questions`;
 
-
-        console.log(
-            "AskPearls: Loading widget configuration:",
-            url
-        );
-
-
-        /*
-         * Request configuration.
-         */
-
-        const response =
-            await fetch(url);
-
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        });
 
         if (!response.ok) {
-
             throw new Error(
-                `Widget API returned HTTP ${ response.status }`
+                `Questions API returned HTTP ${ response.status }`
             );
-
         }
 
+        const data = await response.json();
 
-        /*
-         * Parse JSON.
-         */
+        if (!data || !Array.isArray(data.questions)) {
+            throw new Error(
+                "The questions API did not return a questions array."
+            );
+        }
 
-        config =
-            await response.json();
-
-
-        /*
-         * Debug.
-         */
-
-        console.log(
-            "AskPearls: Widget configuration loaded:",
-            config
+        questions = data.questions.filter(question =>
+            question &&
+            question.key &&
+            question.isActive !== false &&
+            question.isVisible !== false
         );
 
+        // API versions may return widget metadata separately.
+        config = {
+            widget: data.widget || {
+                key: publicKey,
+                name: "DecisionOS Widget",
+                title: "Find Your Perfect Match"
+            },
+            questions: questions
+        };
 
-        /* =====================================================
-           VALIDATE CONFIGURATION
-           ===================================================== */
-
-        if (!config) {
-
+        if (!questions.length) {
             throw new Error(
-                "Widget configuration is empty."
+                "No active published questions were returned."
             );
-
         }
 
+        sendEvent("widget_loaded", {
+            widgetKey: publicKey,
+            questionCount: questions.length
+        });
 
-        /*
-         * Widget object.
-         */
-
-        if (
-            !config.widget ||
-            typeof config.widget !== "object"
-        ) {
-
-            throw new Error(
-                "Widget configuration does not contain a valid widget object."
-            );
-
-        }
-
-
-        /*
-         * Questions.
-         */
-
-        if (
-            !Array.isArray(
-                config.questions
-            )
-        ) {
-
-            throw new Error(
-                "Widget configuration does not contain a valid questions array."
-            );
-
-        }
-
-
-        /*
-         * Recommendations.
-         */
-
-        if (
-            !Array.isArray(
-                config.recommendations
-            )
-        ) {
-
-            throw new Error(
-                "Widget configuration does not contain a valid recommendations array."
-            );
-
-        }
-
-
-        /*
-         * Validate widget key.
-         *
-         * We don't require it to be identical
-         * to the script publicKey yet, but we
-         * can warn during development.
-         */
-
-        if (
-            config.widget.key &&
-            config.widget.key !== publicKey
-        ) {
-
-            console.warn(
-                "AskPearls: Widget configuration key does not match the script public key.",
-                {
-                    scriptKey:
-                        publicKey,
-
-                    configurationKey:
-                        config.widget.key
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           TRACK WIDGET LOADED
-           ===================================================== */
-
-        sendEvent(
-            "widget_loaded",
-            {
-
-                widgetKey:
-                    config.widget.key,
-
-                widgetName:
-                    config.widget.name,
-
-                title:
-                    config.widget.title,
-
-                questionCount:
-                    config.questions.length,
-
-                recommendationCount:
-                    config.recommendations.length
-
-            }
-        );
-
-
-        /* =====================================================
-           RENDER FIRST QUESTION
-           ===================================================== */
-
-        render();
-
+        renderQuestion();
     }
 
+    // ----------------------------------------------------------
+    // 13. Initialize
+    // ----------------------------------------------------------
 
-    /* =========================================================
-       17. START WIDGET
-       ========================================================= */
+    load().catch(error => {
+        console.error("AskPearls widget initialization failed.", error);
 
-    load()
-
-        .catch(
-            function (error) {
-
-                console.error(
-                    "AskPearls:",
-                    error
-                );
-
-
-                showError(
-                    "Unable to load the AskPearls widget. " +
-                    "Please try again later."
-                );
-
-            }
+        showError(
+            "Unable to load the AskPearls widget. " +
+            "Please try again later.",
+            load
         );
-
+    });
 
 })(window, document);

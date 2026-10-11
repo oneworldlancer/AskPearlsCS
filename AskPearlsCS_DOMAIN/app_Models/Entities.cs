@@ -63,7 +63,9 @@ public class Widget : Entity
     // Public identifier used by the embed script
     public string WidgetPublicKey { get; set; } = "";
 
-    public string WidgetStatus { get; set; } = "Draft";
+    public string WidgetStatusCode { get; set; } = "draft";
+    public string WidgetStatusText { get; set; } = "draft";
+       public string WidgetStatus { get; set; } = "draft";
 
     public int WidgetPublishedVersion { get; set; }
 }
@@ -71,48 +73,131 @@ public class Widget : Entity
 public class WidgetVersion : Entity
 {
     public Guid WidgetId { get; set; }
+
+    public string VersionTokenId { get; set; } = string.Empty;
+
     public int VersionNumber { get; set; }
+
     public string Status { get; set; } = "Draft";
+
     public string ConfigurationJson { get; set; } = "{}";
+
     public DateTime? PublishedAtUtc { get; set; }
 }
 
+
 public class Question : Entity
 {
-    public Guid WidgetVersionId { get; set; }
+    public string QuestionTokenId { get; set; } = string.Empty;
+
+    public string WidgetTokenId { get; set; } = string.Empty;
+
+    public string WidgetVersionTokenId { get; set; } = string.Empty;
+
+    public string Code { get; set; } = string.Empty;
+
+    public string Key { get; set; } = string.Empty;
+
+    public string Type { get; set; } = string.Empty;
+
+    public string Title { get; set; } = string.Empty;
+
+    public string Name { get; set; } = string.Empty;
+
+    public string Text { get; set; } = string.Empty;
+
+    public string Description { get; set; } = string.Empty;
+
     public int SortOrder { get; set; }
-    public string Text { get; set; } = "";
-    public string Key { get; set; } = "";
+
+    public bool IsActive { get; set; } = true;
+
+    public bool IsVisible { get; set; } = true;
+
+    public List<Answer> Answers { get; set; } = new();
 }
 
 public class Answer : Entity
 {
-    public Guid QuestionId { get; set; }
-    public string Text { get; set; } = "";
-    public string Value { get; set; } = "";
+    public string AnswerTokenId { get; set; } = string.Empty;
+
+    public string WidgetTokenId { get; set; } = string.Empty;
+
+    public string QuestionTokenId { get; set; } = string.Empty;
+
+    public string WidgetVersionTokenId { get; set; } = string.Empty;
+
+    public string Code { get; set; } = string.Empty;
+
+    public string Key { get; set; } = string.Empty;
+
+    public string Type { get; set; } = string.Empty;
+
+    public string Title { get; set; } = string.Empty;
+
+    public string Name { get; set; } = string.Empty;
+
+    public string Text { get; set; } = string.Empty;
+
+    public string Description { get; set; } = string.Empty;
+
+    public int SortOrder { get; set; }
+
+    public string? ImageTokenId { get; set; }
+
+    public string? ImageServerUrl { get; set; }
+
+    public bool IsActive { get; set; } = true;
+
+    public bool IsVisible { get; set; } = true;
 }
 
 public class DecisionRule : Entity
 {
-    public Guid WidgetVersionId { get; set; }
+    public string DecisionRuleTokenId { get; set; }
+        = string.Empty;
 
-    public Guid QuestionId { get; set; }
+    public string WidgetTokenId { get; set; }
+        = string.Empty;
 
-    public Guid AnswerId { get; set; }
+    public string WidgetVersionTokenId { get; set; }
+        = string.Empty;
 
-    public Guid RecommendationItemId { get; set; }
+     //public string WidgetVersionTokenId { get; set; }
+     //   = string.Empty;
+
+     public string WidgetQuestionTokenId { get; set; }
+        = string.Empty;
+
+     public string WidgetQuestionKey { get; set; }
+        = string.Empty;
+
+     public string WidgetAnswerTokenId { get; set; }
+        = string.Empty;
+
+     public string WidgetAnswerKey { get; set; }
+        = string.Empty;
+
+    public string QuestionTokenId { get; set; }
+        = string.Empty;
+
+    public string AnswerTokenId { get; set; }
+        = string.Empty;
+
+    public string RecommendationTokenId { get; set; }
+        = string.Empty;
+
+    public string AnswerValue { get; set; }
+        = string.Empty;
+
+    public string RecommendationKey { get; set; }
+        = string.Empty;
 
     public int Score { get; set; }
 
     public string? Reason { get; set; }
 
-    public WidgetVersion? WidgetVersion { get; set; }
-
-    public Question? Question { get; set; }
-
-    public Answer? Answer { get; set; }
-
-    public RecommendationItem? RecommendationItem { get; set; }
+    public bool IsActive { get; set; } = true;
 }
 
 public class WidgetEvent : Entity
@@ -185,12 +270,19 @@ public class RecommendationItem : Entity
     public string? Url { get; set; }
 
     public string? CtaText { get; set; }
+    public List<string> Highlights { get; set; } = new();
+    public string? ImageTokenId { get; set; }
+    public string? Text { get; set; }
+    public string? WidgetTokenId { get; set; }
+    public string? WidgetVersionTokenId { get; set; }
+    //public string? CtaText { get; set; }
 
     public string? HighlightsJson { get; set; }
 
     public int SortOrder { get; set; }
 
     public bool IsActive { get; set; } = true;
+    public bool IsVisible { get; set; } = true;
 
     public WidgetVersion? WidgetVersion { get; set; }
 

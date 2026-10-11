@@ -17,6 +17,8 @@ public partial class AskpearlsPortalUserWebsiteWidgetVersionList
 
     public string? OwnerMobileNumberTokenId { get; set; }
 
+    public string? OrganizationTokenId { get; set; }
+
     public string? CompanyTokenId { get; set; }
 
     public string? CompanyName { get; set; }
@@ -29,9 +31,15 @@ public partial class AskpearlsPortalUserWebsiteWidgetVersionList
 
     public string? WidgetPublicKey { get; set; }
 
+    public string? WidgetVersionTokenId { get; set; }
+
     public string? WidgetVersionNumber { get; set; }
 
     public string? WidgetConfigurationJson { get; set; }
+
+    public string? WidgetStatusCode { get; set; }
+
+    public string? WidgetStatusText { get; set; }
 
     public string? WidgetStatus { get; set; }
 
@@ -83,11 +91,15 @@ public partial class AskpearlsPortalUserWebsiteWidgetVersionList
 
     public bool? IsNew { get; set; }
 
-    public bool? IsVisible { get; set; }
-
     public string? ActiveStatus { get; set; }
 
     public bool? IsActive { get; set; }
+
+    public bool? IsVisible { get; set; }
+
+    public DateTime? CreatedAtUtc { get; set; }
+
+    public DateTime? UpdatedAtUtc { get; set; }
 
     public string? UploadDateTimeMilliSec { get; set; }
 

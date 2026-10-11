@@ -17,15 +17,21 @@ public partial class AskpearlsPortalUserWebsiteWidgetEventList
 
     public string? OwnerMobileNumberTokenId { get; set; }
 
+    public string? OrganizationTokenId { get; set; }
+
     public string? CompanyTokenId { get; set; }
 
     public string? CompanyName { get; set; }
+
+    public string? WebsiteTokenId { get; set; }
 
     public string? WidgetTokenId { get; set; }
 
     public string? WidgetEventTokenId { get; set; }
 
     public string? WidgetSessionTokenId { get; set; }
+
+    public string? WidgetEventCode { get; set; }
 
     public string? WidgetEventType { get; set; }
 
@@ -35,15 +41,15 @@ public partial class AskpearlsPortalUserWebsiteWidgetEventList
 
     public string? WidgetAnswerTokenId { get; set; }
 
-    public string? WebsiteTokenId { get; set; }
+    public string? UserAgent { get; set; }
 
-    public string? WebsiteName { get; set; }
+    public string? Ipaddress { get; set; }
 
-    public string? WidgetPublicKey { get; set; }
+    public string? ReferrerUrl { get; set; }
 
-    public string? WebsiteWidgetVersionTokenId { get; set; }
+    public string? PageUrl { get; set; }
 
-    public string? AnswerValue { get; set; }
+    public string? RecommendationTokenId { get; set; }
 
     public string? RecommendationKey { get; set; }
 
@@ -103,11 +109,15 @@ public partial class AskpearlsPortalUserWebsiteWidgetEventList
 
     public bool? IsNew { get; set; }
 
-    public bool? IsVisible { get; set; }
-
     public string? ActiveStatus { get; set; }
 
     public bool? IsActive { get; set; }
+
+    public bool? IsVisible { get; set; }
+
+    public DateTime? CreatedAtUtc { get; set; }
+
+    public DateTime? UpdatedAtUtc { get; set; }
 
     public string? UploadDateTimeMilliSec { get; set; }
 

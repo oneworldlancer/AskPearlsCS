@@ -53,16 +53,6 @@ public partial class AskpearlsPortalUserSessionList
 
     public string? UserBrowserInfo { get; set; }
 
-    public string? UserCountryCode { get; set; }
-
-    public string? UserCountryName { get; set; }
-
-    public string? UserProvince { get; set; }
-
-    public string? UserState { get; set; }
-
-    public string? UserCity { get; set; }
-
     public DateTime? UserDateTimeNow { get; set; }
 
     public string? UserIp { get; set; }
@@ -78,6 +68,74 @@ public partial class AskpearlsPortalUserSessionList
     public string? LoginLocationRegionName { get; set; }
 
     public string? LoginUserIp { get; set; }
+
+    public string? BrowserInfo { get; set; }
+
+    public string? BrowserIp { get; set; }
+
+    public string? BrowserTimeFrame { get; set; }
+
+    public string? BrowserUserAgent { get; set; }
+
+    public string? BrowserLanguage { get; set; }
+
+    public string? BrowserPlatform { get; set; }
+
+    public string? BrowserTimezone { get; set; }
+
+    public string? BrowserScreenWidth { get; set; }
+
+    public string? BrowserScreenHeight { get; set; }
+
+    public string? UserLogStartDay { get; set; }
+
+    public string? UserLogStartDayName { get; set; }
+
+    public string? UserLogStartDayText { get; set; }
+
+    public string? UserLogStartMonth { get; set; }
+
+    public string? UserLogStartMonthName { get; set; }
+
+    public string? UserLogStartMonthText { get; set; }
+
+    public string? UserLogStartYear { get; set; }
+
+    public string? UserLogStartDateText { get; set; }
+
+    public string? UserLogStartTimeText { get; set; }
+
+    public string? UserLogStartDateTimeText { get; set; }
+
+    public string? UserLogStartHour { get; set; }
+
+    public string? UserLogStartHourText { get; set; }
+
+    public string? UserLogStartMinute { get; set; }
+
+    public string? UserLogStartMinuteText { get; set; }
+
+    public string? UserLogStartTimeZone { get; set; }
+
+    public string? UserLogStartTimeZoneText { get; set; }
+
+    public string? UserLogStartDateTimeCalendar { get; set; }
+
+    public DateTime? UserLogStartDateTimeCalendarValue { get; set; }
+
+    public string? UserLogStartDateTimeCalendarText { get; set; }
+
+    public string? UserCountryCode { get; set; }
+
+    public string? UserCountry { get; set; }
+
+    public string? UserCountryName { get; set; }
+
+    public string? UserProvince { get; set; }
+
+    public string? UserState { get; set; }
+
+    public string? UserCity { get; set; }
 
     public string? UserLoginStatus { get; set; }
 
@@ -100,6 +158,12 @@ public partial class AskpearlsPortalUserSessionList
     public DateTime? LogoutDate { get; set; }
 
     public bool? IsActive { get; set; }
+
+    public bool? IsVisible { get; set; }
+
+    public DateTime? CreatedAtUtc { get; set; }
+
+    public DateTime? UpdatedAtUtc { get; set; }
 
     public int? UploadDay { get; set; }
 

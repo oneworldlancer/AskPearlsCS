@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+
 using AskPearlsCS_DAL.DBModels;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace AskPearlsCS_DAL.DBContext;
 
@@ -295,6 +297,12 @@ public partial class DBContextModel : DbContext
     public virtual DbSet<AskpearlsPortalUserOfflineMatchList> AskpearlsPortalUserOfflineMatchLists { get; set; }
 
     public virtual DbSet<AskpearlsPortalUserOfflineRequestList> AskpearlsPortalUserOfflineRequestLists { get; set; }
+
+    public virtual DbSet<AskpearlsPortalUserOrganizationCompanyList> AskpearlsPortalUserOrganizationCompanyLists { get; set; }
+
+    public virtual DbSet<AskpearlsPortalUserOrganizationCompanyMemberList> AskpearlsPortalUserOrganizationCompanyMemberLists { get; set; }
+
+    public virtual DbSet<AskpearlsPortalUserOrganizationList> AskpearlsPortalUserOrganizationLists { get; set; }
 
     public virtual DbSet<AskpearlsPortalUserPaymentEarnTokenList> AskpearlsPortalUserPaymentEarnTokenLists { get; set; }
 
@@ -656,7 +664,15 @@ public partial class DBContextModel : DbContext
 
     public virtual DbSet<AskpearlsPortalUserWebsiteWidgetList> AskpearlsPortalUserWebsiteWidgetLists { get; set; }
 
+    public virtual DbSet<AskpearlsPortalUserWebsiteWidgetQuestionAnswerList> AskpearlsPortalUserWebsiteWidgetQuestionAnswerLists { get; set; }
+
     public virtual DbSet<AskpearlsPortalUserWebsiteWidgetQuestionList> AskpearlsPortalUserWebsiteWidgetQuestionLists { get; set; }
+
+    public virtual DbSet<AskpearlsPortalUserWebsiteWidgetRecommendationList> AskpearlsPortalUserWebsiteWidgetRecommendationLists { get; set; }
+
+    public virtual DbSet<AskpearlsPortalUserWebsiteWidgetSessionActivityList> AskpearlsPortalUserWebsiteWidgetSessionActivityLists { get; set; }
+
+    public virtual DbSet<AskpearlsPortalUserWebsiteWidgetSessionList> AskpearlsPortalUserWebsiteWidgetSessionLists { get; set; }
 
     public virtual DbSet<AskpearlsPortalUserWebsiteWidgetVersionList> AskpearlsPortalUserWebsiteWidgetVersionLists { get; set; }
 
@@ -1842,7 +1858,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadDay");
             entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadMonth");
             entity.Property(e => e.UploadTime)
-                .HasDefaultValue(new DateTime(2026, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadTime")
+                .HasDefaultValue(new DateTime(2026, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadTime")
                 .HasColumnType("smalldatetime");
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadYear");
             entity.Property(e => e.UpostId)
@@ -8562,6 +8578,9 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.BirthDateMonth).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_BirthDateMonth");
             entity.Property(e => e.BirthDateYear).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_BirthDateYear");
             entity.Property(e => e.CityId).HasColumnName("CityID");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_LIST_OwnerUserTokenID1")
+                .HasColumnName("CompanyTokenID");
             entity.Property(e => e.CountryFlagUrl).HasColumnName("CountryFlagURL");
             entity.Property(e => e.CountryId).HasColumnName("CountryID");
             entity.Property(e => e.DatabaseServerTokenId)
@@ -8593,6 +8612,9 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.MembershipType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_USER_LIST_MembershipType");
             entity.Property(e => e.Notes).HasDefaultValue("N/A", "DF_ASKPEARLS_PORTAL_Notes");
             entity.Property(e => e.OnlineStatus).HasDefaultValue("offline", "DF_ASKPEARLS_PORTAL_UserLoginStatus1");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_LIST_OwnerUserTokenID2")
+                .HasColumnName("OrganizationTokenID");
             entity.Property(e => e.OwnerUserTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_LIST_OwnerUserTokenID")
                 .HasColumnName("OwnerUserTokenID");
@@ -8631,12 +8653,18 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.AddressLine1).HasDefaultValueSql("((0))", "DF_ASKPEARLS_USER_LOCATION_AddressLine1");
             entity.Property(e => e.AddressLine2).HasDefaultValueSql("((0))", "DF_ASKPEARLS_USER_LOCATION_AddressLine2");
             entity.Property(e => e.CityName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_USER_LOCATION_CityName");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_LOCATION_LIST_CompanyTokenID")
+                .HasColumnName("CompanyTokenID");
             entity.Property(e => e.CountryCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_USER_LOCATION_CountryCode");
             entity.Property(e => e.CountryName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_USER_LOCATION_CountryName");
             entity.Property(e => e.DeviceGlobalId).HasColumnName("DeviceGlobalID");
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_LOCATION_IsActive");
             entity.Property(e => e.Latitude).HasDefaultValueSql("((0))", "DF_ASKPEARLS_USER_LOCATION_Latitude");
             entity.Property(e => e.Longitude).HasDefaultValueSql("((0))", "DF_ASKPEARLS_USER_LOCATION_Longitude");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_LOCATION_LIST_OrganizationTokenID")
+                .HasColumnName("OrganizationTokenID");
             entity.Property(e => e.OwnerMobileNumberTokenId).HasColumnName("OwnerMobileNumberTokenID");
             entity.Property(e => e.OwnerUserTokenId).HasColumnName("OwnerUserTokenID");
             entity.Property(e => e.PostalCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_USER_LOCATION_PostalCode");
@@ -8824,6 +8852,9 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_LOGIN_LIST_AccountType");
             entity.Property(e => e.AndroidId).HasColumnName("AndroidID");
             entity.Property(e => e.CellIdentityGsm).HasColumnName("CellIdentityGSM");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_LOGIN_LIST_CompanyTokenID")
+                .HasColumnName("CompanyTokenID");
             entity.Property(e => e.CountryIsocode).HasColumnName("CountryISOCode");
             entity.Property(e => e.DeviceGlobalId).HasColumnName("DeviceGlobalID");
             entity.Property(e => e.DeviceId).HasColumnName("DeviceID");
@@ -8841,6 +8872,9 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.MobileNumberFormatUs).HasColumnName("MobileNumberFormatUS");
             entity.Property(e => e.MobileNumberOutUs).HasColumnName("MobileNumberOutUS");
             entity.Property(e => e.NetworkCountryIso).HasColumnName("NetworkCountryISO");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_LOGIN_LIST_OrganizationTokenID")
+                .HasColumnName("OrganizationTokenID");
             entity.Property(e => e.OwnerMobileNumberTokenId).HasColumnName("OwnerMobileNumberTokenID");
             entity.Property(e => e.OwnerUserTokenId).HasColumnName("OwnerUserTokenID");
             entity.Property(e => e.RemoveDate)
@@ -9457,6 +9491,189 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_OFFLINE_REQUEST_LIST_UploadYear");
             entity.Property(e => e.UserId).HasColumnName("UserID");
             entity.Property(e => e.UserMobileNumberId).HasColumnName("UserMobileNumberID");
+        });
+
+        modelBuilder.Entity<AskpearlsPortalUserOrganizationCompanyList>(entity =>
+        {
+            entity.HasKey(e => e.UcompanyId);
+
+            entity.ToTable("ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST");
+
+            entity.Property(e => e.UcompanyId).HasColumnName("UCompanyID");
+            entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_AccountType");
+            entity.Property(e => e.ActiveStatus).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_ActiveStatus");
+            entity.Property(e => e.CompanyAddress).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_BuildingAddress");
+            entity.Property(e => e.CompanyAddressLine).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_BuildingAddressLine");
+            entity.Property(e => e.CompanyCity).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_BuildingCity");
+            entity.Property(e => e.CompanyCountry).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_BuildingCountry");
+            entity.Property(e => e.CompanyName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_CompanyTokenID1");
+            entity.Property(e => e.CompanyStreetName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_BuildingStreetName");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_CompanyTokenID")
+                .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CompanyZipCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_BuildingZipCode");
+            entity.Property(e => e.CountryCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_MobileNumber2");
+            entity.Property(e => e.CountryName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_MobileNumber3");
+            entity.Property(e => e.EmailAddress).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_MobileNumber1_1");
+            entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_IsActive");
+            entity.Property(e => e.IsValidateMobileNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_IsValidateMobileNumber");
+            entity.Property(e => e.IsValidateMobileNumberE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_IsValidateMobileNumberE164");
+            entity.Property(e => e.IsValidateMobileNumberWhatsappE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_IsValidateMobileNumberWhatsappE164");
+            entity.Property(e => e.IsValidatePhoneNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_IsValidatePhoneNumber");
+            entity.Property(e => e.IsVerifiedMobileNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_IsVerifiedMobileNumber");
+            entity.Property(e => e.IsVerifiedMobileNumberE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_IsVerifiedMobileNumberE164");
+            entity.Property(e => e.IsVerifiedMobileNumberWhatsappE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_IsVerifiedMobileNumberWhatsappE164");
+            entity.Property(e => e.IsVerifiedPhoneNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_IsVerifiedPhoneNumber");
+            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_IsVisible");
+            entity.Property(e => e.ItemOrder).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_CompanyName1");
+            entity.Property(e => e.MobileNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_CompanyZipCode1");
+            entity.Property(e => e.MobileNumberCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_MobileNumber1_2");
+            entity.Property(e => e.MobileNumberE164).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_MobileNumber1");
+            entity.Property(e => e.MobileNumberWhatsappE164).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_MobileNumberE1641");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_CompanyTokenID1_1")
+                .HasColumnName("OrganizationTokenID");
+            entity.Property(e => e.OwnerMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_OwnerMobileNumberTokenID")
+                .HasColumnName("OwnerMobileNumberTokenID");
+            entity.Property(e => e.OwnerUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_OwnerUserTokenID")
+                .HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.PhoneNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_PhoneNumber");
+            entity.Property(e => e.RowDataTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_RowDataTokenID")
+                .HasColumnName("RowDataTokenID");
+            entity.Property(e => e.RowViewTokenId)
+                .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_RowViewTokenID")
+                .HasColumnName("RowViewTokenID");
+            entity.Property(e => e.UploadDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_UploadDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UploadDateTimeMilliSec).HasDefaultValue("0", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_UploadDateTimeMilliSec");
+            entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_UploadDay");
+            entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_UploadMonth");
+            entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_LIST_UploadYear");
+        });
+
+        modelBuilder.Entity<AskpearlsPortalUserOrganizationCompanyMemberList>(entity =>
+        {
+            entity.HasKey(e => e.UcompanyId);
+
+            entity.ToTable("ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST");
+
+            entity.Property(e => e.UcompanyId).HasColumnName("UCompanyID");
+            entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_AccountType");
+            entity.Property(e => e.ActiveStatus).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_ActiveStatus");
+            entity.Property(e => e.CompanyAddress).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_BuildingAddress");
+            entity.Property(e => e.CompanyAddressLine).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_BuildingAddressLine");
+            entity.Property(e => e.CompanyCity).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_BuildingCity");
+            entity.Property(e => e.CompanyCountry).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_BuildingCountry");
+            entity.Property(e => e.CompanyName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_CompanyTokenID1");
+            entity.Property(e => e.CompanyStreetName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_BuildingStreetName");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_CompanyTokenID")
+                .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CompanyTokenId1)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_CompanyTokenID1_1")
+                .HasColumnName("CompanyTokenID1");
+            entity.Property(e => e.CompanyZipCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_BuildingZipCode");
+            entity.Property(e => e.CountryCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_MobileNumber2");
+            entity.Property(e => e.CountryName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_MobileNumber3");
+            entity.Property(e => e.EmailAddress).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_MobileNumber1_1");
+            entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_IsActive");
+            entity.Property(e => e.IsValidateMobileNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_IsValidateMobileNumber");
+            entity.Property(e => e.IsValidateMobileNumberE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_IsValidateMobileNumberE164");
+            entity.Property(e => e.IsValidateMobileNumberWhatsappE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_IsValidateMobileNumberWhatsappE164");
+            entity.Property(e => e.IsValidatePhoneNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_IsValidatePhoneNumber");
+            entity.Property(e => e.IsVerifiedMobileNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_IsVerifiedMobileNumber");
+            entity.Property(e => e.IsVerifiedMobileNumberE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_IsVerifiedMobileNumberE164");
+            entity.Property(e => e.IsVerifiedMobileNumberWhatsappE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_IsVerifiedMobileNumberWhatsappE164");
+            entity.Property(e => e.IsVerifiedPhoneNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_IsVerifiedPhoneNumber");
+            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_IsVisible");
+            entity.Property(e => e.ItemOrder).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_CompanyName1");
+            entity.Property(e => e.MobileNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_CompanyZipCode1");
+            entity.Property(e => e.MobileNumberCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_MobileNumber1_2");
+            entity.Property(e => e.MobileNumberE164).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_MobileNumber1");
+            entity.Property(e => e.MobileNumberWhatsappE164).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_MobileNumberE1641");
+            entity.Property(e => e.OwnerMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_OwnerMobileNumberTokenID")
+                .HasColumnName("OwnerMobileNumberTokenID");
+            entity.Property(e => e.OwnerUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_OwnerUserTokenID")
+                .HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.PhoneNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_PhoneNumber");
+            entity.Property(e => e.RowDataTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_RowDataTokenID")
+                .HasColumnName("RowDataTokenID");
+            entity.Property(e => e.RowViewTokenId)
+                .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_RowViewTokenID")
+                .HasColumnName("RowViewTokenID");
+            entity.Property(e => e.UploadDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_UploadDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UploadDateTimeMilliSec).HasDefaultValue("0", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_UploadDateTimeMilliSec");
+            entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_UploadDay");
+            entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_UploadMonth");
+            entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_UploadYear");
+        });
+
+        modelBuilder.Entity<AskpearlsPortalUserOrganizationList>(entity =>
+        {
+            entity.HasKey(e => e.UorganizationId);
+
+            entity.ToTable("ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST");
+
+            entity.Property(e => e.UorganizationId).HasColumnName("UOrganizationID");
+            entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_AccountType");
+            entity.Property(e => e.ActiveStatus).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_ActiveStatus");
+            entity.Property(e => e.CountryCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_CountryCode");
+            entity.Property(e => e.CountryName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_CountryName");
+            entity.Property(e => e.EmailAddress).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_EmailAddress");
+            entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_IsActive");
+            entity.Property(e => e.IsValidateMobileNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_IsValidateMobileNumber");
+            entity.Property(e => e.IsValidateMobileNumberE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_IsValidateMobileNumberE164");
+            entity.Property(e => e.IsValidateMobileNumberWhatsappE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_IsValidateMobileNumberWhatsappE164");
+            entity.Property(e => e.IsValidatePhoneNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_IsValidatePhoneNumber");
+            entity.Property(e => e.IsVerifiedMobileNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_IsVerifiedMobileNumber");
+            entity.Property(e => e.IsVerifiedMobileNumberE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_IsVerifiedMobileNumberE164");
+            entity.Property(e => e.IsVerifiedMobileNumberWhatsappE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_IsVerifiedMobileNumberWhatsappE164");
+            entity.Property(e => e.IsVerifiedPhoneNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_IsVerifiedPhoneNumber");
+            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_IsVisible");
+            entity.Property(e => e.ItemOrder).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_ItemOrder");
+            entity.Property(e => e.MobileNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_MobileNumber");
+            entity.Property(e => e.MobileNumberCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_MobileNumberCode");
+            entity.Property(e => e.MobileNumberE164).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_MobileNumberE164");
+            entity.Property(e => e.MobileNumberWhatsappE164).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_MobileNumberWhatsappE164");
+            entity.Property(e => e.OrganizationAddress).HasDefaultValueSql("((0))", "DF_Table_1_CompanyAddress");
+            entity.Property(e => e.OrganizationAddressLine).HasDefaultValueSql("((0))", "DF_Table_1_CompanyAddressLine");
+            entity.Property(e => e.OrganizationCity).HasDefaultValueSql("((0))", "DF_Table_1_CompanyCity");
+            entity.Property(e => e.OrganizationCountry).HasDefaultValueSql("((0))", "DF_Table_1_CompanyCountry");
+            entity.Property(e => e.OrganizationName).HasDefaultValueSql("((0))", "DF_Table_1_CompanyName");
+            entity.Property(e => e.OrganizationStreetName).HasDefaultValueSql("((0))", "DF_Table_1_CompanyStreetName");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_Table_1_CompanyTokenID")
+                .HasColumnName("OrganizationTokenID");
+            entity.Property(e => e.OrganizationZipCode).HasDefaultValueSql("((0))", "DF_Table_1_CompanyZipCode");
+            entity.Property(e => e.OwnerMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_OwnerMobileNumberTokenID")
+                .HasColumnName("OwnerMobileNumberTokenID");
+            entity.Property(e => e.OwnerUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_OwnerUserTokenID")
+                .HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.PhoneNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_PhoneNumber");
+            entity.Property(e => e.RowDataTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_RowDataTokenID")
+                .HasColumnName("RowDataTokenID");
+            entity.Property(e => e.RowViewTokenId)
+                .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_RowViewTokenID")
+                .HasColumnName("RowViewTokenID");
+            entity.Property(e => e.UploadDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_UploadDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UploadDateTimeMilliSec).HasDefaultValue("0", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_UploadDateTimeMilliSec");
+            entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_UploadDay");
+            entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_UploadMonth");
+            entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_UploadYear");
         });
 
         modelBuilder.Entity<AskpearlsPortalUserPaymentEarnTokenList>(entity =>
@@ -10566,7 +10783,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadDay");
             entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadMonth");
             entity.Property(e => e.UploadTime)
-                .HasDefaultValue(new DateTime(2026, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadTime")
+                .HasDefaultValue(new DateTime(2026, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadTime")
                 .HasColumnType("smalldatetime");
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadYear");
             entity.Property(e => e.UpostId).HasColumnName("UPostID");
@@ -15884,6 +16101,21 @@ public partial class DBContextModel : DbContext
 
             entity.Property(e => e.UsessionId).HasColumnName("USessionID");
             entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_USER_SESSION_AccountType");
+            entity.Property(e => e.BrowserInfo).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_BrowserInfo");
+            entity.Property(e => e.BrowserIp)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_BrowserIP")
+                .HasColumnName("BrowserIP");
+            entity.Property(e => e.BrowserLanguage).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_BrowserLanguage");
+            entity.Property(e => e.BrowserPlatform).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_BrowserPlatform");
+            entity.Property(e => e.BrowserScreenHeight).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_BrowserScreenHeight");
+            entity.Property(e => e.BrowserScreenWidth).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_BrowserScreenWidth");
+            entity.Property(e => e.BrowserTimeFrame).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_BrowserTimeFrame");
+            entity.Property(e => e.BrowserTimezone).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_BrowserTimezone");
+            entity.Property(e => e.BrowserUserAgent).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_BrowserUserAgent");
+            entity.Property(e => e.CreatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_CreatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("CreatedAtUTC");
             entity.Property(e => e.DatabaseServerTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_USER_SESSION_DatabaseServerTokenID")
                 .HasColumnName("DatabaseServerTokenID");
@@ -15907,6 +16139,7 @@ public partial class DBContextModel : DbContext
                 .HasColumnName("GuestUserTokenID");
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_USER_SESSION_IsActive");
             entity.Property(e => e.IsGuest).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_IsGuest");
+            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_IsActive1");
             entity.Property(e => e.LoginDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_LoginDate")
                 .HasColumnType("smalldatetime");
@@ -15946,6 +16179,10 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.SessionTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_USER_SESSION_SessionTokenID")
                 .HasColumnName("SessionTokenID");
+            entity.Property(e => e.UpdatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UpdatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("UpdatedAtUTC");
             entity.Property(e => e.UploadDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_USER_SESSION_UploadDate")
                 .HasColumnType("smalldatetime");
@@ -15959,6 +16196,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UserBrowserType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_GuestBrowserType");
             entity.Property(e => e.UserBrowserVersion).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserBrowserTitle1");
             entity.Property(e => e.UserCity).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserCity");
+            entity.Property(e => e.UserCountry).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserCountry");
             entity.Property(e => e.UserCountryCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_GuestCountryCode");
             entity.Property(e => e.UserCountryName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_GuestCountryName");
             entity.Property(e => e.UserDateTimeNow)
@@ -15970,6 +16208,27 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UserIp)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserIP")
                 .HasColumnName("UserIP");
+            entity.Property(e => e.UserLogStartDateText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartDateText");
+            entity.Property(e => e.UserLogStartDateTimeCalendar).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartDateTimeCalendar");
+            entity.Property(e => e.UserLogStartDateTimeCalendarText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartDateTimeCalendarText");
+            entity.Property(e => e.UserLogStartDateTimeCalendarValue)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartDateTimeCalendarValue")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UserLogStartDateTimeText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartDateTimeText");
+            entity.Property(e => e.UserLogStartDay).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartDay");
+            entity.Property(e => e.UserLogStartDayName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartDayName");
+            entity.Property(e => e.UserLogStartDayText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartDayText");
+            entity.Property(e => e.UserLogStartHour).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartHour");
+            entity.Property(e => e.UserLogStartHourText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartHourText");
+            entity.Property(e => e.UserLogStartMinute).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartMinute");
+            entity.Property(e => e.UserLogStartMinuteText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartMinuteText");
+            entity.Property(e => e.UserLogStartMonth).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartMonth");
+            entity.Property(e => e.UserLogStartMonthName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartMonthName");
+            entity.Property(e => e.UserLogStartMonthText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartMonthText");
+            entity.Property(e => e.UserLogStartTimeText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartTimeText");
+            entity.Property(e => e.UserLogStartTimeZone).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartTimeZone");
+            entity.Property(e => e.UserLogStartTimeZoneText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartTimeZoneText");
+            entity.Property(e => e.UserLogStartYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserLogStartYear");
             entity.Property(e => e.UserLoginStatus).HasDefaultValue("NotApproved", "DF_ASKPEARLS_USER_SESSION_UserLoginStatus");
             entity.Property(e => e.UserMoodStatus).HasDefaultValue("NotApproved", "DF_ASKPEARLS_USER_SESSION_UserMoodStatus");
             entity.Property(e => e.UserProvince).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SESSION_LIST_UserProvince");
@@ -20454,6 +20713,10 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.CompanyTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_WebsiteTokenID1")
                 .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CreatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_CreatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("CreatedAtUTC");
             entity.Property(e => e.DwellingsNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_WebsiteAddress1");
             entity.Property(e => e.EngcodeTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_ImageTokenID1_1")
@@ -20477,6 +20740,9 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_IsActive");
             entity.Property(e => e.IsNew).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_IsVisible1");
             entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_IsVisible");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_CompanyTokenID1_1")
+                .HasColumnName("OrganizationTokenID");
             entity.Property(e => e.OwnerMobileNumberTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_OwnerMobileNumberTokenID")
                 .HasColumnName("OwnerMobileNumberTokenID");
@@ -20490,6 +20756,10 @@ public partial class DBContextModel : DbContext
                 .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_RowViewTokenID")
                 .HasColumnName("RowViewTokenID");
             entity.Property(e => e.StoreysNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_WebsiteAddress2");
+            entity.Property(e => e.UpdatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_UpdatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("UpdatedAtUTC");
             entity.Property(e => e.UploadDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_LIST_UploadDate")
                 .HasColumnType("smalldatetime");
@@ -20527,17 +20797,24 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UwebsiteWidgetDecisionRuleId).HasColumnName("UWebsiteWidgetDecisionRuleID");
             entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_AccountType");
             entity.Property(e => e.ActiveStatus).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_ActiveStatus");
+            entity.Property(e => e.AnswerValue).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_AnswerValue");
             entity.Property(e => e.CompanyName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_CompanyTokenID1");
             entity.Property(e => e.CompanyTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteTokenID1")
                 .HasColumnName("CompanyTokenID");
-            entity.Property(e => e.DwellingsNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteAddress1");
-            entity.Property(e => e.EngcodeTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_ImageTokenID1_1")
-                .HasColumnName("ENGCodeTokenID");
-            entity.Property(e => e.Hrbnumber)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_ENGCodeTokenID1_1")
-                .HasColumnName("HRBNumber");
+            entity.Property(e => e.CreatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_CreatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("CreatedAtUTC");
+            entity.Property(e => e.DecisionRuleCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_DecisionRuleCode");
+            entity.Property(e => e.DecisionRuleKey).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_DecisionRuleKey");
+            entity.Property(e => e.DecisionRuleReason).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_DecisionRuleReason");
+            entity.Property(e => e.DecisionRuleScore).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_DecisionRuleScore");
+            entity.Property(e => e.DecisionRuleTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_DecisionRuleTokenID")
+                .HasColumnName("DecisionRuleTokenID");
+            entity.Property(e => e.DecisionRuleType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_DecisionRuleType");
+            entity.Property(e => e.DecisionRuleValue).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_DecisionRuleKey1");
             entity.Property(e => e.ImageGoogleName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_ImageGoogleTokenID1");
             entity.Property(e => e.ImageGoogleServerUrl)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_ImageGoogleServerURL")
@@ -20554,19 +20831,32 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_IsActive");
             entity.Property(e => e.IsNew).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_IsVisible1");
             entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_IsVisible");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_CompanyTokenID1_1")
+                .HasColumnName("OrganizationTokenID");
             entity.Property(e => e.OwnerMobileNumberTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_OwnerMobileNumberTokenID")
                 .HasColumnName("OwnerMobileNumberTokenID");
             entity.Property(e => e.OwnerUserTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_OwnerUserTokenID")
                 .HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.RecommendationCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_RecommendationTokenID2");
+            entity.Property(e => e.RecommendationKey).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_RecommendationKey");
+            entity.Property(e => e.RecommendationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_RecommendationTokenID")
+                .HasColumnName("RecommendationTokenID");
+            entity.Property(e => e.RecommendationType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_RecommendationTokenID1");
+            entity.Property(e => e.RecommendationValue).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_RecommendationKey1");
             entity.Property(e => e.RowDataTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_RowDataTokenID")
                 .HasColumnName("RowDataTokenID");
             entity.Property(e => e.RowViewTokenId)
                 .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_RowViewTokenID")
                 .HasColumnName("RowViewTokenID");
-            entity.Property(e => e.StoreysNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteAddress2");
+            entity.Property(e => e.UpdatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_UpdatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("UpdatedAtUTC");
             entity.Property(e => e.UploadDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_UploadDate")
                 .HasColumnType("smalldatetime");
@@ -20578,26 +20868,51 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.WebsiteAddressLine).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteAddress1_1");
             entity.Property(e => e.WebsiteCity).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteAddress2_1");
             entity.Property(e => e.WebsiteCountry).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteAddress3_1");
-            entity.Property(e => e.WebsiteDate).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteName1");
-            entity.Property(e => e.WebsiteDay).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteDate3");
-            entity.Property(e => e.WebsiteHeight).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteAddress3");
-            entity.Property(e => e.WebsiteMonth).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteDate2");
             entity.Property(e => e.WebsiteName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_CompanyName");
             entity.Property(e => e.WebsiteStreetName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteAddressLine1_1");
             entity.Property(e => e.WebsiteTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_CompanyTokenID")
                 .HasColumnName("WebsiteTokenID");
-            entity.Property(e => e.WebsiteType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteAddress4");
-            entity.Property(e => e.WebsiteUprn)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_ENGCodeTokenID1")
-                .HasColumnName("WebsiteUPRN");
-            entity.Property(e => e.WebsiteWidgetVersionTokenId).HasColumnName("WebsiteWidgetVersionTokenID");
-            entity.Property(e => e.WebsiteYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteDate1_1");
             entity.Property(e => e.WebsiteZipCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WebsiteAddressLine1");
+            entity.Property(e => e.WidgetAnswerCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetQuestionCode1");
+            entity.Property(e => e.WidgetAnswerKey).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetAnswerKey");
             entity.Property(e => e.WidgetAnswerTokenId).HasColumnName("WidgetAnswerTokenID");
-            entity.Property(e => e.WidgetConfigurationJson).HasColumnName("WidgetConfigurationJSON");
-            entity.Property(e => e.WidgetQuestionTokenId).HasColumnName("WidgetQuestionTokenID");
-            entity.Property(e => e.WidgetTokenId).HasColumnName("WidgetTokenID");
+            entity.Property(e => e.WidgetAnswerType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetQuestionType1");
+            entity.Property(e => e.WidgetAnswerValue).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_AnswerValue1");
+            entity.Property(e => e.WidgetConfigurationJson)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetConfigurationJSON")
+                .HasColumnName("WidgetConfigurationJSON");
+            entity.Property(e => e.WidgetPublicKey).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetPublicKey");
+            entity.Property(e => e.WidgetPublishedVersion).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetPublishedVersion");
+            entity.Property(e => e.WidgetQuestionCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetQuestionCode");
+            entity.Property(e => e.WidgetQuestionKey).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetQuestionKey");
+            entity.Property(e => e.WidgetQuestionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetQuestionTokenID")
+                .HasColumnName("WidgetQuestionTokenID");
+            entity.Property(e => e.WidgetQuestionType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetQuestionType");
+            entity.Property(e => e.WidgetQuestionValue).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetQuestionKey1");
+            entity.Property(e => e.WidgetStatus).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetStatus");
+            entity.Property(e => e.WidgetStatusCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetStatus2");
+            entity.Property(e => e.WidgetStatusText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetStatus1");
+            entity.Property(e => e.WidgetTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetTokenID")
+                .HasColumnName("WidgetTokenID");
+            entity.Property(e => e.WidgetVersionNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetVersionNumber");
+            entity.Property(e => e.WidgetVersionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetVersionTokenID")
+                .HasColumnName("WidgetVersionTokenID");
+            entity.Property(e => e.WidgetVersionTokenId1)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetVersionTokenID1")
+                .HasColumnName("WidgetVersionTokenID1");
+            entity.Property(e => e.WidgetVersionTokenId2)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetVersionTokenID2")
+                .HasColumnName("WidgetVersionTokenID2");
+            entity.Property(e => e.WidgetVersionTokenId3)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetVersionTokenID3")
+                .HasColumnName("WidgetVersionTokenID3");
+            entity.Property(e => e.WidgetVersionTokenId4)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_DECISION_RULE_LIST_WidgetVersionTokenID4")
+                .HasColumnName("WidgetVersionTokenID4");
         });
 
         modelBuilder.Entity<AskpearlsPortalUserWebsiteWidgetEventList>(entity =>
@@ -20613,6 +20928,10 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.CompanyTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_WebsiteTokenID1")
                 .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CreatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_CreatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("CreatedAtUTC");
             entity.Property(e => e.DwellingsNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_WebsiteAddress1");
             entity.Property(e => e.EngcodeTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_ImageTokenID1_1")
@@ -20633,15 +20952,22 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.ImageTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_ImageTokenID1")
                 .HasColumnName("ImageTokenID");
+            entity.Property(e => e.Ipaddress).HasColumnName("IPAddress");
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_IsActive");
             entity.Property(e => e.IsNew).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_IsVisible1");
             entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_IsVisible");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_CompanyTokenID1_1")
+                .HasColumnName("OrganizationTokenID");
             entity.Property(e => e.OwnerMobileNumberTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_OwnerMobileNumberTokenID")
                 .HasColumnName("OwnerMobileNumberTokenID");
             entity.Property(e => e.OwnerUserTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_OwnerUserTokenID")
                 .HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.PageUrl).HasColumnName("PageURL");
+            entity.Property(e => e.RecommendationTokenId).HasColumnName("RecommendationTokenID");
+            entity.Property(e => e.ReferrerUrl).HasColumnName("ReferrerURL");
             entity.Property(e => e.RowDataTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_RowDataTokenID")
                 .HasColumnName("RowDataTokenID");
@@ -20649,6 +20975,10 @@ public partial class DBContextModel : DbContext
                 .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_RowViewTokenID")
                 .HasColumnName("RowViewTokenID");
             entity.Property(e => e.StoreysNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_WebsiteAddress2");
+            entity.Property(e => e.UpdatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_UpdatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("UpdatedAtUTC");
             entity.Property(e => e.UploadDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_UploadDate")
                 .HasColumnType("smalldatetime");
@@ -20656,6 +20986,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_UploadDay");
             entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_UploadMonth");
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_UploadYear");
+            entity.Property(e => e.UserAgent).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_CompanyName");
             entity.Property(e => e.WebsiteAddress).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_WebsiteName2");
             entity.Property(e => e.WebsiteAddressLine).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_WebsiteAddress1_1");
             entity.Property(e => e.WebsiteCity).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_WebsiteAddress2_1");
@@ -20664,7 +20995,6 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.WebsiteDay).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_WebsiteDate3");
             entity.Property(e => e.WebsiteHeight).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_WebsiteAddress3");
             entity.Property(e => e.WebsiteMonth).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_WebsiteDate2");
-            entity.Property(e => e.WebsiteName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_CompanyName");
             entity.Property(e => e.WebsiteStreetName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_WebsiteAddressLine1_1");
             entity.Property(e => e.WebsiteTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_CompanyTokenID")
@@ -20673,7 +21003,6 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.WebsiteUprn)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_ENGCodeTokenID1")
                 .HasColumnName("WebsiteUPRN");
-            entity.Property(e => e.WebsiteWidgetVersionTokenId).HasColumnName("WebsiteWidgetVersionTokenID");
             entity.Property(e => e.WebsiteYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_WebsiteDate1_1");
             entity.Property(e => e.WebsiteZipCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_EVENT_LIST_WebsiteAddressLine1");
             entity.Property(e => e.WidgetAnswerTokenId).HasColumnName("WidgetAnswerTokenID");
@@ -20698,13 +21027,6 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.CompanyTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WebsiteTokenID1")
                 .HasColumnName("CompanyTokenID");
-            entity.Property(e => e.DwellingsNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WebsiteAddress1");
-            entity.Property(e => e.EngcodeTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_ImageTokenID1_1")
-                .HasColumnName("ENGCodeTokenID");
-            entity.Property(e => e.Hrbnumber)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_ENGCodeTokenID1_1")
-                .HasColumnName("HRBNumber");
             entity.Property(e => e.ImageGoogleName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_ImageGoogleTokenID1");
             entity.Property(e => e.ImageGoogleServerUrl)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_ImageGoogleServerURL")
@@ -20721,6 +21043,9 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_IsActive");
             entity.Property(e => e.IsNew).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_IsVisible1");
             entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_IsVisible");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_CompanyTokenID1_1")
+                .HasColumnName("OrganizationTokenID");
             entity.Property(e => e.OwnerMobileNumberTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_OwnerMobileNumberTokenID")
                 .HasColumnName("OwnerMobileNumberTokenID");
@@ -20733,7 +21058,6 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.RowViewTokenId)
                 .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_RowViewTokenID")
                 .HasColumnName("RowViewTokenID");
-            entity.Property(e => e.StoreysNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WebsiteAddress2");
             entity.Property(e => e.UploadDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_UploadDate")
                 .HasColumnType("smalldatetime");
@@ -20755,12 +21079,125 @@ public partial class DBContextModel : DbContext
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_CompanyTokenID")
                 .HasColumnName("WebsiteTokenID");
             entity.Property(e => e.WebsiteType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WebsiteAddress4");
-            entity.Property(e => e.WebsiteUprn)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_ENGCodeTokenID1")
-                .HasColumnName("WebsiteUPRN");
             entity.Property(e => e.WebsiteYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WebsiteDate1_1");
             entity.Property(e => e.WebsiteZipCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WebsiteAddressLine1");
+            entity.Property(e => e.WidgetCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WidgetCode");
+            entity.Property(e => e.WidgetDescription).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WidgetDescription");
+            entity.Property(e => e.WidgetName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WidgetName");
+            entity.Property(e => e.WidgetPublicKey).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WidgetPublicKey");
+            entity.Property(e => e.WidgetPublishedVersion).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WidgetPublishedVersion");
+            entity.Property(e => e.WidgetStatus).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WidgetStatus");
+            entity.Property(e => e.WidgetStatusCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WidgetStatusCode");
+            entity.Property(e => e.WidgetStatusText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WidgetStatusText");
+            entity.Property(e => e.WidgetTitle).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WidgetTitle");
+            entity.Property(e => e.WidgetTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WidgetTokenID")
+                .HasColumnName("WidgetTokenID");
+            entity.Property(e => e.WidgetType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_LIST_WidgetType");
+        });
+
+        modelBuilder.Entity<AskpearlsPortalUserWebsiteWidgetQuestionAnswerList>(entity =>
+        {
+            entity.HasKey(e => e.UwebsiteWidgetAnswerId).HasName("PK_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST");
+
+            entity.ToTable("ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST");
+
+            entity.Property(e => e.UwebsiteWidgetAnswerId).HasColumnName("UWebsiteWidgetAnswerID");
+            entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_AccountType");
+            entity.Property(e => e.ActiveStatus).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_ActiveStatus");
+            entity.Property(e => e.CompanyName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_CompanyName");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_CompanyTokenID")
+                .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CreatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_CreatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("CreatedAtUTC");
+            entity.Property(e => e.DwellingsNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_DwellingsNumber");
+            entity.Property(e => e.EngcodeTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_ENGCodeTokenID")
+                .HasColumnName("ENGCodeTokenID");
+            entity.Property(e => e.Hrbnumber)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_HRBNumber")
+                .HasColumnName("HRBNumber");
+            entity.Property(e => e.ImageGoogleName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_ImageGoogleName");
+            entity.Property(e => e.ImageGoogleServerUrl)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_ImageGoogleServerURL")
+                .HasColumnName("ImageGoogleServerURL");
+            entity.Property(e => e.ImageGoogleTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_ImageGoogleTokenID")
+                .HasColumnName("ImageGoogleTokenID");
+            entity.Property(e => e.ImageServerUrl)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_ImageServerURL")
+                .HasColumnName("ImageServerURL");
+            entity.Property(e => e.ImageTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_ImageTokenID")
+                .HasColumnName("ImageTokenID");
+            entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_IsActive");
+            entity.Property(e => e.IsNew).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_IsNew");
+            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_IsVisible");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST_CompanyTokenID1")
+                .HasColumnName("OrganizationTokenID");
+            entity.Property(e => e.OwnerMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_OwnerMobileNumberTokenID")
+                .HasColumnName("OwnerMobileNumberTokenID");
+            entity.Property(e => e.OwnerUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_OwnerUserTokenID")
+                .HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.RowDataTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_RowDataTokenID")
+                .HasColumnName("RowDataTokenID");
+            entity.Property(e => e.RowViewTokenId)
+                .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_RowViewTokenID")
+                .HasColumnName("RowViewTokenID");
+            entity.Property(e => e.StoreysNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_StoreysNumber");
+            entity.Property(e => e.UpdatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_UpdatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("UpdatedAtUTC");
+            entity.Property(e => e.UploadDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_UploadDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UploadDateTimeMilliSec).HasDefaultValue("0", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_UploadDateTimeMilliSec");
+            entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_UploadDay");
+            entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_UploadMonth");
+            entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_UploadYear");
+            entity.Property(e => e.WebsiteAddress).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteAddress");
+            entity.Property(e => e.WebsiteAddressLine).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteAddressLine");
+            entity.Property(e => e.WebsiteCity).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteCity");
+            entity.Property(e => e.WebsiteCountry).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteCountry");
+            entity.Property(e => e.WebsiteDate).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteDate");
+            entity.Property(e => e.WebsiteDay).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteDay");
+            entity.Property(e => e.WebsiteHeight).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteHeight");
+            entity.Property(e => e.WebsiteMonth).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteMonth");
+            entity.Property(e => e.WebsiteName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteName");
+            entity.Property(e => e.WebsiteStreetName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteStreetName");
+            entity.Property(e => e.WebsiteTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteTokenID")
+                .HasColumnName("WebsiteTokenID");
+            entity.Property(e => e.WebsiteType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteType");
+            entity.Property(e => e.WebsiteUprn)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteUPRN")
+                .HasColumnName("WebsiteUPRN");
+            entity.Property(e => e.WebsiteYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteYear");
+            entity.Property(e => e.WebsiteZipCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_ANSWER_LIST_WebsiteZipCode");
+            entity.Property(e => e.WidgetAnswerCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST_WidgetQuestionCode");
+            entity.Property(e => e.WidgetAnswerDescription).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST_WidgetAnswerText1");
+            entity.Property(e => e.WidgetAnswerKey).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST_WidgetQuestionKey");
+            entity.Property(e => e.WidgetAnswerName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST_WidgetAnswerTitle1");
+            entity.Property(e => e.WidgetAnswerSortOrder).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST_WidgetAnswerDescription1");
+            entity.Property(e => e.WidgetAnswerText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST_WidgetQuestionText");
+            entity.Property(e => e.WidgetAnswerTitle).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST_WidgetQuestionTitle");
+            entity.Property(e => e.WidgetAnswerTokenId).HasColumnName("WidgetAnswerTokenID");
+            entity.Property(e => e.WidgetAnswerType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST_WidgetQuestionType");
+            entity.Property(e => e.WidgetConfigurationJson).HasColumnName("WidgetConfigurationJSON");
+            entity.Property(e => e.WidgetQuestionCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST_WidgetQuestionCode_1");
+            entity.Property(e => e.WidgetQuestionKey).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST_WidgetQuestionKey1");
+            entity.Property(e => e.WidgetQuestionTokenId).HasColumnName("WidgetQuestionTokenID");
+            entity.Property(e => e.WidgetQuestionType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_ANSWER_LIST_WidgetQuestionType_1");
             entity.Property(e => e.WidgetTokenId).HasColumnName("WidgetTokenID");
+            entity.Property(e => e.WidgetVersionTokenId).HasColumnName("WidgetVersionTokenID");
         });
 
         modelBuilder.Entity<AskpearlsPortalUserWebsiteWidgetQuestionList>(entity =>
@@ -20776,6 +21213,10 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.CompanyTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WebsiteTokenID1")
                 .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CreatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_CreatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("CreatedAtUTC");
             entity.Property(e => e.DwellingsNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WebsiteAddress1");
             entity.Property(e => e.EngcodeTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_ImageTokenID1_1")
@@ -20799,6 +21240,9 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_IsActive");
             entity.Property(e => e.IsNew).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_IsVisible1");
             entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_IsVisible");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_CompanyTokenID1_1")
+                .HasColumnName("OrganizationTokenID");
             entity.Property(e => e.OwnerMobileNumberTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_OwnerMobileNumberTokenID")
                 .HasColumnName("OwnerMobileNumberTokenID");
@@ -20812,6 +21256,10 @@ public partial class DBContextModel : DbContext
                 .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_RowViewTokenID")
                 .HasColumnName("RowViewTokenID");
             entity.Property(e => e.StoreysNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WebsiteAddress2");
+            entity.Property(e => e.UpdatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_UpdatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("UpdatedAtUTC");
             entity.Property(e => e.UploadDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_UploadDate")
                 .HasColumnType("smalldatetime");
@@ -20836,12 +21284,395 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.WebsiteUprn)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_ENGCodeTokenID1")
                 .HasColumnName("WebsiteUPRN");
-            entity.Property(e => e.WebsiteWidgetVersionTokenId).HasColumnName("WebsiteWidgetVersionTokenID");
             entity.Property(e => e.WebsiteYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WebsiteDate1_1");
             entity.Property(e => e.WebsiteZipCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WebsiteAddressLine1");
             entity.Property(e => e.WidgetConfigurationJson).HasColumnName("WidgetConfigurationJSON");
+            entity.Property(e => e.WidgetQuestionCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WebsiteName5");
+            entity.Property(e => e.WidgetQuestionDescription).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WidgetQuestionText1");
+            entity.Property(e => e.WidgetQuestionKey).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WebsiteName3");
+            entity.Property(e => e.WidgetQuestionName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WidgetQuestionTitle1");
+            entity.Property(e => e.WidgetQuestionSortOrder).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WebsiteName2_1");
+            entity.Property(e => e.WidgetQuestionText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WebsiteName7");
+            entity.Property(e => e.WidgetQuestionTitle).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WebsiteName6");
             entity.Property(e => e.WidgetQuestionTokenId).HasColumnName("WidgetQuestionTokenID");
+            entity.Property(e => e.WidgetQuestionType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_QUESTION_LIST_WebsiteName4");
             entity.Property(e => e.WidgetTokenId).HasColumnName("WidgetTokenID");
+            entity.Property(e => e.WidgetVersionTokenId).HasColumnName("WidgetVersionTokenID");
+        });
+
+        modelBuilder.Entity<AskpearlsPortalUserWebsiteWidgetRecommendationList>(entity =>
+        {
+            entity.HasKey(e => e.UwebsiteWidgetRecommendationId);
+
+            entity.ToTable("ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST");
+
+            entity.Property(e => e.UwebsiteWidgetRecommendationId).HasColumnName("UWebsiteWidgetRecommendationID");
+            entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_AccountType");
+            entity.Property(e => e.ActiveStatus).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_ActiveStatus");
+            entity.Property(e => e.CompanyName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_CompanyName");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_CompanyTokenID")
+                .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CreatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_UploadDate2")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("CreatedAtUTC");
+            entity.Property(e => e.ImageGoogleName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_ImageGoogleName");
+            entity.Property(e => e.ImageGoogleServerUrl)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_ImageGoogleServerURL")
+                .HasColumnName("ImageGoogleServerURL");
+            entity.Property(e => e.ImageGoogleTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_ImageGoogleTokenID")
+                .HasColumnName("ImageGoogleTokenID");
+            entity.Property(e => e.ImageServerUrl)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_ImageServerURL")
+                .HasColumnName("ImageServerURL");
+            entity.Property(e => e.ImageTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_ImageTokenID")
+                .HasColumnName("ImageTokenID");
+            entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_IsActive");
+            entity.Property(e => e.IsNew).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_IsNew");
+            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_IsVisible");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_CompanyTokenID1")
+                .HasColumnName("OrganizationTokenID");
+            entity.Property(e => e.OwnerMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_OwnerMobileNumberTokenID")
+                .HasColumnName("OwnerMobileNumberTokenID");
+            entity.Property(e => e.OwnerUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_OwnerUserTokenID")
+                .HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.RecommendationCta).HasColumnName("RecommendationCTA");
+            entity.Property(e => e.RecommendationCtacode).HasColumnName("RecommendationCTACode");
+            entity.Property(e => e.RecommendationCtaimageTokenId).HasColumnName("RecommendationCTAImageTokenID");
+            entity.Property(e => e.RecommendationCtaimageUrl).HasColumnName("RecommendationCTAImageURL");
+            entity.Property(e => e.RecommendationCtatext).HasColumnName("RecommendationCTAText");
+            entity.Property(e => e.RecommendationCtatype).HasColumnName("RecommendationCTAType");
+            entity.Property(e => e.RecommendationCtaurl).HasColumnName("RecommendationCTAURL");
+            entity.Property(e => e.RecommendationHighlightsJson).HasColumnName("RecommendationHighlightsJSON");
+            entity.Property(e => e.RecommendationImageTokenId).HasColumnName("RecommendationImageTokenID");
+            entity.Property(e => e.RecommendationImageUrl).HasColumnName("RecommendationImageURL");
+            entity.Property(e => e.RecommendationSortOrder).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationSortOrder");
+            entity.Property(e => e.RecommendationTokenId).HasColumnName("RecommendationTokenID");
+            entity.Property(e => e.RecommendationUrl).HasColumnName("RecommendationURL");
+            entity.Property(e => e.RowDataTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RowDataTokenID")
+                .HasColumnName("RowDataTokenID");
+            entity.Property(e => e.RowViewTokenId)
+                .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RowViewTokenID")
+                .HasColumnName("RowViewTokenID");
+            entity.Property(e => e.UpdatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_UploadDate1")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("UpdatedAtUTC");
+            entity.Property(e => e.UploadDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_UploadDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UploadDateTimeMilliSec).HasDefaultValue("0", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_UploadDateTimeMilliSec");
+            entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_UploadDay");
+            entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_UploadMonth");
+            entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_UploadYear");
+            entity.Property(e => e.WebsiteTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_WebsiteTokenID")
+                .HasColumnName("WebsiteTokenID");
+            entity.Property(e => e.WidgetPublicKey).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_WidgetPublicKey");
+            entity.Property(e => e.WidgetTokenId).HasColumnName("WidgetTokenID");
+            entity.Property(e => e.WidgetVersionTokenId).HasColumnName("WidgetVersionTokenID");
+        });
+
+        modelBuilder.Entity<AskpearlsPortalUserWebsiteWidgetSessionActivityList>(entity =>
+        {
+            entity.HasKey(e => e.UwebsiteWidgetSessionActivityId);
+
+            entity.ToTable("ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST");
+
+            entity.Property(e => e.UwebsiteWidgetSessionActivityId).HasColumnName("UWebsiteWidgetSessionActivityID");
+            entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_AccountType");
+            entity.Property(e => e.AnsweredQuestionCount).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserID6");
+            entity.Property(e => e.CompanyName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_CompanyName");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_CompanyTokenID")
+                .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CompletedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LastActivityAtUTC1")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("CompletedAtUTC");
+            entity.Property(e => e.CreatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_CreatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("CreatedAtUTC");
+            entity.Property(e => e.DatabaseServerTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_DatabaseServerTokenID")
+                .HasColumnName("DatabaseServerTokenID");
+            entity.Property(e => e.DeviceGlobalId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_DeviceGlobalID")
+                .HasColumnName("DeviceGlobalID");
+            entity.Property(e => e.DurationSeconds).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserID8");
+            entity.Property(e => e.GuestGuidtoknId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_GuestGUIDToknID")
+                .HasColumnName("GuestGUIDToknID");
+            entity.Property(e => e.GuestId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_GuestID")
+                .HasColumnName("GuestID");
+            entity.Property(e => e.GuestMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_GuestMobileNumberTokenID")
+                .HasColumnName("GuestMobileNumberTokenID");
+            entity.Property(e => e.GuestUserSessionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_GuestUserSessionTokenID")
+                .HasColumnName("GuestUserSessionTokenID");
+            entity.Property(e => e.GuestUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_GuestUserTokenID")
+                .HasColumnName("GuestUserTokenID");
+            entity.Property(e => e.Ipaddress)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserAgent3")
+                .HasColumnName("IPAddress");
+            entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_IsActive");
+            entity.Property(e => e.IsGuest).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_IsGuest");
+            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_IsActive1");
+            entity.Property(e => e.LastActivityAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_CreatedAtUTC1")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("LastActivityAtUTC");
+            entity.Property(e => e.LoginDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LoginDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.LoginDay).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LoginDay");
+            entity.Property(e => e.LoginLocationCountryCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LoginLocationCountryCode");
+            entity.Property(e => e.LoginLocationCountryName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LoginLocationCountryName");
+            entity.Property(e => e.LoginLocationRegionName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LoginLocationRegionName");
+            entity.Property(e => e.LoginMonth).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LoginMonth");
+            entity.Property(e => e.LoginUserIp)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LoginUserIP")
+                .HasColumnName("LoginUserIP");
+            entity.Property(e => e.LoginYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LoginYear");
+            entity.Property(e => e.LogoutDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LogoutDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.LogoutDay).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LogoutDay");
+            entity.Property(e => e.LogoutMonth).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LogoutMonth");
+            entity.Property(e => e.LogoutYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_LogoutYear");
+            entity.Property(e => e.MobileNumberId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_MobileNumberID")
+                .HasColumnName("MobileNumberID");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_OrganizationTokenID")
+                .HasColumnName("OrganizationTokenID");
+            entity.Property(e => e.OwnerMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_OwnerMobileNumberTokenID")
+                .HasColumnName("OwnerMobileNumberTokenID");
+            entity.Property(e => e.OwnerUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_OwnerUserTokenID")
+                .HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.PageUrl)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserID2")
+                .HasColumnName("PageURL");
+            entity.Property(e => e.PlatformOsid)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_PlatformOSID")
+                .HasColumnName("PlatformOSID");
+            entity.Property(e => e.QuestionCount).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserID7");
+            entity.Property(e => e.RecommendationPercentage).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserID3");
+            entity.Property(e => e.RecommendationScore).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserID4");
+            entity.Property(e => e.RecommendationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserID5")
+                .HasColumnName("RecommendationTokenID");
+            entity.Property(e => e.ReferrerUrl)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserID1")
+                .HasColumnName("ReferrerURL");
+            entity.Property(e => e.RowDataTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_RowDataTokenID")
+                .HasColumnName("RowDataTokenID");
+            entity.Property(e => e.RowViewTokenId)
+                .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_RowViewTokenID")
+                .HasColumnName("RowViewTokenID");
+            entity.Property(e => e.SessionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_SessionTokenID")
+                .HasColumnName("SessionTokenID");
+            entity.Property(e => e.StartedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_CreatedAtUTC2")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("StartedAtUTC");
+            entity.Property(e => e.UpdatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UpdatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("UpdatedAtUTC");
+            entity.Property(e => e.UploadDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UploadDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UploadDay");
+            entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UploadMonth");
+            entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UploadYear");
+            entity.Property(e => e.UserAgent).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_ReferrerURL1");
+            entity.Property(e => e.UserAgent1).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserAgent1");
+            entity.Property(e => e.UserAgent2).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserAgent2");
+            entity.Property(e => e.UserBrowserCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserBrowserCode");
+            entity.Property(e => e.UserBrowserInfo).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserBrowserInfo");
+            entity.Property(e => e.UserBrowserName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserBrowserName");
+            entity.Property(e => e.UserBrowserTitle).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserBrowserTitle");
+            entity.Property(e => e.UserBrowserType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserBrowserType");
+            entity.Property(e => e.UserBrowserVersion).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserBrowserVersion");
+            entity.Property(e => e.UserCity).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserCity");
+            entity.Property(e => e.UserCountryCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserCountryCode");
+            entity.Property(e => e.UserCountryName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserCountryName");
+            entity.Property(e => e.UserDateTimeNow)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserDateTimeNow")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UserId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserID")
+                .HasColumnName("UserID");
+            entity.Property(e => e.UserIp)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserIP")
+                .HasColumnName("UserIP");
+            entity.Property(e => e.UserLoginStatus).HasDefaultValue("NotApproved", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserLoginStatus");
+            entity.Property(e => e.UserMoodStatus).HasDefaultValue("NotApproved", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserMoodStatus");
+            entity.Property(e => e.UserProvince).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserProvince");
+            entity.Property(e => e.UserSessionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserSessionTokenID")
+                .HasColumnName("UserSessionTokenID");
+            entity.Property(e => e.UserState).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserState");
+            entity.Property(e => e.UserType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_UserType");
+            entity.Property(e => e.WebsiteTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_WebsiteTokenID")
+                .HasColumnName("WebsiteTokenID");
+            entity.Property(e => e.WidgetActivityTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_WidgetSessionActivityTokenID1")
+                .HasColumnName("WidgetActivityTokenID");
+            entity.Property(e => e.WidgetSessionActivityTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_WidgetSessionTokenID1")
+                .HasColumnName("WidgetSessionActivityTokenID");
+            entity.Property(e => e.WidgetSessionStatus).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_WidgetSessionActivityTokenID1_1");
+            entity.Property(e => e.WidgetSessionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_ACTIVITY_LIST_WidgetSessionTokenID")
+                .HasColumnName("WidgetSessionTokenID");
+            entity.Property(e => e.WidgetTokenId).HasColumnName("WidgetTokenID");
+            entity.Property(e => e.WidgetVersionTokenId).HasColumnName("WidgetVersionTokenID");
+        });
+
+        modelBuilder.Entity<AskpearlsPortalUserWebsiteWidgetSessionList>(entity =>
+        {
+            entity.HasKey(e => e.UwebsiteWidgetSessionId);
+
+            entity.ToTable("ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST");
+
+            entity.Property(e => e.UwebsiteWidgetSessionId).HasColumnName("UWebsiteWidgetSessionID");
+            entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_AccountType");
+            entity.Property(e => e.CompanyName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_CompanyName");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_CompanyTokenID")
+                .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CreatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_CreatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("CreatedAtUTC");
+            entity.Property(e => e.DatabaseServerTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_DatabaseServerTokenID")
+                .HasColumnName("DatabaseServerTokenID");
+            entity.Property(e => e.DeviceGlobalId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_DeviceGlobalID")
+                .HasColumnName("DeviceGlobalID");
+            entity.Property(e => e.GuestGuidtoknId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_GuestGUIDToknID")
+                .HasColumnName("GuestGUIDToknID");
+            entity.Property(e => e.GuestId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_GuestID")
+                .HasColumnName("GuestID");
+            entity.Property(e => e.GuestMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_GuestMobileNumberTokenID")
+                .HasColumnName("GuestMobileNumberTokenID");
+            entity.Property(e => e.GuestUserSessionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_GuestUserSessionTokenID")
+                .HasColumnName("GuestUserSessionTokenID");
+            entity.Property(e => e.GuestUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_GuestUserTokenID")
+                .HasColumnName("GuestUserTokenID");
+            entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_IsActive");
+            entity.Property(e => e.IsGuest).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_IsGuest");
+            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_IsActive1");
+            entity.Property(e => e.LoginDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_LoginDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.LoginDay).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_LoginDay");
+            entity.Property(e => e.LoginLocationCountryCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_LoginLocationCountryCode");
+            entity.Property(e => e.LoginLocationCountryName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_LoginLocationCountryName");
+            entity.Property(e => e.LoginLocationRegionName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_LoginLocationRegionName");
+            entity.Property(e => e.LoginMonth).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_LoginMonth");
+            entity.Property(e => e.LoginUserIp)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_LoginUserIP")
+                .HasColumnName("LoginUserIP");
+            entity.Property(e => e.LoginYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_LoginYear");
+            entity.Property(e => e.LogoutDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_LogoutDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.LogoutDay).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_LogoutDay");
+            entity.Property(e => e.LogoutMonth).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_LogoutMonth");
+            entity.Property(e => e.LogoutYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_LogoutYear");
+            entity.Property(e => e.MobileNumberId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_MobileNumberID")
+                .HasColumnName("MobileNumberID");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_OrganizationTokenID")
+                .HasColumnName("OrganizationTokenID");
+            entity.Property(e => e.OwnerMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_OwnerMobileNumberTokenID")
+                .HasColumnName("OwnerMobileNumberTokenID");
+            entity.Property(e => e.OwnerUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_OwnerUserTokenID")
+                .HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.PlatformOsid)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_PlatformOSID")
+                .HasColumnName("PlatformOSID");
+            entity.Property(e => e.RowDataTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_RowDataTokenID")
+                .HasColumnName("RowDataTokenID");
+            entity.Property(e => e.RowViewTokenId)
+                .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_RowViewTokenID")
+                .HasColumnName("RowViewTokenID");
+            entity.Property(e => e.SessionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_SessionTokenID")
+                .HasColumnName("SessionTokenID");
+            entity.Property(e => e.UpdatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UpdatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("UpdatedAtUTC");
+            entity.Property(e => e.UploadDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UploadDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UploadDay");
+            entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UploadMonth");
+            entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UploadYear");
+            entity.Property(e => e.UserBrowserCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserBrowserCode");
+            entity.Property(e => e.UserBrowserInfo).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserBrowserInfo");
+            entity.Property(e => e.UserBrowserName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserBrowserName");
+            entity.Property(e => e.UserBrowserTitle).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserBrowserTitle");
+            entity.Property(e => e.UserBrowserType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserBrowserType");
+            entity.Property(e => e.UserBrowserVersion).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserBrowserVersion");
+            entity.Property(e => e.UserCity).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserCity");
+            entity.Property(e => e.UserCountryCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserCountryCode");
+            entity.Property(e => e.UserCountryName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserCountryName");
+            entity.Property(e => e.UserDateTimeNow)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserDateTimeNow")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UserId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserID")
+                .HasColumnName("UserID");
+            entity.Property(e => e.UserIp)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserIP")
+                .HasColumnName("UserIP");
+            entity.Property(e => e.UserLoginStatus).HasDefaultValue("NotApproved", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserLoginStatus");
+            entity.Property(e => e.UserMoodStatus).HasDefaultValue("NotApproved", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserMoodStatus");
+            entity.Property(e => e.UserProvince).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserProvince");
+            entity.Property(e => e.UserSessionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_SessionTokenID1")
+                .HasColumnName("UserSessionTokenID");
+            entity.Property(e => e.UserState).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserState");
+            entity.Property(e => e.UserType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserType");
+            entity.Property(e => e.WebsiteTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_WebsiteTokenID")
+                .HasColumnName("WebsiteTokenID");
+            entity.Property(e => e.WidgetSessionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_SESSION_LIST_UserSessionTokenID")
+                .HasColumnName("WidgetSessionTokenID");
+            entity.Property(e => e.WidgetTokenId).HasColumnName("WidgetTokenID");
+            entity.Property(e => e.WidgetVersionTokenId).HasColumnName("WidgetVersionTokenID");
         });
 
         modelBuilder.Entity<AskpearlsPortalUserWebsiteWidgetVersionList>(entity =>
@@ -20857,6 +21688,10 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.CompanyTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_WebsiteTokenID1")
                 .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CreatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_CreatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("CreatedAtUTC");
             entity.Property(e => e.DwellingsNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_WebsiteAddress1");
             entity.Property(e => e.EngcodeTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_ImageTokenID1_1")
@@ -20880,6 +21715,9 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_IsActive");
             entity.Property(e => e.IsNew).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_IsVisible1");
             entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_IsVisible");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_CompanyTokenID1_1")
+                .HasColumnName("OrganizationTokenID");
             entity.Property(e => e.OwnerMobileNumberTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_OwnerMobileNumberTokenID")
                 .HasColumnName("OwnerMobileNumberTokenID");
@@ -20893,6 +21731,10 @@ public partial class DBContextModel : DbContext
                 .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_RowViewTokenID")
                 .HasColumnName("RowViewTokenID");
             entity.Property(e => e.StoreysNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_WebsiteAddress2");
+            entity.Property(e => e.UpdatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_UpdatedAtUTC")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("UpdatedAtUTC");
             entity.Property(e => e.UploadDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_UploadDate")
                 .HasColumnType("smalldatetime");
@@ -20921,6 +21763,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.WebsiteZipCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_VERSION_LIST_WebsiteAddressLine1");
             entity.Property(e => e.WidgetConfigurationJson).HasColumnName("WidgetConfigurationJSON");
             entity.Property(e => e.WidgetTokenId).HasColumnName("WidgetTokenID");
+            entity.Property(e => e.WidgetVersionTokenId).HasColumnName("WidgetVersionTokenID");
         });
 
         modelBuilder.Entity<AskpearlsPortalUserYoutubeChannelList>(entity =>

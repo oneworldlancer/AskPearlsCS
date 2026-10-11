@@ -13,6 +13,10 @@ public partial class AskpearlsPortalUserLocationList
 
     public string? DeviceGlobalId { get; set; }
 
+    public string? OrganizationTokenId { get; set; }
+
+    public string? CompanyTokenId { get; set; }
+
     public string? OwnerUserTokenId { get; set; }
 
     public string? OwnerMobileNumberTokenId { get; set; }

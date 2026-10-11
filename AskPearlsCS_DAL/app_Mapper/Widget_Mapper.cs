@@ -22,22 +22,20 @@ namespace AskPearlsCS_DAL.app_Mapper
 
             return new Widget
             {
+                // Internal entity/database identity
                 Id = entity.RowViewTokenId,
 
-                OrganizationId = Guid.TryParse(
-                    entity.CompanyTokenId,
-                    out var organizationId)
-                        ? organizationId
-                        : Guid.Empty,
-
-                WebsiteId = Guid.TryParse(
-                    entity.WebsiteTokenId,
-                    out var websiteId)
-                        ? websiteId
-                        : Guid.Empty,
-
+                // AskPearls business identity
                 WidgetTokenId =
                     entity.WidgetTokenId ?? string.Empty,
+
+                // Organization / company
+                // Keep these as Guid only if their token values
+                // are actually Guid strings.
+                OrganizationId = ParseGuid(entity.CompanyTokenId),
+
+                // Website business identity
+                WebsiteId = ParseGuid(entity.WebsiteTokenId),
 
                 WidgetCode =
                     entity.WidgetCode ?? string.Empty,
@@ -57,12 +55,23 @@ namespace AskPearlsCS_DAL.app_Mapper
                 WidgetPublicKey =
                     entity.WidgetPublicKey ?? string.Empty,
 
-                WidgetStatus =
-                    entity.WidgetStatus ?? string.Empty,
+                WidgetStatusCode =
+                    entity.WidgetStatusCode ?? string.Empty,
+
+            
+                WidgetStatusText =
+                    entity.WidgetStatusText ?? string.Empty,
 
                 WidgetPublishedVersion =
                     publishedVersion
             };
+        }
+
+        private static Guid ParseGuid(string? value)
+        {
+            return Guid.TryParse(value, out var result)
+                ? result
+                : Guid.Empty;
         }
     }
 }

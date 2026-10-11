@@ -9,7 +9,7 @@ public record EventRequest(string PublicKey, string SessionId, string EventType,
 [ApiController]
 [Route("api/events")]
 public class EventsController  : ControllerBase
-//public class EventsController(AskPearlsDbContext db) : ControllerBase
+//public class EventsController(DBContextModel db) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Post(EventRequest request)

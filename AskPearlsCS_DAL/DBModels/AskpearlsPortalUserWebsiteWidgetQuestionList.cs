@@ -17,25 +17,47 @@ public partial class AskpearlsPortalUserWebsiteWidgetQuestionList
 
     public string? OwnerMobileNumberTokenId { get; set; }
 
+    public string? OrganizationTokenId { get; set; }
+
     public string? CompanyTokenId { get; set; }
 
     public string? CompanyName { get; set; }
 
     public string? WidgetTokenId { get; set; }
 
+    public string? WebsiteTokenId { get; set; }
+
     public string? WidgetQuestionTokenId { get; set; }
 
-    public string? WebsiteTokenId { get; set; }
+    public string? WidgetQuestionCode { get; set; }
+
+    public string? WidgetQuestionType { get; set; }
+
+    public string? WidgetQuestionKey { get; set; }
+
+    public string? WidgetQuestionTitle { get; set; }
+
+    public string? WidgetQuestionName { get; set; }
+
+    public string? WidgetQuestionText { get; set; }
+
+    public string? WidgetQuestionDescription { get; set; }
+
+    public int? WidgetQuestionSortOrder { get; set; }
 
     public string? WebsiteName { get; set; }
 
     public string? WidgetPublicKey { get; set; }
 
-    public string? WebsiteWidgetVersionTokenId { get; set; }
+    public string? WidgetVersionTokenId { get; set; }
 
     public string? WidgetVersionNumber { get; set; }
 
     public string? WidgetConfigurationJson { get; set; }
+
+    public string? WidgetStatusCode { get; set; }
+
+    public string? WidgetStatusText { get; set; }
 
     public string? WidgetStatus { get; set; }
 
@@ -87,11 +109,15 @@ public partial class AskpearlsPortalUserWebsiteWidgetQuestionList
 
     public bool? IsNew { get; set; }
 
-    public bool? IsVisible { get; set; }
-
     public string? ActiveStatus { get; set; }
 
     public bool? IsActive { get; set; }
+
+    public bool? IsVisible { get; set; }
+
+    public DateTime? CreatedAtUtc { get; set; }
+
+    public DateTime? UpdatedAtUtc { get; set; }
 
     public string? UploadDateTimeMilliSec { get; set; }
 
