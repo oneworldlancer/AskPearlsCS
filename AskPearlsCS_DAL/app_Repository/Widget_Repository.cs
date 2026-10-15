@@ -32,6 +32,38 @@ namespace AskPearlsCS_DAL.app_Repository
 
             return Widget_Mapper.ToDomain(entity);
         }
+
+
+
+        public async Task<List<Widget>> GetByCompanyTokenIdAsync(
+            string companyTokenId,
+            CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(companyTokenId) ||
+                companyTokenId == "0")
+            {
+                return new List<Widget>();
+            }
+
+            var entities = await _dbContext
+                .AskpearlsPortalUserWebsiteWidgetLists
+                .AsNoTracking()
+                .Where(x =>
+                    x.CompanyTokenId == companyTokenId &&
+                    x.IsActive == true &&
+                    x.IsVisible == true)
+                .OrderByDescending(x => x.UploadDate)
+                .ToListAsync(cancellationToken);
+
+            return entities
+                .Select(Widget_Mapper.ToDomain)
+                .Where(x => x != null)
+                .Select(x => x!)
+                .ToList();
+        }
+
+
+
     }
 
 }

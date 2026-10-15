@@ -28,5 +28,23 @@ namespace AskPearlsCS_BLL.app_Service
             return await _widgetRepository
                 .GetPublishedWidgetAsync(publicKey);
         }
+
+
+
+        public async Task<List<Widget>> GetByCompanyTokenIdAsync(
+            string companyTokenId,
+            CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(companyTokenId) ||
+                companyTokenId == "0")
+            {
+                return new List<Widget>();
+            }
+
+            return await _widgetRepository.GetByCompanyTokenIdAsync(
+                companyTokenId,
+                cancellationToken);
+        }
+
     }
 }

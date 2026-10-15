@@ -1,0 +1,1359 @@
+﻿<!-- PAGE: DESIGN & CUSTOMIZE -->
+<div class="design-customize-page container-fluid py-4">
+
+    <div class="dc-page-header">
+        <div>
+            <h2>Design &amp; Customize</h2>
+            <p>Personalize your widget's appearance and see your changes instantly.</p>
+        </div>
+        <div class="dc-header-actions">
+            <span class="dc-draft-indicator" id="dcDraftIndicator">
+                <i class="bi bi-circle-fill"></i> Unsaved changes
+            </span>
+            <button type="button" class="dc-btn-outline" id="dcReset">
+                <i class="bi bi-arrow-counterclockwise"></i> Reset
+            </button>
+            <button type="button" class="dc-btn-primary" id="dcSave">
+                <i class="bi bi-check-lg"></i> Save Draft
+            </button>
+        </div>
+    </div>
+
+    <div class="dc-widget-selector">
+        <div class="dc-selector-icon"><i class="bi bi-grid-1x2"></i></div>
+        <div class="dc-selector-info">
+            <label for="dcWidgetSelect">Widget to customize</label>
+            <select id="dcWidgetSelect">
+                <option value="sofa">Sofa Finder Widget</option>
+                <option value="furniture">Furniture Recommendation Widget</option>
+                <option value="demo">Demo Recommendation Widget</option>
+            </select>
+        </div>
+        <span class="dc-demo-badge">Preview mode</span>
+    </div>
+
+    <div class="dc-workspace">
+
+        <!-- SETTINGS -->
+        <section class="dc-settings">
+
+            <div class="dc-section-heading">
+                <div>
+                    <h5>Widget Appearance</h5>
+                    <p>Customize colors, typography, and shape.</p>
+                </div>
+                <i class="bi bi-palette"></i>
+            </div>
+
+            <div class="dc-settings-body">
+
+                <div class="dc-field">
+                    <label for="dcPrimaryColor">Primary color</label>
+                    <div class="dc-color-control">
+                        <input type="color" id="dcPrimaryColor" value="#0da88b">
+                        <input type="text" id="dcPrimaryHex" value="#0DA88B"
+                               maxlength="7" aria-label="Primary color hex value">
+                    </div>
+                    <small>Used for buttons and important accents.</small>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcBackgroundColor">Widget background</label>
+                    <div class="dc-color-control">
+                        <input type="color" id="dcBackgroundColor" value="#ffffff">
+                        <input type="text" id="dcBackgroundHex" value="#FFFFFF"
+                               maxlength="7" aria-label="Widget background hex value">
+                    </div>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcTextColor">Text color</label>
+                    <div class="dc-color-control">
+                        <input type="color" id="dcTextColor" value="#17212b">
+                        <input type="text" id="dcTextHex" value="#17212B"
+                               maxlength="7" aria-label="Text color hex value">
+                    </div>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcFontFamily">Typography</label>
+                    <select id="dcFontFamily">
+                        <option value="Inter, Arial, sans-serif">Inter / System</option>
+                        <option value="Arial, sans-serif">Arial</option>
+                        <option value="Georgia, serif">Georgia</option>
+                        <option value="Verdana, sans-serif">Verdana</option>
+                    </select>
+                </div>
+
+                <div class="dc-field">
+                    <div class="dc-label-row">
+                        <label for="dcFontSize">Font size</label>
+                        <span id="dcFontSizeValue">14 px</span>
+                    </div>
+                    <input type="range" id="dcFontSize" min="12" max="18" value="14">
+                </div>
+
+                <div class="dc-field">
+                    <div class="dc-label-row">
+                        <label for="dcRadius">Corner radius</label>
+                        <span id="dcRadiusValue">12 px</span>
+                    </div>
+                    <input type="range" id="dcRadius" min="0" max="28" value="12">
+                </div>
+
+                <div class="dc-field">
+                    <label>Widget shadow</label>
+                    <label class="dc-toggle-row">
+                        <span>
+                            <strong>Enable shadow</strong>
+                            <small>Add depth to the widget container.</small>
+                        </span>
+                        <span class="dc-switch">
+                            <input type="checkbox" id="dcShadow" checked>
+                            <span class="dc-switch-track"></span>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="dc-divider"></div>
+
+                <div class="dc-section-heading dc-subheading">
+                    <div>
+                        <h5>Layout &amp; Position</h5>
+                        <p>Choose the widget's size and placement.</p>
+                    </div>
+                    <i class="bi bi-arrows-move"></i>
+                </div>
+
+                <div class="dc-field">
+                    <div class="dc-label-row">
+                        <label for="dcWidth">Widget width</label>
+                        <span id="dcWidthValue">360 px</span>
+                    </div>
+                    <input type="range" id="dcWidth" min="300" max="520" step="10" value="360">
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcPosition">Widget position</label>
+                    <select id="dcPosition">
+                        <option value="bottom-right">Bottom right</option>
+                        <option value="bottom-left">Bottom left</option>
+                        <option value="center">Centered preview</option>
+                    </select>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcButtonShape">Button shape</label>
+                    <select id="dcButtonShape">
+                        <option value="rounded">Rounded</option>
+                        <option value="pill">Pill</option>
+                        <option value="square">Square</option>
+                    </select>
+                </div>
+
+                <div class="dc-divider"></div>
+
+                <div class="dc-section-heading dc-subheading">
+                    <div>
+                        <h5>Welcome Content</h5>
+                        <p>Customize the message visitors see.</p>
+                    </div>
+                    <i class="bi bi-chat-square-text"></i>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcHeading">Welcome heading</label>
+                    <input type="text" id="dcHeading" maxlength="100"
+                           value="Find your perfect sofa">
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcDescription">Welcome message</label>
+                    <textarea id="dcDescription" rows="3" maxlength="250">Answer a few quick questions and discover the sofa that fits your home.</textarea>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcButtonText">Button label</label>
+                    <input type="text" id="dcButtonText" maxlength="40"
+                           value="Get started">
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcFooterText">Footer text</label>
+                    <input type="text" id="dcFooterText" maxlength="80"
+                           value="Powered by AskPearls">
+                </div>
+            </div>
+        </section>
+
+        <!-- LIVE PREVIEW -->
+        <section class="dc-preview-panel">
+            <div class="dc-preview-header">
+                <div>
+                    <h5>Live Preview</h5>
+                    <p>Changes appear here instantly.</p>
+                </div>
+                <div class="dc-preview-actions">
+                    <button type="button" class="dc-preview-mode active"
+                            data-dc-mode="light" title="Light preview">
+                        <i class="bi bi-sun"></i>
+                    </button>
+                    <button type="button" class="dc-preview-mode"
+                            data-dc-mode="dark" title="Dark preview">
+                        <i class="bi bi-moon"></i>
+                    </button>
+                    <button type="button" class="dc-preview-mode"
+                            data-dc-mode="mobile" title="Mobile preview">
+                        <i class="bi bi-phone"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="dc-preview-canvas" id="dcPreviewCanvas">
+                <div class="dc-preview-position" id="dcPreviewPosition">
+                    <div class="dc-widget-preview" id="dcWidgetPreview">
+                        <div class="dc-widget-top">
+                            <div class="dc-widget-brand">
+                                <div class="dc-brand-icon"><i class="bi bi-stars"></i></div>
+                                <span>AskPearls Assistant</span>
+                            </div>
+                            <button type="button" class="dc-widget-menu"
+                                    aria-label="Preview menu">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+                        </div>
+
+                        <div class="dc-widget-content">
+                            <div class="dc-welcome-icon"><i class="bi bi-stars"></i></div>
+                            <h3 id="dcPreviewHeading">Find your perfect sofa</h3>
+                            <p id="dcPreviewDescription">
+                                Answer a few quick questions and discover the sofa that fits your home.
+                            </p>
+
+                            <div class="dc-preview-question">
+                                <span class="dc-preview-step">01</span>
+                                <div>
+                                    <strong>What best describes your living space?</strong>
+                                    <small>Choose the option that fits you best.</small>
+                                </div>
+                            </div>
+
+                            <button type="button" class="dc-preview-answer">
+                                <span><i class="bi bi-house"></i> Apartment</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                            <button type="button" class="dc-preview-answer">
+                                <span><i class="bi bi-house-door"></i> House</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+
+                            <button type="button" class="dc-preview-cta" id="dcPreviewButton">
+                                Get started <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <div class="dc-widget-footer" id="dcPreviewFooter">
+                            Powered by AskPearls
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dc-canvas-caption">
+                    <i class="bi bi-info-circle"></i>
+                    Illustrative preview — actual appearance may vary by website.
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="dc-toast" id="dcToast" role="status" aria-live="polite"></div>
+</div>
+
+<style>
+    .design-customize-page {
+        --dc-primary: #0da88b;
+        --dc-widget-bg: #ffffff;
+        --dc-widget-text: #17212b;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        min-width: 0;
+    }
+
+        .design-customize-page * {
+            box-sizing: border-box;
+        }
+
+        .design-customize-page .dc-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+            .design-customize-page .dc-page-header h2 {
+                margin: 0 0 7px;
+                font-size: 27px;
+                font-weight: 750;
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+            }
+
+            .design-customize-page .dc-page-header p,
+            .design-customize-page .dc-section-heading p,
+            .design-customize-page .dc-preview-header p {
+                margin: 0;
+                color: var(--ap-muted, var(--bs-secondary-color, #718096));
+                font-size: 13px;
+            }
+
+        .design-customize-page .dc-header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .design-customize-page .dc-draft-indicator {
+            font-size: 11px;
+            color: var(--ap-muted, #718096);
+            margin-right: 5px;
+        }
+
+            .design-customize-page .dc-draft-indicator i {
+                color: #e0a23c;
+                font-size: 7px;
+                vertical-align: middle;
+                margin-right: 5px;
+            }
+
+        .design-customize-page .dc-btn-primary,
+        .design-customize-page .dc-btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: 9px;
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .design-customize-page .dc-btn-primary {
+            color: #fff;
+            background: #0da88b;
+            border: 1px solid #0da88b;
+        }
+
+            .design-customize-page .dc-btn-primary:hover {
+                color: #fff;
+                background: #078d74;
+            }
+
+        .design-customize-page .dc-btn-outline {
+            color: var(--ap-text, var(--bs-body-color, #17212b));
+            background: var(--ap-card-bg, var(--bs-body-bg, #fff));
+            border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+        }
+
+        .design-customize-page .dc-widget-selector,
+        .design-customize-page .dc-settings,
+        .design-customize-page .dc-preview-panel {
+            border: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+            border-radius: 14px;
+            background: var(--ap-card-bg, var(--bs-body-bg, #fff));
+        }
+
+        .design-customize-page .dc-widget-selector {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+        }
+
+        .design-customize-page .dc-selector-icon {
+            width: 43px;
+            height: 43px;
+            flex: 0 0 43px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            background: rgba(13,168,139,.12);
+            color: #0da88b;
+            font-size: 19px;
+        }
+
+        .design-customize-page .dc-selector-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 0;
+            gap: 5px;
+        }
+
+            .design-customize-page .dc-selector-info label {
+                font-size: 11px;
+                color: var(--ap-muted, #718096);
+                font-weight: 700;
+            }
+
+            .design-customize-page .dc-selector-info select {
+                width: 100%;
+                max-width: 360px;
+                border: 0;
+                outline: 0;
+                padding: 0;
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+                background: transparent;
+                font: inherit;
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+        .design-customize-page .dc-demo-badge {
+            color: #0d9278;
+            background: rgba(13,168,139,.12);
+            border-radius: 30px;
+            padding: 6px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .design-customize-page .dc-workspace {
+            display: grid;
+            grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .design-customize-page .dc-settings {
+            overflow: hidden;
+        }
+
+        .design-customize-page .dc-section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 21px 22px;
+            border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        }
+
+            .design-customize-page .dc-section-heading h5,
+            .design-customize-page .dc-preview-header h5 {
+                margin: 0 0 5px;
+                font-size: 15px;
+                font-weight: 750;
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+            }
+
+            .design-customize-page .dc-section-heading > i {
+                color: #0da88b;
+                font-size: 18px;
+            }
+
+        .design-customize-page .dc-settings-body {
+            padding: 21px 22px;
+        }
+
+        .design-customize-page .dc-field {
+            margin-bottom: 20px;
+        }
+
+            .design-customize-page .dc-field > label,
+            .design-customize-page .dc-label-row label {
+                display: block;
+                margin-bottom: 8px;
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+                font-size: 12px;
+                font-weight: 700;
+            }
+
+            .design-customize-page .dc-field > small {
+                display: block;
+                margin-top: 7px;
+                color: var(--ap-muted, #718096);
+                font-size: 10px;
+            }
+
+            .design-customize-page .dc-field input[type="text"],
+            .design-customize-page .dc-field select,
+            .design-customize-page .dc-field textarea {
+                width: 100%;
+                min-width: 0;
+                border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+                border-radius: 8px;
+                padding: 10px 12px;
+                background: var(--ap-input-bg, var(--bs-tertiary-bg, #f4f8f7));
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+                font: inherit;
+                font-size: 12px;
+                outline: none;
+            }
+
+                .design-customize-page .dc-field input:focus,
+                .design-customize-page .dc-field select:focus,
+                .design-customize-page .dc-field textarea:focus {
+                    border-color: #0da88b;
+                    box-shadow: 0 0 0 3px rgba(13,168,139,.12);
+                }
+
+        .design-customize-page .dc-color-control {
+            display: flex;
+            gap: 9px;
+        }
+
+            .design-customize-page .dc-color-control input[type="color"] {
+                width: 45px;
+                height: 40px;
+                flex: 0 0 45px;
+                padding: 4px;
+                border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+                border-radius: 8px;
+                background: var(--ap-input-bg, #f4f8f7);
+                cursor: pointer;
+            }
+
+            .design-customize-page .dc-color-control input[type="text"] {
+                font-family: Consolas, monospace;
+                text-transform: uppercase;
+            }
+
+        .design-customize-page .dc-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .design-customize-page .dc-label-row label {
+                margin-bottom: 8px;
+            }
+
+            .design-customize-page .dc-label-row span {
+                color: #0da88b;
+                font-size: 11px;
+                font-weight: 700;
+            }
+
+        .design-customize-page .dc-field input[type="range"] {
+            width: 100%;
+            accent-color: #0da88b;
+            cursor: pointer;
+        }
+
+        .design-customize-page .dc-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+            border-radius: 9px;
+            padding: 13px;
+            background: var(--ap-input-bg, var(--bs-tertiary-bg, #f4f8f7));
+        }
+
+            .design-customize-page .dc-toggle-row strong {
+                display: block;
+                font-size: 12px;
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+            }
+
+            .design-customize-page .dc-toggle-row small {
+                display: block;
+                margin-top: 5px;
+                color: var(--ap-muted, #718096);
+                font-size: 10px;
+            }
+
+        .design-customize-page .dc-switch {
+            position: relative;
+            width: 40px;
+            height: 23px;
+            flex: 0 0 40px;
+        }
+
+            .design-customize-page .dc-switch input {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                opacity: 0;
+            }
+
+        .design-customize-page .dc-switch-track {
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: #9aa8a5;
+            cursor: pointer;
+        }
+
+            .design-customize-page .dc-switch-track::before {
+                content: "";
+                position: absolute;
+                left: 3px;
+                top: 3px;
+                width: 17px;
+                height: 17px;
+                border-radius: 50%;
+                background: #fff;
+                transition: transform .2s;
+            }
+
+        .design-customize-page .dc-switch input:checked + .dc-switch-track {
+            background: #0da88b;
+        }
+
+            .design-customize-page .dc-switch input:checked + .dc-switch-track::before {
+                transform: translateX(17px);
+            }
+
+        .design-customize-page .dc-divider {
+            height: 1px;
+            margin: 25px 0;
+            background: var(--ap-border, var(--bs-border-color, #e2e8f0));
+        }
+
+        .design-customize-page .dc-subheading {
+            padding: 0;
+            margin-bottom: 22px;
+            border: 0;
+        }
+
+        .design-customize-page .dc-preview-panel {
+            min-width: 0;
+            overflow: hidden;
+            position: sticky;
+            top: 20px;
+        }
+
+        .design-customize-page .dc-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 20px 22px;
+            border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        }
+
+        .design-customize-page .dc-preview-actions {
+            display: flex;
+            gap: 5px;
+            padding: 4px;
+            border: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+            border-radius: 9px;
+        }
+
+        .design-customize-page .dc-preview-mode {
+            display: grid;
+            place-items: center;
+            width: 31px;
+            height: 30px;
+            border: 0;
+            border-radius: 6px;
+            background: transparent;
+            color: var(--ap-muted, #718096);
+            cursor: pointer;
+        }
+
+            .design-customize-page .dc-preview-mode.active {
+                background: rgba(13,168,139,.14);
+                color: #0da88b;
+            }
+
+        .design-customize-page .dc-preview-canvas {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 590px;
+            padding: 30px;
+            background-color: #eef3f1;
+            background-image: radial-gradient(#cdd9d4 1px, transparent 1px);
+            background-size: 17px 17px;
+            transition: background .2s;
+        }
+
+        .design-customize-page .dc-preview-position {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            transition: justify-content .2s;
+        }
+
+            .design-customize-page .dc-preview-position[data-position="bottom-right"] {
+                justify-content: flex-end;
+            }
+
+            .design-customize-page .dc-preview-position[data-position="bottom-left"] {
+                justify-content: flex-start;
+            }
+
+            .design-customize-page .dc-preview-position[data-position="center"] {
+                justify-content: center;
+            }
+
+        .design-customize-page .dc-widget-preview {
+            width: min(100%, 360px);
+            overflow: hidden;
+            border-radius: 12px;
+            background: #fff;
+            color: #17212b;
+            font-family: Inter, Arial, sans-serif;
+            font-size: 14px;
+            box-shadow: 0 18px 55px rgba(20,35,30,.18);
+            transition: width .2s, border-radius .2s, box-shadow .2s, background .2s, color .2s;
+        }
+
+        .design-customize-page .dc-widget-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 15px 17px;
+            background: var(--dc-primary);
+            color: #fff;
+        }
+
+        .design-customize-page .dc-widget-brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            min-width: 0;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .design-customize-page .dc-brand-icon {
+            display: grid;
+            place-items: center;
+            width: 30px;
+            height: 30px;
+            flex: 0 0 30px;
+            border-radius: 9px;
+            background: rgba(255,255,255,.2);
+            font-size: 15px;
+        }
+
+        .design-customize-page .dc-widget-menu {
+            border: 0;
+            color: inherit;
+            background: transparent;
+            font-size: 19px;
+        }
+
+        .design-customize-page .dc-widget-content {
+            padding: 22px 19px 19px;
+        }
+
+        .design-customize-page .dc-welcome-icon {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            background: color-mix(in srgb, var(--dc-primary) 13%, transparent);
+            color: var(--dc-primary);
+            font-size: 20px;
+        }
+
+        .design-customize-page .dc-widget-content h3 {
+            margin: 0 0 10px;
+            color: var(--dc-widget-text);
+            font-size: 20px;
+            font-weight: 750;
+            line-height: 1.3;
+            overflow-wrap: anywhere;
+        }
+
+        .design-customize-page .dc-widget-content > p {
+            margin: 0 0 21px;
+            color: var(--dc-widget-text);
+            opacity: .75;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .design-customize-page .dc-preview-question {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 13px;
+        }
+
+        .design-customize-page .dc-preview-step {
+            display: grid;
+            place-items: center;
+            width: 29px;
+            height: 29px;
+            flex: 0 0 29px;
+            border-radius: 8px;
+            background: color-mix(in srgb, var(--dc-primary) 13%, transparent);
+            color: var(--dc-primary);
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .design-customize-page .dc-preview-question strong {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--dc-widget-text);
+            font-size: 12px;
+        }
+
+        .design-customize-page .dc-preview-question small {
+            color: var(--dc-widget-text);
+            opacity: .65;
+            font-size: 10px;
+        }
+
+        .design-customize-page .dc-preview-answer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            width: 100%;
+            margin-top: 8px;
+            padding: 12px;
+            border: 1px solid color-mix(in srgb, var(--dc-widget-text) 15%, transparent);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--dc-widget-text);
+            font: inherit;
+            font-size: 12px;
+            text-align: left;
+        }
+
+            .design-customize-page .dc-preview-answer span {
+                display: flex;
+                align-items: center;
+                gap: 9px;
+            }
+
+            .design-customize-page .dc-preview-answer i:first-child {
+                color: var(--dc-primary);
+            }
+
+        .design-customize-page .dc-preview-cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            width: 100%;
+            margin-top: 20px;
+            padding: 13px 15px;
+            border: 0;
+            background: var(--dc-primary);
+            color: #fff;
+            font: inherit;
+            font-size: 12px;
+            font-weight: 750;
+            cursor: pointer;
+        }
+
+        .design-customize-page .dc-widget-footer {
+            padding: 13px 15px;
+            border-top: 1px solid color-mix(in srgb, var(--dc-widget-text) 12%, transparent);
+            color: var(--dc-widget-text);
+            opacity: .6;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        .design-customize-page .dc-canvas-caption {
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            color: #52665f;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        .design-customize-page .dc-preview-canvas[data-mode="dark"] {
+            background-color: #111c19;
+            background-image: radial-gradient(#31423b 1px, transparent 1px);
+        }
+
+        .design-customize-page .dc-preview-canvas[data-mode="mobile"] {
+            background-color: #e8edeb;
+        }
+
+            .design-customize-page .dc-preview-canvas[data-mode="mobile"] .dc-widget-preview {
+                width: min(100%, 320px);
+            }
+
+        .design-customize-page .dc-toast {
+            position: fixed;
+            z-index: 11000;
+            right: 24px;
+            bottom: 85px;
+            display: none;
+            max-width: calc(100vw - 32px);
+            padding: 13px 17px;
+            border-radius: 10px;
+            background: #087f68;
+            color: #fff;
+            font-size: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.2);
+        }
+
+            .design-customize-page .dc-toast.is-visible {
+                display: block;
+            }
+
+    @@media (max-width: 1199.98px) {
+        .design-customize-page .dc-workspace {
+            grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+            gap: 14px;
+        }
+
+        .design-customize-page .dc-settings-body {
+            padding: 18px;
+        }
+
+        .design-customize-page .dc-preview-canvas {
+            padding: 20px;
+        }
+    }
+
+    @@media (max-width: 991.98px) {
+        .design-customize-page .dc-workspace {
+            grid-template-columns: 1fr;
+        }
+
+        .design-customize-page .dc-preview-panel {
+            position: static;
+        }
+
+        .design-customize-page .dc-preview-canvas {
+            min-height: 540px;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .design-customize-page .dc-page-header {
+            align-items: flex-start;
+        }
+
+            .design-customize-page .dc-page-header h2 {
+                font-size: 23px;
+            }
+
+        .design-customize-page .dc-header-actions {
+            justify-content: flex-start;
+        }
+
+        .design-customize-page .dc-draft-indicator {
+            width: 100%;
+        }
+
+        .design-customize-page .dc-widget-selector {
+            padding: 13px;
+        }
+
+        .design-customize-page .dc-demo-badge {
+            display: none;
+        }
+
+        .design-customize-page .dc-section-heading,
+        .design-customize-page .dc-preview-header {
+            padding: 16px;
+        }
+
+        .design-customize-page .dc-settings-body {
+            padding: 16px;
+        }
+
+        .design-customize-page .dc-preview-canvas {
+            min-height: 500px;
+            padding: 15px;
+        }
+    }
+
+
+
+
+
+    
+    /* ==========================================
+       DESIGN & CUSTOMIZE — DARK THEME FIXES
+       ========================================== */
+
+    /* Dropdown controls */
+    html[data-theme="dark"] .design-customize-page select,
+    body[data-theme="dark"] .design-customize-page select,
+    html[data-bs-theme="dark"] .design-customize-page select,
+    body[data-bs-theme="dark"] .design-customize-page select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border-radius: 10px !important;
+        padding: 9px 42px 9px 12px !important;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23aab8c8' d='M3 5.5 8 10.5 13 5.5z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        background-size: 16px;
+    }
+
+        /* Dropdown options — the opened list */
+        html[data-theme="dark"] .design-customize-page select option,
+        body[data-theme="dark"] .design-customize-page select option,
+        html[data-bs-theme="dark"] .design-customize-page select option,
+        body[data-bs-theme="dark"] .design-customize-page select option {
+            background-color: #10221c !important;
+            color: #f0f5f3 !important;
+        }
+
+    /* Hexadecimal color-code text inputs */
+    html[data-theme="dark"] .design-customize-page .dc-color-control input[type="text"],
+    body[data-theme="dark"] .design-customize-page .dc-color-control input[type="text"],
+    html[data-bs-theme="dark"] .design-customize-page .dc-color-control input[type="text"],
+    body[data-bs-theme="dark"] .design-customize-page .dc-color-control input[type="text"] {
+        background-color: #10221c !important;
+        color: #f0f5f3 !important;
+        border-color: #344d44 !important;
+        caret-color: #0da88b;
+    }
+
+        /* Improve focus visibility */
+        html[data-theme="dark"] .design-customize-page select:focus,
+        html[data-theme="dark"] .design-customize-page .dc-color-control input[type="text"]:focus,
+        body[data-theme="dark"] .design-customize-page select:focus,
+        body[data-theme="dark"] .design-customize-page .dc-color-control input[type="text"]:focus,
+        html[data-bs-theme="dark"] .design-customize-page select:focus,
+        html[data-bs-theme="dark"] .design-customize-page .dc-color-control input[type="text"]:focus,
+        body[data-bs-theme="dark"] .design-customize-page select:focus,
+        body[data-bs-theme="dark"] .design-customize-page .dc-color-control input[type="text"]:focus {
+            border-color: #0da88b !important;
+            box-shadow: 0 0 0 3px rgba(13, 168, 139, .2);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* Rounded dropdowns — Light & Dark themes */
+    .design-customize-page select {
+        border-radius: 10px !important;
+        border: 1px solid var(--ap-border, #d6dce5) !important;
+        padding: 9px 36px 9px 12px;
+        min-height: 42px;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+    }
+
+    /* Dark theme */
+    html[data-theme="dark"] .design-customize-page select,
+    body[data-theme="dark"] .design-customize-page select,
+    html[data-bs-theme="dark"] .design-customize-page select,
+    body[data-bs-theme="dark"] .design-customize-page select {
+        background-color: #10221c !important;
+        color: #f0f5f3 !important;
+        border-color: #344d44 !important;
+        border-radius: 10px !important;
+        color-scheme: dark;
+    }
+
+        /* Dropdown options */
+        html[data-theme="dark"] .design-customize-page select option,
+        body[data-theme="dark"] .design-customize-page select option,
+        html[data-bs-theme="dark"] .design-customize-page select option,
+        body[data-bs-theme="dark"] .design-customize-page select option {
+            background-color: #10221c;
+            color: #f0f5f3;
+        }
+
+    /* Hover and focus */
+    .design-customize-page select:hover {
+        border-color: #0da88b !important;
+    }
+
+    .design-customize-page select:focus {
+        border-color: #0da88b !important;
+        box-shadow: 0 0 0 3px rgba(13, 168, 139, 0.16) !important;
+    }
+
+</style>
+
+<script>
+    (function() {
+        "use strict";
+
+        const root = document.querySelector(".design-customize-page");
+        if (!root || root.dataset.dcInitialized === "true") return;
+        root.dataset.dcInitialized = "true";
+
+        const $ = id => root.querySelector("#" + id);
+
+        const defaults = {
+            primary: "#0da88b",
+            background: "#ffffff",
+            text: "#17212b",
+            font: "Inter, Arial, sans-serif",
+            fontSize: 14,
+            radius: 12,
+            shadow: true,
+            width: 360,
+            position: "bottom-right",
+            buttonShape: "rounded",
+            heading: "Find your perfect sofa",
+            description: "Answer a few quick questions and discover the sofa that fits your home.",
+            buttonText: "Get started",
+            footer: "Powered by AskPearls"
+        };
+
+        let savedSettings = { ...defaults };
+        let toastTimer = null;
+
+        function currentSettings() {
+            return {
+                primary: $("dcPrimaryColor").value,
+                background: $("dcBackgroundColor").value,
+                text: $("dcTextColor").value,
+                font: $("dcFontFamily").value,
+                fontSize: Number($("dcFontSize").value),
+                radius: Number($("dcRadius").value),
+                shadow: $("dcShadow").checked,
+                width: Number($("dcWidth").value),
+                position: $("dcPosition").value,
+                buttonShape: $("dcButtonShape").value,
+                heading: $("dcHeading").value,
+                description: $("dcDescription").value,
+                buttonText: $("dcButtonText").value,
+                footer: $("dcFooterText").value
+            };
+        }
+
+        function validHex(value) {
+            return /^#[0-9a-fA-F]{6}$/.test(value);
+        }
+
+        function syncColorFromText(textId, colorId) {
+            const text = $(textId).value.trim();
+            if (validHex(text)) {
+                $(colorId).value = text;
+                updatePreview();
+            }
+        }
+
+        function syncColorFromPicker(colorId, textId) {
+            $(textId).value = $(colorId).value.toUpperCase();
+            updatePreview();
+        }
+
+        function setSettings(settings) {
+            $("dcPrimaryColor").value = settings.primary;
+            $("dcPrimaryHex").value = settings.primary.toUpperCase();
+            $("dcBackgroundColor").value = settings.background;
+            $("dcBackgroundHex").value = settings.background.toUpperCase();
+            $("dcTextColor").value = settings.text;
+            $("dcTextHex").value = settings.text.toUpperCase();
+            $("dcFontFamily").value = settings.font;
+            $("dcFontSize").value = settings.fontSize;
+            $("dcRadius").value = settings.radius;
+            $("dcShadow").checked = settings.shadow;
+            $("dcWidth").value = settings.width;
+            $("dcPosition").value = settings.position;
+            $("dcButtonShape").value = settings.buttonShape;
+            $("dcHeading").value = settings.heading;
+            $("dcDescription").value = settings.description;
+            $("dcButtonText").value = settings.buttonText;
+            $("dcFooterText").value = settings.footer;
+            updatePreview();
+        }
+
+        function showToast(message) {
+            const toast = $("dcToast");
+            toast.textContent = message;
+            toast.classList.add("is-visible");
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2600);
+        }
+
+        function updatePreview() {
+            const s = currentSettings();
+            const widget = $("dcWidgetPreview");
+            const canvas = $("dcPreviewCanvas");
+            const position = $("dcPreviewPosition");
+
+            root.style.setProperty("--dc-primary", s.primary);
+            root.style.setProperty("--dc-widget-bg", s.background);
+            root.style.setProperty("--dc-widget-text", s.text);
+
+            widget.style.backgroundColor = s.background;
+            widget.style.color = s.text;
+            widget.style.fontFamily = s.font;
+            widget.style.fontSize = s.fontSize + "px";
+            widget.style.borderRadius = s.radius + "px";
+            widget.style.boxShadow = s.shadow
+                ? "0 18px 55px rgba(20,35,30,.18)"
+                : "none";
+            widget.style.width = "min(100%, " + s.width + "px)";
+
+            $("dcPreviewHeading").textContent = s.heading || "Your welcome heading";
+            $("dcPreviewHeading").style.color = s.text;
+            $("dcPreviewHeading").style.fontSize = Math.max(16, s.fontSize + 6) + "px";
+
+            $("dcPreviewDescription").textContent =
+                s.description || "Your welcome message will appear here.";
+            $("dcPreviewDescription").style.color = s.text;
+
+            $("dcPreviewButton").innerHTML =
+                escapeHtml(s.buttonText || "Get started") +
+                ' <i class="bi bi-arrow-right"></i>';
+
+            $("dcPreviewFooter").textContent = s.footer;
+            $("dcPreviewFooter").style.color = s.text;
+
+            root.querySelectorAll(".dc-preview-answer").forEach(answer => {
+                answer.style.borderRadius = shapeRadius(s.buttonShape);
+                answer.style.color = s.text;
+            });
+
+            $("dcPreviewButton").style.borderRadius = shapeRadius(s.buttonShape);
+
+            position.dataset.position = s.position;
+            $("dcFontSizeValue").textContent = s.fontSize + " px";
+            $("dcRadiusValue").textContent = s.radius + " px";
+            $("dcWidthValue").textContent = s.width + " px";
+
+            // The preview-mode background is separate from the actual widget colors.
+            // Preserve the currently selected preview mode while settings change.
+            const activeMode = root.querySelector(".dc-preview-mode.active");
+            setPreviewMode(activeMode ? activeMode.dataset.dcMode : "light");
+            updateDirtyState();
+        }
+
+        function shapeRadius(shape) {
+            if (shape === "pill") return "999px";
+            if (shape === "square") return "2px";
+            return $("dcRadius").value + "px";
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, character => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+            })[character]);
+        }
+
+        function setPreviewMode(mode) {
+            const canvas = $("dcPreviewCanvas");
+            canvas.dataset.mode = mode;
+            root.querySelectorAll(".dc-preview-mode").forEach(button => {
+                button.classList.toggle("active", button.dataset.dcMode === mode);
+            });
+
+            const widget = $("dcWidgetPreview");
+
+            if (mode === "dark") {
+                widget.style.backgroundColor = "#15231e";
+                widget.style.color = "#e7f0ec";
+                $("dcPreviewHeading").style.color = "#e7f0ec";
+                $("dcPreviewDescription").style.color = "#e7f0ec";
+                $("dcPreviewFooter").style.color = "#e7f0ec";
+                root.querySelectorAll(".dc-preview-answer").forEach(answer => {
+                    answer.style.color = "#e7f0ec";
+                    answer.style.borderColor = "rgba(231,240,236,.2)";
+                });
+            } else {
+                const s = currentSettings();
+                widget.style.backgroundColor = s.background;
+                widget.style.color = s.text;
+                $("dcPreviewHeading").style.color = s.text;
+                $("dcPreviewDescription").style.color = s.text;
+                $("dcPreviewFooter").style.color = s.text;
+                root.querySelectorAll(".dc-preview-answer").forEach(answer => {
+                    answer.style.color = s.text;
+                    answer.style.borderColor = "rgba(100,120,110,.2)";
+                });
+            }
+
+            if (mode === "mobile") {
+                widget.style.width = "min(100%, 320px)";
+            } else {
+                widget.style.width = "min(100%, " + currentSettings().width + "px)";
+            }
+        }
+
+        function updateDirtyState() {
+            const changed = JSON.stringify(currentSettings()) !== JSON.stringify(savedSettings);
+            const indicator = $("dcDraftIndicator");
+            indicator.innerHTML = changed
+                ? '<i class="bi bi-circle-fill"></i> Unsaved changes'
+                : '<i class="bi bi-check-circle-fill"></i> All changes saved';
+            indicator.style.color = changed ? "" : "#0d9278";
+        }
+
+        [
+            ["dcPrimaryColor", "dcPrimaryHex"],
+            ["dcBackgroundColor", "dcBackgroundHex"],
+            ["dcTextColor", "dcTextHex"]
+        ].forEach(([colorId, textId]) => {
+            $(colorId).addEventListener("input", () => syncColorFromPicker(colorId, textId));
+            $(textId).addEventListener("change", () => syncColorFromText(textId, colorId));
+        });
+
+        [
+            "dcFontFamily", "dcFontSize", "dcRadius", "dcShadow",
+            "dcWidth", "dcPosition", "dcButtonShape", "dcHeading",
+            "dcDescription", "dcButtonText", "dcFooterText"
+        ].forEach(id => {
+            $(id).addEventListener("input", updatePreview);
+            $(id).addEventListener("change", updatePreview);
+        });
+
+        root.querySelectorAll(".dc-preview-mode").forEach(button => {
+            button.addEventListener("click", () => setPreviewMode(button.dataset.dcMode));
+        });
+
+        $("dcSave").addEventListener("click", () => {
+            savedSettings = currentSettings();
+            updateDirtyState();
+            showToast("Draft saved in this browser session. Backend saving is not connected yet.");
+        });
+
+        $("dcReset").addEventListener("click", () => {
+            setSettings(savedSettings);
+            showToast("Settings reset to the last saved draft.");
+        });
+
+        $("dcWidgetSelect").addEventListener("change", event => {
+            const presets = {
+                sofa: { heading: "Find your perfect sofa", buttonText: "Get started" },
+                furniture: { heading: "Discover your ideal furniture", buttonText: "Explore options" },
+                demo: { heading: "Find the right solution for you", buttonText: "Start now" }
+            };
+
+            const preset = presets[event.target.value] || presets.sofa;
+            $("dcHeading").value = preset.heading;
+            $("dcButtonText").value = preset.buttonText;
+            updatePreview();
+            showToast("Preview preset changed. Save Draft to keep these settings for this session.");
+        });
+
+        // Initialize once per AJAX-loaded partial.
+        setSettings(defaults);
+        savedSettings = currentSettings();
+        updatePreview();
+    })();
+</script>

@@ -1,0 +1,2251 @@
+﻿@{
+    // ViewData["Title"] = "Home Page";
+    Layout = null;
+}
+@*
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+ *@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - NiceAdmin</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="NiceAdmin - Bootstrap Admin Template">
+    <meta name="keywords" content="admin, dashboard, bootstrap">
+
+    <!-- Favicons -->
+    <link href="MemberView/assets/img/favicon.png" rel="icon">
+    <link href="MemberView/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts - Nunito Sans + Poppins + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="css2?family=JetBrains+Mono:wght@400;500;600&family=Nunito+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+  
+         
+    <!-- APP CSS Files -->
+    <link href="~/app_css/app_align_CSS.css" rel="stylesheet">
+    <link href="~/app_css/app_link_CSS.css" rel="stylesheet">
+    <link href="~/app_css/app_scrollbar_css.css" rel="stylesheet" />
+
+
+<link href="~/app_crm/css/layout.css" rel="stylesheet" />
+    
+ <link href="~/app_css/app_portal_chat_crm_css.css" rel="stylesheet" /> 
+    
+    
+    <!-- Vendor CSS Files -->
+    <link href="MemberView/vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="MemberView/vendors/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="MemberView/vendors/remixicon/remixicon.css" rel="stylesheet">
+    <link href="MemberView/vendors/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="MemberView/vendors/phosphor-icons/phosphor-icons.css" rel="stylesheet">
+    <link href="MemberView/vendors/lucide-icons/lucide.css" rel="stylesheet">
+    <link href="MemberView/vendors/simple-datatables/style.css" rel="stylesheet">
+    <link href="MemberView/vendors/quill/quill.snow.css" rel="stylesheet">
+    <link href="MemberView/vendors/quill/quill.bubble.css" rel="stylesheet">
+    <link href="MemberView/vendors/choices.js/choices.min.css" rel="stylesheet">
+    <link href="MemberView/vendors/flatpickr/flatpickr.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="MemberView/assets/css/main.css" rel="stylesheet">
+
+    
+    <style>
+            .form-control {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            input.form-control {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            .form-control-sm {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            input.form-control-sm {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+        
+            input[type=text], input[type=text]:focus, input[type=email]:focus, input[type=url]:focus, input[type=password]:focus, input[type=number]:focus, textarea, textarea:focus {
+                /*background-color: lightblue;*/
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+
+            input[type=text], input[type=email], input[type=password], input[type=url], input[type=number], textarea {
+                /*background-color: lightblue;*/
+                /*background: blue;*/
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+                /*   border:  1px solid lightblue ;*/
+            }
+
+    </style>
+
+
+    <style>
+
+
+
+
+
+/* ==========================================
+   FIX: Sidebar footer remains visible
+   ========================================== */
+
+#askPearlsSidebar.ap-sidebar {
+    position: fixed;
+    top: var(--header-height, 64px);
+    /* bottom: 50px; */ /* Height of your green portal footer */
+    left: 0;
+
+/*     width: 290px;
+    min-width: 290px; */
+    height: auto;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+    box-sizing: border-box;
+    z-index: 900;
+
+    background: #071f25;
+}
+
+/* Only the agents and Account & Settings scroll */
+#askPearlsSidebar .ap-sidebar-scroll {
+    flex: 1 1 0;
+    min-height: 0;
+    height: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    overscroll-behavior: contain;
+}
+
+/* Keep attribution outside the scrolling area */
+#askPearlsSidebar .ap-sidebar-footer {
+    position: relative;
+    flex: 0 0 auto;
+
+    width: 100%;
+    min-height: 46px;
+    padding: 13px 8px;
+
+    box-sizing: border-box;
+    background: #071f25;
+    border-top: 1px solid #24434a;
+
+    color: #a7bdc3;
+    font-size: 11px;
+    text-align: center;
+}
+
+/* Attribution link */
+#askPearlsSidebar .ap-sidebar-footer a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+/* Keep the header above the sidebar */
+.header {
+    z-index: 1000;
+}
+
+/* Adjust sidebar width on smaller screens */
+@@media (max-width: 767.98px) {
+    #askPearlsSidebar.ap-sidebar {
+        width: 270px;
+        min-width: 270px;
+    }
+}
+
+
+
+.ap-sidebar-heading {
+    padding: 17px 20px 12px;
+    color: var(--ap-sidebar-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.ap-agent-accordion {
+    padding: 0 9px;
+}
+
+.ap-agent-accordion .accordion-item {
+    margin-bottom: 7px;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: transparent;
+}
+
+.ap-agent-header,
+.ap-agent-accordion .accordion-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 63px;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 8px !important;
+    background: var(--ap-sidebar-panel);
+    color: var(--ap-sidebar-text);
+    text-align: left;
+    box-shadow: none;
+}
+
+.ap-agent-header::after {
+    width: 12px;
+    height: 12px;
+    margin-left: 8px;
+    background-size: 12px;
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+}
+
+.ap-agent-header:focus {
+    box-shadow: none;
+}
+
+.ap-agent-icon {
+    display: inline-flex;
+    flex: 0 0 34px;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.ap-agent-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    gap: 4px;
+}
+
+.ap-agent-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.ap-agent-title {
+    color: inherit;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.ap-agent-description {
+    color: var(--ap-sidebar-muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+/* Active DecisionOS */
+.ap-agent-active {
+    border-color: rgba(37, 211, 102, 0.35) !important;
+    border-left: 3px solid var(--ap-green) !important;
+    background: rgba(37, 211, 102, 0.035) !important;
+}
+
+.ap-agent-active > .accordion-header > .ap-agent-header,
+.ap-agent-active > .accordion-header > .accordion-button {
+    background: linear-gradient(
+        110deg,
+        rgba(37, 211, 102, 0.19),
+        rgba(37, 211, 102, 0.06)
+    );
+    color: #ffffff;
+}
+
+.ap-agent-active .ap-agent-icon {
+    color: #b8ffd0;
+}
+
+.ap-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.ap-status-active {
+    background: var(--ap-green);
+    color: #063c24;
+}
+
+.ap-status-soon {
+    background: #52666f;
+    color: #ffffff;
+}
+
+/* DecisionOS submenu */
+.ap-agent-body {
+    padding: 4px 8px 8px;
+    background: transparent;
+}
+
+.ap-agent-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.ap-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 35px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: var(--ap-sidebar-text);
+    font-size: 12px;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.ap-nav-link > i {
+    display: inline-flex;
+    width: 17px;
+    justify-content: center;
+    font-size: 15px;
+}
+
+.ap-nav-link:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: #ffffff;
+}
+
+.ap-nav-link.active {
+    background: linear-gradient(
+        90deg,
+        rgba(37, 211, 102, 0.25),
+        rgba(37, 211, 102, 0.12)
+    );
+    color: #ffffff;
+}
+
+.ap-nav-link.active > i {
+    color: var(--ap-green);
+}
+
+/* Future agents: visible but unavailable */
+.ap-agent-disabled > .accordion-header > .ap-agent-header,
+.ap-agent-disabled > .accordion-header > .accordion-button {
+    cursor: not-allowed;
+    opacity: 0.9;
+    background: #102932;
+}
+
+.ap-agent-disabled .ap-agent-icon {
+    color: #a9c0c6;
+}
+
+.ap-agent-disabled .ap-agent-title {
+    color: #d6e2e5;
+}
+
+.ap-agent-disabled .ap-agent-description {
+    color: #9ab0b7;
+}
+
+.ap-agent-disabled .ap-status-soon {
+    background: #536a73;
+}
+
+/* Account settings */
+.ap-sidebar-bottom {
+    margin-top: auto;
+    padding: 10px 9px;
+    border-top: 1px solid var(--ap-sidebar-border);
+}
+
+.ap-settings-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 7px;
+    color: var(--ap-sidebar-text);
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.ap-settings-link > i:first-child {
+    font-size: 19px;
+}
+
+.ap-settings-link:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+}
+
+.ap-settings-arrow {
+    margin-left: auto;
+    font-size: 12px;
+}
+
+/* Sidebar footer */
+.ap-sidebar-footer {
+    padding: 13px 8px;
+    border-top: 1px solid var(--ap-sidebar-border);
+    color: var(--ap-sidebar-muted);
+    font-size: 11px;
+    text-align: center;
+}
+
+.ap-sidebar-footer a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+/* Narrow screens */
+@@media (max-width: 767.98px) {
+    .ap-sidebar {
+        width: 270px;
+        min-width: 270px;
+    }
+}
+
+
+/* =========================================
+   AskPearls Agent Sidebar
+   ========================================= */
+
+    
+/* ==========================================
+   FIX: DecisionOS ACTIVE badge in both themes
+   ========================================== */
+
+#askPearlsSidebar .ap-agent-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 8px;
+    min-width: 0;
+}
+
+#askPearlsSidebar .ap-agent-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    color: inherit;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+#askPearlsSidebar .ap-status.ap-status-active {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4px 9px;
+    min-height: 20px;
+    border: 0;
+    border-radius: 999px;
+
+    background-color: #25D366 !important;
+    color: #063B22 !important;
+
+    font-size: 9px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Keep the badge readable in dark theme */
+[data-bs-theme="dark"] #askPearlsSidebar .ap-status.ap-status-active,
+.dark-theme #askPearlsSidebar .ap-status.ap-status-active {
+    background-color: #25D366 !important;
+    color: #063B22 !important;
+}
+
+/* Keep the badge readable in light theme */
+[data-bs-theme="light"] #askPearlsSidebar .ap-status.ap-status-active,
+.light-theme #askPearlsSidebar .ap-status.ap-status-active {
+    background-color: #25D366 !important;
+    color: #063B22 !important;
+}
+
+/* Allow the title and badge to fit on narrower screens */
+@@media (max-width: 350px) {
+    #askPearlsSidebar .ap-agent-title-row {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+}
+
+  
+/* Fix title/badge overlap for future agents */
+#askPearlsSidebar .ap-agent-disabled .ap-agent-title-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 5px;
+}
+
+#askPearlsSidebar .ap-agent-disabled .ap-agent-title {
+    display: block;
+    max-width: 100%;
+    line-height: 1.3;
+}
+
+#askPearlsSidebar .ap-agent-disabled .ap-status.ap-status-soon {
+    display: inline-flex;
+    position: static;
+    flex: 0 0 auto;
+    align-self: flex-start;
+    margin: 0;
+    transform: none;
+    white-space: nowrap;
+    line-height: 1.2;
+}
+
+/* Keep DecisionOS ACTIVE on the title row */
+#askPearlsSidebar .ap-agent-active .ap-agent-title-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+#askPearlsSidebar .ap-agent-active .ap-status.ap-status-active {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+
+
+
+
+
+
+
+
+    </style>
+
+    <!-- =======================================================
+    * Template Name: NiceAdmin - Bootstrap Admin Template
+    * Template URL: https://bootstrapmade.com/flex-admin-bootstrap-template/
+    * Updated: Apr 8, 2026 with Bootstrap v5.3.8
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+<body class="vh-100">
+    <!-- Header -->
+   <header class="header">
+        <div class="header-left">
+           
+            @*            *@
+            <a href="/" class="header-brand header-logo" aria-label="Ask Pearls home">
+                @* <span class="header-logo"> *@
+
+                <img id="img_logo_portal" src="~/app_img/logo-default-light.png" style="width:auto;height:60px;" alt="AskPearls">
+                @* <img src="../MemberView/assets/img/logo.webp" alt="Ask Pearls"> *@
+                @* </span> *@
+                @*  <span class="header-context">
+                    <strong class="header-context-title">Ask Pearls</strong>
+                </span> *@
+            </a>
+        <button class="sidebar-toggle d-block" title="Toggle Sidebar" aria-label="Toggle sidebar">
+                <span class="menu-lines" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button> </div>
+
+        <div class="header-search-wrap">
+            <form class="search-form" action="search-results.html" method="GET">
+                <i class="bi bi-search search-icon"></i>
+                <input type="search" name="q" placeholder="Search projects, invoices, users..." autocomplete="off">
+                <kbd class="search-shortcut">/</kbd>
+            </form>
+        </div>
+
+        <div class="header-right">
+            <div class="header-actions-desktop">
+                <div class="header-action-wrap dropdown lang-dropdown">
+                    <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Language">
+                        <img src="../MemberView/assets/flag/us.png" alt="EN" class="lang-flag">
+                        <span class="lang-code">EN</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end lang-menu">
+                        <div class="menu-title">Select Language</div>
+                        <a class="lang-item active" href="#">
+                            <img src="../MemberView/assets/flag/us.png" alt="EN" class="lang-flag">
+                            <span class="lang-copy">
+                                <span class="lang-name">English</span>
+                                <span class="lang-meta">United States</span>
+                            </span>
+                            <i class="bi bi-check2"></i>
+                        </a>
+                        <a class="lang-item" href="#">
+                            <img src="../MemberView/assets/flag/fr.png" alt="FR" class="lang-flag">
+                            <span class="lang-copy">
+                                <span class="lang-name">Français</span>
+                                <span class="lang-meta">France</span>
+                            </span>
+                        </a>
+                        <a class="lang-item" href="#">
+                            <img src="../MemberView/assets/flag/de.png" alt="DE" class="lang-flag">
+                            <span class="lang-copy">
+                                <span class="lang-name">Deutsch</span>
+                                <span class="lang-meta">Germany</span>
+                            </span>
+                        </a>
+                        <a class="lang-item" href="#">
+                            <img src="../MemberView/assets/flag/es.png" alt="ES" class="lang-flag">
+                            <span class="lang-copy">
+                                <span class="lang-name">Español</span>
+                                <span class="lang-meta">Spain</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="header-action-wrap dropdown quickaccess-dropdown">
+                    <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Quick Access">
+                        <i class="ph-light ph-squares-four"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end quickaccess-menu">
+                        <div class="menu-title">Quick Access</div>
+                        <a href="dashboard-projects.html" class="quickaccess-featured">
+                            <span class="quickaccess-featured-icon"><i class="bi bi-lightning-charge"></i></span>
+                            <span class="quickaccess-featured-copy">
+                                <strong>Create New Workspace</strong>
+                                <small>Launch projects, assign team, set timeline</small>
+                            </span>
+                        </a>
+                        <div class="quickaccess-grid">
+                            <a href="apps-calendar.html" class="quickaccess-item">
+                                <i class="bi bi-calendar3"></i>
+                                <span>Calendar</span>
+                                <small>Events</small>
+                            </a>
+                            <a href="apps-kanban.html" class="quickaccess-item">
+                                <i class="bi bi-kanban"></i>
+                                <span>Kanban</span>
+                                <small>Boards</small>
+                            </a>
+                            <a href="apps-chat.html" class="quickaccess-item">
+                                <i class="bi bi-chat-dots"></i>
+                                <span>Chat</span>
+                                <small>Inbox</small>
+                            </a>
+                            <a href="apps-email.html" class="quickaccess-item">
+                                <i class="bi bi-envelope"></i>
+                                <span>Email</span>
+                                <small>Campaigns</small>
+                            </a>
+                            <a href="apps-file-manager.html" class="quickaccess-item">
+                                <i class="bi bi-folder2-open"></i>
+                                <span>Files</span>
+                                <small>Assets</small>
+                            </a>
+                            <a href="apps-support.html" class="quickaccess-item">
+                                <i class="bi bi-headset"></i>
+                                <span>Support</span>
+                                <small>Tickets</small>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-action-wrap dropdown notification-dropdown">
+                    <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
+                        <i class="bi bi-bell"></i>
+                        <span class="header-badge">4</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end notification-menu">
+                        <div class="notification-header">
+                            <div>
+                                <h6>Notifications</h6>
+                                <span>4 unread</span>
+                            </div>
+                            <a href="#" data-notification-action="mark-all-read">Mark all read</a>
+                        </div>
+                        <div class="notification-summary">
+                            <a href="activity.html" class="notification-summary-item">
+                                <strong>7</strong>
+                                <span>Today</span>
+                            </a>
+                            <a href="notifications.html" class="notification-summary-item">
+                                <strong>23</strong>
+                                <span>This week</span>
+                            </a>
+                            <a href="roles.html" class="notification-summary-item">
+                                <strong>3</strong>
+                                <span>Approvals</span>
+                            </a>
+                        </div>
+                        <div class="notification-list">
+                            <div class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <div class="notification-icon info"><i class="bi bi-rocket-takeoff"></i></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">Deploy ready</div>
+                                    <div class="notification-text">Sprint release passed QA validation.</div>
+                                    <span class="notification-time">5m ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <img src="../MemberView/assets/img/avatars/avatar-2.webp" alt="" class="notification-avatar">
+                                <div class="notification-content">
+                                    <div class="notification-title">Mia sent feedback</div>
+                                    <div class="notification-text">Please review updated dashboard spacing.</div>
+                                    <span class="notification-time">21m ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <div class="notification-icon warning"><i class="bi bi-exclamation-triangle"></i></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">Storage alert</div>
+                                    <div class="notification-text">Media bucket reached 81% usage.</div>
+                                    <span class="notification-time">58m ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <div class="notification-icon success"><i class="bi bi-check2-circle"></i></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">Payment received</div>
+                                    <div class="notification-text">Invoice #INV-3921 settled successfully.</div>
+                                    <span class="notification-time">2h ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notification-footer">
+                            <a href="notifications.html">Open notification center <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-action-wrap dropdown messages-dropdown">
+                    <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Messages">
+                        <i class="bi bi-chat-left-text"></i>
+                        <span class="header-badge">5</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end messages-menu">
+                        <div class="notification-header">
+                            <div>
+                                <h6>Messages</h6>
+                                <span>5 unread</span>
+                            </div>
+                            <a href="apps-chat.html">Open chat</a>
+                        </div>
+                        <div class="message-channels">
+                            <a href="apps-chat.html" class="message-channel active">Direct</a>
+                            <a href="apps-chat.html" class="message-channel">Team</a>
+                            <a href="apps-chat.html" class="message-channel">Clients</a>
+                        </div>
+                        <div class="notification-list">
+                            <a href="apps-chat.html" class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <img src="../MemberView/assets/img/avatars/avatar-2.webp" alt="" class="notification-avatar">
+                                <div class="notification-content">
+                                    <div class="notification-title">Mia Rodriguez</div>
+                                    <div class="notification-text">Can you review the analytics wireframe today?</div>
+                                    <span class="notification-time">2m ago</span>
+                                </div>
+                            </a>
+                            <a href="apps-chat.html" class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <img src="../MemberView/assets/img/avatars/avatar-3.webp" alt="" class="notification-avatar">
+                                <div class="notification-content">
+                                    <div class="notification-title">Dev Channel</div>
+                                    <div class="notification-text">Build passed. Ready for production deploy.</div>
+                                    <span class="notification-time">12m ago</span>
+                                </div>
+                            </a>
+                            <a href="apps-chat.html" class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <img src="../MemberView/assets/img/avatars/avatar-4.webp" alt="" class="notification-avatar">
+                                <div class="notification-content">
+                                    <div class="notification-title">Sarah Kim</div>
+                                    <div class="notification-text">Shared file: Q1-forecast-report.pdf</div>
+                                    <span class="notification-time">35m ago</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="notification-footer">
+                            <a href="apps-chat.html">View all messages <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="header-action theme-toggle" title="Toggle Theme">
+                    <i class="ph-light ph-moon-stars theme-icon-dark"></i>
+                    <i class="ph-light ph-sun theme-icon-light"></i>
+                </button>
+
+                <div class="header-action-wrap dropdown user-dropdown">
+                    <button class="dropdown-toggle user-trigger" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../MemberView/assets/img/profile-img.webp" alt="User" class="user-avatar">
+                        <div class="user-brief">
+                            <span class="user-name">John Doe</span>
+                            <span class="user-role">Product Admin</span>
+                        </div>
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-end user-menu">
+                        <div class="user-menu-header">
+                            <img src="../MemberView/assets/img/profile-img.webp" alt="User" class="user-menu-avatar">
+                            <div class="user-menu-info">
+                                <div class="user-menu-name">John Doe</div>
+                                <div class="user-menu-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b8d2d7d0d696dcd7ddf8ddc0d9d5c8d4dd96dbd7d5">[email&#160;protected]</a></div>
+                            </div>
+                        </div>
+                        <div class="user-menu-body">
+                            <a class="user-menu-item" href="profile.html">
+                                <i class="bi bi-person"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a class="user-menu-item" href="settings.html">
+                                <i class="bi bi-sliders"></i>
+                                <span>Preferences</span>
+                            </a>
+                            <a class="user-menu-item" href="activity.html">
+                                <i class="bi bi-activity"></i>
+                                <span>Activity Log</span>
+                            </a>
+                            <a class="user-menu-item" href="invoice-list.html">
+                                <i class="bi bi-credit-card"></i>
+                                <span>Billing</span>
+                            </a>
+                        </div>
+                        <div class="user-menu-footer">
+                            <a class="user-menu-logout" href="auth-login.html">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Sign Out</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-actions-mobile">
+                <button class="header-action search-toggle" title="Search">
+                    <i class="bi bi-search"></i>
+                </button>
+
+                <button class="header-action mobile-menu-toggle" title="More">
+                    <i class="bi bi-three-dots"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-search">
+        <form class="search-form" action="search-results.html" method="GET">
+            <input type="search" name="q" placeholder="Search..." autocomplete="off">
+            <button type="submit"><i class="bi bi-search"></i></button>
+        </form>
+    </div>
+
+    <div class="mobile-header-menu">
+        <div class="mobile-header-menu-content">
+            <button class="mobile-menu-item theme-toggle" title="Toggle Theme">
+                <i class="ph-light ph-moon-stars theme-icon-dark"></i>
+                <i class="ph-light ph-sun theme-icon-light"></i>
+                <span class="mobile-menu-label">Theme</span>
+            </button>
+
+            <a href="notifications.html" class="mobile-menu-item">
+                <i class="bi bi-bell"></i>
+                <span class="badge">4</span>
+                <span class="mobile-menu-label">Alerts</span>
+            </a>
+
+            <a href="apps-chat.html" class="mobile-menu-item">
+                <i class="bi bi-chat-left-text"></i>
+                <span class="mobile-menu-label">Messages</span>
+            </a>
+
+            <a href="apps-calendar.html" class="mobile-menu-item">
+                <i class="bi bi-calendar3"></i>
+                <span class="mobile-menu-label">Calendar</span>
+            </a>
+
+            <a href="profile.html" class="mobile-menu-item">
+                <i class="bi bi-person"></i>
+                <span class="mobile-menu-label">Profile</span>
+            </a>
+
+            <a href="settings.html" class="mobile-menu-item">
+                <i class="bi bi-sliders"></i>
+                <span class="mobile-menu-label">Settings</span>
+            </a>
+
+            <a href="auth-login.html" class="mobile-menu-item mobile-menu-item-danger">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="mobile-menu-label">Sign Out</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+  @* width:90px !important; *@  
+
+  
+<!-- AskPearls Agent Sidebar -->
+<!-- ==========================================
+     AskPearls Merchant Portal - Left Sidebar
+     ========================================== -->
+<aside id="askPearlsSidebar" class="sidebar ap-sidebar"  style="margin-bottom:50px;-ms-overflow-style: none;scrollbar-width: none;">
+
+    <!-- Scrollable sidebar content -->
+    <div class="ap-sidebar-scroll">
+
+        <!-- Sidebar heading -->
+        <div class="ap-sidebar-heading">
+            ASKPEARLS AGENTS
+        </div>
+
+        <!-- Agent accordion -->
+        <div class="accordion ap-agent-accordion"
+             id="askPearlsAgentAccordion">
+
+            <!-- ==================================
+                 ACTIVE AGENT: DecisionOS
+                 ================================== -->
+            <div class="accordion-item ap-agent-item ap-agent-active">
+
+                <h2 class="accordion-header" id="headingDecisionOS">
+                    <button class="accordion-button ap-agent-header"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseDecisionOS"
+                            aria-expanded="true"
+                            aria-controls="collapseDecisionOS">
+
+                        <span class="ap-agent-icon">
+                            <i class="bi bi-diagram-3"></i>
+                        </span>
+
+                        <span class="ap-agent-info">
+                            <span class="ap-agent-title-row">
+                                <span class="ap-agent-title">DecisionOS</span>
+                                <span class="ap-status ap-status-active">
+                                    ACTIVE
+                                </span>
+                            </span>
+
+                            <span class="ap-agent-description">
+                                Guided decisions &amp; recommendations
+                            </span>
+                        </span>
+
+                    </button>
+                </h2>
+
+                <div id="collapseDecisionOS"
+                     class="accordion-collapse collapse show"
+                     aria-labelledby="headingDecisionOS"
+                     data-bs-parent="#askPearlsAgentAccordion">
+
+                    <div class="accordion-body ap-agent-body">
+
+                        <nav class="ap-agent-navigation"
+                             aria-label="DecisionOS navigation">
+
+                            <a href="/dashboard"
+                               class="ap-nav-link active"
+                               data-page="dashboard">
+                                <i class="bi bi-house-door"></i>
+                                <span>Dashboard</span>
+                            </a>
+
+                            <a href="#"
+                               class="ap-nav-link"
+                               data-page="widgets">
+                                <i class="bi bi-grid"></i>
+                                <span>My Widgets</span>
+                            </a>
+
+                            <a href="#"
+                               class="ap-nav-link"
+                               data-page="questions">
+                                <i class="bi bi-ui-checks"></i>
+                                <span>Questions &amp; Answers</span>
+                            </a>
+
+                            <a href="#"
+                               class="ap-nav-link"
+                               data-page="recommendations">
+                                <i class="bi bi-box-seam"></i>
+                                <span>Recommendation Items</span>
+                            </a>
+
+                            <a href="#"
+                               class="ap-nav-link"
+                               data-page="decision-rules">
+                                <i class="bi bi-sliders"></i>
+                                <span>Decision Rules</span>
+                            </a>
+
+                            <a href="#"
+                               class="ap-nav-link"
+                               data-page="design">
+                                <i class="bi bi-palette"></i>
+                                <span>Design &amp; Customize</span>
+                            </a>
+
+                            <a href="#"
+                               class="ap-nav-link"
+                               data-page="publish">
+                                <i class="bi bi-code-slash"></i>
+                                <span>Publish &amp; Embed</span>
+                            </a>
+
+                            <a href="#"
+                               class="ap-nav-link"
+                               data-page="analytics">
+                                <i class="bi bi-graph-up-arrow"></i>
+                                <span>Analytics</span>
+                            </a>
+
+                        </nav>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================================
+                 FUTURE AGENT: EngageOS
+                 ================================== -->
+            <div class="accordion-item ap-agent-item ap-agent-disabled">
+
+                <h2 class="accordion-header" id="headingEngageOS">
+                    <button class="accordion-button collapsed ap-agent-header"
+                            type="button"
+                            disabled
+                            aria-disabled="true">
+
+                        <span class="ap-agent-icon">
+                            <i class="bi bi-chat-dots"></i>
+                        </span>
+
+                        <span class="ap-agent-info">
+                            <span class="ap-agent-title-row">
+                                <span class="ap-agent-title">EngageOS</span>
+                                <span class="ap-status ap-status-soon">
+                                    COMING SOON
+                                </span>
+                            </span>
+
+                            <span class="ap-agent-description">
+                                Customer conversations
+                            </span>
+                        </span>
+
+                    </button>
+                </h2>
+
+            </div>
+
+            <!-- ==================================
+                 FUTURE AGENT: LeadLens
+                 ================================== -->
+            <div class="accordion-item ap-agent-item ap-agent-disabled">
+
+                <h2 class="accordion-header" id="headingLeadLens">
+                    <button class="accordion-button collapsed ap-agent-header"
+                            type="button"
+                            disabled
+                            aria-disabled="true">
+
+                        <span class="ap-agent-icon">
+                            <i class="bi bi-people"></i>
+                        </span>
+
+                        <span class="ap-agent-info">
+                            <span class="ap-agent-title-row">
+                                <span class="ap-agent-title">LeadLens</span>
+                                <span class="ap-status ap-status-soon">
+                                    COMING SOON
+                                </span>
+                            </span>
+
+                            <span class="ap-agent-description">
+                                Lead capture &amp; qualification
+                            </span>
+                        </span>
+
+                    </button>
+                </h2>
+
+            </div>
+
+            <!-- ==================================
+                 FUTURE AGENT: AutomateOS
+                 ================================== -->
+            <div class="accordion-item ap-agent-item ap-agent-disabled">
+
+                <h2 class="accordion-header" id="headingAutomateOS">
+                    <button class="accordion-button collapsed ap-agent-header"
+                            type="button"
+                            disabled
+                            aria-disabled="true">
+
+                        <span class="ap-agent-icon">
+                            <i class="bi bi-gear-wide-connected"></i>
+                        </span>
+
+                        <span class="ap-agent-info">
+                            <span class="ap-agent-title-row">
+                                <span class="ap-agent-title">AutomateOS</span>
+                                <span class="ap-status ap-status-soon">
+                                    COMING SOON
+                                </span>
+                            </span>
+
+                            <span class="ap-agent-description">
+                                Business workflow automation
+                            </span>
+                        </span>
+
+                    </button>
+                </h2>
+
+            </div>
+
+            <!-- ==================================
+                 FUTURE AGENT: InsightOS
+                 ================================== -->
+            <div class="accordion-item ap-agent-item ap-agent-disabled">
+
+                <h2 class="accordion-header" id="headingInsightOS">
+                    <button class="accordion-button collapsed ap-agent-header"
+                            type="button"
+                            disabled
+                            aria-disabled="true">
+
+                        <span class="ap-agent-icon">
+                            <i class="bi bi-bar-chart-line"></i>
+                        </span>
+
+                        <span class="ap-agent-info">
+                            <span class="ap-agent-title-row">
+                                <span class="ap-agent-title">InsightOS</span>
+                                <span class="ap-status ap-status-soon">
+                                    COMING SOON
+                                </span>
+                            </span>
+
+                            <span class="ap-agent-description">
+                                Business intelligence &amp; analytics
+                            </span>
+                        </span>
+
+                    </button>
+                </h2>
+
+            </div>
+
+            <!-- ==================================
+                 FUTURE AGENT: ConvertOS
+                 ================================== -->
+            <div class="accordion-item ap-agent-item ap-agent-disabled">
+
+                <h2 class="accordion-header" id="headingConvertOS">
+                    <button class="accordion-button collapsed ap-agent-header"
+                            type="button"
+                            disabled
+                            aria-disabled="true">
+
+                        <span class="ap-agent-icon">
+                            <i class="bi bi-bullseye"></i>
+                        </span>
+
+                        <span class="ap-agent-info">
+                            <span class="ap-agent-title-row">
+                                <span class="ap-agent-title">ConvertOS</span>
+                                <span class="ap-status ap-status-soon">
+                                    COMING SOON
+                                </span>
+                            </span>
+
+                            <span class="ap-agent-description">
+                                Conversion optimization
+                            </span>
+                        </span>
+
+                    </button>
+                </h2>
+
+            </div>
+
+        </div>
+        <!-- End agent accordion -->
+
+        <!-- Account settings -->
+        <div class="ap-sidebar-bottom">
+
+            <a href="#"
+               class="ap-settings-link"
+               data-page="account-settings">
+
+                <i class="bi bi-gear"></i>
+
+                <span>Account &amp; Settings</span>
+
+                <i class="bi bi-chevron-right ap-settings-arrow"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+    <!-- End scrollable sidebar content -->
+
+
+    <!-- Fixed bottom attribution -->
+    <div class="ap-sidebar-footer">
+
+        Developed by
+
+        <a href="https://oneworldlancer.com"
+           target="_blank"
+           rel="noopener noreferrer">
+            OneWorldLancer
+        </a>
+
+    </div>
+
+</aside>
+<!-- End AskPearls Merchant Portal sidebar -->
+
+<div id="apSidebarBackdrop"
+     class="ap-sidebar-backdrop"
+     aria-hidden="true"></div>  
+
+<!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay"></div>
+
+    <!-- Main Content -->
+    <div class="d-flex flex-column vh-100">
+
+<!-- AskPearls DecisionOS Dashboard -->
+<main class="main vh-100">
+    <div class="main-content page-dashboard container-fluid py-4">
+
+        <!-- Page Header -->
+        <section class="d-flex flex-wrap justify-content-between
+                        align-items-center gap-3 mb-4">
+            <div>
+                <h1 class="h3 fw-bold mb-1">
+                    Welcome to AskPearls DecisionOS
+                </h1>
+                <p class="text-muted mb-0">
+                    Build intelligent product recommendation experiences
+                    for your website visitors.
+                </p>
+            </div>
+
+            <a asp-controller="Widget"
+               asp-action="Create"
+               class="btn btn-success">
+                <i class="bi bi-plus-lg me-2"></i>
+                Create New Widget
+            </a>
+        </section>
+
+        <!-- Getting Started -->
+        <section class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-8">
+                        <span class="badge bg-success-subtle text-success mb-3">
+                            GET STARTED
+                        </span>
+
+                        <h2 class="h4 fw-bold">
+                            Turn website visitors into confident buyers
+                        </h2>
+
+                        <p class="text-muted mb-3">
+                            Create a guided decision widget, define your
+                            questions and recommendations, and publish it
+                            on your website.
+                        </p>
+
+                        <a asp-controller="Widget"
+                           asp-action="Create"
+                           class="btn btn-success">
+                            Create your first widget
+                            <i class="bi bi-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-4 text-center">
+                        <i class="bi bi-diagram-3 text-success"
+                           style="font-size: 5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Widget Overview -->
+        <section class="row g-3 mb-4">
+
+            <div class="col-12 col-md-6 col-xl-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between
+                                    align-items-start">
+                            <div>
+                                <p class="text-muted mb-2">
+                                    My Widgets
+                                </p>
+                                <h3 class="h4 fw-bold mb-1">—</h3>
+                                <small class="text-muted">
+                                    Widget inventory
+                                </small>
+                            </div>
+                            <i class="bi bi-grid text-success fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between
+                                    align-items-start">
+                            <div>
+                                <p class="text-muted mb-2">
+                                    Published
+                                </p>
+                                <h3 class="h4 fw-bold mb-1">—</h3>
+                                <small class="text-muted">
+                                    Live on websites
+                                </small>
+                            </div>
+                            <i class="bi bi-globe text-success fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between
+                                    align-items-start">
+                            <div>
+                                <p class="text-muted mb-2">
+                                    Drafts
+                                </p>
+                                <h3 class="h4 fw-bold mb-1">—</h3>
+                                <small class="text-muted">
+                                    In progress
+                                </small>
+                            </div>
+                            <i class="bi bi-pencil-square text-success fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between
+                                    align-items-start">
+                            <div>
+                                <p class="text-muted mb-2">
+                                    Visitor Interactions
+                                </p>
+                                <h3 class="h4 fw-bold mb-1">—</h3>
+                                <small class="text-muted">
+                                    Analytics
+                                </small>
+                            </div>
+                            <i class="bi bi-graph-up-arrow text-success fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Builder Workflow -->
+        <section class="card border-0 shadow-sm mb-4">
+            <div class="card-header border-0 pt-4 px-4">
+                <h2 class="h5 fw-bold mb-1">
+                    Your Widget Builder
+                </h2>
+                <p class="text-muted small mb-0">
+                    Everything you need to build and publish a decision experience.
+                </p>
+            </div>
+
+            <div class="card-body p-4">
+                <div class="row g-3">
+
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="border rounded-3 p-3 h-100">
+                            <i class="bi bi-window text-success fs-3"></i>
+                            <h3 class="h6 fw-bold mt-3">
+                                1. Create a Widget
+                            </h3>
+                            <p class="text-muted small">
+                                Name your widget and select the website
+                                where it will appear.
+                            </p>
+                            <a asp-controller="Widget"
+                               asp-action="Create"
+                               class="btn btn-outline-success btn-sm">
+                                Get started
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="border rounded-3 p-3 h-100">
+                            <i class="bi bi-ui-checks text-success fs-3"></i>
+                            <h3 class="h6 fw-bold mt-3">
+                                2. Questions & Answers
+                            </h3>
+                            <p class="text-muted small">
+                                Create the questions that guide visitors
+                                toward suitable recommendations.
+                            </p>
+                            <span class="badge text-bg-light">
+                                Configure after creation
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="border rounded-3 p-3 h-100">
+                            <i class="bi bi-box-seam text-success fs-3"></i>
+                            <h3 class="h6 fw-bold mt-3">
+                                3. Recommendation Items
+                            </h3>
+                            <p class="text-muted small">
+                                Add the products or services your widget
+                                can recommend.
+                            </p>
+                            <span class="badge text-bg-light">
+                                Configure after creation
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="border rounded-3 p-3 h-100">
+                            <i class="bi bi-sliders text-success fs-3"></i>
+                            <h3 class="h6 fw-bold mt-3">
+                                4. Decision Rules
+                            </h3>
+                            <p class="text-muted small">
+                                Allocate relevance scores to match answers
+                                with your recommendation items.
+                            </p>
+                            <span class="badge text-bg-light">
+                                Configure after creation
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="border rounded-3 p-3 h-100">
+                            <i class="bi bi-palette text-success fs-3"></i>
+                            <h3 class="h6 fw-bold mt-3">
+                                5. Design & Preview
+                            </h3>
+                            <p class="text-muted small">
+                                Customize the widget and preview
+                                the visitor experience.
+                            </p>
+                            <span class="badge text-bg-light">
+                                Configure after creation
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="border rounded-3 p-3 h-100">
+                            <i class="bi bi-code-slash text-success fs-3"></i>
+                            <h3 class="h6 fw-bold mt-3">
+                                6. Publish & Embed
+                            </h3>
+                            <p class="text-muted small">
+                                Publish a configured widget and install
+                                its embed code on your website.
+                            </p>
+                            <span class="badge text-bg-light">
+                                Configure after creation
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Widgets -->
+        <section class="card border-0 shadow-sm">
+            <div class="card-header border-0 pt-4 px-4
+                        d-flex flex-wrap justify-content-between
+                        align-items-center gap-2">
+                <div>
+                    <h2 class="h5 fw-bold mb-1">Recent Widgets</h2>
+                    <p class="text-muted small mb-0">
+                        Your recently created decision experiences.
+                    </p>
+                </div>
+
+                <a asp-controller="Widget"
+                   asp-action="Index"
+                   class="btn btn-outline-success btn-sm">
+                    View All Widgets
+                </a>
+            </div>
+
+            <div class="card-body px-4 pb-4">
+                <div class="text-center py-4">
+                    <i class="bi bi-window-stack text-muted"
+                       style="font-size: 2.5rem;"></i>
+
+                    <h3 class="h6 fw-bold mt-3">
+                        Your widget list will appear here
+                    </h3>
+
+                    <p class="text-muted small mb-3">
+                        Create your first widget to begin building
+                        your DecisionOS experience.
+                    </p>
+
+                    <a asp-controller="Widget"
+                       asp-action="Create"
+                       class="btn btn-success btn-sm">
+                        <i class="bi bi-plus-lg me-1"></i>
+                        Create New Widget
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+        @* background-color:#152365; *@
+    <footer id="footer" class="footer text-center mt-auto" style="padding:5px;height:50px;
+            font-size:small;">
+          
+            @{
+                var _iYear = DateTime.Now.Year;
+            }
+
+       
+            @* class="d-block d-lg-none" *@
+    <div >
+
+        <div class="row">
+
+            <div class="d-none col-3" style="padding-left:10px;padding-top:15px;padding-right:10px;">
+
+                <div class="flex-row">
+                    <img src="~/app_img/img_x2.png" style="width:20px;height:20px;margin:5px;" />
+                    <span>
+                        For further information please <a href="https://AskPearls.com" target="_blank" style="text-decoration:underline;">click here</a> to visit our website.
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="col-12 text-center" style="padding-top:0px;">
+                <div>
+                            @* color:white; style="color:white;"*@
+                    <strong><span ><a href="https://AskPearls.com" target="_blank" style="text-decoration:underline;">AskPearls Limited</a></span></strong>
+                </div>
+                @* class="copyright" *@
+                <div>
+
+                    @* style="color:white;" *@   <span>
+                    Patent Pending. &copy; Copyright @{
+
+                    @_iYear.ToString()
+                    ;
+
+                }
+                . All Rights reserved.
+            </span>
+        </div>
+
+        @* class="copyright" *@
+        @*   <div>
+                    <span style="color:white;">&copy; Copyright @{DateTime.Now.Year.ToString(); }. All Rights reserved.</span>
+                </div> *@
+
+        @* class="credits" *@
+                @* style="color:whitesmoke;" color:white; href="mailto:HelpDesk@oneworldlancer.com" *@    
+                <div class="d-none">
+          <small>Developed by <strong>ᚠᚷᛃ 35833</strong> | </small><a href="https://oneworldlancer.com" target="_blank" style="text-decoration:underline;font-weight:bold;">OneWorldLancer</a>
+        </div>
+    </div>
+
+    
+    <div class="d-none col-3" style="padding-left:10px;padding-top:15px;padding-right:10px;">
+
+        <div class="flex-row">
+            <img src="~/app_img/img_x1.png" style="width:20px;height:20px;margin:5px;" />
+            <span>4289 Express Lane - Suite EG6026, Sarasota, FL 34249, United States.</span>
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
+        </footer>
+    </div>
+
+
+
+
+
+
+        <!-- Button trigger modal -->
+@* <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button> *@
+
+<!-- Modals -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+@*       <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div> *@
+     <div class="modal-header m-0 p-0" style="width: 100%;">
+          
+     </div>  
+           
+     <div class="modal-body m-0 p-0 g-0" style="width: 100%;height: 100%;overflow: hidden;">
+        @* container-fluid class="vh-100 vw-100 g-0" *@
+       
+        <div  style="width: 100%;height: 100%;">
+ 
+
+         <div class="d-flex flex-row chat-layout g-0 m-0 p-0" style="width: 100%;height: 100%;overflow: hidden;background-color:blue;">
+
+            <!-- Conversation List -->
+     
+  <!-- Mobile Sidebar Overlay -->
+      @*   <div class="chat-sidebar-overlay" id="chatSidebarOverlay"></div> *@
+@* style="" *@
+        <!-- Chat Sidebar -->
+        <div class="chat-sidebarx flex-column"  >
+        @* width:100px; *@
+          <div id="div_Chat_MenuList"  class="flex-column" style="height:100%;background-color:yellow;">
+   
+              <div class="mb-1"  style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_logo_transparent.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;"/>
+   </div>
+           </div>
+          
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_search.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_filter.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+ 
+  <!-- Trigger Button -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bottomModal">
+  Filter-Modal
+</button>
+
+
+</div>
+           </div>
+          
+           
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_filter.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+           
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_filter.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+           
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_filter.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+           
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_filter.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+           
+     <div class="mb-1"   style="height:45px;">
+              <div >
+     <img src="~/app_img/img_chat_filter.png" 
+style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;"/>
+   </div>
+           </div>
+          
+           
+           </div>
+       
+
+
+
+
+
+  <!-- Mobile Close Button -->
+         @*  <button class="chat-sidebar-close" id="chatSidebarClose" aria-label="Close sidebar">
+            <i class="bi bi-x-lg"></i>
+          </button> *@
+      
+  
+
+</div>
+         
+@* class="d-none" *@
+<div id="div_Chat_WidgetList"  style="background-color:red;">
+   @* class="d-none" *@ 
+   
+   <div  style="height:165px;background-color:green;">
+          <div class="chat-sidebar-header">
+         @* justify-content-between *@     <div class="flex-row  m-0 p-0">
+            <h2 class="chat-sidebar-title">Messages</h2>
+        @* class="float-end" *@   
+       @*  <button id="btn_Close_WidgetList"  type="button" aria-label="Close sidebar">
+               close me
+            </button> *@
+          </div>
+          
+          <div class="chat-search">
+              <i class="bi bi-search chat-search-icon"></i>
+              <input type="text" class="form-control" placeholder="Search conversations...">
+            </div>
+          </div>
+
+          <div class="chat-tabs">
+            <button class="chat-tab active">All</button>
+            <button class="chat-tab">Unread <span class="badge bg-primary">3</span></button>
+            <button class="chat-tab">Groups</button>
+          </div>
+</div>
+
+@*  overscroll-behavior: contain; background-color:red;*@
+          <div id="div_Chat_UserList" class="chat-listX" style="height:550px;overflow-y:auto !important;">
+          
+              <!-- Chat Item 1 - Active -->
+            <div class="chat-item active" data-chat="1">
+              <div class="chat-item-avatar">
+                <img src="../memberview/assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
+                <span class="chat-item-status online"></span>
+              </div>
+              <div class="chat-item-content">
+                <div class="chat-item-header">
+                  <span class="chat-item-name">Sarah Wilson</span>
+                  <span class="chat-item-time">2m ago</span>
+                </div>
+                <div class="chat-item-message">
+                  <span class="chat-item-message-text">Sure, I'll send the files right away!</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Item 2 -->
+            <div class="chat-item" data-chat="2">
+              <div class="chat-item-avatar">
+                <img src="../memberview/assets/img/avatars/avatar-2.webp" alt="Mike Johnson">
+                <span class="chat-item-status away"></span>
+              </div>
+              <div class="chat-item-content">
+                <div class="chat-item-header">
+                  <span class="chat-item-name">Mike Johnson</span>
+                  <span class="chat-item-time">15m ago</span>
+                </div>
+                <div class="chat-item-message">
+                  <span class="chat-item-message-text">The meeting has been rescheduled to 3 PM</span>
+                  <span class="chat-item-unread">2</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Item 3 -->
+            <div class="chat-item" data-chat="3">
+              <div class="chat-item-avatar">
+                <img src="../memberview/assets/img/avatars/avatar-3.webp" alt="Emily Davis">
+                <span class="chat-item-status online"></span>
+              </div>
+              <div class="chat-item-content">
+                <div class="chat-item-header">
+                  <span class="chat-item-name">Emily Davis</span>
+                  <span class="chat-item-time">1h ago</span>
+                </div>
+                <div class="chat-item-message">
+                  <span class="chat-item-message-text">Did you see the latest design updates?</span>
+                  <span class="chat-item-unread">1</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Item 4 -->
+            <div class="chat-item" data-chat="4">
+              <div class="chat-item-avatar">
+                <img src="../memberview/assets/img/avatars/avatar-4.webp" alt="Design Team">
+                <span class="chat-item-status online"></span>
+              </div>
+              <div class="chat-item-content">
+                <div class="chat-item-header">
+                  <span class="chat-item-name">Design Team</span>
+                  <span class="chat-item-time">2h ago</span>
+                </div>
+                <div class="chat-item-message">
+                  <span class="chat-item-message-text">Alex: Great work on the mockups everyone!</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Item 5 -->
+            <div class="chat-item" data-chat="5">
+              <div class="chat-item-avatar">
+                <img src="../memberview/assets/img/avatars/avatar-5.webp" alt="David Brown">
+                <span class="chat-item-status offline"></span>
+              </div>
+              <div class="chat-item-content">
+                <div class="chat-item-header">
+                  <span class="chat-item-name">David Brown</span>
+                  <span class="chat-item-time">Yesterday</span>
+                </div>
+                <div class="chat-item-message">
+                  <span class="chat-item-message-text">Thanks for your help with the project!</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Item 6 -->
+            <div class="chat-item" data-chat="6">
+              <div class="chat-item-avatar">
+                <img src="../memberview/assets/img/avatars/avatar-6.webp" alt="Lisa Anderson">
+                <span class="chat-item-status busy"></span>
+              </div>
+              <div class="chat-item-content">
+                <div class="chat-item-header">
+                  <span class="chat-item-name">Lisa Anderson</span>
+                  <span class="chat-item-time">Yesterday</span>
+                </div>
+                <div class="chat-item-message">
+                  <span class="chat-item-message-text">I'll review the document and get back to you</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Item 7 -->
+            <div class="chat-item" data-chat="7">
+              <div class="chat-item-avatar">
+                <img src="../memberview/assets/img/avatars/avatar-7.webp" alt="Product Team">
+                <span class="chat-item-status online"></span>
+              </div>
+              <div class="chat-item-content">
+                <div class="chat-item-header">
+                  <span class="chat-item-name">Product Team</span>
+                  <span class="chat-item-time">2 days ago</span>
+                </div>
+                <div class="chat-item-message">
+                  <span class="chat-item-message-text">Sprint planning starts at 10 AM tomorrow</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Item 8 -->
+            <div class="chat-item" data-chat="8">
+              <div class="chat-item-avatar">
+                <img src="../memberview/assets/img/avatars/avatar-8.webp" alt="James Wilson">
+                <span class="chat-item-status offline"></span>
+              </div>
+              <div class="chat-item-content">
+                <div class="chat-item-header">
+                  <span class="chat-item-name">James Wilson</span>
+                  <span class="chat-item-time">3 days ago</span>
+                </div>
+                <div class="chat-item-message">
+                  <span class="chat-item-message-text">Let me know when you're free for a call</span>
+                </div>
+              </div>
+            </div>
+          </div>
+     
+   
+            </div>
+            
+            
+            <!-- Chat -->
+     @* style="background-color:orange;" *@     
+     <div  id="div_Chat_MessageList"  class="chat-column" style="width:100%;">
+
+              @*   <header class="chat-header">
+                    chat-header
+                </header> *@
+
+                  <div class="chat-header">
+            <!-- Mobile Sidebar Toggle -->
+            <button class="chat-sidebar-toggle" id="chatSidebarToggle" aria-label="Open conversations">
+              <i class="bi bi-chat-left-text"></i>
+            </button>
+
+            <div class="chat-header-user">
+              <div class="chat-header-avatar">
+                <img src="~/MemberView/assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
+              </div>
+              <div class="chat-header-info">
+                <h5>Sarah Wilson</h5>
+                <span><i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i> Online</span>
+              </div>
+            </div>
+            <div class="chat-header-actions">
+              <button class="chat-header-btn" title="Voice Call">
+                <i class="bi bi-telephone"></i>
+              </button>
+              <button class="chat-header-btn" title="Video Call">
+                <i class="bi bi-camera-video"></i>
+              </button>
+              <button class="chat-header-btn" title="User Info" id="toggleInfoBtn">
+                <i class="bi bi-info-circle"></i>
+              </button>
+              <div class="dropdown">
+                <button class="chat-header-btn" data-bs-toggle="dropdown" data-bs-strategy="fixed">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="#"><i class="bi bi-search me-2"></i> Search Messages</a></li>
+                  <li><a class="dropdown-item" href="#"><i class="bi bi-bell-slash me-2"></i> Mute Notifications</a></li>
+                  <li><a class="dropdown-item" href="#"><i class="bi bi-pin me-2"></i> Pin Conversation</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item" href="#"><i class="bi bi-archive me-2"></i> Archive Chat</a></li>
+                  <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i> Delete Chat</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+                <section class="chat-body" style="-ms-overflow-style: none;scrollbar-width: none;">
+                                                                                                                 <div class="conversation-item">
+
+                                                                                                                                        <div class="avatar">
+                                                                                                                                        </div>
+
+                                                                                                                                        <div class="conversation-info">
+                                                                                                                                        </div>
+
+                                                                                                                                        <div class="conversation-meta">
+                                                                                                                                        </div>
+
+                                                                                                                                    </div>
+
+                    
+                    
+                    
+                    
+                    
+                    
+                    chat-body
+                     <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+                      <br/>  chat-body
+              
+                  END MESSAGES
+                  </section>
+
+                <footer class="chat-footer p-0 m-0 g-0">
+                      <!-- Chat Input -->
+          <div class="chat-input p-0 m-0 g-0">
+            <div class="chat-input-wrapper">
+              <div class="chat-input-actions">
+                <button class="chat-input-btn" title="Attach File">
+                  <i class="bi bi-paperclip"></i>
+                </button>
+                <button class="chat-input-btn" title="Send Image">
+                  <i class="bi bi-image"></i>
+                </button>
+              </div>
+              <div class="chat-input-field">
+                <textarea id="messageInput" rows="1" placeholder="Type a message..."></textarea>
+              </div>
+              <div class="chat-input-actions">
+                <button class="chat-input-btn" title="Emoji">
+                  <i class="bi bi-emoji-smile"></i>
+                </button>
+              </div>
+              <button class="chat-send-btn" id="sendBtn" title="Send Message">
+                <i class="bi bi-send"></i>
+              </button>
+            </div>
+          </div>
+      
+                </footer>
+
+            </div>
+            <!--<main class="col chat-column">
+                ...
+            </main>-->
+            <!-- Customer -->
+        @* col-auto  d-none d-lg-block *@  
+        <div id="div_Chat_UserInfoContainer"  class="customer-column" style="background-color:lime;">
+        <div id="div_Chat_UserInfoList"   style="background-color:red;height:690px;overflow-y:auto;">
+                
+    
+           
+           </div>
+           </div>
+
+        </div>
+
+
+        </div>
+       
+     
+
+
+
+
+@*         <div  class="h-100 w-100 g-0"  style="width: 100%;background-color:red;">
+
+
+    </div> *@
+
+   
+      </div>
+      <div class="modal-footer m-0 p-0 g-0" style="background-color:lightgray;">
+          <span class="form-text mx-auto middleCenter" style="margin:10px;font-size:small;text-align:center;">Chat Widget - AskPearls Limited</span>
+     @*    FOOTER *@
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal Container with custom 'modal-bottom' class -->
+<style>
+    /* Position the modal container at the very bottom */
+.modal-bottom .modal-dialog {
+  position: fixed;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Set the initial hidden position below the viewport */
+.modal-bottom.fade .modal-dialog {
+  transform: translate3d(0, 100%, 0);
+  transition: transform 0.3s ease-out;
+}
+
+/* Slide it up to its final position when active */
+.modal-bottom.show .modal-dialog {
+  transform: translate3d(0, 0, 0);
+}
+
+/* Round only the top corners of the modal sheet */
+.modal-bottom .modal-content {
+  border-radius: 1rem 1rem 0 0;
+  border: none;
+}
+
+
+
+</style>
+
+<div class="modal fade modal-bottom" id="bottomModal" data-bs-backdrop="static" tabindex="10000" aria-labelledby="bottomModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bottomModalLabel">Bottom Sheet Modal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>This modal slides gracefully from the bottom of the screen.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Back to Top -->
+    @* <a href="#" class="back-to-top">
+        <i class="bi bi-arrow-up"></i>
+    </a> *@
+
+    <!-- Vendor JS Files -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="MemberView/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="MemberView/vendors/apexcharts/apexcharts.min.js"></script>
+    <script src="MemberView/vendors/chart.js/chart.umd.js"></script>
+    <script src="MemberView/vendors/echarts/echarts.min.js"></script>
+    <script src="MemberView/vendors/simple-datatables/simple-datatables.js"></script>
+    <script src="MemberView/vendors/quill/quill.js"></script>
+    <script src="MemberView/vendors/tinymce/tinymce.min.js"></script>
+    <script src="MemberView/vendors/choices.js/choices.min.js"></script>
+    <script src="MemberView/vendors/flatpickr/flatpickr.min.js"></script>
+    <script src="MemberView/vendors/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS Files -->
+    <script src="MemberView/assets/js/theme.js"></script>
+    <script src="MemberView/assets/js/main.js"></script>
+
+    <!-- App Sidebar Toggle (for app pages with sidebars) -->
+    <script src="MemberView/assets/js/apps-sidebar-toggle.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        
+        });
+    </script>
+</body>
+
+</html>

@@ -1,7 +1,34 @@
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// HTTP client for communicating with the AskPearls API.
+builder.Services.AddHttpClient();
+
+
+// 1. MVC
+builder.Services.AddControllersWithViews();
+
+//////////// 2. Database
+//////////builder.Services.AddDbContext<DBContextModel>(options =>
+//////////    options.UseSqlServer(
+//////////        builder.Configuration.GetConnectionString("ASKPEARLSDB")));
+
+// 3. Session support for iOwnerModel
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.Name = ".AskPearls.Portal.Session";
+});
+
 
 var app = builder.Build();
 
@@ -15,6 +42,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+
+// Session must be available before controllers and ViewComponents use it.
+app.UseSession();
+
 
 app.UseAuthorization();
 

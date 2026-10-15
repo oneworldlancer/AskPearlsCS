@@ -1,0 +1,209 @@
+﻿  <style>
+
+
+    /* Widget Inventory toolbar */
+    .widget-inventory-toolbar {
+        display: grid;
+        grid-template-columns: minmax(240px, 1fr) minmax(180px, 240px) minmax(145px, 180px);
+        align-items: center;
+        gap: 16px;
+        width: 100%;
+    }
+
+    .widget-inventory-intro {
+        min-width: 0;
+    }
+
+        .widget-inventory-intro h2 {
+            margin-bottom: 4px;
+        }
+
+        .widget-inventory-intro p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+    .widget-inventory-search,
+    .widget-inventory-status {
+        min-width: 0;
+        width: 100%;
+    }
+
+        .widget-inventory-search .form-control,
+        .widget-inventory-status .form-select {
+            width: 100%;
+            min-width: 0;
+            height: 42px;
+            box-sizing: border-box;
+        }
+
+    /* Tablet and smaller screens */
+    @@media (max-width: 767.98px) {
+        .widget-inventory-toolbar {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 12px;
+        }
+
+        .widget-inventory-intro {
+            grid-column: 1 / -1;
+        }
+
+            .widget-inventory-intro p {
+                white-space: normal;
+                overflow: visible;
+                text-overflow: clip;
+            }
+    }
+
+    /* Very narrow mobile screens */
+    @@media (max-width: 399.98px) {
+        .widget-inventory-toolbar {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 12px;
+        }
+
+        .widget-inventory-intro {
+            grid-column: auto;
+        }
+    }
+
+</style>
+<div class="main-content page-widgets container-fluid py-4">
+
+    <!-- Page heading -->
+    <section class="d-flex flex-wrap justify-content-between
+        align-items-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 fw-bold mb-1">My Widgets</h1>
+            <p class="text-muted mb-0">
+                Create, organize, and manage your DecisionOS widgets.
+            </p>
+        </div>
+        @* asp-controller="Widget"
+        asp-action="Create" *@
+        <a href="#"
+           data-page="widget-builder"
+           class="btn btn-success">
+            <i class="bi bi-plus-lg me-2"></i>
+            Create New Widget
+        </a>
+    </section>
+
+    <!-- Summary cards: awaiting real database integration -->
+    <section class="row g-3 mb-4">
+
+        <div class="col-12 col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between
+                        align-items-center">
+                        <div>
+                            <p class="text-muted mb-2">All Widgets</p>
+                            <h2 class="h3 fw-bold mb-0">—</h2>
+                        </div>
+                        <i class="bi bi-grid text-success fs-2"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between
+                        align-items-center">
+                        <div>
+                            <p class="text-muted mb-2">Published</p>
+                            <h2 class="h3 fw-bold mb-0">—</h2>
+                        </div>
+                        <i class="bi bi-globe text-success fs-2"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between
+                        align-items-center">
+                        <div>
+                            <p class="text-muted mb-2">Drafts</p>
+                            <h2 class="h3 fw-bold mb-0">—</h2>
+                        </div>
+                        <i class="bi bi-pencil-square text-success fs-2"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Widget inventory -->
+    <section class="card border-0 shadow-sm">
+
+ 
+        <div class="card-header bg-transparent border-0 px-4 py-4">
+            <div class="widget-inventory-toolbar">
+
+                <!-- Title and description -->
+                <div class="widget-inventory-intro">
+                    <h2 class="h5 fw-bold mb-1">Widget Inventory</h2>
+                    <p class="text-muted small mb-0">
+                        Your decision experiences will appear here.
+                    </p>
+                </div>
+
+                <!-- Search -->
+                <div class="widget-inventory-search">
+                    <input id="widgetSearch"
+                           type="search"
+                           class="form-control"
+                           placeholder="Search widgets..."
+                           aria-label="Search widgets">
+                </div>
+
+                <!-- Status -->
+                <div class="widget-inventory-status">
+                    <select id="widgetStatusFilter"
+                            class="form-select"
+                            aria-label="Filter widgets by status">
+                        <option value="all">All statuses</option>
+                        <option value="published">Published</option>
+                        <option value="draft">Draft</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="card-body px-4 pb-4">
+
+            <!-- Empty state until connected to real data -->
+            <div id="widgetEmptyState" class="text-center py-5">
+                <i class="bi bi-window-stack text-success"
+                   style="font-size: 3rem;"></i>
+
+                <h3 class="h5 fw-bold mt-3">
+                    No widgets to display yet
+                </h3>
+
+                <p class="text-muted mb-3">
+                    Create your first widget to start building
+                    a guided decision experience for your visitors.
+                </p>
+
+                <a href="#"
+                   data-page="widget-builder    "
+                   class="btn btn-success">
+                    <i class="bi bi-plus-lg me-2"></i>
+                    Create Your First Widget
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+</div>

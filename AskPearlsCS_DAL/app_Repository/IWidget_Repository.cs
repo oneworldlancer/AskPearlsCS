@@ -10,5 +10,10 @@ namespace AskPearlsCS_DAL.app_Repository
     {
         Task<Widget?> GetPublishedWidgetAsync(
             string publicKey);
+
+
+        Task<List<Widget>> GetByCompanyTokenIdAsync(
+            string companyTokenId,
+            CancellationToken cancellationToken = default);
     }
 }

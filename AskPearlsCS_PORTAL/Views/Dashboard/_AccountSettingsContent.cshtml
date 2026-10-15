@@ -1,0 +1,1340 @@
+﻿
+<!-- PAGE: ACCOUNT & SETTINGS -->
+<div class="account-settings-page container-fluid py-4">
+
+    <div class="as-page-header">
+        <div>
+            <h2>Account &amp; Settings</h2>
+            <p>Manage your profile, organization, security, and preferences.</p>
+        </div>
+        <div class="as-header-actions">
+            <span class="as-save-status" id="asSaveStatus">
+                <i class="bi bi-circle-fill"></i> Unsaved changes
+            </span>
+            <button type="button" class="as-btn as-btn-outline" id="asReset">
+                <i class="bi bi-arrow-counterclockwise"></i> Reset
+            </button>
+            <button type="button" class="as-btn as-btn-primary" id="asSave">
+                <i class="bi bi-check-lg"></i> Save changes
+            </button>
+        </div>
+    </div>
+
+    <div class="as-layout">
+
+        <!-- SETTINGS NAVIGATION -->
+        <aside class="as-navigation">
+            <div class="as-nav-profile">
+                <div class="as-avatar" id="asAvatar">JD</div>
+                <div class="as-profile-summary">
+                    <strong id="asSidebarName">John Doe</strong>
+                    <span>Product Admin</span>
+                </div>
+            </div>
+
+            <div class="as-nav-label">ACCOUNT</div>
+
+            <button type="button" class="as-nav-item active" data-as-section="profile">
+                <i class="bi bi-person"></i>
+                <span>Profile</span>
+                <i class="bi bi-chevron-right as-nav-chevron"></i>
+            </button>
+
+            <button type="button" class="as-nav-item" data-as-section="organization">
+                <i class="bi bi-building"></i>
+                <span>Organization</span>
+                <i class="bi bi-chevron-right as-nav-chevron"></i>
+            </button>
+
+            <div class="as-nav-label">PREFERENCES</div>
+
+            <button type="button" class="as-nav-item" data-as-section="security">
+                <i class="bi bi-shield-lock"></i>
+                <span>Security</span>
+                <i class="bi bi-chevron-right as-nav-chevron"></i>
+            </button>
+
+            <button type="button" class="as-nav-item" data-as-section="notifications">
+                <i class="bi bi-bell"></i>
+                <span>Notifications</span>
+                <i class="bi bi-chevron-right as-nav-chevron"></i>
+            </button>
+
+            <button type="button" class="as-nav-item" data-as-section="preferences">
+                <i class="bi bi-sliders"></i>
+                <span>Preferences</span>
+                <i class="bi bi-chevron-right as-nav-chevron"></i>
+            </button>
+
+            <div class="as-nav-bottom">
+                <i class="bi bi-info-circle"></i>
+                <div>
+                    <strong>Account settings</strong>
+                    <p>Changes are currently saved in this page's session only.</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- SETTINGS CONTENT -->
+        <main class="as-content">
+
+            <!-- PROFILE -->
+            <section class="as-panel active" data-as-panel="profile">
+                <div class="as-panel-heading">
+                    <div>
+                        <h4>Personal profile</h4>
+                        <p>Update your personal information and public profile details.</p>
+                    </div>
+                    <span class="as-heading-icon"><i class="bi bi-person-badge"></i></span>
+                </div>
+
+                <div class="as-panel-body">
+                    <div class="as-avatar-editor">
+                        <div class="as-avatar as-avatar-large" id="asLargeAvatar">JD</div>
+                        <div>
+                            <strong>Profile photo</strong>
+                            <p>Your initials are displayed in this UI prototype.</p>
+                            <span class="as-muted-note">Photo upload will be added during integration.</span>
+                        </div>
+                    </div>
+
+                    <div class="as-form-grid">
+                        <div class="as-field">
+                            <label for="asFirstName">First name <span>*</span></label>
+                            <input type="text" id="asFirstName" value="John" maxlength="60" required>
+                        </div>
+                        <div class="as-field">
+                            <label for="asLastName">Last name <span>*</span></label>
+                            <input type="text" id="asLastName" value="Doe" maxlength="60" required>
+                        </div>
+                        <div class="as-field">
+                            <label for="asEmail">Email address <span>*</span></label>
+                            <input type="email" id="asEmail" value="john.doe@example.com" maxlength="150" required>
+                            <small>Email verification is not connected yet.</small>
+                        </div>
+                        <div class="as-field">
+                            <label for="asJobTitle">Job title</label>
+                            <input type="text" id="asJobTitle" value="Product Admin" maxlength="100">
+                        </div>
+                        <div class="as-field as-field-full">
+                            <label for="asBio">About</label>
+                            <textarea id="asBio" rows="3" maxlength="500"
+                                      placeholder="Tell us a little about yourself...">Building better customer experiences with AskPearls.</textarea>
+                            <small>Maximum 500 characters.</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ORGANIZATION -->
+            <section class="as-panel" data-as-panel="organization" hidden>
+                <div class="as-panel-heading">
+                    <div>
+                        <h4>Organization details</h4>
+                        <p>Manage the company information associated with your workspace.</p>
+                    </div>
+                    <span class="as-heading-icon"><i class="bi bi-building"></i></span>
+                </div>
+
+                <div class="as-panel-body">
+                    <div class="as-info-banner">
+                        <i class="bi bi-info-circle"></i>
+                        <span>Organization details are demonstration data. They are not connected to a saved organization record yet.</span>
+                    </div>
+
+                    <div class="as-form-grid">
+                        <div class="as-field as-field-full">
+                            <label for="asCompanyName">Organization name <span>*</span></label>
+                            <input type="text" id="asCompanyName" value="AskPearls Limited" maxlength="150" required>
+                        </div>
+                        <div class="as-field">
+                            <label for="asWebsite">Company website</label>
+                            <input type="url" id="asWebsite" value="https://askpearls.com" maxlength="200">
+                        </div>
+                        <div class="as-field">
+                            <label for="asIndustry">Industry</label>
+                            <select id="asIndustry">
+                                <option value="technology" selected>Technology / SaaS</option>
+                                <option value="ecommerce">E-commerce &amp; Retail</option>
+                                <option value="real-estate">Real Estate</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="education">Education</option>
+                                <option value="professional">Professional Services</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="as-field">
+                            <label for="asCompanySize">Company size</label>
+                            <select id="asCompanySize">
+                                <option value="1">Just me</option>
+                                <option value="2-10" selected>2–10 employees</option>
+                                <option value="11-50">11–50 employees</option>
+                                <option value="51-200">51–200 employees</option>
+                                <option value="201+">201+ employees</option>
+                            </select>
+                        </div>
+                        <div class="as-field">
+                            <label for="asCountry">Country / region</label>
+                            <select id="asCountry">
+                                <option value="US">United States</option>
+                                <option value="GB">United Kingdom</option>
+                                <option value="EG" selected>Egypt</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="CA">Canada</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECURITY -->
+            <section class="as-panel" data-as-panel="security" hidden>
+                <div class="as-panel-heading">
+                    <div>
+                        <h4>Security</h4>
+                        <p>Review your account security preferences.</p>
+                    </div>
+                    <span class="as-heading-icon"><i class="bi bi-shield-check"></i></span>
+                </div>
+
+                <div class="as-panel-body">
+                    <div class="as-security-card">
+                        <div class="as-security-icon"><i class="bi bi-key"></i></div>
+                        <div class="as-security-copy">
+                            <strong>Password</strong>
+                            <p>Change your account password through the connected authentication system.</p>
+                            <span class="as-muted-note">Password changes are not available in this UI prototype.</span>
+                        </div>
+                        <button type="button" class="as-btn as-btn-outline" id="asChangePassword">
+                            Change password
+                        </button>
+                    </div>
+
+                    <div class="as-setting-row">
+                        <div class="as-setting-copy">
+                            <strong>Two-factor authentication</strong>
+                            <p>Add an additional verification step when signing in.</p>
+                            <span class="as-muted-note">This switch is a visual preference only; authentication is not changed.</span>
+                        </div>
+                        <label class="as-switch">
+                            <input type="checkbox" id="asTwoFactor">
+                            <span class="as-switch-track"></span>
+                        </label>
+                    </div>
+
+                    <div class="as-security-card">
+                        <div class="as-security-icon as-icon-blue"><i class="bi bi-laptop"></i></div>
+                        <div class="as-security-copy">
+                            <strong>Active sessions</strong>
+                            <p>Review signed-in devices and browser sessions.</p>
+                            <span class="as-muted-note">Session management will be connected later.</span>
+                        </div>
+                        <span class="as-status-badge">Current session</span>
+                    </div>
+
+                    <div class="as-warning-banner">
+                        <i class="bi bi-shield-exclamation"></i>
+                        <span>For security, never store passwords in browser storage or treat frontend-only security controls as enforcement.</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NOTIFICATIONS -->
+            <section class="as-panel" data-as-panel="notifications" hidden>
+                <div class="as-panel-heading">
+                    <div>
+                        <h4>Notifications</h4>
+                        <p>Choose which updates you would like to receive.</p>
+                    </div>
+                    <span class="as-heading-icon"><i class="bi bi-bell"></i></span>
+                </div>
+
+                <div class="as-panel-body">
+                    <div class="as-setting-row">
+                        <div class="as-setting-copy">
+                            <strong>Email notifications</strong>
+                            <p>Receive important account and workspace updates by email.</p>
+                        </div>
+                        <label class="as-switch">
+                            <input type="checkbox" id="asEmailNotifications" checked>
+                            <span class="as-switch-track"></span>
+                        </label>
+                    </div>
+
+                    <div class="as-setting-row">
+                        <div class="as-setting-copy">
+                            <strong>Widget activity reports</strong>
+                            <p>Receive summaries about views, interactions, and completions.</p>
+                        </div>
+                        <label class="as-switch">
+                            <input type="checkbox" id="asActivityReports" checked>
+                            <span class="as-switch-track"></span>
+                        </label>
+                    </div>
+
+                    <div class="as-setting-row">
+                        <div class="as-setting-copy">
+                            <strong>Product updates</strong>
+                            <p>Hear about new AskPearls features and improvements.</p>
+                        </div>
+                        <label class="as-switch">
+                            <input type="checkbox" id="asProductUpdates">
+                            <span class="as-switch-track"></span>
+                        </label>
+                    </div>
+
+                    <div class="as-setting-row">
+                        <div class="as-setting-copy">
+                            <strong>Security alerts</strong>
+                            <p>Get notified about important security-related events.</p>
+                            <span class="as-muted-note">Recommended notification preference.</span>
+                        </div>
+                        <label class="as-switch">
+                            <input type="checkbox" id="asSecurityAlerts" checked>
+                            <span class="as-switch-track"></span>
+                        </label>
+                    </div>
+
+                    <div class="as-info-banner">
+                        <i class="bi bi-info-circle"></i>
+                        <span>These switches only update the prototype's local UI state. No emails or notifications are sent.</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PREFERENCES -->
+            <section class="as-panel" data-as-panel="preferences" hidden>
+                <div class="as-panel-heading">
+                    <div>
+                        <h4>Preferences</h4>
+                        <p>Customize your workspace display and regional settings.</p>
+                    </div>
+                    <span class="as-heading-icon"><i class="bi bi-sliders"></i></span>
+                </div>
+
+                <div class="as-panel-body">
+                    <div class="as-form-grid">
+                        <div class="as-field">
+                            <label for="asLanguage">Language</label>
+                            <select id="asLanguage">
+                                <option value="en" selected>English</option>
+                                <option value="ar">العربية</option>
+                                <option value="fr">Français</option>
+                                <option value="de">Deutsch</option>
+                            </select>
+                        </div>
+                        <div class="as-field">
+                            <label for="asTimezone">Timezone</label>
+                            <select id="asTimezone">
+                                <option value="Africa/Cairo" selected>Africa/Cairo (UTC+02:00 / UTC+03:00 seasonally)</option>
+                                <option value="Europe/London">Europe/London</option>
+                                <option value="Europe/Berlin">Europe/Berlin</option>
+                                <option value="America/New_York">America/New_York</option>
+                                <option value="America/Los_Angeles">America/Los_Angeles</option>
+                                <option value="UTC">UTC</option>
+                            </select>
+                        </div>
+                        <div class="as-field">
+                            <label for="asDateFormat">Date format</label>
+                            <select id="asDateFormat">
+                                <option value="dd/mm/yyyy" selected>DD/MM/YYYY</option>
+                                <option value="mm/dd/yyyy">MM/DD/YYYY</option>
+                                <option value="yyyy-mm-dd">YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                        <div class="as-field">
+                            <label for="asWeekStart">Week starts on</label>
+                            <select id="asWeekStart">
+                                <option value="monday" selected>Monday</option>
+                                <option value="sunday">Sunday</option>
+                                <option value="saturday">Saturday</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="as-divider"></div>
+
+                    <div class="as-setting-row">
+                        <div class="as-setting-copy">
+                            <strong>Compact dashboard</strong>
+                            <p>Use a denser layout to display more information at once.</p>
+                        </div>
+                        <label class="as-switch">
+                            <input type="checkbox" id="asCompactMode">
+                            <span class="as-switch-track"></span>
+                        </label>
+                    </div>
+
+                    <div class="as-info-banner">
+                        <i class="bi bi-palette"></i>
+                        <span>The portal's global light/dark theme remains controlled by the existing header theme switch.</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PLAN SUMMARY -->
+            <section class="as-plan-card">
+                <div class="as-plan-top">
+                    <div class="as-plan-icon"><i class="bi bi-stars"></i></div>
+                    <div class="as-plan-title">
+                        <span>YOUR SUBSCRIPTION</span>
+                        <h4>Free Plan <span class="as-plan-badge">Current</span></h4>
+                        <p>A preview of your plan and resource usage.</p>
+                    </div>
+                </div>
+
+                <div class="as-plan-usage">
+                    <div class="as-usage-heading">
+                        <span>Widgets created</span>
+                        <strong>3 <small>/ 5</small></strong>
+                    </div>
+                    <div class="as-usage-track">
+                        <div class="as-usage-fill" style="width:60%"></div>
+                    </div>
+                    <div class="as-usage-foot">
+                        <span>60% of illustrative allowance used</span>
+                        <span>2 remaining</span>
+                    </div>
+                </div>
+
+                <div class="as-plan-bottom">
+                    <span><i class="bi bi-check-circle"></i> Core widget features</span>
+                    <button type="button" class="as-btn as-btn-primary" id="asUpgradePlan">
+                        Explore plans <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+                <div class="as-plan-disclaimer">Plan limits and pricing are illustrative mock data, not an active subscription.</div>
+            </section>
+
+        </main>
+    </div>
+
+    <div class="as-toast" id="asToast" role="status" aria-live="polite"></div>
+</div>
+
+<style>
+    .account-settings-page {
+        --as-accent: #0da88b;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        min-width: 0;
+    }
+
+    .account-settings-page * { box-sizing: border-box; }
+
+    .account-settings-page .as-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .account-settings-page .as-page-header h2 {
+        margin: 0 0 7px;
+        font-size: 27px;
+        font-weight: 750;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+    }
+
+    .account-settings-page .as-page-header p {
+        margin: 0;
+        color: var(--ap-muted, var(--bs-secondary-color, #718096));
+        font-size: 13px;
+    }
+
+    .account-settings-page .as-header-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+    .account-settings-page .as-save-status {
+        margin-right: 5px;
+        color: var(--ap-muted, #718096);
+        font-size: 11px;
+    }
+
+    .account-settings-page .as-save-status i {
+        margin-right: 5px;
+        color: #e0a23c;
+        font-size: 7px;
+        vertical-align: middle;
+    }
+
+    .account-settings-page .as-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 39px;
+        padding: 9px 13px;
+        border-radius: 9px;
+        font-size: 11px;
+        font-weight: 750;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+    .account-settings-page .as-btn-primary {
+        border: 1px solid #0da88b;
+        background: #0da88b;
+        color: #fff;
+    }
+
+    .account-settings-page .as-btn-primary:hover {
+        background: #078d74;
+        border-color: #078d74;
+        color: #fff;
+    }
+
+    .account-settings-page .as-btn-outline {
+        border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+        background: var(--ap-card-bg, var(--bs-body-bg, #fff));
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+    }
+
+    .account-settings-page .as-btn-outline:hover {
+        border-color: #0da88b;
+        color: #0da88b;
+    }
+
+    .account-settings-page .as-layout {
+        display: grid;
+        grid-template-columns: 245px minmax(0, 1fr);
+        gap: 20px;
+        align-items: start;
+    }
+
+    .account-settings-page .as-navigation,
+    .account-settings-page .as-panel,
+    .account-settings-page .as-plan-card {
+        border: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        border-radius: 14px;
+        background: var(--ap-card-bg, var(--bs-body-bg, #fff));
+    }
+
+    .account-settings-page .as-navigation {
+        position: sticky;
+        top: 20px;
+        overflow: hidden;
+        padding: 14px 10px 10px;
+    }
+
+    .account-settings-page .as-nav-profile {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 9px 8px 18px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .account-settings-page .as-avatar {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #0da88b, #087f68);
+        color: #fff;
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .account-settings-page .as-profile-summary { min-width: 0; }
+
+    .account-settings-page .as-profile-summary strong {
+        display: block;
+        overflow-wrap: anywhere;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 12px;
+        font-weight: 750;
+    }
+
+    .account-settings-page .as-profile-summary span {
+        display: block;
+        margin-top: 4px;
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+    }
+
+    .account-settings-page .as-nav-label {
+        padding: 13px 10px 7px;
+        color: var(--ap-muted, #718096);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+    .account-settings-page .as-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        margin: 3px 0;
+        padding: 11px 10px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--ap-muted, #718096);
+        text-align: left;
+        font-size: 11px;
+        font-weight: 650;
+        cursor: pointer;
+        transition: background .18s ease, color .18s ease;
+    }
+
+    .account-settings-page .as-nav-item > i:first-child {
+        width: 17px;
+        font-size: 15px;
+    }
+
+    .account-settings-page .as-nav-item span { flex: 1; }
+
+    .account-settings-page .as-nav-chevron {
+        font-size: 10px;
+        opacity: 0;
+    }
+
+    .account-settings-page .as-nav-item:hover {
+        background: rgba(13,168,139,.07);
+        color: #0da88b;
+    }
+
+    .account-settings-page .as-nav-item.active {
+        background: rgba(13,168,139,.13);
+        color: #0d9278;
+        font-weight: 750;
+    }
+
+    .account-settings-page .as-nav-item.active .as-nav-chevron { opacity: 1; }
+
+    .account-settings-page .as-nav-bottom {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        margin-top: 20px;
+        padding: 13px 9px 7px;
+        border-top: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        color: var(--ap-muted, #718096);
+    }
+
+    .account-settings-page .as-nav-bottom > i {
+        margin-top: 2px;
+        color: #0da88b;
+        font-size: 14px;
+    }
+
+    .account-settings-page .as-nav-bottom strong {
+        display: block;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 10px;
+    }
+
+    .account-settings-page .as-nav-bottom p {
+        margin: 5px 0 0;
+        font-size: 9px;
+        line-height: 1.6;
+    }
+
+    .account-settings-page .as-content { min-width: 0; }
+
+    .account-settings-page .as-panel { overflow: hidden; }
+
+    .account-settings-page .as-panel[hidden] { display: none !important; }
+
+    .account-settings-page .as-panel-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 21px 23px;
+        border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .account-settings-page .as-panel-heading h4 {
+        margin: 0 0 6px;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 15px;
+        font-weight: 750;
+    }
+
+    .account-settings-page .as-panel-heading p {
+        margin: 0;
+        color: var(--ap-muted, #718096);
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+    .account-settings-page .as-heading-icon {
+        display: grid;
+        place-items: center;
+        width: 37px;
+        height: 37px;
+        flex: 0 0 37px;
+        border-radius: 10px;
+        background: rgba(13,168,139,.12);
+        color: #0da88b;
+        font-size: 17px;
+    }
+
+    .account-settings-page .as-panel-body { padding: 23px; }
+
+    .account-settings-page .as-avatar-editor {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding-bottom: 23px;
+        margin-bottom: 23px;
+        border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .account-settings-page .as-avatar-large {
+        width: 64px;
+        height: 64px;
+        flex-basis: 64px;
+        border-radius: 16px;
+        font-size: 21px;
+    }
+
+    .account-settings-page .as-avatar-editor strong {
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 12px;
+    }
+
+    .account-settings-page .as-avatar-editor p {
+        margin: 5px 0;
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+    }
+
+    .account-settings-page .as-muted-note {
+        display: block;
+        margin-top: 5px;
+        color: var(--ap-muted, #718096);
+        font-size: 9px;
+        line-height: 1.6;
+    }
+
+    .account-settings-page .as-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px 17px;
+    }
+
+    .account-settings-page .as-field { min-width: 0; }
+
+    .account-settings-page .as-field-full { grid-column: 1 / -1; }
+
+    .account-settings-page .as-field > label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 11px;
+        font-weight: 750;
+    }
+
+    .account-settings-page .as-field > label span { color: #d94d58; }
+
+    .account-settings-page .as-field input,
+    .account-settings-page .as-field textarea,
+    .account-settings-page .as-field select {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        min-height: 42px;
+        padding: 10px 12px;
+        border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+        border-radius: 10px;
+        background-color: var(--ap-input-bg, var(--bs-tertiary-bg, #f4f8f7));
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font: inherit;
+        font-size: 11px;
+        outline: none;
+        transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .account-settings-page .as-field textarea {
+        min-height: 90px;
+        resize: vertical;
+    }
+
+    .account-settings-page .as-field select {
+        padding-right: 38px;
+        appearance: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23718096' d='M3 5.5 8 10.5 13 5.5z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 15px;
+    }
+
+    .account-settings-page .as-field input:focus,
+    .account-settings-page .as-field textarea:focus,
+    .account-settings-page .as-field select:focus {
+        border-color: #0da88b;
+        box-shadow: 0 0 0 3px rgba(13,168,139,.13);
+    }
+
+    .account-settings-page .as-field small {
+        display: block;
+        margin-top: 6px;
+        color: var(--ap-muted, #718096);
+        font-size: 9px;
+        line-height: 1.5;
+    }
+
+    .account-settings-page .as-info-banner,
+    .account-settings-page .as-warning-banner {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 22px;
+        padding: 13px 14px;
+        border: 1px solid rgba(217,154,48,.3);
+        border-radius: 10px;
+        background: rgba(217,154,48,.08);
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+        line-height: 1.7;
+    }
+
+    .account-settings-page .as-info-banner i,
+    .account-settings-page .as-warning-banner i {
+        margin-top: 2px;
+        color: #c18a29;
+        font-size: 14px;
+    }
+
+    .account-settings-page .as-warning-banner {
+        margin: 22px 0 0;
+        border-color: rgba(217,154,48,.3);
+    }
+
+    .account-settings-page .as-security-card {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .account-settings-page .as-security-icon {
+        display: grid;
+        place-items: center;
+        width: 41px;
+        height: 41px;
+        flex: 0 0 41px;
+        border-radius: 11px;
+        background: rgba(13,168,139,.12);
+        color: #0d9278;
+        font-size: 17px;
+    }
+
+    .account-settings-page .as-icon-blue {
+        background: rgba(66,133,219,.13);
+        color: #4285db;
+    }
+
+    .account-settings-page .as-security-copy {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .account-settings-page .as-security-copy strong,
+    .account-settings-page .as-setting-copy strong {
+        display: block;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 11px;
+        font-weight: 750;
+    }
+
+    .account-settings-page .as-security-copy p,
+    .account-settings-page .as-setting-copy p {
+        margin: 5px 0 0;
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+        line-height: 1.7;
+    }
+
+    .account-settings-page .as-status-badge,
+    .account-settings-page .as-plan-badge {
+        padding: 6px 9px;
+        border-radius: 30px;
+        background: rgba(13,168,139,.12);
+        color: #0d9278;
+        font-size: 9px;
+        font-weight: 750;
+        white-space: nowrap;
+    }
+
+    .account-settings-page .as-setting-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 18px 0;
+        border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .account-settings-page .as-setting-copy { flex: 1; min-width: 0; }
+
+    .account-settings-page .as-switch {
+        position: relative;
+        display: block;
+        width: 42px;
+        height: 24px;
+        flex: 0 0 42px;
+    }
+
+    .account-settings-page .as-switch input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+    }
+
+    .account-settings-page .as-switch-track {
+        position: absolute;
+        inset: 0;
+        border-radius: 30px;
+        background: #9aa8a5;
+        cursor: pointer;
+        transition: background .2s ease;
+    }
+
+    .account-settings-page .as-switch-track::before {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0,0,0,.15);
+        transition: transform .2s ease;
+    }
+
+    .account-settings-page .as-switch input:checked + .as-switch-track { background: #0da88b; }
+
+    .account-settings-page .as-switch input:checked + .as-switch-track::before {
+        transform: translateX(18px);
+    }
+
+    .account-settings-page .as-switch input:focus-visible + .as-switch-track {
+        outline: 3px solid rgba(13,168,139,.25);
+        outline-offset: 2px;
+    }
+
+    .account-settings-page .as-divider {
+        height: 1px;
+        margin: 25px 0;
+        background: var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .account-settings-page .as-plan-card {
+        margin-top: 20px;
+        padding: 21px 23px 15px;
+        overflow: hidden;
+    }
+
+    .account-settings-page .as-plan-top {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .account-settings-page .as-plan-icon {
+        display: grid;
+        place-items: center;
+        width: 47px;
+        height: 47px;
+        flex: 0 0 47px;
+        border-radius: 13px;
+        background: rgba(13,168,139,.13);
+        color: #0da88b;
+        font-size: 20px;
+    }
+
+    .account-settings-page .as-plan-title > span {
+        color: var(--ap-muted, #718096);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: .8px;
+    }
+
+    .account-settings-page .as-plan-title h4 {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin: 5px 0;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .account-settings-page .as-plan-title p {
+        margin: 0;
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+    }
+
+    .account-settings-page .as-plan-usage { margin: 24px 0 20px; }
+
+    .account-settings-page .as-usage-heading,
+    .account-settings-page .as-usage-foot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .account-settings-page .as-usage-heading {
+        margin-bottom: 10px;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 10px;
+    }
+
+    .account-settings-page .as-usage-heading strong { font-size: 12px; }
+    .account-settings-page .as-usage-heading small { color: var(--ap-muted, #718096); }
+
+    .account-settings-page .as-usage-track {
+        height: 8px;
+        overflow: hidden;
+        border-radius: 20px;
+        background: var(--ap-input-bg, #edf2f0);
+    }
+
+    .account-settings-page .as-usage-fill {
+        height: 100%;
+        border-radius: inherit;
+        background: #0da88b;
+    }
+
+    .account-settings-page .as-usage-foot {
+        margin-top: 8px;
+        color: var(--ap-muted, #718096);
+        font-size: 9px;
+    }
+
+    .account-settings-page .as-plan-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding-top: 16px;
+        border-top: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .account-settings-page .as-plan-bottom > span {
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+    }
+
+    .account-settings-page .as-plan-bottom > span i {
+        margin-right: 5px;
+        color: #0da88b;
+    }
+
+    .account-settings-page .as-plan-disclaimer {
+        margin-top: 12px;
+        color: var(--ap-muted, #718096);
+        font-size: 9px;
+        line-height: 1.6;
+    }
+
+    .account-settings-page .as-toast {
+        position: fixed;
+        z-index: 11000;
+        right: 24px;
+        bottom: 85px;
+        display: none;
+        max-width: calc(100vw - 32px);
+        padding: 13px 17px;
+        border-radius: 10px;
+        background: #087f68;
+        color: #fff;
+        font-size: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+
+    .account-settings-page .as-toast.is-visible { display: block; }
+
+    /* Dark theme */
+    html[data-theme="dark"] .account-settings-page .as-field input,
+    html[data-theme="dark"] .account-settings-page .as-field textarea,
+    html[data-theme="dark"] .account-settings-page .as-field select,
+    body[data-theme="dark"] .account-settings-page .as-field input,
+    body[data-theme="dark"] .account-settings-page .as-field textarea,
+    body[data-theme="dark"] .account-settings-page .as-field select,
+    html[data-bs-theme="dark"] .account-settings-page .as-field input,
+    html[data-bs-theme="dark"] .account-settings-page .as-field textarea,
+    html[data-bs-theme="dark"] .account-settings-page .as-field select,
+    body[data-bs-theme="dark"] .account-settings-page .as-field input,
+    body[data-bs-theme="dark"] .account-settings-page .as-field textarea,
+    body[data-bs-theme="dark"] .account-settings-page .as-field select {
+        background-color: #10221c !important;
+        color: #f0f5f3 !important;
+        border-color: #344d44 !important;
+    }
+
+    html[data-theme="dark"] .account-settings-page .as-field select option,
+    body[data-theme="dark"] .account-settings-page .as-field select option,
+    html[data-bs-theme="dark"] .account-settings-page .as-field select option,
+    body[data-bs-theme="dark"] .account-settings-page .as-field select option {
+        background: #10221c;
+        color: #f0f5f3;
+    }
+
+    html[data-theme="dark"] .account-settings-page .as-field select,
+    body[data-theme="dark"] .account-settings-page .as-field select,
+    html[data-bs-theme="dark"] .account-settings-page .as-field select,
+    body[data-bs-theme="dark"] .account-settings-page .as-field select {
+        color-scheme: dark;
+    }
+
+    @@media (max-width: 1199.98px) {
+        .account-settings-page .as-layout {
+            grid-template-columns: 215px minmax(0, 1fr);
+            gap: 15px;
+        }
+        .account-settings-page .as-panel-body { padding: 19px; }
+    }
+
+    @@media (max-width: 991.98px) {
+        .account-settings-page .as-layout { grid-template-columns: 1fr; }
+        .account-settings-page .as-navigation { position: static; }
+        .account-settings-page .as-nav-profile { padding-bottom: 13px; }
+        .account-settings-page .as-navigation {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 4px;
+        }
+        .account-settings-page .as-nav-profile,
+        .account-settings-page .as-nav-label,
+        .account-settings-page .as-nav-bottom { grid-column: 1 / -1; }
+        .account-settings-page .as-nav-label { padding-top: 9px; }
+        .account-settings-page .as-nav-item { margin: 0; }
+    }
+
+    @@media (max-width: 575.98px) {
+        .account-settings-page .as-page-header { align-items: flex-start; }
+        .account-settings-page .as-page-header h2 { font-size: 23px; }
+        .account-settings-page .as-header-actions { justify-content: flex-start; }
+        .account-settings-page .as-save-status { width: 100%; }
+        .account-settings-page .as-navigation { padding: 10px 7px; }
+        .account-settings-page .as-nav-item { gap: 7px; padding: 10px 7px; font-size: 10px; }
+        .account-settings-page .as-panel-heading { padding: 16px; }
+        .account-settings-page .as-panel-body { padding: 16px; }
+        .account-settings-page .as-form-grid { grid-template-columns: 1fr; gap: 17px; }
+        .account-settings-page .as-field-full { grid-column: auto; }
+        .account-settings-page .as-security-card { flex-wrap: wrap; }
+        .account-settings-page .as-security-copy { flex-basis: calc(100% - 58px); }
+        .account-settings-page .as-security-card > .as-btn,
+        .account-settings-page .as-security-card > .as-status-badge { margin-left: 54px; }
+        .account-settings-page .as-setting-row { gap: 12px; }
+        .account-settings-page .as-plan-card { padding: 17px; }
+        .account-settings-page .as-plan-bottom { align-items: flex-start; flex-direction: column; }
+    }
+</style>
+
+<script>
+(function () {
+    "use strict";
+
+    const root = document.querySelector(".account-settings-page");
+    if (!root || root.dataset.asInitialized === "true") return;
+    root.dataset.asInitialized = "true";
+
+    const $ = id => root.querySelector("#" + id);
+
+    const defaults = {
+        firstName: "John",
+        lastName: "Doe",
+        email: "john.doe@example.com",
+        jobTitle: "Product Admin",
+        bio: "Building better customer experiences with AskPearls.",
+        companyName: "AskPearls Limited",
+        website: "https://askpearls.com",
+        industry: "technology",
+        companySize: "2-10",
+        country: "EG",
+        twoFactor: false,
+        emailNotifications: true,
+        activityReports: true,
+        productUpdates: false,
+        securityAlerts: true,
+        language: "en",
+        timezone: "Africa/Cairo",
+        dateFormat: "dd/mm/yyyy",
+        weekStart: "monday",
+        compactMode: false
+    };
+
+    const fieldIds = {
+        firstName: "asFirstName",
+        lastName: "asLastName",
+        email: "asEmail",
+        jobTitle: "asJobTitle",
+        bio: "asBio",
+        companyName: "asCompanyName",
+        website: "asWebsite",
+        industry: "asIndustry",
+        companySize: "asCompanySize",
+        country: "asCountry",
+        twoFactor: "asTwoFactor",
+        emailNotifications: "asEmailNotifications",
+        activityReports: "asActivityReports",
+        productUpdates: "asProductUpdates",
+        securityAlerts: "asSecurityAlerts",
+        language: "asLanguage",
+        timezone: "asTimezone",
+        dateFormat: "asDateFormat",
+        weekStart: "asWeekStart",
+        compactMode: "asCompactMode"
+    };
+
+    let savedSettings = { ...defaults };
+    let toastTimer = null;
+
+    function currentSettings() {
+        const result = {};
+        Object.entries(fieldIds).forEach(([key, id]) => {
+            const element = $(id);
+            result[key] = element.type === "checkbox" ? element.checked : element.value;
+        });
+        return result;
+    }
+
+    function setSettings(settings) {
+        Object.entries(fieldIds).forEach(([key, id]) => {
+            const element = $(id);
+            if (element.type === "checkbox") {
+                element.checked = Boolean(settings[key]);
+            } else {
+                element.value = settings[key];
+            }
+        });
+        updateProfileDisplay();
+        updateDirtyState();
+    }
+
+    function updateProfileDisplay() {
+        const first = $("asFirstName").value.trim();
+        const last = $("asLastName").value.trim();
+        const fullName = [first, last].filter(Boolean).join(" ") || "Your name";
+        const initials = ((first[0] || "") + (last[0] || "")).toUpperCase() || "?";
+
+        $("asSidebarName").textContent = fullName;
+        $("asAvatar").textContent = initials;
+        $("asLargeAvatar").textContent = initials;
+    }
+
+    function updateDirtyState() {
+        const changed = JSON.stringify(currentSettings()) !== JSON.stringify(savedSettings);
+        const status = $("asSaveStatus");
+        status.innerHTML = changed
+            ? '<i class="bi bi-circle-fill"></i> Unsaved changes'
+            : '<i class="bi bi-check-circle-fill"></i> All changes saved';
+        status.style.color = changed ? "" : "#0d9278";
+    }
+
+    function showToast(message) {
+        const toast = $("asToast");
+        toast.textContent = message;
+        toast.classList.add("is-visible");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2800);
+    }
+
+    function showSection(section) {
+        root.querySelectorAll("[data-as-section]").forEach(button => {
+            button.classList.toggle("active", button.dataset.asSection === section);
+        });
+
+        root.querySelectorAll("[data-as-panel]").forEach(panel => {
+            const active = panel.dataset.asPanel === section;
+            panel.hidden = !active;
+            panel.classList.toggle("active", active);
+        });
+    }
+
+    root.querySelectorAll("[data-as-section]").forEach(button => {
+        button.addEventListener("click", () => showSection(button.dataset.asSection));
+    });
+
+    Object.values(fieldIds).forEach(id => {
+        const element = $(id);
+        element.addEventListener("input", () => {
+            updateProfileDisplay();
+            updateDirtyState();
+        });
+        element.addEventListener("change", () => {
+            updateProfileDisplay();
+            updateDirtyState();
+        });
+    });
+
+    $("asSave").addEventListener("click", () => {
+        const firstName = $("asFirstName").value.trim();
+        const lastName = $("asLastName").value.trim();
+        const email = $("asEmail").value.trim();
+        const company = $("asCompanyName").value.trim();
+
+        if (!firstName || !lastName || !email || !company) {
+            showToast("Please complete all required fields.");
+            const firstInvalid = !firstName ? $("asFirstName")
+                : !lastName ? $("asLastName")
+                : !email ? $("asEmail")
+                : $("asCompanyName");
+            firstInvalid.focus();
+            return;
+        }
+
+        if (!$("asEmail").checkValidity()) {
+            showToast("Please enter a valid email address.");
+            $("asEmail").focus();
+            return;
+        }
+
+        if ($("asWebsite").value.trim() && !$("asWebsite").checkValidity()) {
+            showToast("Please enter a valid website URL.");
+            $("asWebsite").focus();
+            return;
+        }
+
+        savedSettings = currentSettings();
+        updateDirtyState();
+        showToast("Changes saved in this page session only. Backend saving is not connected.");
+    });
+
+    $("asReset").addEventListener("click", () => {
+        setSettings(savedSettings);
+        showToast("Settings reset to the last saved values.");
+    });
+
+    $("asChangePassword").addEventListener("click", () => {
+        showToast("Password changes will be enabled when authentication integration is implemented.");
+    });
+
+    $("asUpgradePlan").addEventListener("click", () => {
+        showToast("Plan selection will be available when subscription management is implemented.");
+    });
+
+    setSettings(defaults);
+    savedSettings = currentSettings();
+    updateDirtyState();
+    showSection("profile");
+})();
+</script>

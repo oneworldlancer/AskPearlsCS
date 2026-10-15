@@ -1,0 +1,1217 @@
+﻿<div class="page-questions-answers container-fluid py-4">
+
+    <!-- PAGE HEADER -->
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <a href="#" class="text-decoration-none small" data-page="widgets">
+                    <i class="bi bi-arrow-left me-1"></i> My Widgets
+                </a>
+                <span class="text-muted">/</span>
+                <span class="text-muted small">Questions &amp; Answers</span>
+            </div>
+
+            <h1 class="h3 fw-bold mb-1">Questions &amp; Answers</h1>
+            <p class="text-muted mb-0">
+                Design the questions visitors answer in your DecisionOS experience.
+            </p>
+        </div>
+
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <span class="badge rounded-pill border text-secondary px-3 py-2" id="qaDraftStatus">
+                <i class="bi bi-circle-fill me-1" style="font-size:7px"></i>
+                Unsaved draft
+            </span>
+
+            <button type="button" class="btn btn-outline-secondary" id="qaPreviewButton">
+                <i class="bi bi-eye me-1"></i> Preview
+            </button>
+
+            <button type="button" class="btn btn-primary" id="qaSaveButton">
+                <i class="bi bi-save me-1"></i> Save Draft
+            </button>
+        </div>
+    </div>
+
+    <!-- WIDGET CONTEXT -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3 p-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="qa-context-icon">
+                    <i class="bi bi-stars"></i>
+                </div>
+                <div>
+                    <div class="fw-bold">Sofa Finder</div>
+                    <div class="text-muted small">DecisionOS · Demo Website · UI sample</div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-muted small">Questions</span>
+                <span class="badge rounded-pill text-bg-secondary" id="qaQuestionCount">3</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN THREE-COLUMN LAYOUT -->
+    <div class="row g-4">
+
+        <!-- LEFT: QUESTION LIST -->
+        <div class="col-12 col-xl-3">
+            <section class="card border-0 shadow-sm qa-question-list-card">
+
+                <div class="qa-question-list-header">
+                    <div class="qa-question-list-top">
+                        <h2 class="qa-question-list-title">Your questions</h2>
+
+                        <button type="button" class="btn btn-primary btn-sm" id="qaAddQuestion">
+                            <i class="bi bi-plus-lg me-1"></i> Add
+                        </button>
+                    </div>
+
+                    <p class="qa-question-list-subtitle">
+                        Select a question to edit it.
+                    </p>
+                </div>
+
+                <!-- REQUIRED: JavaScript renders the questions here -->
+                <div id="qaQuestionList" class="qa-question-list" aria-live="polite"></div>
+
+                <div class="qa-question-list-hint border-top">
+                    <i class="bi bi-lightbulb me-2" aria-hidden="true"></i>
+                    Keep questions clear and easy for visitors to answer.
+                </div>
+
+            </section>
+        </div>
+
+        <!-- CENTER: QUESTION EDITOR -->
+        <div class="col-12 col-xl-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4" id="qaEditor">
+
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-4">
+                        <div>
+                            <h2 class="h5 fw-bold mb-1">Question editor</h2>
+                            <p class="text-muted small mb-0">
+                                Configure the selected question and its answers.
+                            </p>
+                        </div>
+
+                        <button type="button" class="btn btn-sm btn-outline-danger" id="qaDeleteQuestion">
+                            <i class="bi bi-trash me-1"></i> Delete
+                        </button>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="qaQuestionText" class="form-label fw-semibold">
+                            Question text <span class="text-danger">*</span>
+                        </label>
+                        <textarea id="qaQuestionText" class="form-control" rows="2"
+                                  maxlength="300" placeholder="Enter your question"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="qaQuestionKey" class="form-label fw-semibold">
+                            Question identifier <span class="text-danger">*</span>
+                        </label>
+                        <input id="qaQuestionKey" class="form-control" type="text"
+                               maxlength="80" placeholder="e.g. users">
+                        <div class="form-text">
+                            A unique technical key for identifying this question in the decision flow.
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="qaQuestionHelp" class="form-label fw-semibold">
+                            Helper text
+                        </label>
+                        <input id="qaQuestionHelp" class="form-control" type="text"
+                               maxlength="200" placeholder="Optional guidance for visitors">
+                    </div>
+
+                    <div class="qa-setting-box mb-4">
+                        <div>
+                            <div class="fw-semibold">Required question</div>
+                            <div class="text-muted small">
+                                Visitors must answer before continuing.
+                            </div>
+                        </div>
+                        <div class="form-check form-switch mb-0">
+                            <input class="form-check-input" type="checkbox"
+                                   id="qaQuestionRequired" checked>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                        <div>
+                            <h3 class="h6 fw-bold mb-1">Answer options</h3>
+                            <p class="text-muted small mb-0">
+                                Define the choices visitors can select.
+                            </p>
+                        </div>
+
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="qaAddAnswer">
+                            <i class="bi bi-plus-lg me-1"></i> Add answer
+                        </button>
+                    </div>
+
+                    <div id="qaAnswersList" class="qa-answers-list"></div>
+
+                    <div class="alert alert-info small mt-3 mb-0">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Answer scores and recommendation mapping will be configured in the Decision Rules interface.
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-4 pt-3 border-top">
+                        <button type="button" class="btn btn-primary" id="qaApplyChanges">
+                            <i class="bi bi-check2 me-1"></i> Apply to preview
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: VISITOR PREVIEW -->
+        <div class="col-12 col-xl-4" id="qaPreviewColumn">
+            <div class="qa-preview-sticky">
+
+                <div class="mb-3">
+                    <h2 class="h5 fw-bold mb-1">Visitor preview</h2>
+                    <p class="text-muted small mb-0">
+                        See how your question appears to a visitor.
+                    </p>
+                </div>
+
+                <div class="qa-preview-stage">
+                    <div class="qa-visitor-widget">
+
+                        <div class="qa-visitor-brand">
+                            <span class="qa-visitor-brand-icon">
+                                <i class="bi bi-stars"></i>
+                            </span>
+                            <span>DecisionOS</span>
+                        </div>
+
+                        <div class="qa-progress mb-4">
+                            <div class="d-flex justify-content-between small mb-2">
+                                <span id="qaPreviewStepLabel">Question 1 of 3</span>
+                                <span id="qaPreviewProgressLabel">33%</span>
+                            </div>
+
+                            <div class="progress" role="progressbar"
+                                 aria-label="Question progress"
+                                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="33">
+                                <div class="progress-bar" id="qaPreviewProgressBar" style="width:33%"></div>
+                            </div>
+                        </div>
+
+                        <h3 id="qaPreviewQuestion">How many people will use the sofa?</h3>
+
+                        <p class="qa-visitor-help" id="qaPreviewHelp">
+                            Choose the option that best matches your needs.
+                        </p>
+
+                        <div id="qaPreviewAnswers" class="qa-preview-answers"></div>
+
+                        <div class="d-flex justify-content-between gap-2 mt-4">
+                            <button type="button" class="btn btn-outline-secondary"
+                                    id="qaPreviewBack" disabled>
+                                <i class="bi bi-arrow-left me-1"></i> Back
+                            </button>
+
+                            <button type="button" class="btn btn-primary" id="qaPreviewNext">
+                                Continue <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+
+                        <div class="qa-visitor-footer">Powered by DecisionOS</div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mt-3">
+                    <div class="card-body p-3">
+                        <div class="d-flex gap-2 align-items-start">
+                            <i class="bi bi-info-circle text-success fs-5"></i>
+                            <div>
+                                <div class="fw-semibold small">Prototype preview</div>
+                                <p class="text-muted small mb-0">
+                                    Preview answers are temporary. They are not submitted to the API
+                                    or used to calculate recommendations.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+            
+    <style >
+
+
+    /* ============================================================
+       AskPearls DecisionOS — Questions & Answers
+       Complete page stylesheet
+       Compatible with ASP.NET Core Razor Views + Bootstrap
+       Light theme + Dark theme + Responsive layout
+       ============================================================ */
+
+    /* ------------------------------------------------------------
+       1. THEME VARIABLES
+       ------------------------------------------------------------ */
+
+    .page-questions-answers {
+        --qa-accent: #159f82;
+        --qa-accent-hover: #11866e;
+        --qa-accent-contrast: #ffffff;
+        --qa-page-bg: #f5f8f7;
+        --qa-card-bg: #ffffff;
+        --qa-card-header-bg: #ffffff;
+        --qa-list-bg: #f8fbfa;
+        --qa-list-hover: #edf7f3;
+        --qa-list-selected: #dff3ec;
+        --qa-text: #253746;
+        --qa-heading: #172638;
+        --qa-muted: #627486;
+        --qa-border: #dce6e2;
+        --qa-input-bg: #ffffff;
+        --qa-input-text: #243746;
+        --qa-input-placeholder: #758692;
+        --qa-radius: 12px;
+        --qa-shadow: 0 3px 14px rgba(22, 48, 40, 0.06);
+        color: var(--qa-text);
+        min-width: 0;
+        padding-bottom: 32px;
+    }
+
+    /* Dark theme variables */
+    html[data-bs-theme="dark"] .page-questions-answers,
+    body[data-bs-theme="dark"] .page-questions-answers,
+    [data-bs-theme="dark"] .page-questions-answers {
+        --qa-accent: #24c79e;
+        --qa-accent-hover: #38d9b0;
+        --qa-accent-contrast: #062a20;
+        --qa-page-bg: #081610;
+        --qa-card-bg: #10251d;
+        --qa-card-header-bg: #10251d;
+        --qa-list-bg: #0c1e17;
+        --qa-list-hover: #173a2d;
+        --qa-list-selected: #194b39;
+        --qa-text: #dceae4;
+        --qa-heading: #f4faf7;
+        --qa-muted: #b2c8bd;
+        --qa-border: #345044;
+        --qa-input-bg: #fffed0;
+        --qa-input-text: #263b34;
+        --qa-input-placeholder: #72847a;
+        --qa-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        color: var(--qa-text);
+    }
+
+    /* ------------------------------------------------------------
+       2. PAGE SPACING AND TYPOGRAPHY
+       ------------------------------------------------------------ */
+
+    .page-questions-answers,
+    .page-questions-answers * {
+        box-sizing: border-box;
+    }
+
+    .page-questions-answers {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+        .page-questions-answers h1,
+        .page-questions-answers h2,
+        .page-questions-answers h3,
+        .page-questions-answers h4,
+        .page-questions-answers h5,
+        .page-questions-answers h6 {
+            color: var(--qa-heading);
+        }
+
+        .page-questions-answers h1 {
+            font-size: clamp(24px, 2vw, 30px);
+            font-weight: 750;
+            line-height: 1.3;
+        }
+
+        .page-questions-answers p {
+            line-height: 1.6;
+        }
+
+        .page-questions-answers .text-muted,
+        .page-questions-answers .text-secondary,
+        .page-questions-answers .form-text {
+            color: var(--qa-muted) !important;
+        }
+
+        .page-questions-answers a {
+            color: var(--qa-accent);
+        }
+
+            .page-questions-answers a:hover {
+                color: var(--qa-accent-hover);
+            }
+
+        /* ------------------------------------------------------------
+       3. PAGE HEADER AND TOP ACTIONS
+       ------------------------------------------------------------ */
+
+        .page-questions-answers > .d-flex:first-child {
+            row-gap: 16px;
+            margin-bottom: 24px !important;
+        }
+
+        .page-questions-answers #qaDraftStatus {
+            background: var(--qa-card-bg);
+            color: var(--qa-muted);
+            border-color: var(--qa-border) !important;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .page-questions-answers #qaPreviewButton,
+        .page-questions-answers #qaSaveButton {
+            min-height: 40px;
+            padding: 9px 16px;
+            font-size: 13px;
+            font-weight: 650;
+            white-space: nowrap;
+        }
+
+        /* ------------------------------------------------------------
+       4. SHARED BUTTONS
+       ------------------------------------------------------------ */
+
+        .page-questions-answers .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            border-radius: 8px;
+            font-weight: 650;
+            line-height: 1.4;
+            transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .page-questions-answers .btn-primary {
+            background-color: var(--qa-accent);
+            border-color: var(--qa-accent);
+            color: var(--qa-accent-contrast);
+        }
+
+            .page-questions-answers .btn-primary:hover,
+            .page-questions-answers .btn-primary:focus {
+                background-color: var(--qa-accent-hover);
+                border-color: var(--qa-accent-hover);
+                color: var(--qa-accent-contrast);
+            }
+
+        .page-questions-answers .btn:focus-visible {
+            outline: 3px solid rgba(36, 199, 158, 0.35);
+            outline-offset: 2px;
+        }
+
+        /* ------------------------------------------------------------
+       5. WIDGET CONTEXT CARD
+       ------------------------------------------------------------ */
+
+        .page-questions-answers > .card {
+            background: var(--qa-card-bg);
+            color: var(--qa-text);
+            border: 1px solid var(--qa-border) !important;
+            border-radius: var(--qa-radius);
+            box-shadow: var(--qa-shadow) !important;
+            overflow: hidden;
+        }
+
+        .page-questions-answers .qa-context-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 44px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--qa-accent);
+            color: var(--qa-accent-contrast);
+            font-size: 20px;
+        }
+
+            .page-questions-answers .qa-context-icon i {
+                color: inherit;
+            }
+
+            .page-questions-answers .qa-context-icon + div .fw-bold {
+                color: var(--qa-heading);
+                font-size: 16px;
+            }
+
+        .page-questions-answers #qaQuestionCount {
+            min-width: 24px;
+            text-align: center;
+        }
+
+        /* ------------------------------------------------------------
+       6. MAIN THREE-COLUMN BOOTSTRAP LAYOUT
+       ------------------------------------------------------------ */
+
+        .page-questions-answers > .row {
+            --bs-gutter-x: 20px;
+            --bs-gutter-y: 20px;
+            align-items: start;
+        }
+
+            .page-questions-answers > .row > [class*="col-"] {
+                min-width: 0;
+            }
+
+            /* All main content cards */
+            .page-questions-answers > .row .card {
+                background-color: var(--qa-card-bg);
+                color: var(--qa-text);
+                border: 1px solid var(--qa-border) !important;
+                border-radius: var(--qa-radius);
+                box-shadow: var(--qa-shadow) !important;
+                min-width: 0;
+                overflow: hidden;
+            }
+
+        /* ------------------------------------------------------------
+       7. YOUR QUESTIONS PANEL — HEADER
+       ------------------------------------------------------------ */
+
+        .page-questions-answers .qa-question-list-card {
+            background-color: var(--qa-card-bg) !important;
+            color: var(--qa-text) !important;
+            border: 1px solid var(--qa-border) !important;
+            border-radius: var(--qa-radius);
+            overflow: hidden;
+            box-shadow: var(--qa-shadow) !important;
+            min-width: 0;
+        }
+
+        .page-questions-answers .qa-question-list-header {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+            padding: 16px;
+            background: var(--qa-card-header-bg) !important;
+            border-bottom: 1px solid var(--qa-border);
+        }
+
+        /* Title and Add button share one row */
+        .page-questions-answers .qa-question-list-top {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            flex-wrap: nowrap !important;
+            gap: 10px;
+            width: 100%;
+            min-width: 0;
+        }
+
+        /* Your questions title */
+        .page-questions-answers .qa-question-list-title {
+            flex: 1 1 auto;
+            min-width: 0;
+            margin: 0 !important;
+            color: var(--qa-heading) !important;
+            font-size: 16px !important;
+            font-weight: 750 !important;
+            line-height: 1.4 !important;
+            overflow-wrap: anywhere;
+        }
+
+        /* ------------------------------------------------------------
+       8. ADD BUTTON — ALWAYS VISIBLE
+       ------------------------------------------------------------ */
+
+        .page-questions-answers #qaAddQuestion {
+            display: inline-flex !important;
+            flex: 0 0 auto !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px;
+            width: auto !important;
+            min-width: 80px;
+            min-height: 40px;
+            max-width: none;
+            margin: 0 !important;
+            padding: 9px 14px !important;
+            background-color: #20c879 !important;
+            border: 1px solid #20c879 !important;
+            border-radius: 8px !important;
+            color: #ffffff !important;
+            font-size: 13px !important;
+            font-weight: 750 !important;
+            line-height: 1.3 !important;
+            text-align: center;
+            white-space: nowrap;
+            visibility: visible !important;
+            opacity: 1 !important;
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+            .page-questions-answers #qaAddQuestion i,
+            .page-questions-answers #qaAddQuestion span {
+                color: #ffffff !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+
+            .page-questions-answers #qaAddQuestion:hover {
+                background-color: #16a765 !important;
+                border-color: #16a765 !important;
+                color: #ffffff !important;
+            }
+
+            .page-questions-answers #qaAddQuestion:active {
+                background-color: #128b55 !important;
+                border-color: #128b55 !important;
+            }
+
+        /* Header subtitle */
+        .page-questions-answers .qa-question-list-subtitle {
+            margin: 10px 0 0 !important;
+            color: var(--qa-muted) !important;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* ------------------------------------------------------------
+       9. QUESTION LIST CONTENT
+       ------------------------------------------------------------ */
+
+        .page-questions-answers #qaQuestionList {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            margin: 0;
+            padding: 0;
+            background: var(--qa-list-bg) !important;
+            color: var(--qa-text) !important;
+        }
+
+            /* Common styles for JavaScript-generated question entries */
+            .page-questions-answers #qaQuestionList > *,
+            .page-questions-answers #qaQuestionList .qa-question-item,
+            .page-questions-answers #qaQuestionList .question-list-item {
+                min-width: 0;
+                color: var(--qa-text);
+                overflow-wrap: anywhere;
+            }
+
+            /* Question row */
+            .page-questions-answers #qaQuestionList .qa-question-item,
+            .page-questions-answers #qaQuestionList .question-list-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 14px 15px;
+                background: var(--qa-list-bg);
+                border: 0;
+                border-bottom: 1px solid var(--qa-border);
+                border-left: 3px solid transparent;
+                cursor: pointer;
+                transition: background-color 0.18s ease;
+            }
+
+                .page-questions-answers #qaQuestionList .qa-question-item:last-child,
+                .page-questions-answers #qaQuestionList .question-list-item:last-child {
+                    border-bottom: 0;
+                }
+
+                .page-questions-answers #qaQuestionList .qa-question-item:hover,
+                .page-questions-answers #qaQuestionList .question-list-item:hover {
+                    background: var(--qa-list-hover);
+                }
+
+                .page-questions-answers #qaQuestionList .qa-question-item.active,
+                .page-questions-answers #qaQuestionList .qa-question-item.is-selected,
+                .page-questions-answers #qaQuestionList .question-list-item.active,
+                .page-questions-answers #qaQuestionList .question-list-item.is-selected {
+                    background: var(--qa-list-selected);
+                    border-left-color: var(--qa-accent);
+                }
+
+            /* Question titles */
+            .page-questions-answers #qaQuestionList .qa-question-item-title,
+            .page-questions-answers #qaQuestionList .question-item-title {
+                display: block;
+                color: var(--qa-heading) !important;
+                font-size: 13px;
+                font-weight: 650;
+                line-height: 1.5;
+            }
+
+            /* Question metadata */
+            .page-questions-answers #qaQuestionList .qa-question-item-meta,
+            .page-questions-answers #qaQuestionList .question-item-meta {
+                display: block;
+                margin-top: 4px;
+                color: var(--qa-muted) !important;
+                font-size: 11px;
+                line-height: 1.5;
+            }
+
+            /* Number badge */
+            .page-questions-answers #qaQuestionList .qa-question-number,
+            .page-questions-answers #qaQuestionList .question-number {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                flex: 0 0 32px;
+                width: 32px;
+                height: 32px;
+                border: 1px solid var(--qa-border);
+                border-radius: 9px;
+                background: var(--qa-card-bg);
+                color: var(--qa-heading);
+                font-size: 12px;
+                font-weight: 750;
+            }
+
+            /* Empty list message */
+            .page-questions-answers #qaQuestionList .qa-empty-state,
+            .page-questions-answers #qaQuestionList .question-list-empty,
+            .page-questions-answers #qaQuestionList:empty::after {
+                display: block;
+                padding: 20px 16px;
+                color: var(--qa-muted) !important;
+                font-size: 13px;
+                line-height: 1.65;
+                text-align: center;
+            }
+
+        /* Hint at bottom of Your questions */
+        .page-questions-answers .qa-question-list-hint {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            padding: 14px 15px;
+            margin: 0;
+            background: var(--qa-card-header-bg) !important;
+            border-top: 1px solid var(--qa-border) !important;
+            color: var(--qa-muted) !important;
+            font-size: 12px;
+            line-height: 1.65;
+            overflow-wrap: anywhere;
+        }
+
+            .page-questions-answers .qa-question-list-hint i {
+                flex: 0 0 auto;
+                margin-top: 3px;
+                color: var(--qa-accent) !important;
+            }
+
+        /* ------------------------------------------------------------
+       10. QUESTION EDITOR
+       ------------------------------------------------------------ */
+
+        .page-questions-answers #qaEditor {
+            background: var(--qa-card-bg) !important;
+            color: var(--qa-text) !important;
+            min-width: 0;
+        }
+
+            .page-questions-answers #qaEditor h2,
+            .page-questions-answers #qaEditor h3 {
+                color: var(--qa-heading) !important;
+            }
+
+            .page-questions-answers #qaEditor .text-muted,
+            .page-questions-answers #qaEditor p {
+                color: var(--qa-muted) !important;
+            }
+
+        .page-questions-answers #qaDeleteQuestion {
+            flex: 0 0 auto;
+            white-space: nowrap;
+        }
+
+        /* Form labels */
+        .page-questions-answers #qaEditor .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--qa-heading) !important;
+            font-size: 13px;
+            font-weight: 650;
+            line-height: 1.5;
+        }
+
+        /* Inputs and textarea */
+        .page-questions-answers #qaEditor .form-control,
+        .page-questions-answers #qaEditor .form-select {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            min-height: 42px;
+            padding: 10px 12px;
+            background-color: var(--qa-input-bg) !important;
+            border: 1px solid var(--qa-border);
+            border-radius: 7px;
+            color: var(--qa-input-text) !important;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: none;
+        }
+
+        .page-questions-answers #qaEditor textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .page-questions-answers #qaEditor .form-control::placeholder {
+            color: var(--qa-input-placeholder) !important;
+            opacity: 1;
+        }
+
+        .page-questions-answers #qaEditor .form-control:focus,
+        .page-questions-answers #qaEditor .form-select:focus {
+            border-color: var(--qa-accent);
+            box-shadow: 0 0 0 3px rgba(21, 159, 130, 0.16);
+        }
+
+        .page-questions-answers #qaEditor .form-text {
+            color: var(--qa-muted) !important;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-top: 6px;
+        }
+
+        /* Required-question setting */
+        .page-questions-answers .qa-setting-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 14px;
+            background: var(--qa-list-bg);
+            border: 1px solid var(--qa-border);
+            border-radius: 9px;
+        }
+
+            .page-questions-answers .qa-setting-box .fw-semibold {
+                color: var(--qa-heading);
+            }
+
+            .page-questions-answers .qa-setting-box .form-check-input {
+                cursor: pointer;
+            }
+
+        /* Answer section */
+        .page-questions-answers #qaAnswersList {
+            min-width: 0;
+        }
+
+            .page-questions-answers #qaAnswersList > * {
+                min-width: 0;
+                overflow-wrap: anywhere;
+            }
+
+        .page-questions-answers #qaEditor .alert-info {
+            background: var(--qa-list-bg);
+            border-color: var(--qa-border);
+            color: var(--qa-text);
+        }
+
+        .page-questions-answers #qaApplyChanges {
+            min-height: 40px;
+        }
+
+        /* ------------------------------------------------------------
+       11. VISITOR PREVIEW COLUMN
+       ------------------------------------------------------------ */
+
+        .page-questions-answers #qaPreviewColumn {
+            min-width: 0;
+        }
+
+        .page-questions-answers .qa-preview-sticky {
+            position: sticky;
+            top: 16px;
+            min-width: 0;
+        }
+
+            .page-questions-answers .qa-preview-sticky > .mb-3 h2 {
+                color: var(--qa-heading);
+            }
+
+            .page-questions-answers .qa-preview-sticky > .mb-3 p {
+                color: var(--qa-muted) !important;
+            }
+
+        /* Preview background stage */
+        .page-questions-answers .qa-preview-stage {
+            padding: 20px;
+            background: radial-gradient( circle at top left, rgba(21, 159, 130, 0.10), transparent 55% ), var(--qa-list-bg);
+            border: 1px dashed var(--qa-border);
+            border-radius: 14px;
+            min-width: 0;
+        }
+
+        /* The simulated visitor widget remains white in both portal themes */
+        .page-questions-answers .qa-visitor-widget {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            padding: 24px;
+            background: #ffffff !important;
+            color: #263844 !important;
+            border: 1px solid #dce6e2;
+            border-radius: 16px;
+            box-shadow: 0 8px 28px rgba(20, 45, 40, 0.08);
+        }
+
+            .page-questions-answers .qa-visitor-widget * {
+                box-sizing: border-box;
+            }
+
+            .page-questions-answers .qa-visitor-widget h3,
+            .page-questions-answers #qaPreviewQuestion {
+                color: #263844 !important;
+                font-size: 22px;
+                font-weight: 750;
+                line-height: 1.4;
+                overflow-wrap: anywhere;
+                margin: 18px 0 12px;
+            }
+
+            .page-questions-answers .qa-visitor-widget p,
+            .page-questions-answers .qa-visitor-help {
+                color: #5e707b !important;
+                font-size: 13px;
+                line-height: 1.7;
+            }
+
+        /* Preview brand */
+        .page-questions-answers .qa-visitor-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+            color: #263844 !important;
+            font-size: 13px;
+            font-weight: 750;
+        }
+
+        .page-questions-answers .qa-visitor-brand-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 36px;
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            background: #159f82;
+            color: #ffffff !important;
+        }
+
+            .page-questions-answers .qa-visitor-brand-icon i {
+                color: #ffffff !important;
+            }
+
+        /* Progress indicator */
+        .page-questions-answers .qa-progress {
+            color: #455966;
+        }
+
+        .page-questions-answers .qa-visitor-widget .progress {
+            height: 6px;
+            overflow: hidden;
+            background: #e3ece8;
+            border-radius: 999px;
+        }
+
+        .page-questions-answers .qa-visitor-widget .progress-bar {
+            background: #159f82;
+            border-radius: 999px;
+        }
+
+        /* Preview answer choices */
+        .page-questions-answers .qa-preview-answers {
+            display: grid;
+            gap: 9px;
+            min-width: 0;
+            margin-top: 18px;
+        }
+
+            .page-questions-answers .qa-preview-answers > *,
+            .page-questions-answers .qa-preview-answer {
+                min-width: 0;
+                overflow-wrap: anywhere;
+            }
+
+        /* Preview navigation buttons */
+        .page-questions-answers .qa-visitor-widget .btn {
+            min-height: 40px;
+            padding: 9px 12px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .page-questions-answers .qa-visitor-widget .btn-primary {
+            background: #159f82;
+            border-color: #159f82;
+            color: #ffffff;
+        }
+
+            .page-questions-answers .qa-visitor-widget .btn-primary:hover {
+                background: #11866e;
+                border-color: #11866e;
+                color: #ffffff;
+            }
+
+        .page-questions-answers .qa-visitor-widget .btn-outline-secondary {
+            color: #52636c;
+            border-color: #cbd7d2;
+            background: #ffffff;
+        }
+
+        .page-questions-answers .qa-visitor-widget .btn:disabled {
+            opacity: 0.55;
+        }
+
+        /* Preview footer */
+        .page-questions-answers .qa-visitor-footer {
+            margin-top: 16px;
+            color: #657780 !important;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* Prototype information card */
+        .page-questions-answers .qa-preview-sticky > .card {
+            background: var(--qa-card-bg) !important;
+            color: var(--qa-text) !important;
+            border: 1px solid var(--qa-border) !important;
+        }
+
+            .page-questions-answers .qa-preview-sticky > .card .fw-semibold {
+                color: var(--qa-heading);
+            }
+
+            .page-questions-answers .qa-preview-sticky > .card p {
+                color: var(--qa-muted) !important;
+            }
+
+    /* ------------------------------------------------------------
+       12. DARK THEME CONTRAST SAFEGUARDS
+       ------------------------------------------------------------ */
+
+    html[data-bs-theme="dark"] .page-questions-answers .qa-question-list-card,
+    body[data-bs-theme="dark"] .page-questions-answers .qa-question-list-card,
+    [data-bs-theme="dark"] .page-questions-answers .qa-question-list-card {
+        background: var(--qa-card-bg) !important;
+        color: var(--qa-text) !important;
+    }
+
+    html[data-bs-theme="dark"] .page-questions-answers .qa-question-list-title,
+    html[data-bs-theme="dark"] .page-questions-answers #qaQuestionList .qa-question-item-title,
+    html[data-bs-theme="dark"] .page-questions-answers #qaQuestionList .question-item-title,
+    html[data-bs-theme="dark"] .page-questions-answers .qa-question-list-hint,
+    [data-bs-theme="dark"] .page-questions-answers .qa-question-list-title,
+    [data-bs-theme="dark"] .page-questions-answers #qaQuestionList .qa-question-item-title,
+    [data-bs-theme="dark"] .page-questions-answers #qaQuestionList .question-item-title,
+    [data-bs-theme="dark"] .page-questions-answers .qa-question-list-hint {
+        color: var(--qa-text) !important;
+    }
+
+    html[data-bs-theme="dark"] .page-questions-answers .qa-question-list-header,
+    html[data-bs-theme="dark"] .page-questions-answers .qa-question-list-hint,
+    html[data-bs-theme="dark"] .page-questions-answers #qaQuestionList,
+    [data-bs-theme="dark"] .page-questions-answers .qa-question-list-header,
+    [data-bs-theme="dark"] .page-questions-answers .qa-question-list-hint,
+    [data-bs-theme="dark"] .page-questions-answers #qaQuestionList {
+        background-color: var(--qa-card-bg) !important;
+    }
+
+    /* Keep question editor fields readable in dark mode */
+    html[data-bs-theme="dark"] .page-questions-answers #qaEditor .form-control,
+    html[data-bs-theme="dark"] .page-questions-answers #qaEditor .form-select,
+    [data-bs-theme="dark"] .page-questions-answers #qaEditor .form-control,
+    [data-bs-theme="dark"] .page-questions-answers #qaEditor .form-select {
+        background-color: var(--qa-input-bg) !important;
+        color: var(--qa-input-text) !important;
+    }
+
+    /* ------------------------------------------------------------
+       13. TABLET LAYOUT
+       ------------------------------------------------------------ */
+
+    @@media (max-width: 1199.98px) {
+        .page-questions-answers > .row {
+            --bs-gutter-x: 18px;
+            --bs-gutter-y: 18px;
+        }
+
+        .page-questions-answers .qa-preview-sticky {
+            position: static;
+        }
+
+        .page-questions-answers .qa-preview-stage {
+            padding: 18px;
+        }
+    }
+
+    /* ------------------------------------------------------------
+       14. MOBILE LAYOUT
+       ------------------------------------------------------------ */
+
+    @@media (max-width: 767.98px) {
+        .page-questions-answers {
+            padding-top: 20px !important;
+            padding-bottom: 24px;
+        }
+
+            .page-questions-answers > .row {
+                --bs-gutter-x: 14px;
+                --bs-gutter-y: 16px;
+            }
+
+            .page-questions-answers > .d-flex:first-child {
+                margin-bottom: 20px !important;
+            }
+
+                .page-questions-answers > .d-flex:first-child > .d-flex {
+                    width: 100%;
+                }
+
+            .page-questions-answers #qaDraftStatus {
+                margin-right: auto;
+            }
+
+            .page-questions-answers .qa-question-list-header {
+                padding: 15px;
+            }
+
+            .page-questions-answers .qa-question-list-top {
+                flex-wrap: nowrap !important;
+            }
+
+            .page-questions-answers #qaAddQuestion {
+                min-width: 82px;
+                min-height: 40px;
+            }
+
+            .page-questions-answers #qaEditor {
+                padding: 20px !important;
+            }
+
+            .page-questions-answers .qa-preview-sticky {
+                position: static;
+            }
+
+            .page-questions-answers .qa-preview-stage {
+                padding: 12px;
+            }
+
+            .page-questions-answers .qa-visitor-widget {
+                padding: 20px;
+            }
+
+                .page-questions-answers .qa-visitor-widget h3,
+                .page-questions-answers #qaPreviewQuestion {
+                    font-size: 20px;
+                }
+    }
+
+    /* ------------------------------------------------------------
+       15. VERY SMALL SCREENS
+       ------------------------------------------------------------ */
+
+    @@media (max-width: 399.98px) {
+        .page-questions-answers #qaEditor {
+            padding: 15px !important;
+        }
+
+        .page-questions-answers .qa-question-list-header {
+            padding: 12px;
+        }
+
+        .page-questions-answers .qa-question-list-title {
+            font-size: 15px !important;
+        }
+
+        .page-questions-answers #qaAddQuestion {
+            min-width: 76px;
+            padding: 8px 11px !important;
+        }
+
+        .page-questions-answers .qa-visitor-widget {
+            padding: 16px;
+        }
+
+        .page-questions-answers .qa-preview-stage {
+            padding: 9px;
+        }
+
+        .page-questions-answers #qaPreviewBack,
+        .page-questions-answers #qaPreviewNext {
+            padding: 8px 10px;
+            font-size: 12px;
+        }
+    }
+
+    /* ------------------------------------------------------------
+       16. ACCESSIBILITY
+       ------------------------------------------------------------ */
+
+    .page-questions-answers button:focus-visible,
+    .page-questions-answers input:focus-visible,
+    .page-questions-answers textarea:focus-visible,
+    .page-questions-answers select:focus-visible {
+        outline-offset: 2px;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .page-questions-answers *,
+        .page-questions-answers *::before,
+        .page-questions-answers *::after {
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+        }
+    }
+
+
+    /* =========================================
+       QUESTIONS & ANSWERS — DARK THEME FIX
+       ========================================= */
+
+    /* Main page title */
+    body.dark-theme .page-questions h1,
+    body.dark-theme .page-questions h2,
+    body.dark-theme .page-questions .page-title,
+    body.dark-theme .page-questions .qa-page-title,
+    [data-theme="dark"] .page-questions h1,
+    [data-theme="dark"] .page-questions h2,
+    [data-theme="dark"] .page-questions .page-title,
+    [data-theme="dark"] .page-questions .qa-page-title {
+        color: #f1f5f9 !important;
+        opacity: 1 !important;
+        text-shadow: none !important;
+    }
+
+    /* Page subtitle */
+    body.dark-theme .page-questions p,
+    [data-theme="dark"] .page-questions p {
+        color: #b8c7d9;
+    }
+
+</style>
+
