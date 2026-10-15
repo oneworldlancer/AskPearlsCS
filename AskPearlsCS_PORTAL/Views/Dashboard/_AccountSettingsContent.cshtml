@@ -89,6 +89,7 @@
                 </div>
 
                 <div class="as-panel-body">
+
                     <div class="as-avatar-editor">
                         <div class="as-avatar as-avatar-large" id="asLargeAvatar">JD</div>
                         <div>
@@ -137,12 +138,67 @@
                 </div>
 
                 <div class="as-panel-body">
+                  
                     <div class="as-info-banner">
                         <i class="bi bi-info-circle"></i>
                         <span>Organization details are demonstration data. They are not connected to a saved organization record yet.</span>
                     </div>
 
-                    <div class="as-form-grid">
+                 
+                       
+                    <!-- ORGANIZATION BRANDING -->
+                    <div class="as-org-branding">
+                        <div class="as-org-logo-preview" id="asOrgLogoPreview">
+                            <span id="asOrgLogoInitials">AP</span>
+                            <img id="asOrgLogoImage" alt="Organization logo preview" hidden>
+                        </div>
+
+                        <div class="as-org-branding-details">
+                            <strong>Organization branding</strong>
+                            <p>Personalize your workspace with your company logo.</p>
+
+                            <div class="as-org-branding-actions">
+                                <label class="as-btn as-btn-primary" for="asOrgLogoInput">
+                                    <i class="bi bi-upload"></i> Upload logo
+                                </label>
+
+                                <button type="button"
+                                        class="as-btn as-btn-outline"
+                                        id="asOrgLogoRemove">
+                                    <i class="bi bi-trash3"></i> Remove
+                                </button>
+
+                                <input type="file"
+                                       id="asOrgLogoInput"
+                                       accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                                       hidden>
+                            </div>
+
+                            <small>PNG, JPG, WebP or SVG. Maximum 2 MB.</small>
+                            <small id="asOrgLogoMessage" role="status" aria-live="polite"></small>
+                        </div>
+
+                        <div class="as-org-brand-card">
+                            <span class="as-org-brand-label">WORKSPACE PREVIEW</span>
+                            <div class="as-org-brand-identity">
+                                <div class="as-org-mini-logo" id="asOrgMiniLogo">AP</div>
+                                <div>
+                                    <strong id="asOrgPreviewName">AskPearls Limited</strong>
+                                    <span>Organization workspace</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+<div class="as-form-grid">
                         <div class="as-field as-field-full">
                             <label for="asCompanyName">Organization name <span>*</span></label>
                             <input type="text" id="asCompanyName" value="AskPearls Limited" maxlength="150" required>
@@ -189,57 +245,324 @@
                 </div>
             </section>
 
-            <!-- SECURITY -->
-            <section class="as-panel" data-as-panel="security" hidden>
-                <div class="as-panel-heading">
+
+<!-- SECURITY -->
+<section class="as-panel" data-as-panel="security" hidden>
+    <div class="as-panel-heading">
+        <div>
+            <h4>Security</h4>
+            <p>Review your account security preferences.</p>
+        </div>
+        <span class="as-heading-icon">
+            <i class="bi bi-shield-check"></i>
+        </span>
+    </div>
+
+    <div class="as-panel-body">
+
+        <!-- SECURITY STATUS -->
+        <div class="as-security-overview">
+            <div class="as-security-overview-icon">
+                <i class="bi bi-shield-lock"></i>
+            </div>
+            <div class="as-security-overview-copy">
+                <strong>Account security</strong>
+                <p id="asSecuritySummary">
+                    Review your password and sign-in security preferences.
+                </p>
+            </div>
+            <span class="as-security-status" id="asSecurityStatus">
+                <i class="bi bi-info-circle"></i>
+                Review settings
+            </span>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="as-security-card">
+            <div class="as-security-icon">
+                <i class="bi bi-key"></i>
+            </div>
+            <div class="as-security-copy">
+                <strong>Password</strong>
+                <p>Manage your account password.</p>
+                <span class="as-muted-note">
+                    Password changes are available as a UI prototype only.
+                </span>
+            </div>
+            <button type="button"
+                    class="as-btn as-btn-outline"
+                    id="asChangePassword">
+                Change password
+            </button>
+        </div>
+
+        <!-- TWO-FACTOR AUTHENTICATION -->
+        <div class="as-setting-row">
+            <div class="as-setting-copy">
+                <strong>Two-factor authentication</strong>
+                <p>Add an additional verification step when signing in.</p>
+                <span class="as-muted-note" id="asTwoFactorDescription">
+                    Currently disabled in this demo.
+                </span>
+            </div>
+
+            <label class="as-switch">
+                <input type="checkbox" id="asTwoFactor">
+                <span class="as-switch-track"></span>
+            </label>
+        </div>
+
+        <!-- ACTIVE SESSIONS -->
+        <div class="as-security-card">
+            <div class="as-security-icon as-icon-blue">
+                <i class="bi bi-laptop"></i>
+            </div>
+            <div class="as-security-copy">
+                <strong>Active sessions</strong>
+                <p>Review devices and browser sessions signed in to your account.</p>
+                <span class="as-muted-note">
+                    <i class="bi bi-display"></i>
+                    <span id="asSessionCount">3 demo sessions</span>
+                </span>
+            </div>
+            <button type="button"
+                    class="as-btn as-btn-outline"
+                    id="asViewSessions">
+                <i class="bi bi-eye"></i>
+                View sessions
+            </button>
+        </div>
+
+        <!-- SECURITY NOTICE -->
+        <div class="as-warning-banner">
+            <i class="bi bi-shield-exclamation"></i>
+            <span>
+                This is a UI prototype. Two-factor authentication and session
+                management are simulated and do not enforce real account security.
+            </span>
+        </div>
+    </div>
+
+    <!-- TWO-FACTOR CONFIRMATION MODAL -->
+    <div class="as-modal-backdrop" id="asTwoFactorModal" hidden>
+        <section class="as-modal as-security-modal"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="asTwoFactorTitle">
+
+            <div class="as-modal-header">
+                <div>
+                    <h4 id="asTwoFactorTitle">Two-factor authentication</h4>
+                    <p>Confirm your security preference.</p>
+                </div>
+                <button type="button"
+                        class="as-modal-close"
+                        id="asTwoFactorClose"
+                        aria-label="Close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <div class="as-modal-body">
+                <div class="as-security-modal-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <h5 id="asTwoFactorActionTitle">Enable two-factor authentication?</h5>
+                <p id="asTwoFactorActionText">
+                    This demo will update the displayed preference only.
+                </p>
+
+                <div class="as-security-modal-notice">
+                    <i class="bi bi-info-circle"></i>
+                    <span>
+                        No verification codes will be sent, and real sign-in
+                        security will not change.
+                    </span>
+                </div>
+            </div>
+
+            <div class="as-modal-footer">
+                <button type="button"
+                        class="as-btn as-btn-outline"
+                        id="asTwoFactorCancel">
+                    Cancel
+                </button>
+                <button type="button"
+                        class="as-btn as-btn-primary"
+                        id="asTwoFactorConfirm">
+                    Confirm demo
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- ACTIVE SESSIONS MODAL -->
+    <div class="as-modal-backdrop" id="asSessionsModal" hidden>
+        <section class="as-modal as-security-modal as-sessions-modal"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="asSessionsTitle">
+
+            <div class="as-modal-header">
+                <div>
+                    <h4 id="asSessionsTitle">Active sessions</h4>
+                    <p>Review the devices associated with your account.</p>
+                </div>
+                <button type="button"
+                        class="as-modal-close"
+                        id="asSessionsClose"
+                        aria-label="Close sessions">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <div class="as-modal-body">
+                <div class="as-sessions-summary">
+                    <div class="as-sessions-summary-icon">
+                        <i class="bi bi-pc-display"></i>
+                    </div>
                     <div>
-                        <h4>Security</h4>
-                        <p>Review your account security preferences.</p>
+                        <strong id="asSessionsSummaryCount">3 demo sessions</strong>
+                        <p>Illustrative device information only</p>
                     </div>
-                    <span class="as-heading-icon"><i class="bi bi-shield-check"></i></span>
                 </div>
 
-                <div class="as-panel-body">
-                    <div class="as-security-card">
-                        <div class="as-security-icon"><i class="bi bi-key"></i></div>
-                        <div class="as-security-copy">
-                            <strong>Password</strong>
-                            <p>Change your account password through the connected authentication system.</p>
-                            <span class="as-muted-note">Password changes are not available in this UI prototype.</span>
+                <div class="as-session-list" id="asSessionList">
+
+                    <!-- Current demo session -->
+                    <article class="as-session-item" data-session-id="session-current">
+                        <div class="as-session-device">
+                            <i class="bi bi-laptop"></i>
                         </div>
-                        <button type="button" class="as-btn as-btn-outline" id="asChangePassword">
-                            Change password
+                        <div class="as-session-details">
+                            <strong>Windows PC · Chrome</strong>
+                            <p>Desktop browser</p>
+                            <span>Active now · Current session</span>
+                        </div>
+                        <span class="as-session-current">This device</span>
+                    </article>
+
+                    <!-- Mock session -->
+                    <article class="as-session-item" data-session-id="session-mobile">
+                        <div class="as-session-device">
+                            <i class="bi bi-phone"></i>
+                        </div>
+                        <div class="as-session-details">
+                            <strong>Android · Chrome</strong>
+                            <p>Mobile browser</p>
+                            <span>Last active 2 hours ago · Demo data</span>
+                        </div>
+                        <button type="button"
+                                class="as-session-revoke"
+                                data-revoke-session="session-mobile">
+                            Revoke
                         </button>
-                    </div>
+                    </article>
 
-                    <div class="as-setting-row">
-                        <div class="as-setting-copy">
-                            <strong>Two-factor authentication</strong>
-                            <p>Add an additional verification step when signing in.</p>
-                            <span class="as-muted-note">This switch is a visual preference only; authentication is not changed.</span>
+                    <!-- Mock session -->
+                    <article class="as-session-item" data-session-id="session-tablet">
+                        <div class="as-session-device">
+                            <i class="bi bi-tablet"></i>
                         </div>
-                        <label class="as-switch">
-                            <input type="checkbox" id="asTwoFactor">
-                            <span class="as-switch-track"></span>
-                        </label>
-                    </div>
-
-                    <div class="as-security-card">
-                        <div class="as-security-icon as-icon-blue"><i class="bi bi-laptop"></i></div>
-                        <div class="as-security-copy">
-                            <strong>Active sessions</strong>
-                            <p>Review signed-in devices and browser sessions.</p>
-                            <span class="as-muted-note">Session management will be connected later.</span>
+                        <div class="as-session-details">
+                            <strong>Windows tablet · Edge</strong>
+                            <p>Tablet browser</p>
+                            <span>Last active yesterday · Demo data</span>
                         </div>
-                        <span class="as-status-badge">Current session</span>
-                    </div>
-
-                    <div class="as-warning-banner">
-                        <i class="bi bi-shield-exclamation"></i>
-                        <span>For security, never store passwords in browser storage or treat frontend-only security controls as enforcement.</span>
-                    </div>
+                        <button type="button"
+                                class="as-session-revoke"
+                                data-revoke-session="session-tablet">
+                            Revoke
+                        </button>
+                    </article>
                 </div>
-            </section>
+
+                <div class="as-session-feedback"
+                     id="asSessionFeedback"
+                     role="status"
+                     aria-live="polite"
+                     hidden></div>
+
+                <div class="as-sessions-warning">
+                    <i class="bi bi-info-circle"></i>
+                    <span>
+                        These are sample sessions, not actual devices connected
+                        to your account.
+                    </span>
+                </div>
+            </div>
+
+            <div class="as-modal-footer as-sessions-footer">
+                <button type="button"
+                        class="as-btn as-btn-outline"
+                        id="asSignOutOthers">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Sign out other sessions
+                </button>
+                <button type="button"
+                        class="as-btn as-btn-primary"
+                        id="asSessionsDone">
+                    Done
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- SIGN OUT OTHER SESSIONS CONFIRMATION -->
+    <div class="as-modal-backdrop" id="asSignOutModal" hidden>
+        <section class="as-modal as-security-modal"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="asSignOutTitle">
+
+            <div class="as-modal-header">
+                <div>
+                    <h4 id="asSignOutTitle">Sign out other sessions?</h4>
+                    <p>Review this action before continuing.</p>
+                </div>
+                <button type="button"
+                        class="as-modal-close"
+                        id="asSignOutClose"
+                        aria-label="Close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <div class="as-modal-body">
+                <div class="as-security-modal-icon as-security-warning-icon">
+                    <i class="bi bi-box-arrow-right"></i>
+                </div>
+                <h5>End other demo sessions?</h5>
+                <p>
+                    The prototype will mark the other sample sessions as signed
+                    out. Your current session will remain active.
+                </p>
+                <div class="as-security-modal-notice">
+                    <i class="bi bi-info-circle"></i>
+                    <span>
+                        No real device will be signed out. This action only
+                        changes the sample list displayed in this page.
+                    </span>
+                </div>
+            </div>
+
+            <div class="as-modal-footer">
+                <button type="button"
+                        class="as-btn as-btn-outline"
+                        id="asSignOutCancel">
+                    Cancel
+                </button>
+                <button type="button"
+                        class="as-btn as-btn-primary"
+                        id="asSignOutConfirm">
+                    Sign out demo sessions
+                </button>
+            </div>
+        </section>
+    </div>
+
+</section>
+
 
             <!-- NOTIFICATIONS -->
             <section class="as-panel" data-as-panel="notifications" hidden>
@@ -252,7 +575,27 @@
                 </div>
 
                 <div class="as-panel-body">
-                    <div class="as-setting-row">
+
+                    
+<div class="as-setting-row as-notification-master">
+    <div class="as-setting-copy">
+        <strong>Non-essential notifications</strong>
+        <p>Control optional workspace updates and activity summaries.</p>
+        <span class="as-muted-note" id="asNotificationMasterStatus">
+            Optional notifications are enabled.
+        </span>
+    </div>
+
+    <label class="as-switch">
+        <input type="checkbox"
+               id="asNonEssentialNotifications"
+               checked>
+        <span class="as-switch-track"></span>
+    </label>
+</div>
+
+
+                    <div class="as-setting-row"  data-nonessential="true">
                         <div class="as-setting-copy">
                             <strong>Email notifications</strong>
                             <p>Receive important account and workspace updates by email.</p>
@@ -263,7 +606,7 @@
                         </label>
                     </div>
 
-                    <div class="as-setting-row">
+                    <div class="as-setting-row"  data-nonessential="true">
                         <div class="as-setting-copy">
                             <strong>Widget activity reports</strong>
                             <p>Receive summaries about views, interactions, and completions.</p>
@@ -274,7 +617,7 @@
                         </label>
                     </div>
 
-                    <div class="as-setting-row">
+                    <div class="as-setting-row"  data-nonessential="true">
                         <div class="as-setting-copy">
                             <strong>Product updates</strong>
                             <p>Hear about new AskPearls features and improvements.</p>
@@ -372,6 +715,21 @@
                         <span>The portal's global light/dark theme remains controlled by the existing header theme switch.</span>
                     </div>
                 </div>
+
+                <div class="as-setting-row as-notification-master">
+    <div class="as-setting-copy">
+        <strong>Non-essential notifications</strong>
+        <p>Control optional workspace updates and activity summaries.</p>
+        <span class="as-muted-note" id="asNotificationMasterStatus">
+            Optional notifications are enabled.
+        </span>
+    </div>
+
+    <label class="as-switch">
+        <input type="checkbox" id="asNonEssentialNotifications" checked>
+        <span class="as-switch-track"></span>
+    </label>
+</div>
             </section>
 
             <!-- PLAN SUMMARY -->
@@ -410,6 +768,274 @@
 
         </main>
     </div>
+
+    
+    <!-- CHANGE PASSWORD MODAL -->
+    <div class="as-modal-backdrop" id="asPasswordModal" hidden>
+        <section class="as-modal" role="dialog"
+                 aria-modal="true" aria-labelledby="asPasswordModalTitle">
+            <div class="as-modal-header">
+                <div>
+                    <h4 id="asPasswordModalTitle">Change password</h4>
+                    <p>Review your password requirements before continuing.</p>
+                </div>
+                <button type="button" class="as-modal-close"
+                        id="asPasswordClose" aria-label="Close dialog">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <form id="asPasswordForm" novalidate>
+                <div class="as-modal-body">
+                    <div class="as-password-field">
+                        <label for="asCurrentPassword">Current password</label>
+                        <div class="as-password-input">
+                            <input type="password" id="asCurrentPassword"
+                                   autocomplete="current-password" required>
+                            <button type="button" data-password-toggle="asCurrentPassword"
+                                    aria-label="Show current password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <small class="as-password-error" data-error-for="asCurrentPassword"></small>
+                    </div>
+
+                    <div class="as-password-field">
+                        <label for="asNewPassword">New password</label>
+                        <div class="as-password-input">
+                            <input type="password" id="asNewPassword"
+                                   autocomplete="new-password" required minlength="8">
+                            <button type="button" data-password-toggle="asNewPassword"
+                                    aria-label="Show new password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="as-password-strength">
+                            <div class="as-password-strength-track">
+                                <span id="asPasswordStrengthBar"></span>
+                            </div>
+                            <small id="asPasswordStrengthText">Enter a new password</small>
+                        </div>
+                        <ul class="as-password-rules">
+                            <li data-rule="length">At least 8 characters</li>
+                            <li data-rule="upper">One uppercase letter</li>
+                            <li data-rule="lower">One lowercase letter</li>
+                            <li data-rule="number">One number</li>
+                        </ul>
+                        <small class="as-password-error" data-error-for="asNewPassword"></small>
+                    </div>
+
+                    <div class="as-password-field">
+                        <label for="asConfirmPassword">Confirm new password</label>
+                        <div class="as-password-input">
+                            <input type="password" id="asConfirmPassword"
+                                   autocomplete="new-password" required>
+                            <button type="button" data-password-toggle="asConfirmPassword"
+                                    aria-label="Show password confirmation">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <small class="as-password-error" data-error-for="asConfirmPassword"></small>
+                    </div>
+
+                    <div class="as-password-notice">
+                        <i class="bi bi-info-circle"></i>
+                        <span>Prototype only. This form does not verify or change your real password.</span>
+                    </div>
+
+                    <div class="as-password-form-message" id="asPasswordFormMessage"
+                         role="status" aria-live="polite"></div>
+                </div>
+
+                <div class="as-modal-footer">
+                    <button type="button" class="as-btn as-btn-outline"
+                            id="asPasswordCancel">
+                        Cancel
+                    </button>
+                    <button type="button" class="as-btn as-btn-outline"
+                            id="asPasswordReset">
+                        Reset
+                    </button>
+                    <button type="submit" class="as-btn as-btn-primary">
+                        Validate demo
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    
+<!-- SUBSCRIPTION PLANS MODAL -->
+<div class="as-modal-backdrop as-plans-backdrop" id="asPlansModal" hidden>
+    <section class="as-modal as-plans-modal"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="asPlansModalTitle">
+
+        <div class="as-modal-header">
+            <div>
+                <h4 id="asPlansModalTitle">Choose your AskPearls plan</h4>
+                <p>Find the right plan for your growing business.</p>
+            </div>
+            <button type="button" class="as-modal-close"
+                    id="asPlansClose" aria-label="Close plans">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <div class="as-plans-intro">
+            <span class="as-plans-kicker">
+                <i class="bi bi-stars"></i> SIMPLE, FLEXIBLE PRICING
+            </span>
+            <h3>Grow at your own pace</h3>
+            <p>Start free and explore more capabilities as you grow.</p>
+            <span class="as-plans-demo-note">
+                <i class="bi bi-info-circle"></i>
+                Demo pricing only — not live offers.
+            </span>
+        </div>
+
+        <div class="as-plans-grid">
+
+            <!-- FREE -->
+            <article class="as-plan-option" data-plan="Free">
+                <div class="as-plan-option-top">
+                    <span class="as-plan-name">Free</span>
+                    <span class="as-plan-current">Current plan</span>
+                </div>
+                <div class="as-plan-price">
+                    <strong>$0</strong><span>/ month</span>
+                </div>
+                <p class="as-plan-description">
+                    Explore the essentials and build your first widgets.
+                </p>
+                <button type="button"
+                        class="as-btn as-btn-outline as-plan-select"
+                        data-select-plan="Free"
+                        disabled>
+                    Your current plan
+                </button>
+                <div class="as-plan-divider"></div>
+                <ul class="as-plan-features">
+                    <li><i class="bi bi-check-circle-fill"></i> Up to 5 widgets</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Core widget features</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Basic customization</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Basic analytics</li>
+                    <li class="as-feature-muted"><i class="bi bi-dash-circle"></i> Priority support</li>
+                </ul>
+            </article>
+
+            <!-- STARTER -->
+            <article class="as-plan-option" data-plan="Starter">
+                <div class="as-plan-option-top">
+                    <span class="as-plan-name">Starter</span>
+                </div>
+                <div class="as-plan-price">
+                    <strong>$19</strong><span>/ month</span>
+                </div>
+                <p class="as-plan-description">
+                    A practical next step for a small, growing business.
+                </p>
+                <button type="button"
+                        class="as-btn as-btn-outline as-plan-select"
+                        data-select-plan="Starter">
+                    Choose Starter
+                </button>
+                <div class="as-plan-divider"></div>
+                <ul class="as-plan-features">
+                    <li><i class="bi bi-check-circle-fill"></i> Up to 10 widgets</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Core widget features</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Standard customization</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Basic analytics</li>
+                    <li class="as-feature-muted"><i class="bi bi-dash-circle"></i> Priority support</li>
+                </ul>
+            </article>
+
+            <!-- PROFESSIONAL -->
+            <article class="as-plan-option as-plan-featured" data-plan="Professional">
+                <span class="as-plan-popular">POPULAR</span>
+                <div class="as-plan-option-top">
+                    <span class="as-plan-name">Professional</span>
+                </div>
+                <div class="as-plan-price">
+                    <strong>$49</strong><span>/ month</span>
+                </div>
+                <p class="as-plan-description">
+                    More control and insights for established teams.
+                </p>
+                <button type="button"
+                        class="as-btn as-btn-primary as-plan-select"
+                        data-select-plan="Professional">
+                    Choose Professional
+                </button>
+                <div class="as-plan-divider"></div>
+                <ul class="as-plan-features">
+                    <li><i class="bi bi-check-circle-fill"></i> Up to 25 widgets</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Core widget features</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Advanced customization</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Advanced analytics</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Priority support</li>
+                </ul>
+            </article>
+
+            <!-- PREMIUM -->
+            <article class="as-plan-option" data-plan="Premium">
+                <div class="as-plan-option-top">
+                    <span class="as-plan-name">Premium</span>
+                </div>
+                <div class="as-plan-price">
+                    <strong>$99</strong><span>/ month</span>
+                </div>
+                <p class="as-plan-description">
+                    A comprehensive feature set for ambitious businesses.
+                </p>
+                <button type="button"
+                        class="as-btn as-btn-outline as-plan-select"
+                        data-select-plan="Premium">
+                    Choose Premium
+                </button>
+                <div class="as-plan-divider"></div>
+                <ul class="as-plan-features">
+                    <li><i class="bi bi-check-circle-fill"></i> Unlimited widgets</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Core widget features</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Full customization</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Advanced analytics</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Priority support</li>
+                </ul>
+            </article>
+        </div>
+
+        <div class="as-plan-confirmation" id="asPlanConfirmation" hidden>
+            <div class="as-plan-confirmation-icon">
+                <i class="bi bi-check2-circle"></i>
+            </div>
+            <div class="as-plan-confirmation-copy">
+                <strong id="asPlanConfirmationTitle">Confirm plan selection</strong>
+                <p id="asPlanConfirmationText"></p>
+            </div>
+            <button type="button" class="as-btn as-btn-primary"
+                    id="asPlanConfirm">
+                Confirm demo
+            </button>
+            <button type="button" class="as-btn as-btn-outline"
+                    id="asPlanCancel">
+                Cancel
+            </button>
+        </div>
+
+        <div class="as-plans-footer">
+            <span><i class="bi bi-shield-check"></i>
+                No payment will be collected in this prototype.</span>
+            <button type="button" class="as-btn as-btn-outline"
+                    id="asPlansDone">Close</button>
+        </div>
+    </section>
+</div>
+
+
+
+
+
 
     <div class="as-toast" id="asToast" role="status" aria-live="polite"></div>
 </div>
@@ -1147,6 +1773,1330 @@
         .account-settings-page .as-plan-card { padding: 17px; }
         .account-settings-page .as-plan-bottom { align-items: flex-start; flex-direction: column; }
     }
+
+
+
+    
+/* Change Password modal */
+.account-settings-page .as-modal-backdrop[hidden] {
+    display: none !important;
+}
+
+.account-settings-page .as-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 12000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(8, 18, 15, .62);
+    overflow-y: auto;
+}
+
+.account-settings-page .as-modal {
+    width: min(100%, 520px);
+    max-height: calc(100dvh - 32px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--ap-border, #dce8e4);
+    border-radius: 16px;
+    background: var(--ap-card-bg, var(--bs-body-bg, #fff));
+    color: var(--ap-text, var(--bs-body-color, #17212b));
+    box-shadow: 0 24px 80px rgba(0, 0, 0, .25);
+}
+
+.account-settings-page .as-modal-header,
+.account-settings-page .as-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+}
+
+.account-settings-page .as-modal-header h4 {
+    margin: 0 0 5px;
+    font-size: 16px;
+    font-weight: 750;
+    color: var(--ap-text, var(--bs-body-color, #17212b));
+}
+
+.account-settings-page .as-modal-header p {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--ap-muted, #718096);
+}
+
+.account-settings-page .as-modal-close {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    border: 1px solid var(--ap-border, #dce8e4);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--ap-text, #17212b);
+    cursor: pointer;
+}
+
+.account-settings-page .as-modal-body {
+    padding: 22px;
+    overflow-y: auto;
+}
+
+.account-settings-page .as-password-field {
+    margin-bottom: 18px;
+}
+
+.account-settings-page .as-password-field > label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 11px;
+    font-weight: 750;
+    color: var(--ap-text, #17212b);
+}
+
+.account-settings-page .as-password-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--ap-border, #dce8e4);
+    border-radius: 9px;
+    background: var(--ap-input-bg, var(--bs-tertiary-bg, #f4f8f7));
+    overflow: hidden;
+}
+
+.account-settings-page .as-password-input:focus-within {
+    border-color: #0da88b;
+    box-shadow: 0 0 0 3px rgba(13, 168, 139, .13);
+}
+
+.account-settings-page .as-password-input input {
+    width: 100%;
+    min-width: 0;
+    padding: 11px 12px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--ap-text, #17212b);
+    font: inherit;
+    font-size: 12px;
+}
+
+.account-settings-page .as-password-input button {
+    width: 42px;
+    flex: 0 0 42px;
+    align-self: stretch;
+    border: 0;
+    background: transparent;
+    color: var(--ap-muted, #718096);
+    cursor: pointer;
+}
+
+.account-settings-page .as-password-strength-track {
+    height: 5px;
+    margin-top: 10px;
+    border-radius: 10px;
+    background: var(--ap-border, #dce8e4);
+    overflow: hidden;
+}
+
+.account-settings-page .as-password-strength-track span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: #d94d58;
+    transition: width .2s ease, background .2s ease;
+}
+
+.account-settings-page .as-password-strength small {
+    display: block;
+    margin-top: 6px;
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+}
+
+.account-settings-page .as-password-rules {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 12px;
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.account-settings-page .as-password-rules li {
+    font-size: 10px;
+    color: var(--ap-muted, #718096);
+}
+
+.account-settings-page .as-password-rules li::before {
+    content: "○";
+    margin-right: 6px;
+}
+
+.account-settings-page .as-password-rules li.met {
+    color: #0d9278;
+}
+
+.account-settings-page .as-password-rules li.met::before {
+    content: "✓";
+}
+
+.account-settings-page .as-password-error {
+    display: block;
+    min-height: 0;
+    margin-top: 5px;
+    color: #d94d58;
+    font-size: 10px;
+}
+
+.account-settings-page .as-password-notice {
+    display: flex;
+    gap: 9px;
+    padding: 12px;
+    border: 1px solid rgba(13, 168, 139, .25);
+    border-radius: 9px;
+    background: rgba(13, 168, 139, .08);
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.account-settings-page .as-password-notice i {
+    color: #0da88b;
+}
+
+.account-settings-page .as-password-form-message {
+    margin-top: 12px;
+    font-size: 11px;
+    color: #d94d58;
+}
+
+.account-settings-page .as-password-form-message:empty {
+    display: none;
+}
+
+.account-settings-page .as-modal-footer {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    border-bottom: 0;
+}
+
+.account-settings-page .as-modal-footer .as-btn {
+    min-width: 78px;
+}
+
+@@media (max-width: 575.98px) {
+    .account-settings-page .as-modal-header,
+    .account-settings-page .as-modal-body,
+    .account-settings-page .as-modal-footer {
+        padding: 16px;
+    }
+
+    .account-settings-page .as-modal-footer {
+        gap: 7px;
+    }
+
+    .account-settings-page .as-password-rules {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Explicit dark theme support */
+html[data-theme="dark"] .account-settings-page .as-modal,
+body[data-theme="dark"] .account-settings-page .as-modal,
+html[data-bs-theme="dark"] .account-settings-page .as-modal,
+body[data-bs-theme="dark"] .account-settings-page .as-modal {
+    background: #14231e;
+    color: #f0f5f3;
+    border-color: #344d44;
+}
+
+html[data-theme="dark"] .account-settings-page .as-modal-header h4,
+body[data-theme="dark"] .account-settings-page .as-modal-header h4,
+html[data-bs-theme="dark"] .account-settings-page .as-modal-header h4,
+body[data-bs-theme="dark"] .account-settings-page .as-modal-header h4,
+html[data-theme="dark"] .account-settings-page .as-password-field > label,
+body[data-theme="dark"] .account-settings-page .as-password-field > label {
+    color: #f0f5f3;
+}
+
+html[data-theme="dark"] .account-settings-page .as-password-input,
+body[data-theme="dark"] .account-settings-page .as-password-input,
+html[data-bs-theme="dark"] .account-settings-page .as-password-input,
+body[data-bs-theme="dark"] .account-settings-page .as-password-input {
+    background: #10221c;
+    border-color: #344d44;
+}
+
+html[data-theme="dark"] .account-settings-page .as-password-input input,
+body[data-theme="dark"] .account-settings-page .as-password-input input {
+    color: #f0f5f3;
+}
+
+
+
+
+    /* Change Password modal: readable input text in dark theme */
+    .account-settings-page #asPasswordModal input,
+    .account-settings-page #asPasswordModal input[type="password"],
+    .account-settings-page #asPasswordModal input[type="text"] {
+        color: #172033 !important;
+        -webkit-text-fill-color: #172033 !important;
+        caret-color: #172033 !important;
+        background-color: #fffec7 !important;
+    }
+
+        /* Placeholder text */
+        .account-settings-page #asPasswordModal input::placeholder {
+            color: #788195 !important;
+            -webkit-text-fill-color: #788195 !important;
+            opacity: 1;
+        }
+
+        /* Selected text */
+        .account-settings-page #asPasswordModal input::selection {
+            color: #172033;
+            background-color: #b8e5dc;
+        }
+
+    /* Keep password visibility buttons readable */
+    .account-settings-page #asPasswordModal .as-password-input button {
+        color: #667085 !important;
+    }
+
+    /* Prevent dark-theme browser autofill from changing text contrast */
+    .account-settings-page #asPasswordModal input:-webkit-autofill,
+    .account-settings-page #asPasswordModal input:-webkit-autofill:hover,
+    .account-settings-page #asPasswordModal input:-webkit-autofill:focus {
+        -webkit-text-fill-color: #172033 !important;
+        caret-color: #172033 !important;
+    }
+
+
+    
+/* Subscription plans modal */
+/* .account-settings-page .as-plans-modal {
+    display: block;
+    width: min(1180px, 100%);
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+    background: var(--ap-card-bg, #fff);
+    color: var(--ap-text, #17212b);
+    scrollbar-width: thin;
+} */
+
+
+
+    /* Subscription modal: hide scrollbar, preserve scrolling and rounded corners */
+    .account-settings-page .as-plans-modal {
+        display: block;
+        width: min(1180px, 100%);
+        max-height: calc(100dvh - 32px);
+        overflow-x: hidden;
+        overflow-y: auto;
+        /* Preserve rounded corners */
+        border-radius: 18px;
+        clip-path: inset(0 round 18px);
+        background: var(--ap-card-bg, #fff);
+        color: var(--ap-text, #17212b);
+        /* Firefox */
+        scrollbar-width: none;
+        /* Legacy Microsoft browsers */
+        -ms-overflow-style: none;
+    }
+
+        /* Chrome, Edge, Safari */
+        .account-settings-page .as-plans-modal::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+    /* Keep mobile scrolling and rounded corners */
+    @@media (max-width: 575.98px) {
+        .account-settings-page .as-plans-modal {
+            width: 100%;
+            max-height: calc(100dvh - 20px);
+            border-radius: 16px;
+            clip-path: inset(0 round 16px);
+        }
+    }
+
+
+.account-settings-page .as-plans-modal .as-modal-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--ap-card-bg, #fff);
+}
+
+.account-settings-page .as-plans-intro {
+    padding: 24px 24px 18px;
+    text-align: center;
+}
+
+.account-settings-page .as-plans-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #0d9278;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.account-settings-page .as-plans-intro h3 {
+    margin: 10px 0 7px;
+    color: var(--ap-text, #17212b);
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.account-settings-page .as-plans-intro > p {
+    margin: 0;
+    color: var(--ap-muted, #718096);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.account-settings-page .as-plans-demo-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: rgba(13, 168, 139, .09);
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+}
+
+.account-settings-page .as-plans-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 14px;
+    padding: 0 22px 22px;
+}
+
+.account-settings-page .as-plan-option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 19px 16px;
+    border: 1px solid var(--ap-border, #dce8e4);
+    border-radius: 13px;
+    background: var(--ap-card-bg, #fff);
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.account-settings-page .as-plan-option:hover {
+    border-color: rgba(13, 168, 139, .65);
+    box-shadow: 0 6px 20px rgba(13, 168, 139, .07);
+}
+
+.account-settings-page .as-plan-option.as-plan-featured {
+    border: 2px solid #0da88b;
+    padding: 18px 15px;
+}
+
+.account-settings-page .as-plan-option.as-plan-selected {
+    box-shadow: 0 0 0 3px rgba(13, 168, 139, .15);
+    border-color: #0da88b;
+}
+
+.account-settings-page .as-plan-option-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 7px;
+    min-height: 25px;
+}
+
+.account-settings-page .as-plan-name {
+    color: var(--ap-text, #17212b);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.account-settings-page .as-plan-current,
+.account-settings-page .as-plan-popular {
+    display: inline-block;
+    padding: 5px 7px;
+    border-radius: 20px;
+    background: rgba(13, 168, 139, .12);
+    color: #0d9278;
+    font-size: 8px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.account-settings-page .as-plan-popular {
+    position: absolute;
+    top: -10px;
+    right: 14px;
+    background: #0da88b;
+    color: #fff;
+    letter-spacing: .5px;
+}
+
+.account-settings-page .as-plan-price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 18px;
+}
+
+.account-settings-page .as-plan-price strong {
+    color: var(--ap-text, #17212b);
+    font-size: 30px;
+    font-weight: 850;
+    letter-spacing: -1px;
+}
+
+.account-settings-page .as-plan-price span {
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+}
+
+.account-settings-page .as-plan-description {
+    min-height: 49px;
+    margin: 8px 0 16px;
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+    line-height: 1.65;
+}
+
+.account-settings-page .as-plan-select {
+    width: 100%;
+    min-height: 39px;
+    padding: 9px 7px;
+    font-size: 10px;
+}
+
+.account-settings-page .as-plan-select:disabled {
+    opacity: .75;
+    cursor: default;
+}
+
+.account-settings-page .as-plan-divider {
+    height: 1px;
+    margin: 17px 0;
+    background: var(--ap-border, #dce8e4);
+}
+
+.account-settings-page .as-plan-features {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.account-settings-page .as-plan-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    color: var(--ap-text, #17212b);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.account-settings-page .as-plan-features li > i {
+    flex: 0 0 auto;
+    margin-top: 1px;
+    color: #0da88b;
+    font-size: 12px;
+}
+
+.account-settings-page .as-plan-features li.as-feature-muted,
+.account-settings-page .as-plan-features li.as-feature-muted > i {
+    color: var(--ap-muted, #718096);
+}
+
+.account-settings-page .as-plan-confirmation {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 22px 20px;
+    padding: 15px;
+    border: 1px solid rgba(13, 168, 139, .35);
+    border-radius: 11px;
+    background: rgba(13, 168, 139, .08);
+}
+
+.account-settings-page .as-plan-confirmation[hidden] {
+    display: none !important;
+}
+
+.account-settings-page .as-plan-confirmation-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border-radius: 10px;
+    background: rgba(13, 168, 139, .13);
+    color: #0da88b;
+    font-size: 20px;
+}
+
+.account-settings-page .as-plan-confirmation-copy {
+    flex: 1;
+    min-width: 0;
+}
+
+.account-settings-page .as-plan-confirmation-copy strong {
+    display: block;
+    color: var(--ap-text, #17212b);
+    font-size: 11px;
+}
+
+.account-settings-page .as-plan-confirmation-copy p {
+    margin: 4px 0 0;
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.account-settings-page .as-plans-footer {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 22px;
+    border-top: 1px solid var(--ap-border, #dce8e4);
+    background: var(--ap-card-bg, #fff);
+}
+
+.account-settings-page .as-plans-footer > span {
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.account-settings-page .as-plans-footer > span i {
+    margin-right: 5px;
+    color: #0da88b;
+}
+
+.account-settings-page .as-plans-modal .as-modal-close {
+    flex: 0 0 34px;
+}
+
+@@media (max-width: 991.98px) {
+    .account-settings-page .as-plans-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+}
+
+@@media (max-width: 575.98px) {
+    .account-settings-page .as-plans-modal {
+        width: 100%;
+        max-height: calc(100dvh - 20px);
+    }
+
+    .account-settings-page .as-plans-intro {
+        padding: 20px 16px 16px;
+    }
+
+    .account-settings-page .as-plans-intro h3 {
+        font-size: 21px;
+    }
+
+    .account-settings-page .as-plans-grid {
+        grid-template-columns: 1fr;
+        padding: 0 14px 16px;
+    }
+
+    .account-settings-page .as-plan-description {
+        min-height: 0;
+    }
+
+    .account-settings-page .as-plan-confirmation {
+        flex-wrap: wrap;
+        margin: 0 14px 16px;
+    }
+
+    .account-settings-page .as-plan-confirmation-copy {
+        flex-basis: calc(100% - 55px);
+    }
+
+    .account-settings-page .as-plan-confirmation .as-btn {
+        flex: 1;
+    }
+
+    .account-settings-page .as-plans-footer {
+        padding: 12px 14px;
+    }
+}
+
+/* Dark theme */
+html[data-theme="dark"] .account-settings-page .as-plans-modal,
+body[data-theme="dark"] .account-settings-page .as-plans-modal,
+html[data-bs-theme="dark"] .account-settings-page .as-plans-modal,
+body[data-bs-theme="dark"] .account-settings-page .as-plans-modal {
+    background: #14231e;
+    color: #f0f5f3;
+    border-color: #344d44;
+}
+
+html[data-theme="dark"] .account-settings-page .as-plans-modal .as-modal-header,
+body[data-theme="dark"] .account-settings-page .as-plans-modal .as-modal-header,
+html[data-bs-theme="dark"] .account-settings-page .as-plans-modal .as-modal-header,
+body[data-bs-theme="dark"] .account-settings-page .as-plans-modal .as-modal-header,
+html[data-theme="dark"] .account-settings-page .as-plans-footer,
+body[data-theme="dark"] .account-settings-page .as-plans-footer,
+html[data-bs-theme="dark"] .account-settings-page .as-plans-footer,
+body[data-bs-theme="dark"] .account-settings-page .as-plans-footer {
+    background: #14231e;
+}
+
+html[data-theme="dark"] .account-settings-page .as-plan-option,
+body[data-theme="dark"] .account-settings-page .as-plan-option,
+html[data-bs-theme="dark"] .account-settings-page .as-plan-option,
+body[data-bs-theme="dark"] .account-settings-page .as-plan-option {
+    background: #172a23;
+    border-color: #344d44;
+}
+
+html[data-theme="dark"] .account-settings-page .as-plan-name,
+body[data-theme="dark"] .account-settings-page .as-plan-name,
+html[data-bs-theme="dark"] .account-settings-page .as-plan-name,
+body[data-bs-theme="dark"] .account-settings-page .as-plan-name,
+html[data-theme="dark"] .account-settings-page .as-plan-price strong,
+body[data-theme="dark"] .account-settings-page .as-plan-price strong,
+html[data-bs-theme="dark"] .account-settings-page .as-plan-price strong,
+body[data-bs-theme="dark"] .account-settings-page .as-plan-price strong,
+html[data-theme="dark"] .account-settings-page .as-plans-intro h3,
+body[data-theme="dark"] .account-settings-page .as-plans-intro h3,
+html[data-bs-theme="dark"] .account-settings-page .as-plans-intro h3,
+body[data-bs-theme="dark"] .account-settings-page .as-plans-intro h3,
+html[data-theme="dark"] .account-settings-page .as-plan-features li,
+body[data-theme="dark"] .account-settings-page .as-plan-features li,
+html[data-bs-theme="dark"] .account-settings-page .as-plan-features li,
+body[data-bs-theme="dark"] .account-settings-page .as-plan-features li {
+    color: #f0f5f3;
+}
+
+html[data-theme="dark"] .account-settings-page .as-plan-confirmation,
+body[data-theme="dark"] .account-settings-page .as-plan-confirmation,
+html[data-bs-theme="dark"] .account-settings-page .as-plan-confirmation,
+body[data-bs-theme="dark"] .account-settings-page .as-plan-confirmation {
+    background: rgba(13, 168, 139, .1);
+    border-color: #286e5c;
+}
+
+
+
+
+/* Organization branding */
+.account-settings-page .as-org-branding {
+    display: grid;
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 20px;
+    border: 1px solid var(--ap-border, #dce8e4);
+    border-radius: 13px;
+    background: var(--ap-card-bg, #fff);
+}
+
+.account-settings-page .as-org-logo-preview {
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    overflow: hidden;
+    border: 1px dashed var(--ap-border, #dce8e4);
+    border-radius: 15px;
+    background: rgba(13, 168, 139, .09);
+    color: #0da88b;
+    font-size: 25px;
+    font-weight: 850;
+}
+
+.account-settings-page .as-org-logo-preview img {
+    width: 100%;
+    height: 100%;
+    padding: 7px;
+    object-fit: contain;
+}
+
+.account-settings-page .as-org-branding-details {
+    min-width: 0;
+}
+
+.account-settings-page .as-org-branding-details > strong {
+    display: block;
+    color: var(--ap-text, #17212b);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.account-settings-page .as-org-branding-details > p {
+    margin: 5px 0 10px;
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.account-settings-page .as-org-branding-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.account-settings-page .as-org-branding-actions label {
+    margin: 0;
+}
+
+.account-settings-page .as-org-branding-details > small {
+    display: block;
+    margin-top: 8px;
+    color: var(--ap-muted, #718096);
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+.account-settings-page .as-org-branding-details #asOrgLogoMessage {
+    color: #0d9278;
+}
+
+.account-settings-page .as-org-brand-card {
+    grid-column: 1 / -1;
+    padding: 15px;
+    border: 1px solid var(--ap-border, #dce8e4);
+    border-radius: 10px;
+    background: var(--ap-input-bg, #f4f8f7);
+}
+
+.account-settings-page .as-org-brand-label {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--ap-muted, #718096);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .8px;
+}
+
+.account-settings-page .as-org-brand-identity {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+}
+
+.account-settings-page .as-org-mini-logo {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    overflow: hidden;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #0da88b, #087f68);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.account-settings-page .as-org-mini-logo img {
+    width: 100%;
+    height: 100%;
+    padding: 4px;
+    object-fit: contain;
+    background: var(--ap-card-bg, #fff);
+}
+
+.account-settings-page .as-org-brand-identity > div:last-child {
+    min-width: 0;
+}
+
+.account-settings-page .as-org-brand-identity strong {
+    display: block;
+    overflow-wrap: anywhere;
+    color: var(--ap-text, #17212b);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.account-settings-page .as-org-brand-identity span {
+    display: block;
+    margin-top: 4px;
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+}
+
+@@media (max-width: 575.98px) {
+    .account-settings-page .as-org-branding {
+        grid-template-columns: 64px minmax(0, 1fr);
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .account-settings-page .as-org-logo-preview {
+        width: 64px;
+        height: 64px;
+        border-radius: 12px;
+        font-size: 20px;
+    }
+
+    .account-settings-page .as-org-branding-actions .as-btn {
+        padding: 8px 10px;
+        font-size: 10px;
+    }
+}
+
+/* Dark theme */
+html[data-theme="dark"] .account-settings-page .as-org-branding,
+body[data-theme="dark"] .account-settings-page .as-org-branding,
+html[data-bs-theme="dark"] .account-settings-page .as-org-branding,
+body[data-bs-theme="dark"] .account-settings-page .as-org-branding {
+    background: #14231e;
+    border-color: #344d44;
+}
+
+html[data-theme="dark"] .account-settings-page .as-org-branding-details > strong,
+body[data-theme="dark"] .account-settings-page .as-org-branding-details > strong,
+html[data-bs-theme="dark"] .account-settings-page .as-org-branding-details > strong,
+body[data-bs-theme="dark"] .account-settings-page .as-org-branding-details > strong,
+html[data-theme="dark"] .account-settings-page .as-org-brand-identity strong,
+body[data-theme="dark"] .account-settings-page .as-org-brand-identity strong,
+html[data-bs-theme="dark"] .account-settings-page .as-org-brand-identity strong,
+body[data-bs-theme="dark"] .account-settings-page .as-org-brand-identity strong {
+    color: #f0f5f3;
+}
+
+html[data-theme="dark"] .account-settings-page .as-org-brand-card,
+body[data-theme="dark"] .account-settings-page .as-org-brand-card,
+html[data-bs-theme="dark"] .account-settings-page .as-org-brand-card,
+body[data-bs-theme="dark"] .account-settings-page .as-org-brand-card {
+    background: #10221c;
+    border-color: #344d44;
+}
+
+
+
+
+
+/* Security overview */
+.account-settings-page .as-security-overview {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 18px;
+    padding: 16px;
+    border: 1px solid var(--ap-border, #dce8e4);
+    border-radius: 12px;
+    background: var(--ap-input-bg, #f5f9f8);
+}
+
+.account-settings-page .as-security-overview-icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-radius: 12px;
+    background: rgba(13, 168, 139, .12);
+    color: #0da88b;
+    font-size: 20px;
+}
+
+.account-settings-page .as-security-overview-copy {
+    flex: 1;
+    min-width: 0;
+}
+
+.account-settings-page .as-security-overview-copy strong {
+    display: block;
+    color: var(--ap-text, #17212b);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.account-settings-page .as-security-overview-copy p {
+    margin: 4px 0 0;
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.account-settings-page .as-security-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 9px;
+    border-radius: 20px;
+    background: rgba(224, 162, 60, .12);
+    color: #b27a17;
+    font-size: 9px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.account-settings-page .as-security-status.is-enabled {
+    background: rgba(13, 168, 139, .12);
+    color: #0d9278;
+}
+
+/* Security modals */
+.account-settings-page .as-security-modal {
+    width: min(540px, 100%);
+    max-height: calc(100dvh - 32px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 16px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.account-settings-page .as-security-modal::-webkit-scrollbar {
+    display: none;
+    width: 0;
+}
+
+.account-settings-page .as-security-modal .as-modal-header,
+.account-settings-page .as-security-modal .as-modal-footer {
+    background: var(--ap-card-bg, #fff);
+}
+
+.account-settings-page .as-security-modal .as-modal-body {
+    padding: 22px;
+}
+
+.account-settings-page .as-security-modal-icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    background: rgba(13, 168, 139, .12);
+    color: #0da88b;
+    font-size: 26px;
+}
+
+.account-settings-page .as-security-warning-icon {
+    background: rgba(224, 162, 60, .13);
+    color: #c58a20;
+}
+
+.account-settings-page .as-security-modal .as-modal-body h5 {
+    margin: 0 0 8px;
+    color: var(--ap-text, #17212b);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.account-settings-page .as-security-modal .as-modal-body > p {
+    margin: 0;
+    color: var(--ap-muted, #718096);
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.account-settings-page .as-security-modal-notice {
+    display: flex;
+    gap: 9px;
+    margin-top: 17px;
+    padding: 12px;
+    border: 1px solid rgba(13, 168, 139, .25);
+    border-radius: 10px;
+    background: rgba(13, 168, 139, .07);
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+.account-settings-page .as-security-modal-notice > i {
+    flex: 0 0 auto;
+    color: #0da88b;
+}
+
+/* Session summary */
+.account-settings-page .as-sessions-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+    padding: 13px;
+    border: 1px solid var(--ap-border, #dce8e4);
+    border-radius: 11px;
+    background: var(--ap-input-bg, #f5f9f8);
+}
+
+.account-settings-page .as-sessions-summary-icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    border-radius: 11px;
+    background: rgba(13, 168, 139, .12);
+    color: #0da88b;
+    font-size: 20px;
+}
+
+.account-settings-page .as-sessions-summary strong {
+    display: block;
+    color: var(--ap-text, #17212b);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.account-settings-page .as-sessions-summary p {
+    margin: 4px 0 0;
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+}
+
+/* Session list */
+.account-settings-page .as-session-list {
+    display: grid;
+    gap: 10px;
+}
+
+.account-settings-page .as-session-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+    padding: 13px;
+    border: 1px solid var(--ap-border, #dce8e4);
+    border-radius: 11px;
+    background: var(--ap-card-bg, #fff);
+}
+
+.account-settings-page .as-session-device {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    border-radius: 11px;
+    background: rgba(72, 133, 224, .12);
+    color: #4885e0;
+    font-size: 19px;
+}
+
+.account-settings-page .as-session-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.account-settings-page .as-session-details strong {
+    display: block;
+    overflow-wrap: anywhere;
+    color: var(--ap-text, #17212b);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.account-settings-page .as-session-details p {
+    margin: 4px 0;
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+}
+
+.account-settings-page .as-session-details > span {
+    color: var(--ap-muted, #718096);
+    font-size: 9px;
+    line-height: 1.6;
+}
+
+.account-settings-page .as-session-current {
+    padding: 5px 7px;
+    border-radius: 20px;
+    background: rgba(13, 168, 139, .12);
+    color: #0d9278;
+    font-size: 8px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.account-settings-page .as-session-revoke {
+    flex: 0 0 auto;
+    padding: 6px 8px;
+    border: 1px solid var(--ap-border, #dce8e4);
+    border-radius: 7px;
+    background: transparent;
+    color: #d04c56;
+    font-size: 9px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.account-settings-page .as-session-revoke:hover {
+    background: rgba(208, 76, 86, .08);
+}
+
+.account-settings-page .as-session-item.is-revoked {
+    opacity: .55;
+}
+
+.account-settings-page .as-session-item.is-revoked .as-session-details strong {
+    text-decoration: line-through;
+}
+
+.account-settings-page .as-session-feedback {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 9px;
+    background: rgba(13, 168, 139, .1);
+    color: #0d9278;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.account-settings-page .as-session-feedback[hidden] {
+    display: none !important;
+}
+
+.account-settings-page .as-sessions-warning {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    color: var(--ap-muted, #718096);
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+.account-settings-page .as-sessions-warning i {
+    flex: 0 0 auto;
+    color: #c58a20;
+}
+
+.account-settings-page .as-sessions-footer {
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+@@media (max-width: 575.98px) {
+    .account-settings-page .as-security-overview {
+        flex-wrap: wrap;
+    }
+
+    .account-settings-page .as-security-status {
+        margin-left: 54px;
+    }
+
+    .account-settings-page .as-security-card {
+        flex-wrap: wrap;
+    }
+
+    .account-settings-page .as-security-card > button {
+        margin-left: 53px;
+    }
+
+    .account-settings-page .as-session-item {
+        flex-wrap: wrap;
+    }
+
+    .account-settings-page .as-session-current {
+        margin-left: 51px;
+    }
+
+    .account-settings-page .as-session-revoke {
+        margin-left: 51px;
+    }
+
+    .account-settings-page .as-sessions-footer > button {
+        flex: 1;
+    }
+}
+
+/* Dark theme */
+html[data-theme="dark"] .account-settings-page .as-security-overview,
+body[data-theme="dark"] .account-settings-page .as-security-overview,
+html[data-bs-theme="dark"] .account-settings-page .as-security-overview,
+body[data-bs-theme="dark"] .account-settings-page .as-security-overview,
+html[data-theme="dark"] .account-settings-page .as-sessions-summary,
+body[data-theme="dark"] .account-settings-page .as-sessions-summary,
+html[data-bs-theme="dark"] .account-settings-page .as-sessions-summary,
+body[data-bs-theme="dark"] .account-settings-page .as-sessions-summary {
+    background: #10221c;
+    border-color: #344d44;
+}
+
+html[data-theme="dark"] .account-settings-page .as-security-modal,
+body[data-theme="dark"] .account-settings-page .as-security-modal,
+html[data-bs-theme="dark"] .account-settings-page .as-security-modal,
+body[data-bs-theme="dark"] .account-settings-page .as-security-modal,
+html[data-theme="dark"] .account-settings-page .as-session-item,
+body[data-theme="dark"] .account-settings-page .as-session-item,
+html[data-bs-theme="dark"] .account-settings-page .as-session-item,
+body[data-bs-theme="dark"] .account-settings-page .as-session-item {
+    background: #14231e;
+    border-color: #344d44;
+}
+
+html[data-theme="dark"] .account-settings-page .as-security-modal .as-modal-header,
+body[data-theme="dark"] .account-settings-page .as-security-modal .as-modal-header,
+html[data-bs-theme="dark"] .account-settings-page .as-security-modal .as-modal-header,
+body[data-bs-theme="dark"] .account-settings-page .as-security-modal .as-modal-header,
+html[data-theme="dark"] .account-settings-page .as-security-modal .as-modal-footer,
+body[data-theme="dark"] .account-settings-page .as-security-modal .as-modal-footer,
+html[data-bs-theme="dark"] .account-settings-page .as-security-modal .as-modal-footer,
+body[data-bs-theme="dark"] .account-settings-page .as-security-modal .as-modal-footer {
+    background: #14231e;
+}
+
+html[data-theme="dark"] .account-settings-page .as-security-overview-copy strong,
+body[data-theme="dark"] .account-settings-page .as-security-overview-copy strong,
+html[data-bs-theme="dark"] .account-settings-page .as-security-overview-copy strong,
+body[data-bs-theme="dark"] .account-settings-page .as-security-overview-copy strong,
+html[data-theme="dark"] .account-settings-page .as-sessions-summary strong,
+body[data-theme="dark"] .account-settings-page .as-sessions-summary strong,
+html[data-bs-theme="dark"] .account-settings-page .as-sessions-summary strong,
+body[data-bs-theme="dark"] .account-settings-page .as-sessions-summary strong,
+html[data-theme="dark"] .account-settings-page .as-session-details strong,
+body[data-theme="dark"] .account-settings-page .as-session-details strong,
+html[data-bs-theme="dark"] .account-settings-page .as-session-details strong,
+body[data-bs-theme="dark"] .account-settings-page .as-session-details strong,
+html[data-theme="dark"] .account-settings-page .as-security-modal .as-modal-body h5,
+body[data-theme="dark"] .account-settings-page .as-security-modal .as-modal-body h5,
+html[data-bs-theme="dark"] .account-settings-page .as-security-modal .as-modal-body h5,
+body[data-bs-theme="dark"] .account-settings-page .as-security-modal .as-modal-body h5 {
+    color: #f0f5f3;
+}
+
+
+.account-settings-page .as-notification-master {
+    border-bottom: 1px solid var(--ap-border);
+    margin-bottom: 8px;
+    padding-bottom: 22px;
+}
+
+.account-settings-page .as-notification-disabled {
+    opacity: 0.55;
+    transition: opacity 0.2s ease;
+}
+
+.account-settings-page .as-notification-disabled .as-switch {
+    cursor: not-allowed;
+}
+
+.account-settings-page .as-notification-disabled .as-switch-track {
+    cursor: not-allowed;
+}
+
+
 </style>
 
 <script>
@@ -1160,6 +3110,7 @@
     const $ = id => root.querySelector("#" + id);
 
     const defaults = {
+nonEssentialNotifications: true,
         firstName: "John",
         lastName: "Doe",
         email: "john.doe@example.com",
@@ -1183,6 +3134,7 @@
     };
 
     const fieldIds = {
+nonEssentialNotifications: "asNonEssentialNotifications",
         firstName: "asFirstName",
         lastName: "asLastName",
         email: "asEmail",
@@ -1241,6 +3193,135 @@
         $("asLargeAvatar").textContent = initials;
     }
 
+
+
+    
+    // Organization branding — local preview only
+    const orgLogoInput = $("asOrgLogoInput");
+    const orgLogoImage = $("asOrgLogoImage");
+    const orgLogoInitials = $("asOrgLogoInitials");
+    const orgLogoPreview = $("asOrgLogoPreview");
+    const orgMiniLogo = $("asOrgMiniLogo");
+    const orgLogoMessage = $("asOrgLogoMessage");
+    const orgPreviewName = $("asOrgPreviewName");
+
+    let orgLogoObjectUrl = null;
+
+    function getOrganizationInitials(name) {
+        const words = name.trim().split(/\s+/).filter(Boolean);
+
+        if (!words.length) return "O";
+
+        return words.length === 1
+            ? words[0].slice(0, 2).toUpperCase()
+            : (words[0][0] + words[words.length - 1][0]).toUpperCase();
+    }
+
+    function updateOrganizationPreview() {
+        const companyName = $("asCompanyName").value.trim()
+            || "Your organization";
+
+        const initials = getOrganizationInitials(companyName);
+
+        orgPreviewName.textContent = companyName;
+
+        if (!orgLogoObjectUrl) {
+            orgLogoInitials.textContent = initials;
+            orgMiniLogo.textContent = initials;
+        }
+    }
+
+    function removeOrganizationLogo() {
+        if (orgLogoObjectUrl) {
+            URL.revokeObjectURL(orgLogoObjectUrl);
+            orgLogoObjectUrl = null;
+        }
+
+        orgLogoImage.removeAttribute("src");
+        orgLogoImage.hidden = true;
+        orgLogoInitials.hidden = false;
+
+        orgMiniLogo.replaceChildren(
+            document.createTextNode(getOrganizationInitials(
+                $("asCompanyName").value.trim() || "Organization"
+            ))
+        );
+
+        orgLogoInput.value = "";
+        orgLogoMessage.textContent = "Logo preview removed.";
+    }
+
+    orgLogoInput.addEventListener("change", () => {
+        const file = orgLogoInput.files && orgLogoInput.files[0];
+
+        orgLogoMessage.textContent = "";
+
+        if (!file) return;
+
+        const allowedTypes = [
+            "image/png",
+            "image/jpeg",
+            "image/webp",
+            "image/svg+xml"
+        ];
+
+        if (!allowedTypes.includes(file.type)) {
+            orgLogoInput.value = "";
+            orgLogoMessage.textContent =
+                "Choose a PNG, JPG, WebP, or SVG image.";
+            return;
+        }
+
+        if (file.size > 2 * 1024 * 1024) {
+            orgLogoInput.value = "";
+            orgLogoMessage.textContent =
+                "The logo must be no larger than 2 MB.";
+            return;
+        }
+
+        const nextUrl = URL.createObjectURL(file);
+        const testImage = new Image();
+
+        testImage.onload = () => {
+            if (orgLogoObjectUrl) {
+                URL.revokeObjectURL(orgLogoObjectUrl);
+            }
+
+            orgLogoObjectUrl = nextUrl;
+
+            orgLogoImage.src = nextUrl;
+            orgLogoImage.hidden = false;
+            orgLogoInitials.hidden = true;
+
+            const miniImage = document.createElement("img");
+            miniImage.src = nextUrl;
+            miniImage.alt = "";
+
+            orgMiniLogo.replaceChildren(miniImage);
+
+            orgLogoMessage.textContent =
+                "Logo preview updated. Changes are not uploaded or saved.";
+        };
+
+        testImage.onerror = () => {
+            URL.revokeObjectURL(nextUrl);
+            orgLogoInput.value = "";
+            orgLogoMessage.textContent =
+                "This image could not be previewed. Choose another file.";
+        };
+
+        testImage.src = nextUrl;
+    });
+
+    $("asOrgLogoRemove").addEventListener("click", removeOrganizationLogo);
+
+    $("asCompanyName").addEventListener("input", updateOrganizationPreview);
+
+    updateOrganizationPreview();
+
+
+
+
     function updateDirtyState() {
         const changed = JSON.stringify(currentSettings()) !== JSON.stringify(savedSettings);
         const status = $("asSaveStatus");
@@ -1257,6 +3338,256 @@
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2800);
     }
+
+    function updateNonEssentialNotifications() {
+    const master = $("asNonEssentialNotifications");
+    const enabled = master.checked;
+
+    root.querySelectorAll("[data-nonessential='true']").forEach(row => {
+        const input = row.querySelector('input[type="checkbox"]');
+
+        if (!input) return;
+
+        input.disabled = !enabled;
+        row.classList.toggle("as-notification-disabled", !enabled);
+
+        if (!enabled) {
+            input.checked = false;
+        }
+    });
+
+    $("asNotificationMasterStatus").textContent = enabled
+        ? "Optional notifications are enabled."
+        : "Optional notifications are disabled.";
+
+    updateDirtyState();
+}
+
+$("asNonEssentialNotifications").addEventListener("change", () => {
+    updateNonEssentialNotifications();
+
+    showToast(
+        $("asNonEssentialNotifications").checked
+            ? "Optional notifications enabled in this demo."
+            : "Optional notifications disabled in this demo."
+    );
+});
+
+// Apply the correct initial state.
+updateNonEssentialNotifications();
+     
+    // Security interactions — frontend demo only
+    const twoFactor = $("asTwoFactor");
+    const twoFactorModal = $("asTwoFactorModal");
+    const sessionsModal = $("asSessionsModal");
+    const signOutModal = $("asSignOutModal");
+
+    let twoFactorPendingValue = false;
+    let lastSecurityTrigger = null;
+    let lastSessionTrigger = null;
+
+    function openSecurityModal(modal, trigger) {
+        lastSecurityTrigger = trigger || document.activeElement;
+        modal.hidden = false;
+        document.body.style.overflow = "hidden";
+
+        const firstButton = modal.querySelector(
+            ".as-modal-close, button"
+        );
+
+        if (firstButton) firstButton.focus();
+    }
+
+    function closeSecurityModal(modal, trigger) {
+        modal.hidden = true;
+
+        if (sessionsModal.hidden &&
+            twoFactorModal.hidden &&
+            signOutModal.hidden) {
+            document.body.style.overflow = "";
+        }
+
+        const target = trigger || lastSecurityTrigger;
+        if (target && typeof target.focus === "function") {
+            target.focus();
+        }
+    }
+
+    function updateSecuritySummary() {
+        const enabled = twoFactor.checked;
+
+        $("asTwoFactorDescription").textContent = enabled
+            ? "Enabled in this demo only; real sign-in security is unchanged."
+            : "Currently disabled in this demo.";
+
+        $("asSecuritySummary").textContent = enabled
+            ? "Two-factor authentication is marked as enabled in this demo."
+            : "Two-factor authentication is currently marked as disabled.";
+
+        $("asSecurityStatus").classList.toggle("is-enabled", enabled);
+        $("asSecurityStatus").innerHTML = enabled
+            ? '<i class="bi bi-shield-check"></i> Demo enabled'
+            : '<i class="bi bi-info-circle"></i> Review settings';
+    }
+
+    // Two-factor confirmation
+    twoFactor.addEventListener("change", () => {
+        twoFactorPendingValue = twoFactor.checked;
+
+        // Wait for confirmation before updating the displayed setting.
+        twoFactor.checked = !twoFactorPendingValue;
+
+        $("asTwoFactorActionTitle").textContent = twoFactorPendingValue
+            ? "Enable two-factor authentication?"
+            : "Disable two-factor authentication?";
+
+        $("asTwoFactorActionText").textContent = twoFactorPendingValue
+            ? "The demo will mark two-factor authentication as enabled."
+            : "The demo will mark two-factor authentication as disabled.";
+
+        $("asTwoFactorConfirm").textContent = twoFactorPendingValue
+            ? "Enable in demo"
+            : "Disable in demo";
+
+        openSecurityModal(twoFactorModal, twoFactor);
+    });
+
+    function cancelTwoFactor() {
+        closeSecurityModal(twoFactorModal, twoFactor);
+    }
+
+    $("asTwoFactorClose").addEventListener("click", cancelTwoFactor);
+    $("asTwoFactorCancel").addEventListener("click", cancelTwoFactor);
+
+    $("asTwoFactorConfirm").addEventListener("click", () => {
+        twoFactor.checked = twoFactorPendingValue;
+        updateSecuritySummary();
+        closeSecurityModal(twoFactorModal, twoFactor);
+        showToast(
+            twoFactor.checked
+                ? "2FA enabled in the demo only."
+                : "2FA disabled in the demo only."
+        );
+    });
+
+    // Active sessions
+    function getVisibleDemoSessions() {
+        return Array.from(
+            root.querySelectorAll(".as-session-item")
+        ).filter(item => !item.classList.contains("is-revoked"));
+    }
+
+    function updateSessionCount() {
+        const count = getVisibleDemoSessions().length;
+        const label = count + (count === 1 ? " demo session" : " demo sessions");
+
+        $("asSessionCount").textContent = label;
+        $("asSessionsSummaryCount").textContent = label;
+    }
+
+    function showSessionFeedback(message) {
+        const feedback = $("asSessionFeedback");
+        feedback.textContent = message;
+        feedback.hidden = false;
+    }
+
+    $("asViewSessions").addEventListener("click", () => {
+        lastSessionTrigger = $("asViewSessions");
+        $("asSessionFeedback").hidden = true;
+        openSecurityModal(sessionsModal, $("asViewSessions"));
+        updateSessionCount();
+    });
+
+    function closeSessionsModal() {
+        closeSecurityModal(sessionsModal, lastSessionTrigger);
+    }
+
+    $("asSessionsClose").addEventListener("click", closeSessionsModal);
+    $("asSessionsDone").addEventListener("click", closeSessionsModal);
+
+    // Revoke one mock session
+    root.querySelectorAll("[data-revoke-session]").forEach(button => {
+        button.addEventListener("click", () => {
+            const sessionId = button.dataset.revokeSession;
+            const item = root.querySelector(
+                '[data-session-id="' + sessionId + '"]'
+            );
+
+            if (!item || item.classList.contains("is-revoked")) return;
+
+            item.classList.add("is-revoked");
+            button.disabled = true;
+            button.textContent = "Revoked";
+
+            showSessionFeedback(
+                "Demo session marked as revoked. No real device was signed out."
+            );
+
+            updateSessionCount();
+            showToast("Demo session revoked. No real session was affected.");
+        });
+    });
+
+    // Sign out other mock sessions
+    $("asSignOutOthers").addEventListener("click", () => {
+        openSecurityModal(signOutModal, $("asSignOutOthers"));
+    });
+
+    function closeSignOutModal() {
+        closeSecurityModal(signOutModal, $("asSignOutOthers"));
+    }
+
+    $("asSignOutClose").addEventListener("click", closeSignOutModal);
+    $("asSignOutCancel").addEventListener("click", closeSignOutModal);
+
+    $("asSignOutConfirm").addEventListener("click", () => {
+        root.querySelectorAll(".as-session-item").forEach(item => {
+            if (item.dataset.sessionId === "session-current") return;
+
+            item.classList.add("is-revoked");
+
+            const revokeButton = item.querySelector("[data-revoke-session]");
+            if (revokeButton) {
+                revokeButton.disabled = true;
+                revokeButton.textContent = "Signed out";
+            }
+        });
+
+        updateSessionCount();
+        closeSignOutModal();
+
+        showSessionFeedback(
+            "Other demo sessions have been marked as signed out. " +
+            "Your current session remains active."
+        );
+
+        showToast("Other demo sessions signed out. No real sessions were affected.");
+    });
+
+    // Close security dialogs by clicking outside
+    [twoFactorModal, sessionsModal, signOutModal].forEach(modal => {
+        modal.addEventListener("click", event => {
+            if (event.target !== modal) return;
+
+            if (modal === twoFactorModal) cancelTwoFactor();
+            else if (modal === sessionsModal) closeSessionsModal();
+            else closeSignOutModal();
+        });
+    });
+
+    // Escape closes the topmost security modal
+    document.addEventListener("keydown", event => {
+        if (event.key !== "Escape") return;
+
+        if (!signOutModal.hidden) closeSignOutModal();
+        else if (!sessionsModal.hidden) closeSessionsModal();
+        else if (!twoFactorModal.hidden) cancelTwoFactor();
+    });
+
+    updateSecuritySummary();
+    updateSessionCount();
+
+
 
     function showSection(section) {
         root.querySelectorAll("[data-as-section]").forEach(button => {
@@ -1324,13 +3655,265 @@
         showToast("Settings reset to the last saved values.");
     });
 
-    $("asChangePassword").addEventListener("click", () => {
-        showToast("Password changes will be enabled when authentication integration is implemented.");
-    });
+    // $("asChangePassword").addEventListener("click", () => {
+    //     showToast("Password changes will be enabled when authentication integration is implemented.");
+    // });
 
-    $("asUpgradePlan").addEventListener("click", () => {
-        showToast("Plan selection will be available when subscription management is implemented.");
-    });
+    
+        const passwordModal = $("asPasswordModal");
+        const passwordForm = $("asPasswordForm");
+        const passwordIds = [
+            "asCurrentPassword",
+            "asNewPassword",
+            "asConfirmPassword"
+        ];
+
+        function clearPasswordErrors() {
+            root.querySelectorAll(".as-password-error").forEach(el => {
+                el.textContent = "";
+            });
+
+            $("asPasswordFormMessage").textContent = "";
+        }
+
+        function resetPasswordForm() {
+            passwordForm.reset();
+            clearPasswordErrors();
+            updatePasswordStrength();
+            root.querySelectorAll("[data-password-toggle]").forEach(button => {
+                const input = $(button.dataset.passwordToggle);
+                input.type = "password";
+                button.innerHTML = '<i class="bi bi-eye"></i>';
+                button.setAttribute("aria-label", "Show password");
+            });
+        }
+
+        function openPasswordModal() {
+            resetPasswordForm();
+            passwordModal.hidden = false;
+            document.body.style.overflow = "hidden";
+            $("asCurrentPassword").focus();
+        }
+
+        function closePasswordModal() {
+            passwordModal.hidden = true;
+            document.body.style.overflow = "";
+            $("asChangePassword").focus();
+        }
+
+        function updatePasswordStrength() {
+            const password = $("asNewPassword").value;
+            const checks = {
+                length: password.length >= 8,
+                upper: /[A-Z]/.test(password),
+                lower: /[a-z]/.test(password),
+                number: /\d/.test(password)
+            };
+
+            Object.entries(checks).forEach(([rule, passed]) => {
+                const item = root.querySelector('[data-rule="' + rule + '"]');
+                item.classList.toggle("met", passed);
+            });
+
+            const score = Object.values(checks).filter(Boolean).length;
+            const bar = $("asPasswordStrengthBar");
+            const label = $("asPasswordStrengthText");
+
+            bar.style.width = (score * 25) + "%";
+            bar.style.background = score <= 1 ? "#d94d58"
+                : score <= 2 ? "#e0a23c"
+                    : score === 3 ? "#4c91d9" : "#0da88b";
+
+            label.textContent = !password ? "Enter a new password"
+                : score <= 1 ? "Weak"
+                    : score === 2 ? "Fair"
+                        : score === 3 ? "Good" : "Meets demo requirements";
+        }
+
+        $("asChangePassword").addEventListener("click", openPasswordModal);
+        $("asPasswordClose").addEventListener("click", closePasswordModal);
+        $("asPasswordCancel").addEventListener("click", closePasswordModal);
+        $("asPasswordReset").addEventListener("click", resetPasswordForm);
+
+        $("asNewPassword").addEventListener("input", () => {
+            updatePasswordStrength();
+            $("asPasswordFormMessage").textContent = "";
+        });
+
+        root.querySelectorAll("[data-password-toggle]").forEach(button => {
+            button.addEventListener("click", () => {
+                const input = $(button.dataset.passwordToggle);
+                const showing = input.type === "password";
+
+                input.type = showing ? "text" : "password";
+                button.innerHTML = showing
+                    ? '<i class="bi bi-eye-slash"></i>'
+                    : '<i class="bi bi-eye"></i>';
+
+                button.setAttribute(
+                    "aria-label",
+                    showing ? "Hide password" : "Show password"
+                );
+            });
+        });
+
+        passwordModal.addEventListener("click", event => {
+            if (event.target === passwordModal) closePasswordModal();
+        });
+
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape" && !passwordModal.hidden) {
+                closePasswordModal();
+            }
+        });
+
+        passwordForm.addEventListener("submit", event => {
+            event.preventDefault();
+            clearPasswordErrors();
+
+            const current = $("asCurrentPassword").value;
+            const password = $("asNewPassword").value;
+            const confirm = $("asConfirmPassword").value;
+            let firstInvalid = null;
+
+            function error(id, message) {
+                const target = root.querySelector('[data-error-for="' + id + '"]');
+                target.textContent = message;
+                if (!firstInvalid) firstInvalid = $(id);
+            }
+
+            if (!current) {
+                error("asCurrentPassword", "Enter a current password for this demo.");
+            }
+
+            if (password.length < 8 ||
+                !/[A-Z]/.test(password) ||
+                !/[a-z]/.test(password) ||
+                !/\d/.test(password)) {
+                error("asNewPassword",
+                    "Use at least 8 characters with uppercase, lowercase, and a number.");
+            }
+
+            if (!confirm) {
+                error("asConfirmPassword", "Confirm your new password.");
+            } else if (password !== confirm) {
+                error("asConfirmPassword", "The passwords do not match.");
+            }
+
+            if (firstInvalid) {
+                firstInvalid.focus();
+                return;
+            }
+
+            $("asPasswordFormMessage").style.color = "#0d9278";
+            $("asPasswordFormMessage").textContent =
+                "Demo validation passed. No password was changed or stored.";
+
+            showToast("Demo validation passed. No real password changes were made.");
+        });
+
+
+    // $("asUpgradePlan").addEventListener("click", () => {
+    //     showToast("Plan selection will be available when subscription management is implemented.");
+    // });
+
+    
+        // Subscription plans modal — UI prototype only
+        const plansModal = $("asPlansModal");
+        const plansConfirmation = $("asPlanConfirmation");
+        let selectedPlan = null;
+
+        function resetPlanSelection() {
+            selectedPlan = null;
+            plansConfirmation.hidden = true;
+
+            root.querySelectorAll(".as-plan-option").forEach(card => {
+                card.classList.remove("as-plan-selected");
+            });
+
+            $("asPlanConfirmationTitle").textContent =
+                "Confirm plan selection";
+            $("asPlanConfirmationText").textContent = "";
+        }
+
+        function openPlansModal() {
+            resetPlanSelection();
+            plansModal.hidden = false;
+            document.body.style.overflow = "hidden";
+            $("asPlansClose").focus();
+        }
+
+        function closePlansModal() {
+            plansModal.hidden = true;
+            document.body.style.overflow = "";
+            $("asUpgradePlan").focus();
+        }
+
+        $("asUpgradePlan").addEventListener("click", openPlansModal);
+        $("asPlansClose").addEventListener("click", closePlansModal);
+        $("asPlansDone").addEventListener("click", closePlansModal);
+
+        $("asPlanCancel").addEventListener("click", resetPlanSelection);
+
+        root.querySelectorAll("[data-select-plan]").forEach(button => {
+            button.addEventListener("click", () => {
+                selectedPlan = button.dataset.selectPlan;
+
+                root.querySelectorAll(".as-plan-option").forEach(card => {
+                    card.classList.toggle(
+                        "as-plan-selected",
+                        card.dataset.plan === selectedPlan
+                    );
+                });
+
+                $("asPlanConfirmationTitle").textContent =
+                    "Confirm " + selectedPlan + " plan";
+
+                $("asPlanConfirmationText").textContent =
+                    selectedPlan === "Free"
+                        ? "You are already using the Free plan."
+                        : "You selected the " + selectedPlan +
+                        " plan. This demo will not charge you or change your subscription.";
+
+                plansConfirmation.hidden = false;
+
+                plansConfirmation.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest"
+                });
+            });
+        });
+
+        $("asPlanConfirm").addEventListener("click", () => {
+            if (!selectedPlan) {
+                showToast("Please select a plan first.");
+                return;
+            }
+
+            if (selectedPlan === "Free") {
+                showToast("The Free plan is already your current plan.");
+            } else {
+                showToast(
+                    selectedPlan +
+                    " selected successfully in the demo. No subscription was changed."
+                );
+            }
+
+            closePlansModal();
+        });
+
+        plansModal.addEventListener("click", event => {
+            if (event.target === plansModal) {
+                closePlansModal();
+            }
+        });
+
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape" && !plansModal.hidden) {
+                closePlansModal();
+            }
+        });
+
 
     setSettings(defaults);
     savedSettings = currentSettings();
