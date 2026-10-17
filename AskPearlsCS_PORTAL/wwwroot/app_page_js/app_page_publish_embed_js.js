@@ -315,3 +315,39 @@
     renderDomains();
 })();
 
+
+(function initializePublishChecklist () {
+    const checkboxes = Array.from(
+        document.querySelectorAll(".pe-checklist-checkbox")
+    );
+
+    const status = document.getElementById("peChecklistStatus");
+    const progressBar = document.getElementById("peChecklistProgressBar");
+
+    if (!checkboxes.length || !status || !progressBar) {
+        return;
+    }
+
+    function updateChecklist () {
+        const completed = checkboxes.filter(
+            checkbox => checkbox.checked
+        ).length;
+
+        const total = checkboxes.length;
+        const percentage = total === 0
+            ? 0
+            : (completed / total) * 100;
+
+        status.textContent =
+            `${ completed } of ${ total } steps completed`;
+
+        progressBar.style.width = `${ percentage }%`;
+    }
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", updateChecklist);
+    });
+
+    updateChecklist();
+})();
+

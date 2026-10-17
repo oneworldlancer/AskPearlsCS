@@ -1,41 +1,58 @@
-
 <!-- PAGE: PUBLISH & EMBED -->
 <div class="ap-page publish-embed-page" data-ap-page="publish-embed">
-    <!-- Shared AskPearls breadcrumb -->
+
+    <!-- Breadcrumb -->
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
         <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
-        <span class="ap-breadcrumb-current" aria-current="page">Publish &amp; Embed</span>
+        <span class="ap-breadcrumb-current" aria-current="page">
+            Publish &amp; Embed
+        </span>
     </nav>
 
-
+    <!-- Page header -->
     <header class="pe-page-header ap-page-header">
         <div class="ap-page-heading">
             <h1 class="ap-page-title">Publish &amp; Embed</h1>
-            <p class="ap-page-description">Publish your widget and install it on your website.</p>
+            <p class="ap-page-description">
+                Publish your widget and install it on your website.
+            </p>
         </div>
+
         <div class="pe-header-actions ap-page-actions">
             <span class="pe-status-badge" id="peStatusBadge">
                 <i class="bi bi-circle-fill"></i> Draft
             </span>
+
             <button type="button" class="pe-btn-primary" id="pePublishBtn">
-                <i class="bi bi-rocket-takeoff"></i> Publish Widget
+                <i class="bi bi-rocket-takeoff"></i>
+                Publish Widget
             </button>
         </div>
     </header>
 
-    <!-- Widget selection -->
+    <!-- Widget selector -->
     <section class="pe-card pe-widget-selector">
-        <div class="pe-widget-icon"><i class="bi bi-grid-1x2"></i></div>
+        <div class="pe-widget-icon">
+            <i class="bi bi-grid-1x2"></i>
+        </div>
+
         <div class="pe-widget-info">
             <label for="peWidgetSelect">Select widget</label>
+
             <select id="peWidgetSelect">
                 <option value="pk_demo_sofa_finder">Sofa Finder Widget</option>
-                <option value="pk_furniture_recommendation">Furniture Recommendation Widget</option>
-                <option value="pk_demo_recommendation">Demo Recommendation Widget</option>
+                <option value="pk_furniture_recommendation">
+                    Furniture Recommendation Widget
+                </option>
+                <option value="pk_demo_recommendation">
+                    Demo Recommendation Widget
+                </option>
             </select>
+
             <small>Choose the widget you want to publish.</small>
         </div>
+
         <div class="pe-version">
             <span>Current version</span>
             <strong id="peVersion">v1.0.0</strong>
@@ -44,111 +61,168 @@
 
     <!-- Publishing overview -->
     <div class="pe-summary-grid">
+
         <div class="pe-summary-card">
-            <div class="pe-summary-icon pe-green"><i class="bi bi-globe2"></i></div>
+            <div class="pe-summary-icon pe-green">
+                <i class="bi bi-globe2"></i>
+            </div>
             <div>
                 <span>Publishing status</span>
                 <strong id="peSummaryStatus">Draft</strong>
                 <small id="peStatusDescription">Not published yet</small>
             </div>
         </div>
+
         <div class="pe-summary-card">
-            <div class="pe-summary-icon pe-blue"><i class="bi bi-code-slash"></i></div>
+            <div class="pe-summary-icon pe-blue">
+                <i class="bi bi-code-slash"></i>
+            </div>
             <div>
                 <span>Installation method</span>
                 <strong id="peSummaryPlatform">Custom HTML</strong>
                 <small>Copy and paste the embed code</small>
             </div>
         </div>
+
         <div class="pe-summary-card">
-            <div class="pe-summary-icon pe-purple"><i class="bi bi-shield-check"></i></div>
+            <div class="pe-summary-icon pe-purple">
+                <i class="bi bi-shield-check"></i>
+            </div>
             <div>
                 <span>Allowed domains</span>
                 <strong id="peDomainCount">2 domains</strong>
                 <small>Mock security configuration</small>
             </div>
         </div>
+
     </div>
 
+    <!-- Main content -->
     <div class="pe-main-grid">
 
-        <!-- INSTALLATION -->
+        <!-- Install your widget -->
         <section class="pe-card pe-install-card">
+
             <div class="pe-card-heading">
                 <div>
                     <h5>Install your widget</h5>
-                    <p>Choose your website platform and follow the instructions.</p>
+                    <p>
+                        Choose your website platform and follow the instructions.
+                    </p>
                 </div>
                 <i class="bi bi-plug"></i>
             </div>
 
-            <div class="pe-platform-tabs" role="tablist" aria-label="Website platform">
-                <button type="button" class="pe-platform-tab active"
-                        data-pe-platform="html" role="tab" aria-selected="true">
-                    <i class="bi bi-code-square"></i> Custom HTML
+            <!-- Platform tabs -->
+            <div class="pe-platform-tabs"
+                 role="tablist"
+                 aria-label="Website platform">
+
+                <button type="button"
+                        class="pe-platform-tab active"
+                        data-pe-platform="html"
+                        role="tab"
+                        aria-selected="true">
+                    <i class="bi bi-code-square"></i>
+                    Custom HTML
                 </button>
-                <button type="button" class="pe-platform-tab"
-                        data-pe-platform="wordpress" role="tab" aria-selected="false">
-                    <i class="bi bi-wordpress"></i> WordPress
+
+                <button type="button"
+                        class="pe-platform-tab"
+                        data-pe-platform="wordpress"
+                        role="tab"
+                        aria-selected="false">
+                    <i class="bi bi-wordpress"></i>
+                    WordPress
                 </button>
-                <button type="button" class="pe-platform-tab"
-                        data-pe-platform="shopify" role="tab" aria-selected="false">
-                    <i class="bi bi-bag"></i> Shopify
+
+                <button type="button"
+                        class="pe-platform-tab"
+                        data-pe-platform="shopify"
+                        role="tab"
+                        aria-selected="false">
+                    <i class="bi bi-bag"></i>
+                    Shopify
                 </button>
-                <button type="button" class="pe-platform-tab"
-                        data-pe-platform="wix" role="tab" aria-selected="false">
-                    <i class="bi bi-window"></i> Wix
+
+                <button type="button"
+                        class="pe-platform-tab"
+                        data-pe-platform="wix"
+                        role="tab"
+                        aria-selected="false">
+                    <i class="bi bi-window"></i>
+                    Wix
                 </button>
+
             </div>
 
             <div class="pe-instructions">
+
+                <!-- Step 1 -->
                 <div class="pe-instruction-title">
                     <span class="pe-step-number">1</span>
+
                     <div>
-                        <h6 id="peInstructionHeading">Copy your embed code</h6>
+                        <h6 id="peInstructionHeading">
+                            Copy your embed code
+                        </h6>
                         <p id="peInstructionDescription">
                             Copy the snippet below and add it to your website.
                         </p>
                     </div>
                 </div>
 
+                <!-- Embed code -->
                 <div class="pe-code-heading">
                     <div>
                         <i class="bi bi-filetype-html"></i>
                         <span id="peCodeLabel">HTML embed snippet</span>
                     </div>
-                    <button type="button" class="pe-copy-btn" id="peCopyCode">
-                        <i class="bi bi-clipboard"></i> Copy code
+
+                    <button type="button"
+                            class="pe-copy-btn"
+                            id="peCopyCode">
+                        <i class="bi bi-clipboard"></i>
+                        Copy code
                     </button>
                 </div>
 
                 <pre class="pe-code-block"><code id="peEmbedCode"></code></pre>
 
+                <!-- Step 2 -->
                 <div class="pe-instruction-title pe-second-step">
                     <span class="pe-step-number">2</span>
+
                     <div>
-                        <h6 id="peStepTwoHeading">Paste the code into your website</h6>
+                        <h6 id="peStepTwoHeading">
+                            Paste the code into your website
+                        </h6>
                         <p id="peStepTwoDescription">
-                            Place the snippet before the closing body tag, then save your page.
+                            Place the snippet before the closing body tag,
+                            then save your page.
                         </p>
                     </div>
                 </div>
 
+                <!-- Installation tip -->
                 <div class="pe-tip">
                     <i class="bi bi-lightbulb"></i>
+
                     <div>
                         <strong>Installation tip</strong>
                         <p id="peInstallTip">
-                            Add the snippet once per website. The widget can then load wherever
-                            the configured script is included.
+                            Add the snippet once per website. The widget can
+                            then load wherever the configured script is included.
                         </p>
                     </div>
                 </div>
+
             </div>
         </section>
 
-        <!-- DOMAIN CONFIGURATION -->
+        <!-- Allowed domains -->
         <section class="pe-card pe-domain-card">
+
             <div class="pe-card-heading">
                 <div>
                     <h5>Allowed domains</h5>
@@ -159,21 +233,36 @@
 
             <div class="pe-security-note">
                 <i class="bi bi-info-circle"></i>
-                <span>Demo configuration only. Domain restrictions are not enforced yet.</span>
+                <span>
+                    Demo configuration only. Domain restrictions are not
+                    enforced yet.
+                </span>
             </div>
 
             <form id="peDomainForm" class="pe-domain-form">
                 <label for="peDomainInput">Add a website domain</label>
+
                 <div class="pe-domain-input-row">
-                    <input type="text" id="peDomainInput"
-                           placeholder="example.com" maxlength="253"
+                    <input type="text"
+                           id="peDomainInput"
+                           placeholder="example.com"
+                           maxlength="253"
                            autocomplete="off">
-                    <button type="submit" class="pe-btn-primary pe-add-domain">
-                        <i class="bi bi-plus-lg"></i> Add
+
+                    <button type="submit"
+                            class="pe-btn-primary pe-add-domain">
+                        <i class="bi bi-plus-lg"></i>
+                        Add
                     </button>
                 </div>
-                <small>Enter a domain such as example.com, without a URL path.</small>
-                <div class="pe-domain-error" id="peDomainError" role="alert"></div>
+
+                <small>
+                    Enter a domain such as example.com, without a URL path.
+                </small>
+
+                <div class="pe-domain-error"
+                     id="peDomainError"
+                     role="alert"></div>
             </form>
 
             <div class="pe-domain-list-heading">
@@ -190,51 +279,105 @@
                 <strong>No domains configured</strong>
                 <span>Add a domain to your mock allowlist.</span>
             </div>
+
         </section>
     </div>
 
-    <!-- FINAL CHECK -->
+    <!-- Before you go live -->
     <section class="pe-card pe-checklist-card">
+
         <div class="pe-card-heading">
             <div>
                 <h5>Before you go live</h5>
-                <p>Review these steps before installing the widget on your website.</p>
+                <p>
+                    Review these steps before installing the widget on your website.
+                </p>
             </div>
             <i class="bi bi-check2-square"></i>
         </div>
 
+        <!-- Responsive checklist: 3 desktop, 2 tablet, 1 mobile -->
         <div class="pe-checklist">
-            <label class="pe-check-item">
-                <input type="checkbox" id="peCheckContent">
-                <span class="pe-custom-check"><i class="bi bi-check"></i></span>
+
+            <!-- Checklist item 1 -->
+            <label class="pe-check-item" for="peCheckContent">
+                <input type="checkbox"
+                       id="peCheckContent"
+                       class="pe-checklist-checkbox">
+
+                <span class="pe-custom-check" aria-hidden="true">
+                    <i class="bi bi-check"></i>
+                </span>
+
                 <span class="pe-check-copy">
                     <strong>Review your widget content</strong>
-                    <small>Confirm your questions and recommendation items are ready.</small>
+                    <small>
+                        Confirm your questions and recommendation items are ready.
+                    </small>
                 </span>
             </label>
-            <label class="pe-check-item">
-                <input type="checkbox" id="peCheckDesign">
-                <span class="pe-custom-check"><i class="bi bi-check"></i></span>
+
+            <!-- Checklist item 2 -->
+            <label class="pe-check-item" for="peCheckDesign">
+                <input type="checkbox"
+                       id="peCheckDesign"
+                       class="pe-checklist-checkbox">
+
+                <span class="pe-custom-check" aria-hidden="true">
+                    <i class="bi bi-check"></i>
+                </span>
+
                 <span class="pe-check-copy">
                     <strong>Review your widget design</strong>
-                    <small>Check colors, typography, and mobile appearance.</small>
+                    <small>
+                        Check colors, typography, and mobile appearance.
+                    </small>
                 </span>
             </label>
-            <label class="pe-check-item">
-                <input type="checkbox" id="peCheckInstall">
-                <span class="pe-custom-check"><i class="bi bi-check"></i></span>
+
+            <!-- Checklist item 3 -->
+            <label class="pe-check-item" for="peCheckInstall">
+                <input type="checkbox"
+                       id="peCheckInstall"
+                       class="pe-checklist-checkbox">
+
+                <span class="pe-custom-check" aria-hidden="true">
+                    <i class="bi bi-check"></i>
+                </span>
+
                 <span class="pe-check-copy">
                     <strong>Prepare your installation</strong>
-                    <small>Choose a platform and copy the relevant embed snippet.</small>
+                    <small>
+                        Choose a platform and copy the relevant embed snippet.
+                    </small>
                 </span>
             </label>
+
         </div>
+
+        <!-- Checklist progress -->
+        <div class="pe-checklist-progress" aria-live="polite">
+            <span id="peChecklistStatus">0 of 3 steps completed</span>
+
+            <div class="pe-checklist-progress-track">
+                <div id="peChecklistProgressBar"
+                     class="pe-checklist-progress-bar"></div>
+            </div>
+        </div>
+
     </section>
 
-    <div class="pe-toast" id="peToast" role="status" aria-live="polite"></div>
+    <!-- Toast notification -->
+    <div class="pe-toast"
+         id="peToast"
+         role="status"
+         aria-live="polite"></div>
+
 </div>
 
- <link href="~/app_page_css/app_page_publish_embed_css.css" rel="stylesheet" />
+<!-- Page CSS -->
+<link href="~/app_page_css/app_page_publish_embed_css.css"
+      rel="stylesheet" />
 
-  <script src="~/app_page_js/app_page_publish_embed_js.js" />
-
+<!-- Page JavaScript -->
+<script src="~/app_page_js/app_page_publish_embed_js.js" />

@@ -112,57 +112,130 @@ $("spAllocationEditor").innerHTML = recommendations.map((r, i) => `
     </div>
     `).join("");
 
-root.querySelectorAll(".sp-point-input").forEach(input => {
-        input.addEventListener("input", () => {
-            const index = Number(input.dataset.index);
-            const value = input.value === "" ? 0 : Number(input.value);
-            if (!Number.isFinite(value) || value < 0 || value > 50 || !Number.isInteger(value)) {
-                input.classList.add("is-invalid");
+        root.querySelectorAll(".sp-point-input").forEach(input => {
+            input.addEventListener("input", () => {
+                const index = Number(input.dataset.index);
+                const rawValue = input.value.trim();
+                const value = Number(rawValue);
+
+                const isValid =
+                    rawValue !== "" &&
+                    Number.isInteger(value) &&
+                    value >= 0 &&
+                    value <= MAX_PER_QUESTION;
+
+                input.classList.toggle("is-invalid", !isValid);
+
+                if (isValid) {
+                    allocations[ qKey ][ aValue ][ index ] = value;
+                }
+
                 updateAllocationStatus();
-                return;
-            }
-            input.classList.remove("is-invalid");
-            allocations[ qKey ][ aValue ][ index ] = value;
-            updateAllocationStatus();
-            renderResults();
+                renderResults();
+            });
         });
-});
 
     updateAllocationStatus();
 }
 
-    function updateAllocationStatus() {
-const values = allocations[editQuestion.value][editAnswer.value];
-const total = values.reduce((sum, n) => sum + n, 0);
-    const valid = total === MAX_PER_QUESTION;
-    $("spAllocationTotal").textContent = `${ total } / ${ MAX_PER_QUESTION }`;
-    $("spAllocationStatus").textContent = valid ? "Valid allocation" : `Needs ${ MAX_PER_QUESTION - total } points`;
-    $("spAllocationStatus").className = valid ? "sp-valid" : "sp-invalid";
-    $("spAllocationBar").style.width = Math.max(0, Math.min(100, total / MAX_PER_QUESTION * 100)) + "%";
-    $("spAllocationBar").classList.toggle("invalid", !valid);
-}
+        function updateAllocationStatus () {
+            const inputs = Array.from(
+                root.querySelectorAll(".sp-point-input")
+            );
 
-    function renderVisitorAnswers() {
-        $("spVisitorAnswers").innerHTML = questions.map(q => `
-                <div class="col-12 col-md-4">
-                    <div class="sp-answer-card">
-                        <label for="spVisitor_${ q.key }">${ q.text }</label>
-                        <select class="form-select" id="spVisitor_${ q.key }" data-question="${ q.key }">
-                            ${ q.answers.map(a => `
-                                <option value="${ a.value }" ${ visitorAnswers[ q.key ] === a.value ? "selected" : "" }>${ a.text }</option>
-                            `).join("") }
-                        </select>
-                    </div>
-                </div>
-            `).join("");
+            const rawValues = inputs.map(input => input.value.trim());
 
-            root.querySelectorAll("[data-question]").forEach(select => {
-        select.addEventListener("change", () => {
-            visitorAnswers[ select.dataset.question ] = select.value;
-            renderResults();
-        });
+            const values = rawValues.map(value => Number(value));
+
+            const hasInvalidInput = inputs.some((input, index) => {
+                const value = values[ index ];
+
+                return (
+                    rawValues[ index ] === "" ||
+                    !Number.isInteger(value) ||
+                    value < 0 ||
+                    value > MAX_PER_QUESTION
+                );
             });
+
+            const total = hasInvalidInput
+                ? null
+                : values.reduce((sum, value) => sum + value, 0);
+
+            let message = "";
+            let statusClass = "sp-valid";
+
+            if (hasInvalidInput) {
+                message = "Enter a whole number between 0 and 50 for each item.";
+                statusClass = "sp-invalid";
+            } else if (total < MAX_PER_QUESTION) {
+                message = `Add ${ MAX_PER_QUESTION - total } points to reach 50.`;
+                statusClass = "sp-invalid";
+            } else if (total > MAX_PER_QUESTION) {
+                message = `Remove ${ total - MAX_PER_QUESTION } points to reach 50.`;
+                statusClass = "sp-invalid";
+            } else {
+                message = "Valid — total is 50 points.";
+            }
+
+            let status = $("spAllocationStatus");
+
+            // Create the status element if it doesn't exist in the HTML yet.
+            if (!status) {
+                status = document.createElement("div");
+                status.id = "spAllocationStatus";
+                status.className = "mt-3";
+                $("spAllocationEditor").insertAdjacentElement("afterend", status);
+            }
+
+            status.className = `mt-3 ${ statusClass }`;
+            status.textContent = message;
         }
+
+
+        function renderVisitorAnswers () {
+            $("spVisitorAnswers").innerHTML = questions.map(q => `
+        <div class="col-12 col-md-4">
+            <div class="sp-answer-card">
+                <label for="spVisitor_${ q.key }">${ q.text }</label>
+                <select
+                    class="form-select"
+                    id="spVisitor_${ q.key }"
+                    data-question="${ q.key }">
+                    ${ q.answers.map(a => `
+                        <option
+                            value="${ a.value }"
+                            ${ visitorAnswers[ q.key ] === a.value ? "selected" : "" }>
+                            ${ a.text }
+                        </option>
+                    `).join("") }
+                </select>
+            </div>
+        </div>
+    `).join("");
+
+            root.querySelectorAll("#spVisitorAnswers [data-question]")
+                .forEach(select => {
+                    select.addEventListener("change", function () {
+                        const questionKey = this.dataset.question;
+                        const selectedValue = this.value;
+
+                        // Update the selected visitor answer.
+                        visitorAnswers[ questionKey ] = selectedValue;
+
+                        // Recalculate rankings and score breakdown.
+                        renderResults();
+
+                        // Diagnostic message for browser developer tools.
+                        console.log("Visitor answer changed:", {
+                            question: questionKey,
+                            answer: selectedValue,
+                            visitorAnswers: { ...visitorAnswers }
+                        });
+                    });
+                });
+        }
+
 
     function calculateResults() {
             const results = recommendations.map((recommendation, index) => {
@@ -189,20 +262,53 @@ const total = values.reduce((sum, n) => sum + n, 0);
         }
 
     function renderResults() {
-            const allValid = questions.every(q =>
-                q.answers.every(a =>
-                    allocations[q.key][a.value].reduce((sum, n) => sum + n, 0) === MAX_PER_QUESTION
-    )
-    );
 
-    $("spRankingEmpty").classList.toggle("d-none", allValid);
-    $("spRanking").classList.toggle("d-none", !allValid);
+        const inputs = Array.from(
+            root.querySelectorAll(".sp-point-input")
+        );
 
-    if (!allValid) {
-        $("spBreakdown").innerHTML = "";
-    $("spBreakdownFooter").innerHTML = "";
-    return;
-            }
+        const visibleInputsValid = inputs.every(input => {
+            const rawValue = input.value.trim();
+            const value = Number(rawValue);
+
+            return (
+                rawValue !== "" &&
+                Number.isInteger(value) &&
+                value >= 0 &&
+                value <= MAX_PER_QUESTION
+            );
+        });
+
+        const storedAllocationsValid = questions.every(q =>
+            q.answers.every(a => {
+                const values = allocations[ q.key ][ a.value ];
+
+                return (
+                    Array.isArray(values) &&
+                    values.length === recommendations.length &&
+                    values.every(value =>
+                        Number.isInteger(value) &&
+                        value >= 0 &&
+                        value <= MAX_PER_QUESTION
+                    ) &&
+                    values.reduce((sum, value) => sum + value, 0)
+                    === MAX_PER_QUESTION
+                );
+            })
+        );
+
+        const allValid = visibleInputsValid && storedAllocationsValid;
+
+        $("spRankingEmpty").classList.toggle("d-none", allValid);
+        $("spRanking").classList.toggle("d-none", !allValid);
+
+        if (!allValid) {
+            $("spRanking").innerHTML = "";
+            $("spBreakdown").innerHTML = "";
+            $("spBreakdownFooter").innerHTML = "";
+            return;
+        }
+
 
     const results = calculateResults();
 
@@ -230,10 +336,10 @@ const total = values.reduce((sum, n) => sum + n, 0);
                 const answer = visitorAnswers[q.key];
                 const points = allocations[q.key][answer];
                 return `
-    < tr >
+    <tr>
     <td><strong>${ q.text }</strong><div class="text-muted small">${ getAnswerLabel(q.key, answer) }</div></td>
                         ${ points.map(value => `<td><span class="sp-points">${ value }</span> <span class="text-muted small">pts</span></td>`).join("") }
-                    </tr >
+                    </tr>
     `;
             }).join("");
 
@@ -242,10 +348,10 @@ const total = values.reduce((sum, n) => sum + n, 0);
             );
 
             $("spBreakdownFooter").innerHTML = `
-    < tr >
+    <tr>
     <th>Total score</th>
                     ${ totals.map(total => `<th>${ total } / ${ questions.length * MAX_PER_QUESTION }</th>`).join("") }
-                </tr >
+                </tr>
     `;
         }
 

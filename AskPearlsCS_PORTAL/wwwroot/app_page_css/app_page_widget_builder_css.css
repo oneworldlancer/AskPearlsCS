@@ -212,9 +212,12 @@
     padding: 4px;
 }
 
+
 /* ---------------------------------------------------------
-       5. APPEARANCE THEME OPTIONS
-       --------------------------------------------------------- */
+   5. APPEARANCE THEME OPTIONS
+   Theme controls adapt to the PORTAL theme.
+   The visitor preview theme remains controlled separately.
+   --------------------------------------------------------- */
 
 .page-widget-builder .wb-theme-option {
     position: relative;
@@ -230,26 +233,70 @@
     }
 
     .page-widget-builder .wb-theme-option span {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         padding: 10px 16px;
-        border: 1px solid var(--bs-border-color);
+        border: 1px solid var(--ap-border, #d1d9e0);
         border-radius: 8px;
-        background-color: var(--bs-body-bg);
-        color: var(--bs-body-color);
+        background-color: var(--ap-surface, #ffffff);
+        color: var(--ap-text, #243247);
         cursor: pointer;
-        transition: border-color .2s ease, background-color .2s ease;
+        opacity: 1;
+        -webkit-text-fill-color: currentColor;
+        transition: border-color .2s ease, background-color .2s ease, color .2s ease;
     }
 
+    /* Selected option in the normal/light portal theme */
     .page-widget-builder .wb-theme-option input:checked + span {
-        border-color: var(--bs-primary);
-        background-color: var(--bs-tertiary-bg);
-        box-shadow: 0 0 0 1px var(--bs-primary);
+        background-color: #e6f6f0;
+        color: #176b58;
+        border-color: #16866f;
+        box-shadow: 0 0 0 1px rgba(22, 134, 111, .15);
     }
 
-    .page-widget-builder .wb-theme-option input:focus-visible + span {
-        outline: 3px solid var(--bs-primary);
-        outline-offset: 3px;
-    }
+/* Portal dark theme — keep both options readable */
+[data-bs-theme="dark"] .page-widget-builder .wb-theme-option span,
+html.dark .page-widget-builder .wb-theme-option span,
+body.dark .page-widget-builder .wb-theme-option span,
+html.dark-theme .page-widget-builder .wb-theme-option span,
+body.dark-theme .page-widget-builder .wb-theme-option span,
+html[data-theme="dark"] .page-widget-builder .wb-theme-option span,
+body[data-theme="dark"] .page-widget-builder .wb-theme-option span,
+body.dark-mode .page-widget-builder .wb-theme-option span {
+    background-color: #10211c;
+    color: #edf5f2;
+    border-color: #2b443b;
+    -webkit-text-fill-color: #edf5f2;
+}
+
+/* Selected option in the portal dark theme */
+[data-bs-theme="dark"] .page-widget-builder .wb-theme-option input:checked + span,
+html.dark .page-widget-builder .wb-theme-option input:checked + span,
+body.dark .page-widget-builder .wb-theme-option input:checked + span,
+html.dark-theme .page-widget-builder .wb-theme-option input:checked + span,
+body.dark-theme .page-widget-builder .wb-theme-option input:checked + span,
+html[data-theme="dark"] .page-widget-builder .wb-theme-option input:checked + span,
+body[data-theme="dark"] .page-widget-builder .wb-theme-option input:checked + span,
+body.dark-mode .page-widget-builder .wb-theme-option input:checked + span {
+    background-color: #18392d;
+    color: #ffffff;
+    border-color: #20c979;
+    box-shadow: 0 0 0 1px rgba(32, 201, 121, .15);
+    -webkit-text-fill-color: #ffffff;
+}
+
+/* Hover state */
+.page-widget-builder .wb-theme-option span:hover {
+    border-color: var(--ap-primary, #16866f);
+}
+
+/* Visible keyboard focus without the default blue outline */
+.page-widget-builder .wb-theme-option input:focus-visible + span {
+    outline: 3px solid #65cba6;
+    outline-offset: 3px;
+}
+
 
 /* ---------------------------------------------------------
        6. BEHAVIOR SETTINGS

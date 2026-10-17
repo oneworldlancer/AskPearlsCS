@@ -33,11 +33,7 @@
     function updatePreview () {
         const title = $("#wbWidgetTitle").val().trim();
         const description = $("#wbWidgetDescription").val().trim();
-        //const buttonText = $("#wbButtonText").val().trim();
-        const buttonText = $("#wbStartButtonText").val().trim();
-
-        $("#wbPreviewPrimary").text(buttonText || "Get Started");
-
+        const buttonText = $("#wbButtonText").val().trim();
 
         const primaryColor = $("#wbPrimaryColor").val();
         const corners = $("#wbCornerStyle").val();
@@ -51,7 +47,7 @@
             .text(description || "Your widget description.")
             .toggle($("#wbShowDescription").is(":checked"));
 
-        $("#wbPreviewPrimary").text(buttonText || "Get Started");
+        $("#wbPreviewPrimary").text(buttonText || "Find My Sofa");
 
         $("#wbPreviewWidget")
             .attr("data-theme", theme)

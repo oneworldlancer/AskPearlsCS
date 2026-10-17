@@ -28,7 +28,7 @@
     margin: 0;
 }
 
-@@media (max-width: 650px) {
+@media (max-width: 650px) {
     .sp-page .ap-page-header {
         flex-direction: column;
         align-items: flex-start;
@@ -250,7 +250,7 @@
     font-variant-numeric: tabular-nums;
 }
 
-@@media (max-width:767.98px) {
+@media (max-width:767.98px) {
     .sp-panel-head, .sp-panel-body {
         padding: 16px;
     }
@@ -470,4 +470,58 @@ html[data-theme="dark"] .sp-page {
     /* Keep labels readable */
     html[data-theme="dark"] .sp-page .sp-allocation-card label {
         color: #eff8f4 !important;
+    }
+
+
+
+/* AskPearls Scoring & Preview — force readable visitor dropdown text */
+.sp-page #spVisitorAnswers select.form-select,
+.sp-page #spVisitorAnswers .form-select,
+.sp-page select[id^="spVisitor_"] {
+    background-color: #071d19 !important;
+    color: #f2fffb !important;
+    -webkit-text-fill-color: #f2fffb !important;
+    border-color: #285047;
+}
+
+    /* Dropdown options */
+    .sp-page #spVisitorAnswers select.form-select option,
+    .sp-page select[id^="spVisitor_"] option {
+        background-color: #0c2923 !important;
+        color: #f2fffb !important;
+    }
+
+    /* Focused dropdown */
+    .sp-page #spVisitorAnswers select.form-select:focus,
+    .sp-page select[id^="spVisitor_"]:focus {
+        color: #f2fffb !important;
+        -webkit-text-fill-color: #f2fffb !important;
+        border-color: #10b981;
+        box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.2);
+    }
+
+
+
+/* Scoring & Preview — top Question and Answer option dropdowns */
+.sp-page #spEditQuestion,
+.sp-page #spEditAnswer {
+    background-color: #071d19 !important;
+    color: #f2fffb !important;
+    -webkit-text-fill-color: #f2fffb !important;
+    border-color: #285047 !important;
+}
+
+    .sp-page #spEditQuestion option,
+    .sp-page #spEditAnswer option {
+        background-color: #0c2923 !important;
+        color: #f2fffb !important;
+    }
+
+    /* Focus state */
+    .sp-page #spEditQuestion:focus,
+    .sp-page #spEditAnswer:focus {
+        color: #f2fffb !important;
+        -webkit-text-fill-color: #f2fffb !important;
+        border-color: #10b981 !important;
+        box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.2) !important;
     }
