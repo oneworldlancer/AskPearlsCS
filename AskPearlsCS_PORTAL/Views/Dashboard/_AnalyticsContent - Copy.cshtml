@@ -1,0 +1,1212 @@
+<!-- PAGE: ANALYTICS & ACTIVITY -->
+<div class="analytics-page container-fluid py-4">
+    <!-- Shared AskPearls breadcrumb -->
+    <nav class="ap-breadcrumb" aria-label="Breadcrumb">
+        <a href="/Dashboard">AskPearls</a>
+        <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
+        <span class="ap-breadcrumb-current" aria-current="page">Analytics &amp; Activity</span>
+    </nav>
+
+
+    <div class="an-header">
+        <div>
+            <h2>Analytics &amp; Activity</h2>
+            <p>Understand how visitors engage with your recommendation widgets.</p>
+        </div>
+        <button type="button" class="an-btn-outline" id="anExportBtn">
+            <i class="bi bi-download"></i> Export CSV
+        </button>
+    </div>
+
+    <div class="an-filters">
+        <div class="an-filter-field">
+            <label for="anDateRange">Date range</label>
+            <select id="anDateRange">
+                <option value="7">Last 7 days</option>
+                <option value="30" selected>Last 30 days</option>
+                <option value="90">Last 90 days</option>
+            </select>
+        </div>
+        <div class="an-filter-field">
+            <label for="anWidget">Widget</label>
+            <select id="anWidget">
+                <option value="all">All widgets</option>
+                <option value="sofa">Sofa Finder</option>
+                <option value="furniture">Furniture Recommendation</option>
+                <option value="demo">Demo Recommendation</option>
+            </select>
+        </div>
+        <div class="an-filter-field">
+            <label for="anActivityType">Activity type</label>
+            <select id="anActivityType">
+                <option value="all">All activity</option>
+                <option value="started">Widget started</option>
+                <option value="completed">Completed</option>
+                <option value="published">Published</option>
+                <option value="recommended">Recommendation shown</option>
+            </select>
+        </div>
+        <button type="button" class="an-btn-outline an-reset-filter" id="anResetFilters">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset
+        </button>
+    </div>
+
+    <!-- KPI cards -->
+    <div class="an-kpi-grid">
+        <article class="an-kpi-card">
+            <div class="an-kpi-top">
+                <span>Widget views</span>
+                <span class="an-kpi-icon an-icon-green"><i class="bi bi-eye"></i></span>
+            </div>
+            <strong id="anViews">12,840</strong>
+            <div class="an-kpi-foot">
+                <span class="an-trend-up"><i class="bi bi-arrow-up-right"></i> 12.8%</span>
+                <span>vs. previous period</span>
+            </div>
+        </article>
+        <article class="an-kpi-card">
+            <div class="an-kpi-top">
+                <span>Interactions</span>
+                <span class="an-kpi-icon an-icon-blue"><i class="bi bi-mouse"></i></span>
+            </div>
+            <strong id="anInteractions">4,620</strong>
+            <div class="an-kpi-foot">
+                <span class="an-trend-up"><i class="bi bi-arrow-up-right"></i> 8.4%</span>
+                <span>vs. previous period</span>
+            </div>
+        </article>
+        <article class="an-kpi-card">
+            <div class="an-kpi-top">
+                <span>Completion rate</span>
+                <span class="an-kpi-icon an-icon-purple"><i class="bi bi-check2-circle"></i></span>
+            </div>
+            <strong id="anCompletion">68.4%</strong>
+            <div class="an-kpi-foot">
+                <span class="an-trend-up"><i class="bi bi-arrow-up-right"></i> 4.2%</span>
+                <span>vs. previous period</span>
+            </div>
+        </article>
+        <article class="an-kpi-card">
+            <div class="an-kpi-top">
+                <span>Recommendations</span>
+                <span class="an-kpi-icon an-icon-orange"><i class="bi bi-stars"></i></span>
+            </div>
+            <strong id="anRecommendations">2,175</strong>
+            <div class="an-kpi-foot">
+                <span class="an-kpi-neutral"><i class="bi bi-dash"></i> 0.6%</span>
+                <span>vs. previous period</span>
+            </div>
+        </article>
+    </div>
+
+    <!-- Charts -->
+    <div class="an-chart-grid">
+        <section class="an-card an-performance-card">
+            <div class="an-card-heading">
+                <div>
+                    <h5>Widget performance</h5>
+                    <p>Views and interactions over the selected period.</p>
+                </div>
+                <span class="an-demo-label"><i class="bi bi-circle-fill"></i> Demo data</span>
+            </div>
+            <div class="an-chart-legend">
+                <span><i class="an-legend-dot an-dot-views"></i> Views</span>
+                <span><i class="an-legend-dot an-dot-interactions"></i> Interactions</span>
+            </div>
+            <div class="an-chart-wrap">
+                <svg id="anPerformanceChart" class="an-chart"
+                     viewBox="0 0 680 260" role="img"
+                     aria-label="Illustrative chart of widget views and interactions">
+                </svg>
+            </div>
+        </section>
+
+        <section class="an-card an-funnel-card">
+            <div class="an-card-heading">
+                <div>
+                    <h5>Engagement funnel</h5>
+                    <p>How visitors move through your widget.</p>
+                </div>
+                <i class="bi bi-filter-circle"></i>
+            </div>
+            <div class="an-funnel" id="anFunnel">
+                <div class="an-funnel-row">
+                    <div class="an-funnel-label"><span>Widget views</span><strong>12,840</strong></div>
+                    <div class="an-funnel-track"><div class="an-funnel-fill an-fill-one" style="width:100%"></div></div>
+                </div>
+                <div class="an-funnel-row">
+                    <div class="an-funnel-label"><span>Started</span><strong>7,310</strong></div>
+                    <div class="an-funnel-track"><div class="an-funnel-fill an-fill-two" style="width:56.9%"></div></div>
+                </div>
+                <div class="an-funnel-row">
+                    <div class="an-funnel-label"><span>Completed</span><strong>5,000</strong></div>
+                    <div class="an-funnel-track"><div class="an-funnel-fill an-fill-three" style="width:38.9%"></div></div>
+                </div>
+                <div class="an-funnel-row">
+                    <div class="an-funnel-label"><span>Recommendation shown</span><strong>2,175</strong></div>
+                    <div class="an-funnel-track"><div class="an-funnel-fill an-fill-four" style="width:16.9%"></div></div>
+                </div>
+                <div class="an-funnel-note">
+                    <i class="bi bi-info-circle"></i>
+                    Illustrative values for the UI prototype.
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Widget comparison -->
+    <section class="an-card an-table-card">
+        <div class="an-card-heading an-table-heading">
+            <div>
+                <h5>Widget comparison</h5>
+                <p>Compare engagement across your widgets.</p>
+            </div>
+            <span class="an-table-count" id="anWidgetCount">3 widgets</span>
+        </div>
+        <div class="an-table-scroll">
+            <table class="an-table">
+                <thead>
+                    <tr>
+                        <th>Widget</th>
+                        <th>Views</th>
+                        <th>Interactions</th>
+                        <th>Completion rate</th>
+                        <th>Recommendations</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="anWidgetTableBody"></tbody>
+            </table>
+        </div>
+        <div class="an-empty" id="anWidgetEmpty" hidden>
+            <i class="bi bi-bar-chart"></i>
+            <strong>No widgets match this filter</strong>
+            <span>Choose another widget to view its performance.</span>
+        </div>
+    </section>
+
+    <!-- Activity timeline -->
+    <section class="an-card an-activity-card">
+        <div class="an-card-heading an-table-heading">
+            <div>
+                <h5>Recent activity</h5>
+                <p>Recent events across your recommendation widgets.</p>
+            </div>
+            <span class="an-table-count" id="anActivityCount">6 events</span>
+        </div>
+
+        <div class="an-activity-list" id="anActivityList"></div>
+        <div class="an-empty" id="anActivityEmpty" hidden>
+            <i class="bi bi-clock-history"></i>
+            <strong>No activity found</strong>
+            <span>Try selecting a different activity type.</span>
+        </div>
+    </section>
+
+    <div class="an-toast" id="anToast" role="status" aria-live="polite"></div>
+</div>
+
+<style>
+    .analytics-page {
+        --an-accent: #0da88b;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        min-width: 0;
+    }
+
+        .analytics-page * {
+            box-sizing: border-box;
+        }
+
+        .analytics-page .an-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 23px;
+        }
+
+            .analytics-page .an-header h2 {
+                margin: 0 0 7px;
+                font-size: 27px;
+                font-weight: 750;
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+            }
+
+            .analytics-page .an-header p,
+            .analytics-page .an-card-heading p {
+                margin: 0;
+                color: var(--ap-muted, var(--bs-secondary-color, #718096));
+                font-size: 13px;
+            }
+
+        .analytics-page .an-btn-outline {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+            border-radius: 10px;
+            background: var(--ap-card-bg, var(--bs-body-bg, #fff));
+            color: var(--ap-text, var(--bs-body-color, #17212b));
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+            .analytics-page .an-btn-outline:hover {
+                border-color: #0da88b;
+                color: #0da88b;
+            }
+
+        .analytics-page .an-filters {
+            display: flex;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 16px;
+            margin-bottom: 19px;
+            border: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+            border-radius: 13px;
+            background: var(--ap-card-bg, var(--bs-body-bg, #fff));
+        }
+
+        .analytics-page .an-filter-field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            min-width: 155px;
+            flex: 1;
+        }
+
+            .analytics-page .an-filter-field label {
+                color: var(--ap-muted, #718096);
+                font-size: 11px;
+                font-weight: 700;
+            }
+
+            .analytics-page .an-filter-field select {
+                width: 100%;
+                min-height: 41px;
+                padding: 9px 40px 9px 12px;
+                border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+                border-radius: 10px;
+                outline: none;
+                background-color: var(--ap-input-bg, var(--bs-tertiary-bg, #f4f8f7));
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+                font: inherit;
+                font-size: 12px;
+                appearance: none;
+                -webkit-appearance: none;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23718096' d='M3 5.5 8 10.5 13 5.5z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 13px center;
+                background-size: 16px;
+            }
+
+                .analytics-page .an-filter-field select:focus {
+                    border-color: #0da88b;
+                    box-shadow: 0 0 0 3px rgba(13,168,139,.13);
+                }
+
+        .analytics-page .an-reset-filter {
+            min-height: 41px;
+        }
+
+        .analytics-page .an-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .analytics-page .an-kpi-card {
+            min-width: 0;
+            padding: 18px;
+            border: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+            border-radius: 13px;
+            background: var(--ap-card-bg, var(--bs-body-bg, #fff));
+        }
+
+        .analytics-page .an-kpi-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            color: var(--ap-muted, #718096);
+            font-size: 11px;
+            font-weight: 650;
+        }
+
+        .analytics-page .an-kpi-icon {
+            display: grid;
+            place-items: center;
+            width: 37px;
+            height: 37px;
+            flex: 0 0 37px;
+            border-radius: 10px;
+            font-size: 17px;
+        }
+
+        .analytics-page .an-icon-green {
+            color: #0d9278;
+            background: rgba(13,168,139,.13);
+        }
+
+        .analytics-page .an-icon-blue {
+            color: #4285db;
+            background: rgba(66,133,219,.13);
+        }
+
+        .analytics-page .an-icon-purple {
+            color: #9164d8;
+            background: rgba(145,100,216,.13);
+        }
+
+        .analytics-page .an-icon-orange {
+            color: #d99a30;
+            background: rgba(217,154,48,.13);
+        }
+
+        .analytics-page .an-kpi-card > strong {
+            display: block;
+            margin: 13px 0 11px;
+            color: var(--ap-text, var(--bs-body-color, #17212b));
+            font-size: clamp(23px, 2vw, 29px);
+            font-weight: 780;
+            letter-spacing: -.7px;
+            overflow-wrap: anywhere;
+        }
+
+        .analytics-page .an-kpi-foot {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            color: var(--ap-muted, #718096);
+            font-size: 10px;
+        }
+
+        .analytics-page .an-trend-up {
+            color: #0d9278;
+            font-weight: 750;
+        }
+
+        .analytics-page .an-kpi-neutral {
+            color: #b7862b;
+            font-weight: 750;
+        }
+
+        .analytics-page .an-chart-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.55fr) minmax(290px, .85fr);
+            gap: 18px;
+            margin-bottom: 20px;
+            align-items: stretch;
+        }
+
+        .analytics-page .an-card {
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+            border-radius: 14px;
+            background: var(--ap-card-bg, var(--bs-body-bg, #fff));
+        }
+
+        .analytics-page .an-card-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 20px 22px;
+            border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        }
+
+            .analytics-page .an-card-heading h5 {
+                margin: 0 0 6px;
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+                font-size: 15px;
+                font-weight: 750;
+            }
+
+        .analytics-page .an-demo-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 9px;
+            border-radius: 30px;
+            background: rgba(13,168,139,.1);
+            color: #0d9278;
+            font-size: 9px;
+            font-weight: 750;
+            white-space: nowrap;
+        }
+
+            .analytics-page .an-demo-label i {
+                font-size: 6px;
+            }
+
+        .analytics-page .an-chart-legend {
+            display: flex;
+            gap: 18px;
+            padding: 15px 22px 0;
+            color: var(--ap-muted, #718096);
+            font-size: 10px;
+        }
+
+            .analytics-page .an-chart-legend span {
+                display: inline-flex;
+                align-items: center;
+                gap: 7px;
+            }
+
+        .analytics-page .an-legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .analytics-page .an-dot-views {
+            background: #0da88b;
+        }
+
+        .analytics-page .an-dot-interactions {
+            background: #6288df;
+        }
+
+        .analytics-page .an-chart-wrap {
+            width: 100%;
+            padding: 8px 15px 17px;
+        }
+
+        .analytics-page .an-chart {
+            display: block;
+            width: 100%;
+            height: auto;
+            min-height: 200px;
+            overflow: visible;
+        }
+
+            .analytics-page .an-chart text {
+                fill: var(--ap-muted, #718096);
+                font-family: inherit;
+                font-size: 10px;
+            }
+
+        .analytics-page .an-funnel {
+            padding: 23px 21px;
+        }
+
+        .analytics-page .an-funnel-row {
+            margin-bottom: 23px;
+        }
+
+        .analytics-page .an-funnel-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 9px;
+            font-size: 11px;
+        }
+
+            .analytics-page .an-funnel-label span {
+                color: var(--ap-muted, #718096);
+            }
+
+            .analytics-page .an-funnel-label strong {
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+                font-size: 12px;
+            }
+
+        .analytics-page .an-funnel-track {
+            height: 9px;
+            overflow: hidden;
+            border-radius: 20px;
+            background: var(--ap-input-bg, #edf2f0);
+        }
+
+        .analytics-page .an-funnel-fill {
+            height: 100%;
+            border-radius: inherit;
+            transition: width .25s ease;
+        }
+
+        .analytics-page .an-fill-one {
+            background: #0da88b;
+        }
+
+        .analytics-page .an-fill-two {
+            background: #4bbaa4;
+        }
+
+        .analytics-page .an-fill-three {
+            background: #6288df;
+        }
+
+        .analytics-page .an-fill-four {
+            background: #9164d8;
+        }
+
+        .analytics-page .an-funnel-note {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding-top: 12px;
+            border-top: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+            color: var(--ap-muted, #718096);
+            font-size: 10px;
+        }
+
+            .analytics-page .an-funnel-note i {
+                color: #0da88b;
+            }
+
+        .analytics-page .an-table-card,
+        .analytics-page .an-activity-card {
+            margin-bottom: 20px;
+        }
+
+        .analytics-page .an-table-heading {
+            align-items: center;
+        }
+
+        .analytics-page .an-table-count {
+            padding: 6px 10px;
+            border-radius: 30px;
+            background: var(--ap-input-bg, #f4f8f7);
+            color: var(--ap-muted, #718096);
+            font-size: 10px;
+            font-weight: 750;
+            white-space: nowrap;
+        }
+
+        .analytics-page .an-table-scroll {
+            overflow-x: auto;
+        }
+
+        .analytics-page .an-table {
+            width: 100%;
+            min-width: 760px;
+            border-collapse: collapse;
+        }
+
+            .analytics-page .an-table th {
+                padding: 13px 18px;
+                background: var(--ap-table-header, var(--ap-input-bg, #f5f8f7));
+                color: var(--ap-muted, #718096);
+                text-align: left;
+                white-space: nowrap;
+                font-size: 10px;
+                font-weight: 750;
+            }
+
+            .analytics-page .an-table td {
+                padding: 15px 18px;
+                border-top: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+                font-size: 11px;
+                white-space: nowrap;
+            }
+
+            .analytics-page .an-table tbody tr:hover {
+                background: rgba(13,168,139,.035);
+            }
+
+        .analytics-page .an-widget-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .analytics-page .an-widget-avatar {
+            display: grid;
+            place-items: center;
+            width: 33px;
+            height: 33px;
+            flex: 0 0 33px;
+            border-radius: 9px;
+            background: rgba(13,168,139,.12);
+            color: #0d9278;
+            font-size: 15px;
+        }
+
+        .analytics-page .an-widget-name strong {
+            display: block;
+            font-size: 11px;
+            font-weight: 750;
+        }
+
+        .analytics-page .an-widget-name small {
+            display: block;
+            margin-top: 4px;
+            color: var(--ap-muted, #718096);
+            font-size: 9px;
+        }
+
+        .analytics-page .an-completion-cell {
+            min-width: 140px;
+        }
+
+        .analytics-page .an-progress-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .analytics-page .an-progress-track {
+            width: 76px;
+            height: 6px;
+            overflow: hidden;
+            border-radius: 10px;
+            background: var(--ap-input-bg, #edf2f0);
+        }
+
+        .analytics-page .an-progress-fill {
+            height: 100%;
+            border-radius: inherit;
+            background: #0da88b;
+        }
+
+        .analytics-page .an-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 8px;
+            border-radius: 20px;
+            background: rgba(13,168,139,.12);
+            color: #0d9278;
+            font-size: 9px;
+            font-weight: 750;
+        }
+
+            .analytics-page .an-status.is-draft {
+                background: rgba(224,162,60,.13);
+                color: #bd8425;
+            }
+
+        .analytics-page .an-activity-list {
+            padding: 4px 22px;
+        }
+
+        .analytics-page .an-activity-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 17px 0;
+            border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        }
+
+            .analytics-page .an-activity-row:last-child {
+                border-bottom: 0;
+            }
+
+        .analytics-page .an-activity-icon {
+            display: grid;
+            place-items: center;
+            width: 37px;
+            height: 37px;
+            flex: 0 0 37px;
+            border-radius: 11px;
+            font-size: 16px;
+        }
+
+        .analytics-page .an-event-started {
+            background: rgba(66,133,219,.13);
+            color: #4285db;
+        }
+
+        .analytics-page .an-event-completed {
+            background: rgba(13,168,139,.13);
+            color: #0d9278;
+        }
+
+        .analytics-page .an-event-published {
+            background: rgba(145,100,216,.13);
+            color: #9164d8;
+        }
+
+        .analytics-page .an-event-recommended {
+            background: rgba(217,154,48,.13);
+            color: #bd8425;
+        }
+
+        .analytics-page .an-activity-copy {
+            flex: 1;
+            min-width: 0;
+        }
+
+            .analytics-page .an-activity-copy strong {
+                display: block;
+                margin-bottom: 5px;
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+                font-size: 11px;
+                font-weight: 750;
+            }
+
+            .analytics-page .an-activity-copy p {
+                margin: 0;
+                color: var(--ap-muted, #718096);
+                font-size: 10px;
+                line-height: 1.6;
+            }
+
+        .analytics-page .an-activity-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+            white-space: nowrap;
+            color: var(--ap-muted, #718096);
+            font-size: 9px;
+        }
+
+        .analytics-page .an-activity-type {
+            padding: 4px 7px;
+            border-radius: 20px;
+            background: var(--ap-input-bg, #f4f8f7);
+            font-weight: 700;
+        }
+
+        .analytics-page .an-empty {
+            padding: 35px 15px;
+            text-align: center;
+            color: var(--ap-muted, #718096);
+        }
+
+            .analytics-page .an-empty > * {
+                display: block;
+            }
+
+            .analytics-page .an-empty i {
+                margin-bottom: 10px;
+                color: #0da88b;
+                font-size: 27px;
+            }
+
+            .analytics-page .an-empty strong {
+                margin-bottom: 6px;
+                color: var(--ap-text, var(--bs-body-color, #17212b));
+                font-size: 12px;
+            }
+
+            .analytics-page .an-empty span {
+                font-size: 10px;
+            }
+
+        .analytics-page .an-toast {
+            position: fixed;
+            z-index: 11000;
+            right: 24px;
+            bottom: 85px;
+            display: none;
+            max-width: calc(100vw - 32px);
+            padding: 13px 17px;
+            border-radius: 10px;
+            background: #087f68;
+            color: #fff;
+            font-size: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.2);
+        }
+
+            .analytics-page .an-toast.is-visible {
+                display: block;
+            }
+
+    html[data-theme="dark"] .analytics-page .an-filter-field select,
+    body[data-theme="dark"] .analytics-page .an-filter-field select,
+    html[data-bs-theme="dark"] .analytics-page .an-filter-field select,
+    body[data-bs-theme="dark"] .analytics-page .an-filter-field select {
+        background-color: #10221c !important;
+        color: #f0f5f3 !important;
+        border-color: #344d44 !important;
+        color-scheme: dark;
+    }
+
+        html[data-theme="dark"] .analytics-page .an-filter-field select option,
+        body[data-theme="dark"] .analytics-page .an-filter-field select option,
+        html[data-bs-theme="dark"] .analytics-page .an-filter-field select option,
+        body[data-bs-theme="dark"] .analytics-page .an-filter-field select option {
+            background: #10221c;
+            color: #f0f5f3;
+        }
+
+    @@media (max-width: 1199.98px) {
+        .analytics-page .an-kpi-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .analytics-page .an-chart-grid {
+            grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+        }
+    }
+
+    @@media (max-width: 991.98px) {
+        .analytics-page .an-chart-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .analytics-page .an-filter-field {
+            min-width: 180px;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .analytics-page .an-header h2 {
+            font-size: 23px;
+        }
+
+        .analytics-page .an-filters {
+            padding: 13px;
+        }
+
+        .analytics-page .an-filter-field {
+            flex-basis: 100%;
+        }
+
+        .analytics-page .an-kpi-grid {
+            grid-template-columns: 1fr;
+            gap: 11px;
+        }
+
+        .analytics-page .an-kpi-card {
+            padding: 15px;
+        }
+
+        .analytics-page .an-card-heading {
+            padding: 16px;
+        }
+
+        .analytics-page .an-chart-wrap {
+            padding: 5px 8px 12px;
+        }
+
+        .analytics-page .an-activity-list {
+            padding: 4px 15px;
+        }
+
+        .analytics-page .an-activity-row {
+            flex-wrap: wrap;
+        }
+
+        .analytics-page .an-activity-meta {
+            width: 100%;
+            flex-direction: row;
+            align-items: center;
+            padding-left: 50px;
+        }
+    }
+</style>
+
+<script>
+    (function() {
+        "use strict";
+
+        const root = document.querySelector(".analytics-page");
+        if (!root || root.dataset.anInitialized === "true") return;
+        root.dataset.anInitialized = "true";
+
+        const $ = id => root.querySelector("#" + id);
+
+        const widgets = [
+            { id: "sofa", name: "Sofa Finder", views: 6420, interactions: 2480, completion: 72.5, recommendations: 1120, status: "Published", icon: "bi-house" },
+            { id: "furniture", name: "Furniture Recommendation", views: 4210, interactions: 1510, completion: 65.2, recommendations: 780, status: "Published", icon: "bi-grid" },
+            { id: "demo", name: "Demo Recommendation", views: 2210, interactions: 630, completion: 58.1, recommendations: 275, status: "Draft", icon: "bi-stars" }
+        ];
+
+        const activities = [
+            { type: "completed", title: "Recommendation session completed", detail: "Sofa Finder • A visitor completed the questionnaire.", time: "5 minutes ago", widget: "sofa", days: 0, icon: "bi-check-circle" },
+            { type: "started", title: "New widget session started", detail: "Furniture Recommendation • A visitor opened the widget.", time: "18 minutes ago", widget: "furniture", days: 0, icon: "bi-play-circle" },
+            { type: "recommended", title: "Recommendation displayed", detail: "Sofa Finder • A sofa recommendation was shown.", time: "42 minutes ago", widget: "sofa", days: 0, icon: "bi-stars" },
+            { type: "published", title: "Widget published", detail: "Furniture Recommendation • Demo publishing event.", time: "Yesterday", widget: "furniture", days: 1, icon: "bi-cloud-check" },
+            { type: "completed", title: "Recommendation session completed", detail: "Demo Recommendation • A visitor completed the flow.", time: "Yesterday", widget: "demo", days: 1, icon: "bi-check-circle" },
+            { type: "started", title: "New widget session started", detail: "Sofa Finder • A visitor opened the widget.", time: "3 days ago", widget: "sofa", days: 3, icon: "bi-play-circle" },
+            { type: "recommended", title: "Recommendation displayed", detail: "Furniture Recommendation • A recommendation was shown.", time: "6 days ago", widget: "furniture", days: 6, icon: "bi-stars" },
+            { type: "published", title: "Widget published", detail: "Sofa Finder • Demo publishing event.", time: "12 days ago", widget: "sofa", days: 12, icon: "bi-cloud-check" }
+        ];
+
+        let toastTimer = null;
+
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, ch => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+            })[ch]);
+        }
+
+        function showToast(message) {
+            const toast = $("anToast");
+            toast.textContent = message;
+            toast.classList.add("is-visible");
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2600);
+        }
+
+        function filteredWidgets() {
+            const selected = $("anWidget").value;
+            return widgets.filter(widget => selected === "all" || widget.id === selected);
+        }
+
+        function filteredActivities() {
+            const widget = $("anWidget").value;
+            const type = $("anActivityType").value;
+            const days = Number($("anDateRange").value);
+
+            return activities.filter(item =>
+                (widget === "all" || item.widget === widget) &&
+                (type === "all" || item.type === type) &&
+                item.days < days
+            );
+        }
+
+        function renderKpis() {
+            const selectedWidgets = filteredWidgets();
+            const factor = Number($("anDateRange").value) / 30;
+            const views = selectedWidgets.reduce((sum, item) => sum + item.views, 0) * factor;
+            const interactions = selectedWidgets.reduce((sum, item) => sum + item.interactions, 0) * factor;
+            const recommendations = selectedWidgets.reduce((sum, item) => sum + item.recommendations, 0) * factor;
+            const completionBase = selectedWidgets.length
+                ? selectedWidgets.reduce((sum, item) => sum + item.completion, 0) / selectedWidgets.length
+                : 0;
+
+            $("anViews").textContent = Math.round(views).toLocaleString();
+            $("anInteractions").textContent = Math.round(interactions).toLocaleString();
+            $("anRecommendations").textContent = Math.round(recommendations).toLocaleString();
+            $("anCompletion").textContent = completionBase.toFixed(1) + "%";
+        }
+
+        function svgElement(tag, attributes, text) {
+            const node = document.createElementNS("http://www.w3.org/2000/svg", tag);
+            Object.entries(attributes || {}).forEach(([key, value]) => node.setAttribute(key, value));
+            if (text !== undefined) node.textContent = text;
+            return node;
+        }
+
+        function renderChart() {
+            const svg = $("anPerformanceChart");
+            svg.replaceChildren();
+
+            const count = Number($("anDateRange").value);
+            const points = count === 7 ? 7 : count === 30 ? 10 : 12;
+            const selected = filteredWidgets();
+            const viewsTotal = selected.reduce((sum, item) => sum + item.views, 0);
+            const interactionsTotal = selected.reduce((sum, item) => sum + item.interactions, 0);
+
+            const viewValues = [];
+            const interactionValues = [];
+
+            for (let i = 0; i < points; i++) {
+                const wave = 0.72 + ((i * 17 + 11) % 23) / 55;
+                viewValues.push(Math.round((viewsTotal / points) * wave));
+                interactionValues.push(Math.round((interactionsTotal / points) * (0.70 + ((i * 13 + 7) % 19) / 60)));
+            }
+
+            const width = 680, height = 260;
+            const left = 48, right = 14, top = 16, bottom = 34;
+            const chartW = width - left - right;
+            const chartH = height - top - bottom;
+            const maxValue = Math.max(1, ...viewValues) * 1.15;
+
+            for (let i = 0; i <= 4; i++) {
+                const y = top + (chartH * i / 4);
+                svg.appendChild(svgElement("line", {
+                    x1: left, y1: y, x2: width - right, y2: y,
+                    stroke: "var(--ap-border, #e2e8f0)", "stroke-width": 1,
+                    "stroke-dasharray": "3 4"
+                }));
+                svg.appendChild(svgElement("text", {
+                    x: left - 9, y: y + 3, "text-anchor": "end"
+                }, Math.round(maxValue * (4 - i) / 4).toLocaleString()));
+            }
+
+            const x = i => left + (points === 1 ? chartW / 2 : chartW * i / (points - 1));
+            const y = value => top + chartH * (1 - value / maxValue);
+
+            function path(values) {
+                return values.map((value, i) =>
+                    (i === 0 ? "M" : "L") + x(i).toFixed(2) + " " + y(value).toFixed(2)
+                ).join(" ");
+            }
+
+            svg.appendChild(svgElement("path", {
+                d: path(viewValues),
+                fill: "none", stroke: "#0da88b",
+                "stroke-width": 3, "stroke-linecap": "round", "stroke-linejoin": "round"
+            }));
+
+            svg.appendChild(svgElement("path", {
+                d: path(interactionValues),
+                fill: "none", stroke: "#6288df",
+                "stroke-width": 2.5, "stroke-linecap": "round", "stroke-linejoin": "round"
+            }));
+
+            [viewValues, interactionValues].forEach((values, seriesIndex) => {
+                const color = seriesIndex === 0 ? "#0da88b" : "#6288df";
+                values.forEach((value, i) => {
+                    svg.appendChild(svgElement("circle", {
+                        cx: x(i), cy: y(value), r: 3.5, fill: color,
+                        stroke: "var(--ap-card-bg, #fff)", "stroke-width": 1.5
+                    }));
+                });
+            });
+
+            const labels = count === 7
+                ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+                : count === 30
+                    ? ["1", "4", "7", "10", "13", "16", "19", "22", "25", "30"]
+                    : ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10", "W11", "W12"];
+
+            labels.forEach((label, i) => {
+                const index = labels.length === points ? i : Math.round(i * (points - 1) / (labels.length - 1));
+                svg.appendChild(svgElement("text", {
+                    x: x(index), y: height - 10, "text-anchor": "middle"
+                }, label));
+            });
+        }
+
+        function renderFunnel() {
+            const selected = filteredWidgets();
+            const views = selected.reduce((sum, item) => sum + item.views, 0);
+            const interactions = selected.reduce((sum, item) => sum + item.interactions, 0);
+            const recommendations = selected.reduce((sum, item) => sum + item.recommendations, 0);
+            const started = Math.round(interactions * 1.58);
+            const completed = Math.round(interactions * .99);
+            const stages = [
+                { label: "Widget views", value: views, className: "an-fill-one" },
+                { label: "Started", value: started, className: "an-fill-two" },
+                { label: "Completed", value: completed, className: "an-fill-three" },
+                { label: "Recommendation shown", value: recommendations, className: "an-fill-four" }
+            ];
+            const max = Math.max(1, views);
+            const funnel = $("anFunnel");
+            funnel.replaceChildren();
+
+            stages.forEach(stage => {
+                const row = document.createElement("div");
+                row.className = "an-funnel-row";
+                row.innerHTML =
+                    '<div class="an-funnel-label"><span>' + escapeHtml(stage.label) +
+                    '</span><strong>' + stage.value.toLocaleString() + '</strong></div>' +
+                    '<div class="an-funnel-track"><div class="an-funnel-fill ' +
+                    stage.className + '" style="width:' +
+                    Math.min(100, stage.value / max * 100).toFixed(1) + '%"></div></div>';
+                funnel.appendChild(row);
+            });
+
+            const note = document.createElement("div");
+            note.className = "an-funnel-note";
+            note.innerHTML = '<i class="bi bi-info-circle"></i> Illustrative mock data; stages are not yet connected to real event tracking.';
+            funnel.appendChild(note);
+        }
+
+        function renderWidgetTable() {
+            const selected = filteredWidgets();
+            const body = $("anWidgetTableBody");
+            body.replaceChildren();
+
+            selected.forEach(widget => {
+                const row = document.createElement("tr");
+                row.innerHTML =
+                    '<td><div class="an-widget-name">' +
+                    '<span class="an-widget-avatar"><i class="bi ' + widget.icon + '"></i></span>' +
+                    '<span><strong>' + escapeHtml(widget.name) + '</strong><small>Widget ID: ' +
+                    escapeHtml(widget.id) + '</small></span>' +
+                    '</div></td>' +
+                    '<td>' + widget.views.toLocaleString() + '</td>' +
+                    '<td>' + widget.interactions.toLocaleString() + '</td>' +
+                    '<td class="an-completion-cell"><div class="an-progress-row">' +
+                    '<div class="an-progress-track"><div class="an-progress-fill" style="width:' +
+                    widget.completion + '%"></div></div><strong>' +
+                    widget.completion.toFixed(1) + '%</strong></div></td>' +
+                    '<td>' + widget.recommendations.toLocaleString() + '</td>' +
+                    '<td><span class="an-status ' +
+                    (widget.status === "Draft" ? "is-draft" : "") + '">' +
+                    escapeHtml(widget.status) + '</span></td>';
+                body.appendChild(row);
+            });
+
+            $("anWidgetCount").textContent = selected.length +
+                (selected.length === 1 ? " widget" : " widgets");
+            $("anWidgetEmpty").hidden = selected.length !== 0;
+        }
+
+        function renderActivities() {
+            const selected = filteredActivities();
+            const list = $("anActivityList");
+            list.replaceChildren();
+
+            selected.forEach(item => {
+                const row = document.createElement("div");
+                row.className = "an-activity-row";
+
+                const eventClass = item.type === "completed" ? "an-event-completed"
+                    : item.type === "started" ? "an-event-started"
+                        : item.type === "published" ? "an-event-published"
+                            : "an-event-recommended";
+
+                row.innerHTML =
+                    '<span class="an-activity-icon ' + eventClass + '"><i class="bi ' +
+                    item.icon + '"></i></span>' +
+                    '<div class="an-activity-copy"><strong>' + escapeHtml(item.title) +
+                    '</strong><p>' + escapeHtml(item.detail) + '</p></div>' +
+                    '<div class="an-activity-meta"><span>' + escapeHtml(item.time) +
+                    '</span><span class="an-activity-type">' +
+                    escapeHtml(item.type.charAt(0).toUpperCase() + item.type.slice(1)) +
+                    '</span></div>';
+
+                list.appendChild(row);
+            });
+
+            $("anActivityCount").textContent = selected.length +
+                (selected.length === 1 ? " event" : " events");
+            $("anActivityEmpty").hidden = selected.length !== 0;
+        }
+
+        function renderAll() {
+            renderKpis();
+            renderChart();
+            renderFunnel();
+            renderWidgetTable();
+            renderActivities();
+        }
+
+        ["anDateRange", "anWidget", "anActivityType"].forEach(id => {
+            $(id).addEventListener("change", renderAll);
+        });
+
+        $("anResetFilters").addEventListener("click", () => {
+            $("anDateRange").value = "30";
+            $("anWidget").value = "all";
+            $("anActivityType").value = "all";
+            renderAll();
+            showToast("Filters reset.");
+        });
+
+        $("anExportBtn").addEventListener("click", () => {
+            const rows = [["Widget", "Views", "Interactions", "Completion rate", "Recommendations", "Status"]];
+            filteredWidgets().forEach(widget => {
+                rows.push([
+                    widget.name, widget.views, widget.interactions,
+                    widget.completion + "%", widget.recommendations, widget.status
+                ]);
+            });
+
+            const csv = rows.map(row => row.map(value =>
+                '"' + String(value).replace(/"/g, '""') + '"'
+            ).join(",")).join("\r\n");
+
+            const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "askpearls-analytics-demo.csv";
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+            showToast("Mock analytics CSV exported.");
+        });
+
+        renderAll();
+    })();
+</script>

@@ -1,0 +1,473 @@
+﻿
+.sp-page {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--ap-text,var(--bs-body-color,#17212b));
+}
+
+.sp-page * {
+    box-sizing: border-box;
+}
+
+.sp-page .ap-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.sp-page .ap-page-title {
+    margin: 0 0 8px;
+}
+
+.sp-page .ap-page-description {
+    margin: 0;
+}
+
+@@media (max-width: 650px) {
+    .sp-page .ap-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.sp-page .text-muted {
+    color: var(--ap-muted,var(--bs-secondary-color,#718096)) !important;
+}
+
+.sp-demo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 12px;
+    border-radius: 20px;
+    color: #087e68;
+    background: rgba(13,168,139,.12);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.sp-stat, .sp-panel {
+    background: var(--ap-card-bg,var(--bs-body-bg,#fff));
+    border: 1px solid var(--ap-border,var(--bs-border-color,#e2e8f0));
+    border-radius: 14px;
+}
+
+.sp-stat {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: 100%;
+}
+
+    .sp-stat strong {
+        font-size: 28px;
+        line-height: 1.2;
+    }
+
+    .sp-stat small {
+        color: var(--ap-muted,#718096);
+    }
+
+.sp-panel {
+    overflow: hidden;
+}
+
+.sp-panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--ap-border,var(--bs-border-color,#e2e8f0));
+}
+
+.sp-panel-body {
+    padding: 22px;
+}
+
+.sp-page .form-label {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.sp-page .form-select, .sp-page .form-control {
+    background-color: var(--ap-input-bg,var(--bs-tertiary-bg,#f4f8f7));
+    color: var(--ap-text,var(--bs-body-color,#17212b));
+    border-color: var(--ap-border,var(--bs-border-color,#dce8e4));
+}
+
+.sp-allocation-card {
+    padding: 15px;
+    height: 100%;
+    border-radius: 11px;
+    border: 1px solid var(--ap-border,var(--bs-border-color,#e2e8f0));
+    background: var(--ap-input-bg,var(--bs-tertiary-bg,#f7faf9));
+}
+
+    .sp-allocation-card label {
+        font-size: 12px;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .sp-allocation-card input {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+.sp-allocation-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+    .sp-allocation-footer strong {
+        display: block;
+        font-size: 21px;
+    }
+
+.sp-valid {
+    color: #12815f;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.sp-invalid {
+    color: #d04450;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.sp-progress {
+    height: 7px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: var(--ap-border,#e2e8f0);
+}
+
+    .sp-progress > div {
+        height: 100%;
+        background: #0da88b;
+        transition: width .2s ease;
+    }
+
+        .sp-progress > div.invalid {
+            background: #d04450;
+        }
+
+.sp-answer-card {
+    padding: 15px;
+    height: 100%;
+    border: 1px solid var(--ap-border,var(--bs-border-color,#e2e8f0));
+    border-radius: 10px;
+}
+
+    .sp-answer-card label {
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+.sp-result {
+    padding: 16px;
+    border: 1px solid var(--ap-border,var(--bs-border-color,#e2e8f0));
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+    .sp-result.sp-winner {
+        border-color: #0da88b;
+        box-shadow: 0 0 0 1px rgba(13,168,139,.12);
+    }
+
+.sp-result-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.sp-rank {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--ap-input-bg,#edf4f1);
+    font-weight: 800;
+}
+
+.sp-score {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.sp-match-track {
+    height: 8px;
+    background: var(--ap-border,#e2e8f0);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 12px 0 8px;
+}
+
+    .sp-match-track div {
+        height: 100%;
+        background: #0da88b;
+        border-radius: 20px;
+    }
+
+.sp-table {
+    color: var(--ap-text,var(--bs-body-color,#17212b));
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--ap-text,var(--bs-body-color,#17212b));
+    --bs-table-border-color: var(--ap-border,var(--bs-border-color,#e2e8f0));
+}
+
+    .sp-table th {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: var(--ap-muted,#718096);
+        background: var(--ap-table-header,var(--bs-tertiary-bg,#f7faf9));
+    }
+
+    .sp-table td, .sp-table th {
+        padding: 13px 16px;
+    }
+
+.sp-points {
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+@@media (max-width:767.98px) {
+    .sp-panel-head, .sp-panel-body {
+        padding: 16px;
+    }
+
+    .sp-stat {
+        padding: 15px;
+    }
+
+    .sp-table td, .sp-table th {
+        padding: 11px;
+        font-size: 12px;
+    }
+}
+
+/* =====================================================
+       SCORING & PREVIEW — DARK THEME FIX
+       Scoped to this page only
+       ===================================================== */
+
+html[data-theme="dark"] .sp-page {
+    color: #eff8f4;
+}
+
+    /* Main headings and section headings */
+    html[data-theme="dark"] .sp-page h1,
+    html[data-theme="dark"] .sp-page h2,
+    html[data-theme="dark"] .sp-page h3,
+    html[data-theme="dark"] .sp-page h4,
+    html[data-theme="dark"] .sp-page h5,
+    html[data-theme="dark"] .sp-page label,
+    html[data-theme="dark"] .sp-page .form-label {
+        color: #eff8f4;
+    }
+
+    /* Supporting text */
+    html[data-theme="dark"] .sp-page .text-muted,
+    html[data-theme="dark"] .sp-page p,
+    html[data-theme="dark"] .sp-page small {
+        color: #a9c1b8 !important;
+    }
+
+    /* Statistics and panel surfaces */
+    html[data-theme="dark"] .sp-page .sp-stat,
+    html[data-theme="dark"] .sp-page .sp-panel,
+    html[data-theme="dark"] .sp-page .sp-result,
+    html[data-theme="dark"] .sp-page .sp-allocation-card,
+    html[data-theme="dark"] .sp-page .sp-answer-card {
+        background: #0e2722;
+        color: #eff8f4;
+        border-color: #29483e;
+    }
+
+    /* Panel headers */
+    html[data-theme="dark"] .sp-page .sp-panel-head {
+        background: #102c25;
+        border-color: #29483e;
+    }
+
+    /* Selects and text/number inputs */
+    html[data-theme="dark"] .sp-page .form-select,
+    html[data-theme="dark"] .sp-page .form-control {
+        background-color: #071b18;
+        color: #eff8f4;
+        border-color: #35584b;
+    }
+
+    /* Dropdown options */
+    html[data-theme="dark"] .sp-page select option {
+        background-color: #0e2722;
+        color: #eff8f4;
+    }
+
+    /* Number allocation inputs */
+    html[data-theme="dark"] .sp-page .sp-allocation-card input {
+        background-color: #18352c;
+        color: #ffffff;
+        border-color: #426657;
+    }
+
+    /* Keyboard focus */
+    html[data-theme="dark"] .sp-page .form-select:focus,
+    html[data-theme="dark"] .sp-page .form-control:focus {
+        border-color: #17bd9c;
+        box-shadow: 0 0 0 3px rgba(23, 189, 156, .18);
+    }
+
+    /* Allocation totals and ranking scores */
+    html[data-theme="dark"] .sp-page .sp-allocation-footer strong,
+    html[data-theme="dark"] .sp-page .sp-stat strong,
+    html[data-theme="dark"] .sp-page .sp-score,
+    html[data-theme="dark"] .sp-page .sp-points {
+        color: #eff8f4;
+    }
+
+    /* Winner highlight */
+    html[data-theme="dark"] .sp-page .sp-result.sp-winner {
+        background: #10372c;
+        border-color: #17bd9c;
+    }
+
+    /* Rank number */
+    html[data-theme="dark"] .sp-page .sp-rank {
+        background: #183d31;
+        color: #eff8f4;
+    }
+
+    /* Progress track */
+    html[data-theme="dark"] .sp-page .sp-progress,
+    html[data-theme="dark"] .sp-page .sp-match-track {
+        background: #29483e;
+    }
+
+    /* Breakdown table */
+    html[data-theme="dark"] .sp-page .sp-table {
+        color: #eff8f4;
+        --bs-table-color: #eff8f4;
+        --bs-table-bg: transparent;
+        --bs-table-border-color: #29483e;
+    }
+
+        html[data-theme="dark"] .sp-page .sp-table th {
+            color: #c1d8ce;
+            background: #102c25;
+        }
+
+        html[data-theme="dark"] .sp-page .sp-table td {
+            color: #eff8f4;
+        }
+
+    /* Status labels */
+    html[data-theme="dark"] .sp-page .sp-valid {
+        color: #47dfb3;
+    }
+
+    html[data-theme="dark"] .sp-page .sp-invalid {
+        color: #ff9aa5;
+    }
+
+    /* Demo badge */
+    html[data-theme="dark"] .sp-page .sp-demo-badge {
+        color: #64e5c2;
+        background: #143c31;
+    }
+
+    /* Invalid allocation bar */
+    html[data-theme="dark"] .sp-page .sp-progress > div.invalid {
+        background: #ff8795;
+    }
+
+    /* Scoring & Preview — dropdown readability in dark theme */
+    html[data-theme="dark"] .sp-page select,
+    html[data-theme="dark"] .sp-page .form-select {
+        background-color: #071b18 !important;
+        color: #eff8f4 !important;
+        -webkit-text-fill-color: #eff8f4 !important;
+        border-color: #35584b;
+    }
+
+        /* Dropdown options */
+        html[data-theme="dark"] .sp-page select option,
+        html[data-theme="dark"] .sp-page .form-select option {
+            background-color: #0e2722 !important;
+            color: #eff8f4 !important;
+        }
+
+            /* Selected option */
+            html[data-theme="dark"] .sp-page select option:checked,
+            html[data-theme="dark"] .sp-page .form-select option:checked {
+                background-color: #176b50 !important;
+                color: #ffffff !important;
+            }
+
+        /* Keyboard focus */
+        html[data-theme="dark"] .sp-page select:focus,
+        html[data-theme="dark"] .sp-page .form-select:focus {
+            border-color: #17bd9c !important;
+            box-shadow: 0 0 0 3px rgba(23, 189, 156, .18);
+        }
+
+        /* =====================================================
+   Scoring & Preview — enforce readable form controls
+   ===================================================== */
+
+        /* Dropdowns: Question, Answer option, and visitor answers */
+        html[data-theme="dark"] .sp-page select,
+        html[data-theme="dark"] .sp-page select.form-select,
+        html[data-theme="dark"] .sp-page .form-select {
+            color: #eff8f4 !important;
+            -webkit-text-fill-color: #eff8f4 !important;
+            background-color: #071b18 !important;
+            border-color: #35584b !important;
+            color-scheme: dark !important;
+        }
+
+            /* Native dropdown option list */
+            html[data-theme="dark"] .sp-page select option {
+                color: #eff8f4 !important;
+                background-color: #0e2722 !important;
+            }
+
+                /* Selected option */
+                html[data-theme="dark"] .sp-page select option:checked {
+                    color: #ffffff !important;
+                    background-color: #176b50 !important;
+                }
+
+    /* Point allocation inputs: 30, 10, 10 */
+    html[data-theme="dark"] .sp-page input.sp-point-input,
+    html[data-theme="dark"] .sp-page .sp-allocation-card input.form-control {
+        color: #243247 !important;
+        -webkit-text-fill-color: #243247 !important;
+        background-color: #ffffcc !important;
+        border-color: #dce5b0 !important;
+        caret-color: #243247 !important;
+    }
+
+    /* Keep labels readable */
+    html[data-theme="dark"] .sp-page .sp-allocation-card label {
+        color: #eff8f4 !important;
+    }

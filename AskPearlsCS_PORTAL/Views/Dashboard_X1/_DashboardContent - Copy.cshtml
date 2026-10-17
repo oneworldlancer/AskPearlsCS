@@ -1,0 +1,307 @@
+﻿<div class="main-content page-dashboard container-fluid py-4">
+
+    <!-- Page Header -->
+    <section class="d-flex flex-wrap justify-content-between
+        align-items-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 fw-bold mb-1">
+                Welcome to AskPearls DecisionOS XXX
+            </h1>
+            <p class="text-muted mb-0">
+                Build intelligent product recommendation experiences
+                for your website visitors.
+            </p>
+        </div>
+@*         asp-controller="Widget"
+        asp-action="Create" *@
+        <a href="#"
+          data-page="widget-builder"
+           class="btn btn-success">
+            <i class="bi bi-plus-lg me-2"></i>
+            Create New Widget
+        </a>
+    </section>
+
+    <!-- Getting Started -->
+    <section class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="badge bg-success-subtle text-success mb-3">
+                        GET STARTED
+                    </span>
+
+                    <h2 class="h4 fw-bold">
+                        Turn website visitors into confident buyers
+                    </h2>
+
+                    <p class="text-muted mb-3">
+                        Create a guided decision widget, define your
+                        questions and recommendations, and publish it
+                        on your website.
+                    </p>
+                    @* asp-controller="Widget"
+                    asp-action="Create" *@
+                    <a href="#"
+                       data-page="widget-builder"
+                       class="btn btn-success">
+                        Create your first widget
+                        <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 text-center">
+                    <i class="bi bi-diagram-3 text-success"
+                       style="font-size: 5rem;"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Widget Overview -->
+    <section class="row g-3 mb-4">
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between
+                        align-items-start">
+                        <div>
+                            <p class="text-muted mb-2">
+                                My Widgets
+                            </p>
+                            <h3 class="h4 fw-bold mb-1">—</h3>
+                            <small class="text-muted">
+                                Widget inventory
+                            </small>
+                        </div>
+                        <i class="bi bi-grid text-success fs-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between
+                        align-items-start">
+                        <div>
+                            <p class="text-muted mb-2">
+                                Published
+                            </p>
+                            <h3 class="h4 fw-bold mb-1">—</h3>
+                            <small class="text-muted">
+                                Live on websites
+                            </small>
+                        </div>
+                        <i class="bi bi-globe text-success fs-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between
+                        align-items-start">
+                        <div>
+                            <p class="text-muted mb-2">
+                                Drafts
+                            </p>
+                            <h3 class="h4 fw-bold mb-1">—</h3>
+                            <small class="text-muted">
+                                In progress
+                            </small>
+                        </div>
+                        <i class="bi bi-pencil-square text-success fs-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between
+                        align-items-start">
+                        <div>
+                            <p class="text-muted mb-2">
+                                Visitor Interactions
+                            </p>
+                            <h3 class="h4 fw-bold mb-1">—</h3>
+                            <small class="text-muted">
+                                Analytics
+                            </small>
+                        </div>
+                        <i class="bi bi-graph-up-arrow text-success fs-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Builder Workflow -->
+    <section class="card border-0 shadow-sm mb-4">
+        <div class="card-header border-0 pt-4 px-4">
+            <h2 class="h5 fw-bold mb-1">
+                Your Widget Builder
+            </h2>
+            <p class="text-muted small mb-0">
+                Everything you need to build and publish a decision experience.
+            </p>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="row g-3">
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="border rounded-3 p-3 h-100">
+                        <i class="bi bi-window text-success fs-3"></i>
+                        <h3 class="h6 fw-bold mt-3">
+                            1. Create a Widget
+                        </h3>
+                        <p class="text-muted small">
+                            Name your widget and select the website
+                            where it will appear.
+                        </p>
+                        <a asp-controller="Widget"
+                           asp-action="Create"
+                           class="btn btn-outline-success btn-sm">
+                            Get started
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="border rounded-3 p-3 h-100">
+                        <i class="bi bi-ui-checks text-success fs-3"></i>
+                        <h3 class="h6 fw-bold mt-3">
+                            2. Questions & Answers
+                        </h3>
+                        <p class="text-muted small">
+                            Create the questions that guide visitors
+                            toward suitable recommendations.
+                        </p>
+                        <span class="badge text-bg-light">
+                            Configure after creation
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="border rounded-3 p-3 h-100">
+                        <i class="bi bi-box-seam text-success fs-3"></i>
+                        <h3 class="h6 fw-bold mt-3">
+                            3. Recommendation Items
+                        </h3>
+                        <p class="text-muted small">
+                            Add the products or services your widget
+                            can recommend.
+                        </p>
+                        <span class="badge text-bg-light">
+                            Configure after creation
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="border rounded-3 p-3 h-100">
+                        <i class="bi bi-sliders text-success fs-3"></i>
+                        <h3 class="h6 fw-bold mt-3">
+                            4. Decision Rules
+                        </h3>
+                        <p class="text-muted small">
+                            Allocate relevance scores to match answers
+                            with your recommendation items.
+                        </p>
+                        <span class="badge text-bg-light">
+                            Configure after creation
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="border rounded-3 p-3 h-100">
+                        <i class="bi bi-palette text-success fs-3"></i>
+                        <h3 class="h6 fw-bold mt-3">
+                            5. Design & Preview
+                        </h3>
+                        <p class="text-muted small">
+                            Customize the widget and preview
+                            the visitor experience.
+                        </p>
+                        <span class="badge text-bg-light">
+                            Configure after creation
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="border rounded-3 p-3 h-100">
+                        <i class="bi bi-code-slash text-success fs-3"></i>
+                        <h3 class="h6 fw-bold mt-3">
+                            6. Publish & Embed
+                        </h3>
+                        <p class="text-muted small">
+                            Publish a configured widget and install
+                            its embed code on your website.
+                        </p>
+                        <span class="badge text-bg-light">
+                            Configure after creation
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Widgets -->
+    <section class="card border-0 shadow-sm">
+        <div class="card-header border-0 pt-4 px-4
+            d-flex flex-wrap justify-content-between
+            align-items-center gap-2">
+            <div>
+                <h2 class="h5 fw-bold mb-1">Recent Widgets</h2>
+                <p class="text-muted small mb-0">
+                    Your recently created decision experiences.
+                </p>
+            </div>
+
+            <a asp-controller="Widget"
+               asp-action="Index"
+               class="btn btn-outline-success btn-sm">
+                View All Widgets
+            </a>
+        </div>
+
+        <div class="card-body px-4 pb-4">
+            <div class="text-center py-4">
+                <i class="bi bi-window-stack text-muted"
+                   style="font-size: 2.5rem;"></i>
+
+                <h3 class="h6 fw-bold mt-3">
+                    Your widget list will appear here
+                </h3>
+
+                <p class="text-muted small mb-3">
+                    Create your first widget to begin building
+                    your DecisionOS experience.
+                </p>
+                @* asp-controller="Widget"
+                asp-action="Create" *@
+                <a 
+                   href="#"
+          data-page="widget-builder"
+           class="btn btn-success btn-sm">
+                    <i class="bi bi-plus-lg me-1"></i>
+                    Create New Widget
+                </a>
+            </div>
+        </div>
+    </section>
+
+</div>

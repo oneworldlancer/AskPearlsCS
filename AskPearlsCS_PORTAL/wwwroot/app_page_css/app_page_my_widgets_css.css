@@ -1,0 +1,144 @@
+﻿/* =========================================================
+           My Widgets — page-specific styles
+           Shared page layout and typography come from app_page_shared_css.css
+           ========================================================= */
+.page-widgets .widget-inventory-toolbar {
+    display: grid;
+    grid-template-columns: minmax(240px, 1fr) minmax(180px, 240px) minmax(145px, 180px);
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.page-widgets .widget-inventory-intro {
+    min-width: 0;
+}
+
+    .page-widgets .widget-inventory-intro h2 {
+        margin-bottom: 4px;
+    }
+
+    .page-widgets .widget-inventory-intro p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+.page-widgets .widget-inventory-search,
+.page-widgets .widget-inventory-status {
+    min-width: 0;
+    width: 100%;
+}
+
+    .page-widgets .widget-inventory-search .form-control,
+    .page-widgets .widget-inventory-status .form-select {
+        width: 100%;
+        min-width: 0;
+        height: 42px;
+        box-sizing: border-box;
+    }
+
+/* Shared theme-aware text and card styling */
+.page-widgets .text-muted {
+    color: var(--ap-muted, #748196) !important;
+}
+
+.page-widgets .card {
+    color: var(--ap-text, #243247);
+    background-color: var(--ap-surface, #ffffff);
+    border: 1px solid var(--ap-border, #e4e9f0) !important;
+    border-radius: var(--ap-radius, 14px);
+    box-shadow: var(--ap-shadow, 0 4px 18px rgba(30, 45, 65, 0.045));
+}
+
+.page-widgets .card-header {
+    color: var(--ap-text, #243247);
+    background-color: transparent;
+    border-color: var(--ap-border, #e4e9f0);
+}
+
+.page-widgets .card h2,
+.page-widgets .card h3 {
+    color: var(--ap-text, #243247);
+}
+
+.page-widgets .form-control,
+.page-widgets .form-select {
+    color: var(--ap-text, #243247);
+    background-color: var(--ap-surface, #ffffff);
+    border-color: var(--ap-border, #e4e9f0);
+}
+
+    .page-widgets .form-control::placeholder {
+        color: var(--ap-muted, #748196);
+        opacity: 1;
+    }
+
+/* Dark theme */
+[data-bs-theme="dark"] .page-widgets .text-muted {
+    color: #c5d1d8 !important;
+}
+
+[data-bs-theme="dark"] .page-widgets .card {
+    color: #e7edf3;
+    background-color: var(--ap-surface, #101f1a);
+    border-color: #29443b !important;
+}
+
+    [data-bs-theme="dark"] .page-widgets .card h2,
+    [data-bs-theme="dark"] .page-widgets .card h3,
+    [data-bs-theme="dark"] .page-widgets .card-header {
+        color: #f1f5f9;
+    }
+
+[data-bs-theme="dark"] .page-widgets .form-control,
+[data-bs-theme="dark"] .page-widgets .form-select {
+    color: #e7edf3;
+    background-color: #10251e;
+    border-color: #355348;
+}
+
+    [data-bs-theme="dark"] .page-widgets .form-control::placeholder {
+        color: #b8c8c1;
+    }
+
+    [data-bs-theme="dark"] .page-widgets .form-select option {
+        color: #e7edf3;
+        background-color: #10251e;
+    }
+
+/* Tablet */
+@@media (max-width: 767.98px) {
+    .page-widgets .widget-inventory-toolbar {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .page-widgets .widget-inventory-intro {
+        grid-column: 1 / -1;
+    }
+
+        .page-widgets .widget-inventory-intro p {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+        }
+}
+
+/* Narrow mobile */
+@@media (max-width: 399.98px) {
+    .page-widgets .widget-inventory-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .page-widgets .widget-inventory-intro {
+        grid-column: auto;
+    }
+
+    .page-widgets .card-body,
+    .page-widgets .card-header {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+}

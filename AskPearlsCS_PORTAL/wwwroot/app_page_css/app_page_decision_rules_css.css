@@ -1,0 +1,1488 @@
+﻿
+.decision-rules-page {
+    color: var(--ap-text, #172033);
+    font-family: inherit;
+}
+
+.decision-rules-page * {
+    box-sizing: border-box;
+}
+
+.decision-rules-page .dr-muted {
+    color: var(--ap-muted, #64748b);
+}
+
+.decision-rules-page .dr-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+    .decision-rules-page .dr-header h2 {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0 0 8px;
+        color: var(--ap-text, #172033);
+    }
+
+    .decision-rules-page .dr-header p {
+        margin: 0;
+        font-size: 15px;
+        color: var(--ap-muted, #64748b);
+    }
+
+.decision-rules-page .dr-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid var(--ap-border, #dce3e8);
+    border-radius: 9px;
+    padding: 10px 14px;
+    min-height: 40px;
+    background: var(--ap-card-bg, #fff);
+    color: var(--ap-text, #172033);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: opacity .15s ease, background .15s ease;
+}
+
+    .decision-rules-page .dr-btn:hover {
+        opacity: .85;
+    }
+
+.decision-rules-page .dr-btn-primary {
+    background: #0ca88c;
+    border-color: #0ca88c;
+    color: #fff;
+}
+
+.decision-rules-page .dr-btn-danger {
+    color: #dc3545;
+}
+
+.decision-rules-page .dr-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.decision-rules-page .dr-stat {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+    padding: 22px 20px;
+    border: 1px solid var(--ap-border, #dce3e8);
+    border-radius: 15px;
+    background: var(--ap-card-bg, #fff);
+}
+
+.decision-rules-page .dr-stat-icon {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    font-size: 22px;
+}
+
+.decision-rules-page .dr-purple {
+    background: #eee7ff;
+    color: #7552b8;
+}
+
+.decision-rules-page .dr-green {
+    background: #dcf7ed;
+    color: #138a68;
+}
+
+.decision-rules-page .dr-blue {
+    background: #e0edff;
+    color: #3679ca;
+}
+
+.decision-rules-page .dr-orange {
+    background: #fff0dc;
+    color: #c47c27;
+}
+
+.decision-rules-page .dr-stat-label {
+    color: var(--ap-muted, #64748b);
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.decision-rules-page .dr-stat-value {
+    font-size: 26px;
+    line-height: 1.2;
+    font-weight: 700;
+    color: var(--ap-text, #172033);
+}
+
+.decision-rules-page .dr-panel {
+    border: 1px solid var(--ap-border, #dce3e8);
+    border-radius: 15px;
+    background: var(--ap-card-bg, #fff);
+    overflow: hidden;
+}
+
+.decision-rules-page .dr-panel-header {
+    padding: 22px 24px;
+    border-bottom: 1px solid var(--ap-border, #dce3e8);
+}
+
+    .decision-rules-page .dr-panel-header h3 {
+        font-size: 19px;
+        font-weight: 700;
+        margin: 0 0 7px;
+        color: var(--ap-text, #172033);
+    }
+
+    .decision-rules-page .dr-panel-header p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--ap-muted, #64748b);
+    }
+
+.decision-rules-page .dr-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 24px;
+}
+
+.decision-rules-page .dr-search {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+}
+
+    .decision-rules-page .dr-search span {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--ap-muted, #64748b);
+        pointer-events: none;
+    }
+
+.decision-rules-page .dr-input,
+.decision-rules-page .dr-select,
+.decision-rules-page .dr-textarea {
+    width: 100%;
+    border: 1px solid var(--ap-border, #dce3e8);
+    border-radius: 9px;
+    padding: 11px 13px;
+    background: var(--ap-input-bg, var(--ap-card-bg, #fff));
+    color: var(--ap-text, #172033);
+    font: inherit;
+    font-size: 13px;
+}
+
+.decision-rules-page .dr-search .dr-input {
+    padding-left: 40px;
+}
+
+.decision-rules-page .dr-input:focus,
+.decision-rules-page .dr-select:focus,
+.decision-rules-page .dr-textarea:focus {
+    outline: 2px solid rgba(12,168,140,.18);
+    border-color: #0ca88c;
+}
+
+.decision-rules-page .dr-select {
+    width: 185px;
+    flex: 0 0 185px;
+}
+
+.decision-rules-page .dr-table-wrap {
+    overflow-x: auto;
+}
+
+.decision-rules-page .dr-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 850px;
+}
+
+    .decision-rules-page .dr-table th {
+        text-align: left;
+        padding: 15px 18px;
+        border-bottom: 1px solid var(--ap-border, #dce3e8);
+        background: var(--ap-table-head-bg, transparent);
+        color: var(--ap-muted, #64748b);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .045em;
+        white-space: nowrap;
+    }
+
+    .decision-rules-page .dr-table td {
+        padding: 17px 18px;
+        border-bottom: 1px solid var(--ap-border, #dce3e8);
+        color: var(--ap-text, #172033);
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+    .decision-rules-page .dr-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+.decision-rules-page .dr-rule-name {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.decision-rules-page .dr-rule-id {
+    color: var(--ap-muted, #64748b);
+    font-size: 11px;
+    font-family: Consolas, monospace;
+}
+
+.decision-rules-page .dr-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 20px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+    .decision-rules-page .dr-status::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+.decision-rules-page .dr-status-active {
+    background: #dff4ec;
+    color: #138764;
+}
+
+.decision-rules-page .dr-status-draft {
+    background: #fff0d9;
+    color: #a96a16;
+}
+
+.decision-rules-page .dr-status-inactive {
+    background: #edf0f3;
+    color: #687585;
+}
+
+.decision-rules-page .dr-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+    .decision-rules-page .dr-actions .dr-btn {
+        min-height: 32px;
+        padding: 6px 9px;
+        font-size: 11px;
+    }
+
+.decision-rules-page .dr-empty {
+    text-align: center;
+    padding: 42px 20px;
+    color: var(--ap-muted, #64748b);
+}
+
+    .decision-rules-page .dr-empty strong {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--ap-text, #172033);
+        font-size: 16px;
+    }
+
+.decision-rules-page .dr-table-footer {
+    padding: 14px 24px;
+    border-top: 1px solid var(--ap-border, #dce3e8);
+    color: var(--ap-muted, #64748b);
+    font-size: 12px;
+}
+
+/* Modal */
+.decision-rules-page .dr-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(10, 20, 28, .58);
+    backdrop-filter: blur(5px);
+}
+
+    .decision-rules-page .dr-modal-overlay.is-open {
+        display: flex;
+    }
+
+.decision-rules-page .dr-modal {
+    display: flex;
+    flex-direction: column;
+    width: min(680px, 100%);
+    max-height: min(88vh, 850px);
+    overflow: hidden;
+    background: var(--ap-modal-bg, var(--ap-card-bg, #fff));
+    border: 1px solid var(--ap-border, #dce3e8);
+    border-radius: 17px;
+    box-shadow: 0 24px 80px rgba(0,0,0,.25);
+}
+
+.decision-rules-page .dr-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--ap-border, #dce3e8);
+}
+
+.decision-rules-page .dr-modal-icon {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    border-radius: 12px;
+    background: #dff5ee;
+    color: #0b997e;
+    font-size: 21px;
+}
+
+.decision-rules-page .dr-modal-header h3 {
+    margin: 0 0 5px;
+    font-size: 19px;
+    color: var(--ap-text, #172033);
+}
+
+.decision-rules-page .dr-modal-header p {
+    margin: 0;
+    color: var(--ap-muted, #64748b);
+    font-size: 12px;
+}
+
+.decision-rules-page .dr-modal-close {
+    margin-left: auto;
+    border: 0;
+    background: transparent;
+    color: var(--ap-muted, #64748b);
+    font-size: 25px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.decision-rules-page .dr-modal-body {
+    overflow-y: auto;
+    padding: 22px 24px;
+}
+
+.decision-rules-page .dr-field {
+    margin-bottom: 18px;
+}
+
+    .decision-rules-page .dr-field label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--ap-text, #172033);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+.decision-rules-page .dr-required {
+    color: #dc3545;
+}
+
+.decision-rules-page .dr-help {
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--ap-muted, #64748b);
+}
+
+.decision-rules-page .dr-status-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid var(--ap-border, #dce3e8);
+    border-radius: 10px;
+    background: var(--ap-input-bg, transparent);
+}
+
+    .decision-rules-page .dr-status-box strong {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 12px;
+        color: var(--ap-text, #172033);
+    }
+
+    .decision-rules-page .dr-status-box p {
+        margin: 0;
+        color: var(--ap-muted, #64748b);
+        font-size: 11px;
+    }
+
+.decision-rules-page .dr-toggle {
+    width: 42px;
+    height: 24px;
+    flex: 0 0 42px;
+    position: relative;
+}
+
+    .decision-rules-page .dr-toggle input {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+    }
+
+    .decision-rules-page .dr-toggle span {
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        background: #aab3bd;
+        cursor: pointer;
+        transition: background .2s;
+    }
+
+        .decision-rules-page .dr-toggle span::after {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform .2s;
+        }
+
+    .decision-rules-page .dr-toggle input:checked + span {
+        background: #0ca88c;
+    }
+
+        .decision-rules-page .dr-toggle input:checked + span::after {
+            transform: translateX(18px);
+        }
+
+.decision-rules-page .dr-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 15px 24px;
+    border-top: 1px solid var(--ap-border, #dce3e8);
+    background: var(--ap-modal-bg, var(--ap-card-bg, #fff));
+}
+
+.decision-rules-page .dr-validation {
+    display: none;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    border: 1px solid #f1b8be;
+    border-radius: 8px;
+    color: #b42332;
+    background: #fff0f1;
+    font-size: 12px;
+}
+
+    .decision-rules-page .dr-validation.is-visible {
+        display: block;
+    }
+
+.decision-rules-page .dr-toast {
+    display: none;
+    position: fixed;
+    right: 24px;
+    bottom: 85px;
+    z-index: 11000;
+    max-width: min(400px, calc(100vw - 32px));
+    padding: 13px 17px;
+    border-radius: 10px;
+    background: #087f68;
+    color: #fff;
+    font-size: 13px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+}
+
+    .decision-rules-page .dr-toast.is-visible {
+        display: block;
+    }
+
+@@media (max-width: 1100px) {
+    .decision-rules-page .dr-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@@media (max-width: 650px) {
+    .decision-rules-page .dr-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+        .decision-rules-page .dr-header h2 {
+            font-size: 23px;
+        }
+
+    .decision-rules-page .dr-stats {
+        gap: 10px;
+    }
+
+    .decision-rules-page .dr-stat {
+        padding: 14px 12px;
+        gap: 10px;
+    }
+
+    .decision-rules-page .dr-stat-icon {
+        width: 38px;
+        height: 38px;
+        flex-basis: 38px;
+        font-size: 18px;
+    }
+
+    .decision-rules-page .dr-stat-value {
+        font-size: 22px;
+    }
+
+    .decision-rules-page .dr-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+        padding: 14px;
+    }
+
+    .decision-rules-page .dr-select {
+        width: 100%;
+        flex-basis: auto;
+    }
+
+    .decision-rules-page .dr-panel-header {
+        padding: 18px 16px;
+    }
+
+    .decision-rules-page .dr-modal-overlay {
+        padding: 10px;
+    }
+
+    .decision-rules-page .dr-modal-header,
+    .decision-rules-page .dr-modal-body,
+    .decision-rules-page .dr-modal-footer {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+/* Decision Rules: page spacing and layout refinements */
+.decision-rules-page {
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    .decision-rules-page .dr-header {
+        margin-bottom: 26px;
+        padding: 0;
+    }
+
+    .decision-rules-page .ap-page-title {
+        margin: 0 0 8px;
+    }
+
+    .decision-rules-page .ap-page-description {
+        margin: 0;
+    }
+
+    .decision-rules-page .dr-stats {
+        margin-bottom: 26px;
+    }
+
+    .decision-rules-page .dr-panel {
+        margin-bottom: 8px;
+    }
+
+/* Prevent content from touching the sidebar on smaller screens */
+@@media (max-width: 768px) {
+    .decision-rules-page {
+        padding: 0;
+    }
+
+        .decision-rules-page .dr-header {
+            gap: 14px;
+        }
+}
+
+/* Force readable title colors in the Decision Rules page */
+.decision-rules-page .dr-header h2 {
+    color: #f4f7fb !important;
+}
+
+.decision-rules-page .dr-header p {
+    color: #aab8c8 !important;
+}
+
+/* Preserve dark text when the portal is in light mode */
+html:not([data-theme="dark"]):not([data-bs-theme="dark"])
+.decision-rules-page .dr-header h2 {
+    color: #172033 !important;
+}
+
+html:not([data-theme="dark"]):not([data-bs-theme="dark"])
+.decision-rules-page .dr-header p {
+    color: #64748b !important;
+}
+
+/* Fix Create/Edit Decision Rule modal scrolling */
+.decision-rules-page .dr-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+    .decision-rules-page .dr-modal-overlay.is-open {
+        display: flex;
+    }
+
+.decision-rules-page .dr-modal {
+    display: flex;
+    flex-direction: column;
+    width: min(680px, 100%);
+    height: auto;
+    max-height: calc(100dvh - 32px);
+    min-height: 0;
+    overflow: hidden;
+    margin: auto;
+}
+
+/* Header remains visible */
+.decision-rules-page .dr-modal-header {
+    flex: 0 0 auto;
+}
+
+/* Only the form body scrolls */
+.decision-rules-page .dr-modal form {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.decision-rules-page .dr-modal-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Save and Cancel remain visible at the bottom */
+.decision-rules-page .dr-modal-footer {
+    position: relative;
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 24px;
+    border-top: 1px solid var(--ap-border, #dce3e8);
+    background: var(--ap-modal-bg, var(--ap-card-bg, #fff));
+    z-index: 2;
+}
+
+/* Smaller screens */
+@@media (max-width: 650px) {
+    .decision-rules-page .dr-modal-overlay {
+        padding: 8px;
+    }
+
+    .decision-rules-page .dr-modal {
+        max-height: calc(100dvh - 16px);
+        width: 100%;
+    }
+
+    .decision-rules-page .dr-modal-header {
+        padding: 14px 16px;
+    }
+
+    .decision-rules-page .dr-modal-body {
+        padding: 16px;
+    }
+
+    .decision-rules-page .dr-modal-footer {
+        padding: 12px 16px;
+    }
+}
+
+@@media (max-height: 650px) {
+    .decision-rules-page .dr-modal-overlay {
+        align-items: flex-start;
+    }
+
+    .decision-rules-page .dr-modal {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+
+/* Decision Rule modal — dark theme */
+html[data-theme="dark"] .decision-rules-page .dr-modal,
+html[data-theme="dark"] .decision-rules-page .dr-modal-header,
+html[data-theme="dark"] .decision-rules-page .dr-modal-body,
+html[data-theme="dark"] .decision-rules-page .dr-modal-footer,
+body[data-theme="dark"] .decision-rules-page .dr-modal,
+body[data-theme="dark"] .decision-rules-page .dr-modal-header,
+body[data-theme="dark"] .decision-rules-page .dr-modal-body,
+body[data-theme="dark"] .decision-rules-page .dr-modal-footer,
+html[data-bs-theme="dark"] .decision-rules-page .dr-modal,
+html[data-bs-theme="dark"] .decision-rules-page .dr-modal-header,
+html[data-bs-theme="dark"] .decision-rules-page .dr-modal-body,
+html[data-bs-theme="dark"] .decision-rules-page .dr-modal-footer,
+body[data-bs-theme="dark"] .decision-rules-page .dr-modal,
+body[data-bs-theme="dark"] .decision-rules-page .dr-modal-header,
+body[data-bs-theme="dark"] .decision-rules-page .dr-modal-body,
+body[data-bs-theme="dark"] .decision-rules-page .dr-modal-footer {
+    background-color: #091512 !important;
+    color: #e6edf5 !important;
+    border-color: #263c36 !important;
+}
+
+    /* Modal title and descriptive text */
+    html[data-theme="dark"] .decision-rules-page .dr-modal-header h3,
+    body[data-theme="dark"] .decision-rules-page .dr-modal-header h3,
+    html[data-bs-theme="dark"] .decision-rules-page .dr-modal-header h3,
+    body[data-bs-theme="dark"] .decision-rules-page .dr-modal-header h3 {
+        color: #f4f7fb !important;
+    }
+
+    html[data-theme="dark"] .decision-rules-page .dr-modal-header p,
+    html[data-theme="dark"] .decision-rules-page .dr-help,
+    body[data-theme="dark"] .decision-rules-page .dr-modal-header p,
+    body[data-theme="dark"] .decision-rules-page .dr-help,
+    html[data-bs-theme="dark"] .decision-rules-page .dr-modal-header p,
+    html[data-bs-theme="dark"] .decision-rules-page .dr-help,
+    body[data-bs-theme="dark"] .decision-rules-page .dr-modal-header p,
+    body[data-bs-theme="dark"] .decision-rules-page .dr-help {
+        color: #aab8c8 !important;
+    }
+
+    /* Form fields */
+    html[data-theme="dark"] .decision-rules-page .dr-modal .dr-input,
+    html[data-theme="dark"] .decision-rules-page .dr-modal .dr-select,
+    html[data-theme="dark"] .decision-rules-page .dr-modal .dr-textarea,
+    body[data-theme="dark"] .decision-rules-page .dr-modal .dr-input,
+    body[data-theme="dark"] .decision-rules-page .dr-modal .dr-select,
+    body[data-theme="dark"] .decision-rules-page .dr-modal .dr-textarea,
+    html[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-input,
+    html[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-select,
+    html[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-textarea,
+    body[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-input,
+    body[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-select,
+    body[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-textarea {
+        background-color: #10221c !important;
+        color: #f0f5f3 !important;
+        border-color: #344d44 !important;
+    }
+
+        html[data-theme="dark"] .decision-rules-page .dr-modal .dr-input::placeholder,
+        body[data-theme="dark"] .decision-rules-page .dr-modal .dr-input::placeholder,
+        html[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-input::placeholder,
+        body[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-input::placeholder {
+            color: #a0b1a9 !important;
+            opacity: 1;
+        }
+
+/* Status container */
+html[data-theme="dark"] .decision-rules-page .dr-status-box,
+body[data-theme="dark"] .decision-rules-page .dr-status-box,
+html[data-bs-theme="dark"] .decision-rules-page .dr-status-box,
+body[data-bs-theme="dark"] .decision-rules-page .dr-status-box {
+    background-color: #10221c !important;
+    border-color: #344d44 !important;
+}
+
+    html[data-theme="dark"] .decision-rules-page .dr-status-box strong,
+    body[data-theme="dark"] .decision-rules-page .dr-status-box strong,
+    html[data-bs-theme="dark"] .decision-rules-page .dr-status-box strong,
+    body[data-bs-theme="dark"] .decision-rules-page .dr-status-box strong {
+        color: #f4f7fb !important;
+    }
+
+    html[data-theme="dark"] .decision-rules-page .dr-status-box p,
+    body[data-theme="dark"] .decision-rules-page .dr-status-box p,
+    html[data-bs-theme="dark"] .decision-rules-page .dr-status-box p,
+    body[data-bs-theme="dark"] .decision-rules-page .dr-status-box p {
+        color: #aab8c8 !important;
+    }
+
+/* Cancel button and close icon */
+html[data-theme="dark"] .decision-rules-page .dr-modal .dr-btn:not(.dr-btn-primary),
+body[data-theme="dark"] .decision-rules-page .dr-modal .dr-btn:not(.dr-btn-primary),
+html[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-btn:not(.dr-btn-primary),
+body[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-btn:not(.dr-btn-primary) {
+    background-color: #10221c !important;
+    color: #e6edf5 !important;
+    border-color: #344d44 !important;
+}
+
+html[data-theme="dark"] .decision-rules-page .dr-modal-close,
+body[data-theme="dark"] .decision-rules-page .dr-modal-close,
+html[data-bs-theme="dark"] .decision-rules-page .dr-modal-close,
+body[data-bs-theme="dark"] .decision-rules-page .dr-modal-close {
+    color: #c5d2dc !important;
+}
+
+
+
+
+
+
+
+/* =========================================
+   Decision Rules — Condition Builder
+   ========================================= */
+
+.decision-rules-page .dr-condition-builder {
+    margin: 24px 0;
+    padding: 20px;
+    border: 1px solid var(--ap-border, #dce3e8);
+    border-radius: 14px;
+    background: var(--ap-input-bg, rgba(148, 163, 184, .04));
+}
+
+.decision-rules-page .dr-condition-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+    .decision-rules-page .dr-condition-heading h4 {
+        margin: 0 0 6px;
+        color: var(--ap-text, #172033);
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .decision-rules-page .dr-condition-heading p {
+        margin: 0;
+        color: var(--ap-muted, #64748b);
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+.decision-rules-page .dr-condition-count {
+    flex-shrink: 0;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: rgba(12, 168, 140, .12);
+    color: #0b997e;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.decision-rules-page .dr-logic-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px;
+    border: 1px solid var(--ap-border, #dce3e8);
+    border-radius: 10px;
+    background: var(--ap-card-bg, #fff);
+}
+
+.decision-rules-page .dr-logic-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+    .decision-rules-page .dr-logic-copy strong {
+        color: var(--ap-text, #172033);
+        font-size: 12px;
+    }
+
+    .decision-rules-page .dr-logic-copy span {
+        color: var(--ap-muted, #64748b);
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+.decision-rules-page .dr-logic-toggle {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: 3px;
+    padding: 4px;
+    border: 1px solid var(--ap-border, #dce3e8);
+    border-radius: 9px;
+    background: var(--ap-input-bg, #f4f7f9);
+}
+
+.decision-rules-page .dr-logic-option {
+    min-width: 58px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--ap-muted, #64748b);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+
+    .decision-rules-page .dr-logic-option.is-selected {
+        background: #0ca88c;
+        color: #fff;
+        box-shadow: 0 2px 5px rgba(12, 168, 140, .2);
+    }
+
+    .decision-rules-page .dr-logic-option:focus-visible {
+        outline: 2px solid #0ca88c;
+        outline-offset: 2px;
+    }
+
+.decision-rules-page .dr-logic-explanation {
+    margin: 10px 0 16px;
+    color: var(--ap-muted, #64748b);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.decision-rules-page .dr-condition-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.decision-rules-page .dr-condition-card {
+    position: relative;
+    padding: 16px;
+    border: 1px solid var(--ap-border, #dce3e8);
+    border-radius: 11px;
+    background: var(--ap-card-bg, #fff);
+}
+
+.decision-rules-page .dr-condition-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.decision-rules-page .dr-condition-card-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--ap-text, #172033);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.decision-rules-page .dr-condition-number {
+    display: grid;
+    place-items: center;
+    width: 27px;
+    height: 27px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: rgba(12, 168, 140, .12);
+    color: #0b997e;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.decision-rules-page .dr-condition-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 8px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: transparent;
+    color: #dc3545;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+    .decision-rules-page .dr-condition-remove:hover {
+        background: rgba(220, 53, 69, .08);
+        border-color: rgba(220, 53, 69, .2);
+    }
+
+.decision-rules-page .dr-condition-fields {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 14px;
+}
+
+.decision-rules-page .dr-condition-field {
+    min-width: 0;
+}
+
+    .decision-rules-page .dr-condition-field label {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--ap-muted, #64748b);
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .decision-rules-page .dr-condition-field .dr-select {
+        width: 100%;
+        min-width: 0;
+    }
+
+.decision-rules-page .dr-condition-field-full {
+    grid-column: 1 / -1;
+}
+
+.decision-rules-page .dr-condition-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    margin: 0;
+    color: var(--ap-muted, #64748b);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+    .decision-rules-page .dr-condition-connector::before,
+    .decision-rules-page .dr-condition-connector::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: var(--ap-border, #dce3e8);
+    }
+
+.decision-rules-page .dr-add-condition {
+    width: 100%;
+    margin-top: 14px;
+    border-style: dashed;
+    border-color: rgba(12, 168, 140, .55);
+    background: rgba(12, 168, 140, .05);
+    color: #0b997e;
+}
+
+    .decision-rules-page .dr-add-condition:hover {
+        background: rgba(12, 168, 140, .12);
+    }
+
+.decision-rules-page .dr-rule-summary {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    margin-top: 18px;
+    padding: 14px;
+    border: 1px solid rgba(12, 168, 140, .25);
+    border-radius: 10px;
+    background: rgba(12, 168, 140, .07);
+}
+
+.decision-rules-page .dr-summary-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: rgba(12, 168, 140, .15);
+    color: #0b997e;
+    font-size: 15px;
+}
+
+.decision-rules-page .dr-rule-summary strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--ap-text, #172033);
+    font-size: 12px;
+}
+
+.decision-rules-page .dr-rule-summary p {
+    margin: 0;
+    color: var(--ap-muted, #64748b);
+    font-size: 11px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+    .decision-rules-page .dr-rule-summary p strong {
+        display: inline;
+        color: var(--ap-text, #172033);
+        font-size: inherit;
+    }
+
+.decision-rules-page .dr-condition-error {
+    display: none;
+    margin-top: 10px;
+    color: #dc3545;
+    font-size: 11px;
+}
+
+    .decision-rules-page .dr-condition-error.is-visible {
+        display: block;
+    }
+
+.decision-rules-page .dr-condition-card.has-error {
+    border-color: #dc3545;
+}
+
+/* Dark theme */
+html[data-theme="dark"] .decision-rules-page .dr-condition-builder,
+body[data-theme="dark"] .decision-rules-page .dr-condition-builder,
+html[data-bs-theme="dark"] .decision-rules-page .dr-condition-builder,
+body[data-bs-theme="dark"] .decision-rules-page .dr-condition-builder {
+    background: #0b1915;
+    border-color: #263c36;
+}
+
+html[data-theme="dark"] .decision-rules-page .dr-logic-box,
+body[data-theme="dark"] .decision-rules-page .dr-logic-box,
+html[data-bs-theme="dark"] .decision-rules-page .dr-logic-box,
+body[data-bs-theme="dark"] .decision-rules-page .dr-logic-box,
+html[data-theme="dark"] .decision-rules-page .dr-condition-card,
+body[data-theme="dark"] .decision-rules-page .dr-condition-card,
+html[data-bs-theme="dark"] .decision-rules-page .dr-condition-card,
+body[data-bs-theme="dark"] .decision-rules-page .dr-condition-card {
+    background: #10221c;
+    border-color: #344d44;
+}
+
+html[data-theme="dark"] .decision-rules-page .dr-condition-heading h4,
+body[data-theme="dark"] .decision-rules-page .dr-condition-heading h4,
+html[data-bs-theme="dark"] .decision-rules-page .dr-condition-heading h4,
+body[data-bs-theme="dark"] .decision-rules-page .dr-condition-heading h4,
+html[data-theme="dark"] .decision-rules-page .dr-logic-copy strong,
+body[data-theme="dark"] .decision-rules-page .dr-logic-copy strong,
+html[data-bs-theme="dark"] .decision-rules-page .dr-logic-copy strong,
+body[data-bs-theme="dark"] .decision-rules-page .dr-logic-copy strong,
+html[data-theme="dark"] .decision-rules-page .dr-condition-card-title,
+body[data-theme="dark"] .decision-rules-page .dr-condition-card-title,
+html[data-bs-theme="dark"] .decision-rules-page .dr-condition-card-title,
+body[data-bs-theme="dark"] .decision-rules-page .dr-condition-card-title,
+html[data-theme="dark"] .decision-rules-page .dr-rule-summary strong,
+body[data-theme="dark"] .decision-rules-page .dr-rule-summary strong,
+html[data-bs-theme="dark"] .decision-rules-page .dr-rule-summary strong,
+body[data-bs-theme="dark"] .decision-rules-page .dr-rule-summary strong {
+    color: #f0f5f3;
+}
+
+html[data-theme="dark"] .decision-rules-page .dr-logic-toggle,
+body[data-theme="dark"] .decision-rules-page .dr-logic-toggle,
+html[data-bs-theme="dark"] .decision-rules-page .dr-logic-toggle,
+body[data-bs-theme="dark"] .decision-rules-page .dr-logic-toggle {
+    background: #091512;
+    border-color: #344d44;
+}
+
+html[data-theme="dark"] .decision-rules-page .dr-rule-summary,
+body[data-theme="dark"] .decision-rules-page .dr-rule-summary,
+html[data-bs-theme="dark"] .decision-rules-page .dr-rule-summary,
+body[data-bs-theme="dark"] .decision-rules-page .dr-rule-summary {
+    background: rgba(12, 168, 140, .1);
+    border-color: #285c4f;
+}
+
+/* Mobile layout */
+@@media (max-width: 650px) {
+    .decision-rules-page .dr-condition-builder {
+        padding: 14px;
+    }
+
+    .decision-rules-page .dr-condition-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .decision-rules-page .dr-logic-box {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .decision-rules-page .dr-condition-fields {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .decision-rules-page .dr-condition-field-full {
+        grid-column: auto;
+    }
+
+    .decision-rules-page .dr-condition-card {
+        padding: 12px;
+    }
+}
+
+
+
+/* ==========================================
+   AskPearls Decision Rules — Dark Theme Fix
+   ========================================== */
+
+/* Match common dark-theme implementations */
+:is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page {
+    --ap-text: #f1f5f9;
+    --ap-muted: #bdcbd9;
+    --ap-border: #344d44;
+    --ap-card-bg: #10221c;
+    --ap-input-bg: #10221c;
+    --ap-modal-bg: #091512;
+    --ap-table-head-bg: #0d1d18;
+    color: #e6edf5;
+}
+
+    /* Main page headings */
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-header h2,
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-panel-header h3 {
+        color: #f8fafc !important;
+    }
+
+    /* Main page descriptions */
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-header p,
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-panel-header p {
+        color: #bdcbd9 !important;
+    }
+
+    /* Cards and inventory panel */
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-panel,
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-stat {
+        background: #10221c !important;
+        border-color: #344d44 !important;
+    }
+
+    /* Table content and headings */
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-table th {
+        color: #bdcbd9 !important;
+        background: #0d1d18 !important;
+        border-color: #344d44 !important;
+    }
+
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-table td {
+        color: #e6edf5 !important;
+        border-color: #344d44 !important;
+    }
+
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-rule-name,
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-stat-value {
+        color: #f8fafc !important;
+    }
+
+    /* Create/Edit and Delete modals */
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-modal,
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-modal-header,
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-modal-body,
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-modal-footer {
+        color: #e6edf5 !important;
+        background: #091512 !important;
+        border-color: #344d44 !important;
+    }
+
+        /* Modal titles and field labels */
+        :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-modal h3,
+        :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-modal .dr-field label,
+        :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-condition-heading h4,
+        :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-condition-card-title {
+            color: #f8fafc !important;
+        }
+
+        /* Helper text and explanations */
+        :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-modal p,
+        :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-help,
+        :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-logic-explanation,
+        :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-condition-heading p {
+            color: #bdcbd9 !important;
+        }
+
+    /* Condition builder surfaces */
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-condition-builder {
+        background: #0b1915 !important;
+        border-color: #344d44 !important;
+    }
+
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-condition-card,
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-logic-box,
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-rule-summary {
+        color: #e6edf5 !important;
+        background: #10221c !important;
+        border-color: #344d44 !important;
+    }
+
+    /* Inputs and dropdowns */
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-input,
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-select,
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-textarea {
+        color: #f1f5f9 !important;
+        background-color: #10221c !important;
+        border-color: #456257 !important;
+    }
+
+        :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-input::placeholder,
+        :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-textarea::placeholder {
+            color: #aebfce !important;
+            opacity: 1;
+        }
+
+    /* ALL / ANY toggle */
+    :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-logic-option {
+        color: #bdcbd9 !important;
+    }
+
+        :is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-logic-option.is-selected {
+            color: #ffffff !important;
+            background: #0ca88c !important;
+        }
+
+
+
+/* Test Rule preview */
+.decision-rules-page .dr-test-panel {
+    margin: 20px 0;
+    padding: 18px;
+    border: 1px solid var(--ap-border, #dbe3ed);
+    border-radius: 14px;
+    background: var(--ap-card-bg, #f8fafc);
+    color: var(--ap-text, #172033);
+}
+
+.decision-rules-page .dr-test-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+    .decision-rules-page .dr-test-heading h4 {
+        margin: 0 0 6px;
+        color: var(--ap-text, #172033);
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .decision-rules-page .dr-test-heading p {
+        margin: 0;
+        color: var(--ap-muted, #64748b);
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+.decision-rules-page .dr-test-badge {
+    flex-shrink: 0;
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: #e0f2fe;
+    color: #075985;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.decision-rules-page .dr-test-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 16px;
+}
+
+    .decision-rules-page .dr-test-grid .dr-field {
+        margin-bottom: 12px;
+    }
+
+.decision-rules-page .dr-test-result {
+    margin-top: 14px;
+    padding: 14px;
+    border: 1px solid var(--ap-border, #dbe3ed);
+    border-radius: 10px;
+    background: var(--ap-surface-soft, #f8fafc);
+    color: var(--ap-text, #172033);
+}
+
+    .decision-rules-page .dr-test-result[hidden] {
+        display: none !important;
+    }
+
+    .decision-rules-page .dr-test-result.is-match {
+        background: #ecfdf5;
+        border-color: #86efac;
+        color: #065f46;
+    }
+
+    .decision-rules-page .dr-test-result.is-no-match {
+        background: #fff7ed;
+        border-color: #fdba74;
+        color: #9a3412;
+    }
+
+    .decision-rules-page .dr-test-result h5 {
+        margin: 0 0 8px;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .decision-rules-page .dr-test-result ul {
+        margin: 8px 0 0;
+        padding-left: 20px;
+    }
+
+    .decision-rules-page .dr-test-result li {
+        margin: 5px 0;
+        font-size: 13px;
+    }
+
+/* Dark theme */
+:is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-test-panel {
+    background: #0b1915;
+    color: #e6edf5;
+    border-color: #344d44;
+}
+
+:is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-test-heading h4 {
+    color: #f8fafc;
+}
+
+:is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-test-heading p {
+    color: #bdcbd9;
+}
+
+:is( html[data-theme="dark"], body[data-theme="dark"], html[data-bs-theme="dark"], body[data-bs-theme="dark"], html.dark, body.dark, html.dark-mode, body.dark-mode, .dark-theme, .theme-dark ) .decision-rules-page .dr-test-result {
+    background: #10221c;
+    border-color: #344d44;
+    color: #e6edf5;
+}
+
+@@media (max-width: 600px) {
+    .decision-rules-page .dr-test-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .decision-rules-page .dr-test-heading {
+        flex-direction: column;
+    }
+}
+

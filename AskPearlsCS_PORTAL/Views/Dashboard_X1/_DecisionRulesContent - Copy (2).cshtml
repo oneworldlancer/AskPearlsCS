@@ -1,0 +1,1442 @@
+﻿
+<div class="decision-rules-page">
+    <style>
+            .decision-rules-page {
+                color: var(--ap-text, #172033);
+                font-family: inherit;
+            }
+
+                .decision-rules-page * {
+                    box-sizing: border-box;
+                }
+
+                .decision-rules-page .dr-muted {
+                    color: var(--ap-muted, #64748b);
+                }
+
+                .decision-rules-page .dr-header {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 16px;
+                    margin-bottom: 24px;
+                }
+
+                    .decision-rules-page .dr-header h2 {
+                        font-size: 28px;
+                        font-weight: 700;
+                        margin: 0 0 8px;
+                        color: var(--ap-text, #172033);
+                    }
+
+                    .decision-rules-page .dr-header p {
+                        margin: 0;
+                        font-size: 15px;
+                        color: var(--ap-muted, #64748b);
+                    }
+
+                .decision-rules-page .dr-btn {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    border: 1px solid var(--ap-border, #dce3e8);
+                    border-radius: 9px;
+                    padding: 10px 14px;
+                    min-height: 40px;
+                    background: var(--ap-card-bg, #fff);
+                    color: var(--ap-text, #172033);
+                    cursor: pointer;
+                    font: inherit;
+                    font-size: 13px;
+                    font-weight: 600;
+                    white-space: nowrap;
+                    transition: opacity .15s ease, background .15s ease;
+                }
+
+                    .decision-rules-page .dr-btn:hover {
+                        opacity: .85;
+                    }
+
+                .decision-rules-page .dr-btn-primary {
+                    background: #0ca88c;
+                    border-color: #0ca88c;
+                    color: #fff;
+                }
+
+                .decision-rules-page .dr-btn-danger {
+                    color: #dc3545;
+                }
+
+                .decision-rules-page .dr-stats {
+                    display: grid;
+                    grid-template-columns: repeat(4, minmax(0, 1fr));
+                    gap: 18px;
+                    margin-bottom: 24px;
+                }
+
+                .decision-rules-page .dr-stat {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    min-width: 0;
+                    padding: 22px 20px;
+                    border: 1px solid var(--ap-border, #dce3e8);
+                    border-radius: 15px;
+                    background: var(--ap-card-bg, #fff);
+                }
+
+                .decision-rules-page .dr-stat-icon {
+                    width: 48px;
+                    height: 48px;
+                    flex: 0 0 48px;
+                    display: grid;
+                    place-items: center;
+                    border-radius: 13px;
+                    font-size: 22px;
+                }
+
+                .decision-rules-page .dr-purple {
+                    background: #eee7ff;
+                    color: #7552b8;
+                }
+
+                .decision-rules-page .dr-green {
+                    background: #dcf7ed;
+                    color: #138a68;
+                }
+
+                .decision-rules-page .dr-blue {
+                    background: #e0edff;
+                    color: #3679ca;
+                }
+
+                .decision-rules-page .dr-orange {
+                    background: #fff0dc;
+                    color: #c47c27;
+                }
+
+                .decision-rules-page .dr-stat-label {
+                    color: var(--ap-muted, #64748b);
+                    font-size: 12px;
+                    margin-bottom: 4px;
+                }
+
+                .decision-rules-page .dr-stat-value {
+                    font-size: 26px;
+                    line-height: 1.2;
+                    font-weight: 700;
+                    color: var(--ap-text, #172033);
+                }
+
+                .decision-rules-page .dr-panel {
+                    border: 1px solid var(--ap-border, #dce3e8);
+                    border-radius: 15px;
+                    background: var(--ap-card-bg, #fff);
+                    overflow: hidden;
+                }
+
+                .decision-rules-page .dr-panel-header {
+                    padding: 22px 24px;
+                    border-bottom: 1px solid var(--ap-border, #dce3e8);
+                }
+
+                    .decision-rules-page .dr-panel-header h3 {
+                        font-size: 19px;
+                        font-weight: 700;
+                        margin: 0 0 7px;
+                        color: var(--ap-text, #172033);
+                    }
+
+                    .decision-rules-page .dr-panel-header p {
+                        margin: 0;
+                        font-size: 13px;
+                        color: var(--ap-muted, #64748b);
+                    }
+
+                .decision-rules-page .dr-toolbar {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 18px 24px;
+                }
+
+                .decision-rules-page .dr-search {
+                    flex: 1;
+                    min-width: 0;
+                    position: relative;
+                }
+
+                    .decision-rules-page .dr-search span {
+                        position: absolute;
+                        left: 14px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        color: var(--ap-muted, #64748b);
+                        pointer-events: none;
+                    }
+
+                .decision-rules-page .dr-input,
+                .decision-rules-page .dr-select,
+                .decision-rules-page .dr-textarea {
+                    width: 100%;
+                    border: 1px solid var(--ap-border, #dce3e8);
+                    border-radius: 9px;
+                    padding: 11px 13px;
+                    background: var(--ap-input-bg, var(--ap-card-bg, #fff));
+                    color: var(--ap-text, #172033);
+                    font: inherit;
+                    font-size: 13px;
+                }
+
+                .decision-rules-page .dr-search .dr-input {
+                    padding-left: 40px;
+                }
+
+                .decision-rules-page .dr-input:focus,
+                .decision-rules-page .dr-select:focus,
+                .decision-rules-page .dr-textarea:focus {
+                    outline: 2px solid rgba(12,168,140,.18);
+                    border-color: #0ca88c;
+                }
+
+                .decision-rules-page .dr-select {
+                    width: 185px;
+                    flex: 0 0 185px;
+                }
+
+                .decision-rules-page .dr-table-wrap {
+                    overflow-x: auto;
+                }
+
+                .decision-rules-page .dr-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    min-width: 850px;
+                }
+
+                    .decision-rules-page .dr-table th {
+                        text-align: left;
+                        padding: 15px 18px;
+                        border-bottom: 1px solid var(--ap-border, #dce3e8);
+                        background: var(--ap-table-head-bg, transparent);
+                        color: var(--ap-muted, #64748b);
+                        font-size: 11px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: .045em;
+                        white-space: nowrap;
+                    }
+
+                    .decision-rules-page .dr-table td {
+                        padding: 17px 18px;
+                        border-bottom: 1px solid var(--ap-border, #dce3e8);
+                        color: var(--ap-text, #172033);
+                        font-size: 13px;
+                        vertical-align: middle;
+                    }
+
+                    .decision-rules-page .dr-table tbody tr:last-child td {
+                        border-bottom: 0;
+                    }
+
+                .decision-rules-page .dr-rule-name {
+                    font-weight: 700;
+                    margin-bottom: 5px;
+                }
+
+                .decision-rules-page .dr-rule-id {
+                    color: var(--ap-muted, #64748b);
+                    font-size: 11px;
+                    font-family: Consolas, monospace;
+                }
+
+                .decision-rules-page .dr-status {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    border-radius: 20px;
+                    padding: 6px 10px;
+                    font-size: 11px;
+                    font-weight: 700;
+                    white-space: nowrap;
+                }
+
+                    .decision-rules-page .dr-status::before {
+                        content: "";
+                        width: 6px;
+                        height: 6px;
+                        border-radius: 50%;
+                        background: currentColor;
+                    }
+
+                .decision-rules-page .dr-status-active {
+                    background: #dff4ec;
+                    color: #138764;
+                }
+
+                .decision-rules-page .dr-status-draft {
+                    background: #fff0d9;
+                    color: #a96a16;
+                }
+
+                .decision-rules-page .dr-status-inactive {
+                    background: #edf0f3;
+                    color: #687585;
+                }
+
+                .decision-rules-page .dr-actions {
+                    display: flex;
+                    justify-content: flex-end;
+                    flex-wrap: wrap;
+                    gap: 6px;
+                }
+
+                    .decision-rules-page .dr-actions .dr-btn {
+                        min-height: 32px;
+                        padding: 6px 9px;
+                        font-size: 11px;
+                    }
+
+                .decision-rules-page .dr-empty {
+                    text-align: center;
+                    padding: 42px 20px;
+                    color: var(--ap-muted, #64748b);
+                }
+
+                    .decision-rules-page .dr-empty strong {
+                        display: block;
+                        margin-bottom: 7px;
+                        color: var(--ap-text, #172033);
+                        font-size: 16px;
+                    }
+
+                .decision-rules-page .dr-table-footer {
+                    padding: 14px 24px;
+                    border-top: 1px solid var(--ap-border, #dce3e8);
+                    color: var(--ap-muted, #64748b);
+                    font-size: 12px;
+                }
+
+                /* Modal */
+                .decision-rules-page .dr-modal-overlay {
+                    position: fixed;
+                    inset: 0;
+                    z-index: 10000;
+                    display: none;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                    background: rgba(10, 20, 28, .58);
+                    backdrop-filter: blur(5px);
+                }
+
+                    .decision-rules-page .dr-modal-overlay.is-open {
+                        display: flex;
+                    }
+
+                .decision-rules-page .dr-modal {
+                    display: flex;
+                    flex-direction: column;
+                    width: min(680px, 100%);
+                    max-height: min(88vh, 850px);
+                    overflow: hidden;
+                    background: var(--ap-modal-bg, var(--ap-card-bg, #fff));
+                    border: 1px solid var(--ap-border, #dce3e8);
+                    border-radius: 17px;
+                    box-shadow: 0 24px 80px rgba(0,0,0,.25);
+                }
+
+                .decision-rules-page .dr-modal-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 14px;
+                    padding: 20px 24px;
+                    border-bottom: 1px solid var(--ap-border, #dce3e8);
+                }
+
+                .decision-rules-page .dr-modal-icon {
+                    display: grid;
+                    place-items: center;
+                    width: 46px;
+                    height: 46px;
+                    flex: 0 0 46px;
+                    border-radius: 12px;
+                    background: #dff5ee;
+                    color: #0b997e;
+                    font-size: 21px;
+                }
+
+                .decision-rules-page .dr-modal-header h3 {
+                    margin: 0 0 5px;
+                    font-size: 19px;
+                    color: var(--ap-text, #172033);
+                }
+
+                .decision-rules-page .dr-modal-header p {
+                    margin: 0;
+                    color: var(--ap-muted, #64748b);
+                    font-size: 12px;
+                }
+
+                .decision-rules-page .dr-modal-close {
+                    margin-left: auto;
+                    border: 0;
+                    background: transparent;
+                    color: var(--ap-muted, #64748b);
+                    font-size: 25px;
+                    cursor: pointer;
+                    line-height: 1;
+                }
+
+                .decision-rules-page .dr-modal-body {
+                    overflow-y: auto;
+                    padding: 22px 24px;
+                }
+
+                .decision-rules-page .dr-field {
+                    margin-bottom: 18px;
+                }
+
+                    .decision-rules-page .dr-field label {
+                        display: block;
+                        margin-bottom: 8px;
+                        color: var(--ap-text, #172033);
+                        font-size: 12px;
+                        font-weight: 700;
+                    }
+
+                .decision-rules-page .dr-required {
+                    color: #dc3545;
+                }
+
+                .decision-rules-page .dr-help {
+                    margin-top: 6px;
+                    font-size: 11px;
+                    color: var(--ap-muted, #64748b);
+                }
+
+                .decision-rules-page .dr-status-box {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 15px;
+                    padding: 15px;
+                    border: 1px solid var(--ap-border, #dce3e8);
+                    border-radius: 10px;
+                    background: var(--ap-input-bg, transparent);
+                }
+
+                    .decision-rules-page .dr-status-box strong {
+                        display: block;
+                        margin-bottom: 5px;
+                        font-size: 12px;
+                        color: var(--ap-text, #172033);
+                    }
+
+                    .decision-rules-page .dr-status-box p {
+                        margin: 0;
+                        color: var(--ap-muted, #64748b);
+                        font-size: 11px;
+                    }
+
+                .decision-rules-page .dr-toggle {
+                    width: 42px;
+                    height: 24px;
+                    flex: 0 0 42px;
+                    position: relative;
+                }
+
+                    .decision-rules-page .dr-toggle input {
+                        position: absolute;
+                        opacity: 0;
+                        width: 1px;
+                        height: 1px;
+                    }
+
+                    .decision-rules-page .dr-toggle span {
+                        position: absolute;
+                        inset: 0;
+                        border-radius: 20px;
+                        background: #aab3bd;
+                        cursor: pointer;
+                        transition: background .2s;
+                    }
+
+                        .decision-rules-page .dr-toggle span::after {
+                            content: "";
+                            position: absolute;
+                            top: 3px;
+                            left: 3px;
+                            width: 18px;
+                            height: 18px;
+                            background: #fff;
+                            border-radius: 50%;
+                            transition: transform .2s;
+                        }
+
+                    .decision-rules-page .dr-toggle input:checked + span {
+                        background: #0ca88c;
+                    }
+
+                        .decision-rules-page .dr-toggle input:checked + span::after {
+                            transform: translateX(18px);
+                        }
+
+                .decision-rules-page .dr-modal-footer {
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 10px;
+                    padding: 15px 24px;
+                    border-top: 1px solid var(--ap-border, #dce3e8);
+                    background: var(--ap-modal-bg, var(--ap-card-bg, #fff));
+                }
+
+                .decision-rules-page .dr-validation {
+                    display: none;
+                    padding: 10px 12px;
+                    margin-bottom: 16px;
+                    border: 1px solid #f1b8be;
+                    border-radius: 8px;
+                    color: #b42332;
+                    background: #fff0f1;
+                    font-size: 12px;
+                }
+
+                    .decision-rules-page .dr-validation.is-visible {
+                        display: block;
+                    }
+
+                .decision-rules-page .dr-toast {
+                    display: none;
+                    position: fixed;
+                    right: 24px;
+                    bottom: 85px;
+                    z-index: 11000;
+                    max-width: min(400px, calc(100vw - 32px));
+                    padding: 13px 17px;
+                    border-radius: 10px;
+                    background: #087f68;
+                    color: #fff;
+                    font-size: 13px;
+                    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+                }
+
+                    .decision-rules-page .dr-toast.is-visible {
+                        display: block;
+                    }
+
+            @@media (max-width: 1100px) {
+                .decision-rules-page .dr-stats {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+            }
+
+            @@media (max-width: 650px) {
+                .decision-rules-page .dr-header {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+
+                    .decision-rules-page .dr-header h2 {
+                        font-size: 23px;
+                    }
+
+                .decision-rules-page .dr-stats {
+                    gap: 10px;
+                }
+
+                .decision-rules-page .dr-stat {
+                    padding: 14px 12px;
+                    gap: 10px;
+                }
+
+                .decision-rules-page .dr-stat-icon {
+                    width: 38px;
+                    height: 38px;
+                    flex-basis: 38px;
+                    font-size: 18px;
+                }
+
+                .decision-rules-page .dr-stat-value {
+                    font-size: 22px;
+                }
+
+                .decision-rules-page .dr-toolbar {
+                    align-items: stretch;
+                    flex-direction: column;
+                    padding: 14px;
+                }
+
+                .decision-rules-page .dr-select {
+                    width: 100%;
+                    flex-basis: auto;
+                }
+
+                .decision-rules-page .dr-panel-header {
+                    padding: 18px 16px;
+                }
+
+                .decision-rules-page .dr-modal-overlay {
+                    padding: 10px;
+                }
+
+                .decision-rules-page .dr-modal-header,
+                .decision-rules-page .dr-modal-body,
+                .decision-rules-page .dr-modal-footer {
+                    padding-left: 16px;
+                    padding-right: 16px;
+                }
+            }
+
+
+            
+            /* Decision Rules: page spacing and layout refinements */
+            .decision-rules-page {
+                padding: 24px 20px 32px;
+                min-width: 0;
+                width: 100%;
+            }
+
+                .decision-rules-page .dr-header {
+                    margin-bottom: 26px;
+                    padding: 0;
+                }
+
+                .decision-rules-page .dr-stats {
+                    margin-bottom: 26px;
+                }
+
+                .decision-rules-page .dr-panel {
+                    margin-bottom: 8px;
+                }
+
+            /* Prevent content from touching the sidebar on smaller screens */
+            @@media (max-width: 768px) {
+                .decision-rules-page {
+                    padding: 18px 12px 24px;
+                }
+
+                    .decision-rules-page .dr-header {
+                        gap: 14px;
+                    }
+            }
+
+
+
+            
+            /* Force readable title colors in the Decision Rules page */
+            .decision-rules-page .dr-header h2 {
+                color: #f4f7fb !important;
+            }
+
+            .decision-rules-page .dr-header p {
+                color: #aab8c8 !important;
+            }
+
+            /* Preserve dark text when the portal is in light mode */
+            html:not([data-theme="dark"]):not([data-bs-theme="dark"])
+            .decision-rules-page .dr-header h2 {
+                color: #172033 !important;
+            }
+
+            html:not([data-theme="dark"]):not([data-bs-theme="dark"])
+            .decision-rules-page .dr-header p {
+                color: #64748b !important;
+            }
+
+
+
+            
+            /* Fix Create/Edit Decision Rule modal scrolling */
+            .decision-rules-page .dr-modal-overlay {
+                position: fixed;
+                inset: 0;
+                z-index: 10000;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                padding: 16px;
+                overflow-y: auto;
+            }
+
+                .decision-rules-page .dr-modal-overlay.is-open {
+                    display: flex;
+                }
+
+            .decision-rules-page .dr-modal {
+                display: flex;
+                flex-direction: column;
+                width: min(680px, 100%);
+                height: auto;
+                max-height: calc(100dvh - 32px);
+                min-height: 0;
+                overflow: hidden;
+                margin: auto;
+            }
+
+            /* Header remains visible */
+            .decision-rules-page .dr-modal-header {
+                flex: 0 0 auto;
+            }
+
+            /* Only the form body scrolls */
+            .decision-rules-page .dr-modal form {
+                display: flex;
+                flex-direction: column;
+                flex: 1 1 auto;
+                min-height: 0;
+                overflow: hidden;
+            }
+
+            .decision-rules-page .dr-modal-body {
+                flex: 1 1 auto;
+                min-height: 0;
+                overflow-y: auto;
+                overscroll-behavior: contain;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Save and Cancel remain visible at the bottom */
+            .decision-rules-page .dr-modal-footer {
+                position: relative;
+                flex: 0 0 auto;
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+                padding: 14px 24px;
+                border-top: 1px solid var(--ap-border, #dce3e8);
+                background: var(--ap-modal-bg, var(--ap-card-bg, #fff));
+                z-index: 2;
+            }
+
+            /* Smaller screens */
+            @@media (max-width: 650px) {
+                .decision-rules-page .dr-modal-overlay {
+                    padding: 8px;
+                }
+
+                .decision-rules-page .dr-modal {
+                    max-height: calc(100dvh - 16px);
+                    width: 100%;
+                }
+
+                .decision-rules-page .dr-modal-header {
+                    padding: 14px 16px;
+                }
+
+                .decision-rules-page .dr-modal-body {
+                    padding: 16px;
+                }
+
+                .decision-rules-page .dr-modal-footer {
+                    padding: 12px 16px;
+                }
+            }
+
+            @@media (max-height: 650px) {
+                .decision-rules-page .dr-modal-overlay {
+                    align-items: flex-start;
+                }
+
+                .decision-rules-page .dr-modal {
+                    margin-top: 0;
+                    margin-bottom: 0;
+                }
+            }
+
+
+
+            /* Decision Rule modal — dark theme */
+            html[data-theme="dark"] .decision-rules-page .dr-modal,
+            html[data-theme="dark"] .decision-rules-page .dr-modal-header,
+            html[data-theme="dark"] .decision-rules-page .dr-modal-body,
+            html[data-theme="dark"] .decision-rules-page .dr-modal-footer,
+            body[data-theme="dark"] .decision-rules-page .dr-modal,
+            body[data-theme="dark"] .decision-rules-page .dr-modal-header,
+            body[data-theme="dark"] .decision-rules-page .dr-modal-body,
+            body[data-theme="dark"] .decision-rules-page .dr-modal-footer,
+            html[data-bs-theme="dark"] .decision-rules-page .dr-modal,
+            html[data-bs-theme="dark"] .decision-rules-page .dr-modal-header,
+            html[data-bs-theme="dark"] .decision-rules-page .dr-modal-body,
+            html[data-bs-theme="dark"] .decision-rules-page .dr-modal-footer,
+            body[data-bs-theme="dark"] .decision-rules-page .dr-modal,
+            body[data-bs-theme="dark"] .decision-rules-page .dr-modal-header,
+            body[data-bs-theme="dark"] .decision-rules-page .dr-modal-body,
+            body[data-bs-theme="dark"] .decision-rules-page .dr-modal-footer {
+                background-color: #091512 !important;
+                color: #e6edf5 !important;
+                border-color: #263c36 !important;
+            }
+
+                /* Modal title and descriptive text */
+                html[data-theme="dark"] .decision-rules-page .dr-modal-header h3,
+                body[data-theme="dark"] .decision-rules-page .dr-modal-header h3,
+                html[data-bs-theme="dark"] .decision-rules-page .dr-modal-header h3,
+                body[data-bs-theme="dark"] .decision-rules-page .dr-modal-header h3 {
+                    color: #f4f7fb !important;
+                }
+
+                html[data-theme="dark"] .decision-rules-page .dr-modal-header p,
+                html[data-theme="dark"] .decision-rules-page .dr-help,
+                body[data-theme="dark"] .decision-rules-page .dr-modal-header p,
+                body[data-theme="dark"] .decision-rules-page .dr-help,
+                html[data-bs-theme="dark"] .decision-rules-page .dr-modal-header p,
+                html[data-bs-theme="dark"] .decision-rules-page .dr-help,
+                body[data-bs-theme="dark"] .decision-rules-page .dr-modal-header p,
+                body[data-bs-theme="dark"] .decision-rules-page .dr-help {
+                    color: #aab8c8 !important;
+                }
+
+                /* Form fields */
+                html[data-theme="dark"] .decision-rules-page .dr-modal .dr-input,
+                html[data-theme="dark"] .decision-rules-page .dr-modal .dr-select,
+                html[data-theme="dark"] .decision-rules-page .dr-modal .dr-textarea,
+                body[data-theme="dark"] .decision-rules-page .dr-modal .dr-input,
+                body[data-theme="dark"] .decision-rules-page .dr-modal .dr-select,
+                body[data-theme="dark"] .decision-rules-page .dr-modal .dr-textarea,
+                html[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-input,
+                html[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-select,
+                html[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-textarea,
+                body[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-input,
+                body[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-select,
+                body[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-textarea {
+                    background-color: #10221c !important;
+                    color: #f0f5f3 !important;
+                    border-color: #344d44 !important;
+                }
+
+                    html[data-theme="dark"] .decision-rules-page .dr-modal .dr-input::placeholder,
+                    body[data-theme="dark"] .decision-rules-page .dr-modal .dr-input::placeholder,
+                    html[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-input::placeholder,
+                    body[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-input::placeholder {
+                        color: #a0b1a9 !important;
+                        opacity: 1;
+                    }
+
+            /* Status container */
+            html[data-theme="dark"] .decision-rules-page .dr-status-box,
+            body[data-theme="dark"] .decision-rules-page .dr-status-box,
+            html[data-bs-theme="dark"] .decision-rules-page .dr-status-box,
+            body[data-bs-theme="dark"] .decision-rules-page .dr-status-box {
+                background-color: #10221c !important;
+                border-color: #344d44 !important;
+            }
+
+                html[data-theme="dark"] .decision-rules-page .dr-status-box strong,
+                body[data-theme="dark"] .decision-rules-page .dr-status-box strong,
+                html[data-bs-theme="dark"] .decision-rules-page .dr-status-box strong,
+                body[data-bs-theme="dark"] .decision-rules-page .dr-status-box strong {
+                    color: #f4f7fb !important;
+                }
+
+                html[data-theme="dark"] .decision-rules-page .dr-status-box p,
+                body[data-theme="dark"] .decision-rules-page .dr-status-box p,
+                html[data-bs-theme="dark"] .decision-rules-page .dr-status-box p,
+                body[data-bs-theme="dark"] .decision-rules-page .dr-status-box p {
+                    color: #aab8c8 !important;
+                }
+
+            /* Cancel button and close icon */
+            html[data-theme="dark"] .decision-rules-page .dr-modal .dr-btn:not(.dr-btn-primary),
+            body[data-theme="dark"] .decision-rules-page .dr-modal .dr-btn:not(.dr-btn-primary),
+            html[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-btn:not(.dr-btn-primary),
+            body[data-bs-theme="dark"] .decision-rules-page .dr-modal .dr-btn:not(.dr-btn-primary) {
+                background-color: #10221c !important;
+                color: #e6edf5 !important;
+                border-color: #344d44 !important;
+            }
+
+            html[data-theme="dark"] .decision-rules-page .dr-modal-close,
+            body[data-theme="dark"] .decision-rules-page .dr-modal-close,
+            html[data-bs-theme="dark"] .decision-rules-page .dr-modal-close,
+            body[data-bs-theme="dark"] .decision-rules-page .dr-modal-close {
+                color: #c5d2dc !important;
+            }
+
+
+    </style>
+
+    <div class="dr-header">
+        <div>
+            <h2>Decision Rules</h2>
+            <p>Define how visitor answers determine the recommendations your widgets display.</p>
+        </div>
+        <button type="button" class="dr-btn dr-btn-primary" data-dr-action="add">
+            <span aria-hidden="true">＋</span> Create Rule
+        </button>
+    </div>
+
+    <div class="dr-stats">
+        <div class="dr-stat">
+            <div class="dr-stat-icon dr-purple">◇</div>
+            <div>
+                <div class="dr-stat-label">Total Rules</div>
+                <div class="dr-stat-value" data-dr-stat="total">0</div>
+            </div>
+        </div>
+        <div class="dr-stat">
+            <div class="dr-stat-icon dr-green">✓</div>
+            <div>
+                <div class="dr-stat-label">Active Rules</div>
+                <div class="dr-stat-value" data-dr-stat="active">0</div>
+            </div>
+        </div>
+        <div class="dr-stat">
+            <div class="dr-stat-icon dr-blue">⚙</div>
+            <div>
+                <div class="dr-stat-label">Draft Rules</div>
+                <div class="dr-stat-value" data-dr-stat="draft">0</div>
+            </div>
+        </div>
+        <div class="dr-stat">
+            <div class="dr-stat-icon dr-orange">↗</div>
+            <div>
+                <div class="dr-stat-label">Recommendations Covered</div>
+                <div class="dr-stat-value" data-dr-stat="covered">0</div>
+            </div>
+        </div>
+    </div>
+
+    <section class="dr-panel">
+        <div class="dr-panel-header">
+            <h3>Rules Inventory</h3>
+            <p>Create and manage the conditions that control your recommendation outcomes.</p>
+        </div>
+
+        <div class="dr-toolbar">
+            <div class="dr-search">
+                <span aria-hidden="true">⌕</span>
+                <input type="search" class="dr-input" data-dr-search
+                       placeholder="Search by rule name or identifier..."
+                       aria-label="Search decision rules">
+            </div>
+            <select class="dr-select" data-dr-filter aria-label="Filter by status">
+                <option value="all">All statuses</option>
+                <option value="active">Active</option>
+                <option value="draft">Draft</option>
+                <option value="inactive">Inactive</option>
+            </select>
+        </div>
+
+        <div class="dr-table-wrap">
+            <table class="dr-table">
+                <thead>
+                    <tr>
+                        <th>Rule</th>
+                        <th>Conditions</th>
+                        <th>Recommendation</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th style="text-align:right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody data-dr-rows></tbody>
+            </table>
+        </div>
+
+        <div class="dr-empty" data-dr-empty hidden>
+            <strong>No decision rules found</strong>
+            Try another search or create your first rule.
+        </div>
+
+        <div class="dr-table-footer" data-dr-count>Showing 0 rules</div>
+    </section>
+
+    <!-- Create/Edit modal -->
+    <div class="dr-modal-overlay" data-dr-modal aria-hidden="true">
+        <section class="dr-modal" role="dialog" aria-modal="true"
+                 aria-labelledby="dr-modal-title">
+            <div class="dr-modal-header">
+                <div class="dr-modal-icon">⚙</div>
+                <div>
+                    <h3 data-dr-modal-title id="dr-modal-title">Create Decision Rule</h3>
+                    <p>Configure the rule details. Conditions can be configured in the next UI step.</p>
+                </div>
+                <button type="button" class="dr-modal-close" data-dr-action="close"
+                        aria-label="Close modal">
+                    &times;
+                </button>
+            </div>
+
+            <form data-dr-form>
+                <div class="dr-modal-body">
+                    <div class="dr-validation" data-dr-validation role="alert"></div>
+
+                    <div class="dr-field">
+                        <label for="dr-name">Rule name <span class="dr-required">*</span></label>
+                        <input id="dr-name" name="name" class="dr-input" required
+                               maxlength="100" placeholder="e.g. Small Space — Sofa Finder">
+                    </div>
+
+                    <div class="dr-field">
+                        <label for="dr-key">Unique identifier <span class="dr-required">*</span></label>
+                        <input id="dr-key" name="key" class="dr-input" required
+                               maxlength="80" pattern="[a-z][a-z0-9_]*"
+                               placeholder="e.g. small_space_sofa">
+                        <div class="dr-help">Use lowercase letters, numbers and underscores. Start with a letter.</div>
+                    </div>
+
+                    <div class="dr-field">
+                        <label for="dr-description">Description</label>
+                        <textarea id="dr-description" name="description" class="dr-textarea"
+                                  rows="3" maxlength="500"
+                                  placeholder="Explain when this rule should apply."></textarea>
+                    </div>
+
+                    <div class="dr-field">
+                        <label for="dr-recommendation">Recommendation item <span class="dr-required">*</span></label>
+                        <select id="dr-recommendation" name="recommendation" class="dr-select"
+                                style="width:100%;" required>
+                            <option value="">Select a recommendation</option>
+                            <option value="Oslo Sofa">Oslo Sofa</option>
+                            <option value="Luna Sofa">Luna Sofa</option>
+                            <option value="Haven Sofa">Haven Sofa</option>
+                        </select>
+                        <div class="dr-help">These are sample items for the UI prototype.</div>
+                    </div>
+
+                    <div class="dr-field">
+                        <label for="dr-priority">Priority</label>
+                        <input id="dr-priority" name="priority" class="dr-input"
+                               type="number" min="1" max="999" value="1" required>
+                        <div class="dr-help">Lower numbers indicate higher priority.</div>
+                    </div>
+
+                    <div class="dr-field">
+                        <label>Status</label>
+                        <div class="dr-status-box">
+                            <div>
+                                <strong>Active rule</strong>
+                                <p>Allow this rule to be considered by the decision engine.</p>
+                            </div>
+                            <label class="dr-toggle" aria-label="Active rule">
+                                <input type="checkbox" name="active" checked>
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dr-modal-footer">
+                    <button type="button" class="dr-btn" data-dr-action="close">Cancel</button>
+                    <button type="submit" class="dr-btn dr-btn-primary">
+                        ✓ <span data-dr-save-label>Save Rule</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <!-- Delete confirmation -->
+    <div class="dr-modal-overlay" data-dr-delete-modal aria-hidden="true">
+        <section class="dr-modal" role="dialog" aria-modal="true"
+                 aria-labelledby="dr-delete-title" style="max-width:440px;">
+            <div class="dr-modal-header">
+                <div class="dr-modal-icon" style="background:#ffebee;color:#c62828;">!</div>
+                <div>
+                    <h3 id="dr-delete-title">Delete Decision Rule?</h3>
+                    <p>This action removes the rule from the local demo.</p>
+                </div>
+                <button type="button" class="dr-modal-close" data-dr-action="cancel-delete"
+                        aria-label="Close confirmation">
+                    &times;
+                </button>
+            </div>
+            <div class="dr-modal-body">
+                <p style="margin:0;color:var(--ap-text,#172033);font-size:13px;"
+                   data-dr-delete-message></p>
+            </div>
+            <div class="dr-modal-footer">
+                <button type="button" class="dr-btn" data-dr-action="cancel-delete">Cancel</button>
+                <button type="button" class="dr-btn dr-btn-danger" data-dr-action="confirm-delete">
+                    Delete Rule
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <div class="dr-toast" data-dr-toast role="status" aria-live="polite"></div>
+</div>
+
+<script>
+    (function() {
+        const root = document.querySelector(".decision-rules-page");
+        if (!root || root.dataset.drInitialized === "true") return;
+        root.dataset.drInitialized = "true";
+
+        let nextId = 4;
+        let editingId = null;
+        let deletingId = null;
+        let toastTimer = null;
+
+        let rules = [
+            {
+                id: 1,
+                name: "Small Space — Sofa Finder",
+                key: "small_space_sofa",
+                description: "Recommend a compact sofa for smaller living spaces.",
+                recommendation: "Oslo Sofa",
+                conditions: 2,
+                priority: 1,
+                status: "active"
+            },
+            {
+                id: 2,
+                name: "Premium Comfort",
+                key: "premium_comfort",
+                description: "Recommend a comfort-focused option.",
+                recommendation: "Luna Sofa",
+                conditions: 3,
+                priority: 2,
+                status: "active"
+            },
+            {
+                id: 3,
+                name: "Large Living Room",
+                key: "large_living_room",
+                description: "Recommend an option suitable for larger living areas.",
+                recommendation: "Haven Sofa",
+                conditions: 1,
+                priority: 3,
+                status: "draft"
+            }
+        ];
+
+        const $ = (selector) => root.querySelector(selector);
+
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, function(char) {
+                return {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#39;"
+                }[char];
+            });
+        }
+
+        function showToast(message) {
+            const toast = $("[data-dr-toast]");
+            toast.textContent = message;
+            toast.classList.add("is-visible");
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(function() {
+                toast.classList.remove("is-visible");
+            }, 2600);
+        }
+
+        function openModal(modal) {
+            modal.classList.add("is-open");
+            modal.setAttribute("aria-hidden", "false");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModal(modal) {
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+
+            if (!root.querySelector(".dr-modal-overlay.is-open")) {
+                document.body.style.overflow = "";
+            }
+        }
+
+        function updateStats() {
+            $("[data-dr-stat='total']").textContent = rules.length;
+            $("[data-dr-stat='active']").textContent =
+                rules.filter(rule => rule.status === "active").length;
+            $("[data-dr-stat='draft']").textContent =
+                rules.filter(rule => rule.status === "draft").length;
+
+            const covered = new Set(
+                rules.filter(rule => rule.status === "active")
+                    .map(rule => rule.recommendation)
+                    .filter(Boolean)
+            );
+
+            $("[data-dr-stat='covered']").textContent = covered.size;
+        }
+
+        function statusMarkup(status) {
+            const labels = {
+                active: "Active",
+                draft: "Draft",
+                inactive: "Inactive"
+            };
+
+            return '<span class="dr-status dr-status-' + status + '">' +
+                labels[status] + '</span>';
+        }
+
+        function renderRows() {
+            const search = $("[data-dr-search]").value.trim().toLowerCase();
+            const filter = $("[data-dr-filter]").value;
+
+            const filtered = rules
+                .filter(rule => {
+                    const matchesSearch =
+                        rule.name.toLowerCase().includes(search) ||
+                        rule.key.toLowerCase().includes(search) ||
+                        rule.recommendation.toLowerCase().includes(search);
+
+                    return matchesSearch && (filter === "all" || rule.status === filter);
+                })
+                .sort((a, b) => a.priority - b.priority);
+
+            const tbody = $("[data-dr-rows]");
+
+            tbody.innerHTML = filtered.map(rule => {
+                const toggleLabel = rule.status === "active" ? "Deactivate" : "Activate";
+
+                return `
+                    <tr>
+                        <td>
+                            <div class="dr-rule-name">${escapeHtml(rule.name)}</div>
+                            <div class="dr-rule-id">${escapeHtml(rule.key)}</div>
+                        </td>
+                        <td>${rule.conditions} condition${rule.conditions === 1 ? "" : "s"}</td>
+                        <td>${escapeHtml(rule.recommendation)}</td>
+                        <td>${rule.priority}</td>
+                        <td>${statusMarkup(rule.status)}</td>
+                        <td>
+                            <div class="dr-actions">
+                                <button type="button" class="dr-btn"
+                                    data-dr-action="edit" data-id="${rule.id}">Edit</button>
+                                <button type="button" class="dr-btn"
+                                    data-dr-action="duplicate" data-id="${rule.id}">Duplicate</button>
+                                <button type="button" class="dr-btn"
+                                    data-dr-action="toggle" data-id="${rule.id}">${toggleLabel}</button>
+                                <button type="button" class="dr-btn dr-btn-danger"
+                                    data-dr-action="delete" data-id="${rule.id}">Delete</button>
+                            </div>
+                        </td>
+                    </tr>`;
+            }).join("");
+
+            $("[data-dr-empty]").hidden = filtered.length > 0;
+            $("[data-dr-count]").textContent =
+                `Showing ${filtered.length} of ${rules.length} rule${rules.length === 1 ? "" : "s"}`;
+
+            updateStats();
+        }
+
+        function resetForm() {
+            const form = $("[data-dr-form]");
+            form.reset();
+            $("[data-dr-validation]").classList.remove("is-visible");
+        }
+
+        function openCreate() {
+            editingId = null;
+            resetForm();
+
+            $("[data-dr-modal-title]").textContent = "Create Decision Rule";
+            $("[data-dr-save-label]").textContent = "Save Rule";
+            $("#dr-priority").value = "1";
+            $("#dr-name").focus();
+
+            openModal($("[data-dr-modal]"));
+        }
+
+        function openEdit(id) {
+            const rule = rules.find(item => item.id === id);
+            if (!rule) return;
+
+            editingId = id;
+            resetForm();
+
+            $("#dr-name").value = rule.name;
+            $("#dr-key").value = rule.key;
+            $("#dr-description").value = rule.description;
+            $("#dr-recommendation").value = rule.recommendation;
+            $("#dr-priority").value = rule.priority;
+            $("[name='active']").checked = rule.status === "active";
+
+            $("[data-dr-modal-title]").textContent = "Edit Decision Rule";
+            $("[data-dr-save-label]").textContent = "Save Changes";
+
+            openModal($("[data-dr-modal]"));
+            $("#dr-name").focus();
+        }
+
+        function makeUniqueKey(baseKey) {
+            let key = baseKey;
+            let suffix = 2;
+
+            while (rules.some(rule => rule.key === key)) {
+                key = baseKey + "_" + suffix++;
+            }
+
+            return key;
+        }
+
+        function handleSave(event) {
+            event.preventDefault();
+
+            const form = $("[data-dr-form]");
+            const validation = $("[data-dr-validation]");
+
+            if (!form.reportValidity()) return;
+
+            const name = $("#dr-name").value.trim();
+            const key = $("#dr-key").value.trim();
+            const description = $("#dr-description").value.trim();
+            const recommendation = $("#dr-recommendation").value;
+            const priority = Number($("#dr-priority").value);
+            const active = $("[name='active']").checked;
+
+            if (!name || !key || !recommendation || !Number.isInteger(priority) ||
+                priority < 1 || priority > 999) {
+                validation.textContent = "Please complete the required fields correctly.";
+                validation.classList.add("is-visible");
+                return;
+            }
+
+            const duplicateKey = rules.some(rule =>
+                rule.key.toLowerCase() === key.toLowerCase() &&
+                rule.id !== editingId
+            );
+
+            if (duplicateKey) {
+                validation.textContent = "This unique identifier is already in use.";
+                validation.classList.add("is-visible");
+                $("#dr-key").focus();
+                return;
+            }
+
+            const existing = editingId
+                ? rules.find(rule => rule.id === editingId)
+                : null;
+
+            const record = {
+                id: editingId ?? nextId++,
+                name,
+                key,
+                description,
+                recommendation,
+                conditions: existing ? existing.conditions : 0,
+                priority,
+                status: active ? "active" : "draft"
+            };
+
+            if (editingId) {
+                rules = rules.map(rule => rule.id === editingId ? record : rule);
+            } else {
+                rules.push(record);
+            }
+
+            closeModal($("[data-dr-modal]"));
+            renderRows();
+            showToast(editingId ? "Rule updated in the demo." : "Rule created in the demo.");
+        }
+
+        function duplicateRule(id) {
+            const source = rules.find(rule => rule.id === id);
+            if (!source) return;
+
+            const copy = {
+                ...source,
+                id: nextId++,
+                name: source.name + " (Copy)",
+                key: makeUniqueKey(source.key + "_copy"),
+                status: "draft",
+                priority: Math.max(1, ...rules.map(rule => rule.priority)) + 1
+            };
+
+            rules.push(copy);
+            renderRows();
+            showToast("Rule duplicated as a draft.");
+        }
+
+        function toggleRule(id) {
+            const rule = rules.find(item => item.id === id);
+            if (!rule) return;
+
+            rule.status = rule.status === "active" ? "inactive" : "active";
+            renderRows();
+            showToast(rule.status === "active" ? "Rule activated." : "Rule deactivated.");
+        }
+
+        function askDelete(id) {
+            const rule = rules.find(item => item.id === id);
+            if (!rule) return;
+
+            deletingId = id;
+            $("[data-dr-delete-message]").textContent =
+                `Delete "${rule.name}"? This cannot be undone in this demo.`;
+
+            openModal($("[data-dr-delete-modal]"));
+        }
+
+        function confirmDelete() {
+            if (deletingId === null) return;
+
+            rules = rules.filter(rule => rule.id !== deletingId);
+            deletingId = null;
+
+            closeModal($("[data-dr-delete-modal]"));
+            renderRows();
+            showToast("Rule deleted from the demo.");
+        }
+
+        root.addEventListener("click", function(event) {
+            const button = event.target.closest("[data-dr-action]");
+            if (!button || !root.contains(button)) return;
+
+            const action = button.dataset.drAction;
+            const id = Number(button.dataset.id);
+
+            switch (action) {
+                case "add":
+                    openCreate();
+                    break;
+                case "edit":
+                    openEdit(id);
+                    break;
+                case "duplicate":
+                    duplicateRule(id);
+                    break;
+                case "toggle":
+                    toggleRule(id);
+                    break;
+                case "delete":
+                    askDelete(id);
+                    break;
+                case "close":
+                    closeModal($("[data-dr-modal]"));
+                    break;
+                case "cancel-delete":
+                    closeModal($("[data-dr-delete-modal]"));
+                    deletingId = null;
+                    break;
+                case "confirm-delete":
+                    confirmDelete();
+                    break;
+            }
+        });
+
+        $("[data-dr-form]").addEventListener("submit", handleSave);
+        $("[data-dr-search]").addEventListener("input", renderRows);
+        $("[data-dr-filter]").addEventListener("change", renderRows);
+
+        root.querySelectorAll(".dr-modal-overlay").forEach(modal => {
+            modal.addEventListener("click", function(event) {
+                if (event.target === modal) {
+                    closeModal(modal);
+                    if (modal === $("[data-dr-delete-modal]")) deletingId = null;
+                }
+            });
+        });
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Escape") {
+                root.querySelectorAll(".dr-modal-overlay.is-open").forEach(closeModal);
+                deletingId = null;
+            }
+        });
+
+        renderRows();
+    })();
+</script>

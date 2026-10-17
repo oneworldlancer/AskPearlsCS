@@ -1,0 +1,1299 @@
+﻿
+<!-- PAGE: PUBLISH & EMBED -->
+<div class="publish-embed-page container-fluid py-4">
+
+    <div class="pe-page-header">
+        <div>
+            <h2>Publish &amp; Embed</h2>
+            <p>Publish your widget and install it on your website.</p>
+        </div>
+        <div class="pe-header-actions">
+            <span class="pe-status-badge" id="peStatusBadge">
+                <i class="bi bi-circle-fill"></i> Draft
+            </span>
+            <button type="button" class="pe-btn-primary" id="pePublishBtn">
+                <i class="bi bi-rocket-takeoff"></i> Publish Widget
+            </button>
+        </div>
+    </div>
+
+    <!-- Widget selection -->
+    <section class="pe-card pe-widget-selector">
+        <div class="pe-widget-icon"><i class="bi bi-grid-1x2"></i></div>
+        <div class="pe-widget-info">
+            <label for="peWidgetSelect">Select widget</label>
+            <select id="peWidgetSelect">
+                <option value="pk_demo_sofa_finder">Sofa Finder Widget</option>
+                <option value="pk_furniture_recommendation">Furniture Recommendation Widget</option>
+                <option value="pk_demo_recommendation">Demo Recommendation Widget</option>
+            </select>
+            <small>Choose the widget you want to publish.</small>
+        </div>
+        <div class="pe-version">
+            <span>Current version</span>
+            <strong id="peVersion">v1.0.0</strong>
+        </div>
+    </section>
+
+    <!-- Publishing overview -->
+    <div class="pe-summary-grid">
+        <div class="pe-summary-card">
+            <div class="pe-summary-icon pe-green"><i class="bi bi-globe2"></i></div>
+            <div>
+                <span>Publishing status</span>
+                <strong id="peSummaryStatus">Draft</strong>
+                <small id="peStatusDescription">Not published yet</small>
+            </div>
+        </div>
+        <div class="pe-summary-card">
+            <div class="pe-summary-icon pe-blue"><i class="bi bi-code-slash"></i></div>
+            <div>
+                <span>Installation method</span>
+                <strong id="peSummaryPlatform">Custom HTML</strong>
+                <small>Copy and paste the embed code</small>
+            </div>
+        </div>
+        <div class="pe-summary-card">
+            <div class="pe-summary-icon pe-purple"><i class="bi bi-shield-check"></i></div>
+            <div>
+                <span>Allowed domains</span>
+                <strong id="peDomainCount">2 domains</strong>
+                <small>Mock security configuration</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="pe-main-grid">
+
+        <!-- INSTALLATION -->
+        <section class="pe-card pe-install-card">
+            <div class="pe-card-heading">
+                <div>
+                    <h5>Install your widget</h5>
+                    <p>Choose your website platform and follow the instructions.</p>
+                </div>
+                <i class="bi bi-plug"></i>
+            </div>
+
+            <div class="pe-platform-tabs" role="tablist" aria-label="Website platform">
+                <button type="button" class="pe-platform-tab active"
+                        data-pe-platform="html" role="tab" aria-selected="true">
+                    <i class="bi bi-code-square"></i> Custom HTML
+                </button>
+                <button type="button" class="pe-platform-tab"
+                        data-pe-platform="wordpress" role="tab" aria-selected="false">
+                    <i class="bi bi-wordpress"></i> WordPress
+                </button>
+                <button type="button" class="pe-platform-tab"
+                        data-pe-platform="shopify" role="tab" aria-selected="false">
+                    <i class="bi bi-bag"></i> Shopify
+                </button>
+                <button type="button" class="pe-platform-tab"
+                        data-pe-platform="wix" role="tab" aria-selected="false">
+                    <i class="bi bi-window"></i> Wix
+                </button>
+            </div>
+
+            <div class="pe-instructions">
+                <div class="pe-instruction-title">
+                    <span class="pe-step-number">1</span>
+                    <div>
+                        <h6 id="peInstructionHeading">Copy your embed code</h6>
+                        <p id="peInstructionDescription">
+                            Copy the snippet below and add it to your website.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pe-code-heading">
+                    <div>
+                        <i class="bi bi-filetype-html"></i>
+                        <span id="peCodeLabel">HTML embed snippet</span>
+                    </div>
+                    <button type="button" class="pe-copy-btn" id="peCopyCode">
+                        <i class="bi bi-clipboard"></i> Copy code
+                    </button>
+                </div>
+
+                <pre class="pe-code-block"><code id="peEmbedCode"></code></pre>
+
+                <div class="pe-instruction-title pe-second-step">
+                    <span class="pe-step-number">2</span>
+                    <div>
+                        <h6 id="peStepTwoHeading">Paste the code into your website</h6>
+                        <p id="peStepTwoDescription">
+                            Place the snippet before the closing body tag, then save your page.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pe-tip">
+                    <i class="bi bi-lightbulb"></i>
+                    <div>
+                        <strong>Installation tip</strong>
+                        <p id="peInstallTip">
+                            Add the snippet once per website. The widget can then load wherever
+                            the configured script is included.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOMAIN CONFIGURATION -->
+        <section class="pe-card pe-domain-card">
+            <div class="pe-card-heading">
+                <div>
+                    <h5>Allowed domains</h5>
+                    <p>Manage the websites that may host this widget.</p>
+                </div>
+                <i class="bi bi-shield-lock"></i>
+            </div>
+
+            <div class="pe-security-note">
+                <i class="bi bi-info-circle"></i>
+                <span>Demo configuration only. Domain restrictions are not enforced yet.</span>
+            </div>
+
+            <form id="peDomainForm" class="pe-domain-form">
+                <label for="peDomainInput">Add a website domain</label>
+                <div class="pe-domain-input-row">
+                    <input type="text" id="peDomainInput"
+                           placeholder="example.com" maxlength="253"
+                           autocomplete="off">
+                    <button type="submit" class="pe-btn-primary pe-add-domain">
+                        <i class="bi bi-plus-lg"></i> Add
+                    </button>
+                </div>
+                <small>Enter a domain such as example.com, without a URL path.</small>
+                <div class="pe-domain-error" id="peDomainError" role="alert"></div>
+            </form>
+
+            <div class="pe-domain-list-heading">
+                <strong>Configured domains</strong>
+                <span id="peDomainListCount">2</span>
+            </div>
+
+            <div class="pe-domain-list" id="peDomainList">
+                <!-- Rendered by JavaScript -->
+            </div>
+
+            <div class="pe-domain-empty" id="peDomainEmpty" hidden>
+                <i class="bi bi-globe"></i>
+                <strong>No domains configured</strong>
+                <span>Add a domain to your mock allowlist.</span>
+            </div>
+        </section>
+    </div>
+
+    <!-- FINAL CHECK -->
+    <section class="pe-card pe-checklist-card">
+        <div class="pe-card-heading">
+            <div>
+                <h5>Before you go live</h5>
+                <p>Review these steps before installing the widget on your website.</p>
+            </div>
+            <i class="bi bi-check2-square"></i>
+        </div>
+
+        <div class="pe-checklist">
+            <label class="pe-check-item">
+                <input type="checkbox" id="peCheckContent">
+                <span class="pe-custom-check"><i class="bi bi-check"></i></span>
+                <span class="pe-check-copy">
+                    <strong>Review your widget content</strong>
+                    <small>Confirm your questions and recommendation items are ready.</small>
+                </span>
+            </label>
+            <label class="pe-check-item">
+                <input type="checkbox" id="peCheckDesign">
+                <span class="pe-custom-check"><i class="bi bi-check"></i></span>
+                <span class="pe-check-copy">
+                    <strong>Review your widget design</strong>
+                    <small>Check colors, typography, and mobile appearance.</small>
+                </span>
+            </label>
+            <label class="pe-check-item">
+                <input type="checkbox" id="peCheckInstall">
+                <span class="pe-custom-check"><i class="bi bi-check"></i></span>
+                <span class="pe-check-copy">
+                    <strong>Prepare your installation</strong>
+                    <small>Choose a platform and copy the relevant embed snippet.</small>
+                </span>
+            </label>
+        </div>
+    </section>
+
+    <div class="pe-toast" id="peToast" role="status" aria-live="polite"></div>
+</div>
+
+<style>
+    .publish-embed-page {
+        --pe-accent: #0da88b;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        min-width: 0;
+    }
+
+    .publish-embed-page * { box-sizing: border-box; }
+
+    .publish-embed-page .pe-page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .publish-embed-page .pe-page-header h2 {
+        margin: 0 0 7px;
+        font-size: 27px;
+        font-weight: 750;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+    }
+
+    .publish-embed-page .pe-page-header p,
+    .publish-embed-page .pe-card-heading p {
+        margin: 0;
+        color: var(--ap-muted, var(--bs-secondary-color, #718096));
+        font-size: 13px;
+    }
+
+    .publish-embed-page .pe-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .publish-embed-page .pe-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border-radius: 30px;
+        padding: 8px 12px;
+        background: rgba(224,162,60,.13);
+        color: #bd8425;
+        font-size: 11px;
+        font-weight: 750;
+    }
+
+    .publish-embed-page .pe-status-badge i { font-size: 7px; }
+
+    .publish-embed-page .pe-status-badge.is-published {
+        background: rgba(13,168,139,.13);
+        color: #0d9278;
+    }
+
+    .publish-embed-page .pe-btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid #0da88b;
+        border-radius: 10px;
+        padding: 10px 15px;
+        background: #0da88b;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 750;
+        cursor: pointer;
+        transition: background .2s, transform .2s;
+    }
+
+    .publish-embed-page .pe-btn-primary:hover {
+        background: #078d74;
+        color: #fff;
+    }
+
+    .publish-embed-page .pe-btn-primary:active { transform: scale(.98); }
+
+    .publish-embed-page .pe-card {
+        min-width: 0;
+        border: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        border-radius: 14px;
+        background: var(--ap-card-bg, var(--bs-body-bg, #fff));
+    }
+
+    .publish-embed-page .pe-widget-selector {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 17px 20px;
+        margin-bottom: 20px;
+    }
+
+    .publish-embed-page .pe-widget-icon {
+        display: grid;
+        place-items: center;
+        width: 45px;
+        height: 45px;
+        flex: 0 0 45px;
+        border-radius: 12px;
+        background: rgba(13,168,139,.13);
+        color: #0da88b;
+        font-size: 20px;
+    }
+
+    .publish-embed-page .pe-widget-info {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+        gap: 5px;
+    }
+
+    .publish-embed-page .pe-widget-info label,
+    .publish-embed-page .pe-domain-form > label {
+        color: var(--ap-muted, #718096);
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .publish-embed-page .pe-widget-info select {
+        width: 100%;
+        max-width: 390px;
+        border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+        border-radius: 10px;
+        padding: 9px 42px 9px 12px;
+        background-color: var(--ap-input-bg, var(--bs-tertiary-bg, #f4f8f7));
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font: inherit;
+        font-size: 13px;
+        font-weight: 700;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23718096' d='M3 5.5 8 10.5 13 5.5z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        background-size: 16px;
+    }
+
+    .publish-embed-page .pe-widget-info small {
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+    }
+
+    .publish-embed-page .pe-version {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding-left: 20px;
+        border-left: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .publish-embed-page .pe-version span {
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+    }
+
+    .publish-embed-page .pe-version strong {
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 14px;
+    }
+
+    .publish-embed-page .pe-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .publish-embed-page .pe-summary-card {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        min-width: 0;
+        padding: 18px;
+        border: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        border-radius: 13px;
+        background: var(--ap-card-bg, var(--bs-body-bg, #fff));
+    }
+
+    .publish-embed-page .pe-summary-icon {
+        display: grid;
+        place-items: center;
+        width: 43px;
+        height: 43px;
+        flex: 0 0 43px;
+        border-radius: 11px;
+        font-size: 18px;
+    }
+
+    .publish-embed-page .pe-green { color: #0d9278; background: rgba(13,168,139,.13); }
+    .publish-embed-page .pe-blue { color: #4285db; background: rgba(66,133,219,.13); }
+    .publish-embed-page .pe-purple { color: #9164d8; background: rgba(145,100,216,.13); }
+
+    .publish-embed-page .pe-summary-card > div:last-child {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+    }
+
+    .publish-embed-page .pe-summary-card span {
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+    }
+
+    .publish-embed-page .pe-summary-card strong {
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 15px;
+        overflow-wrap: anywhere;
+    }
+
+    .publish-embed-page .pe-summary-card small {
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+        line-height: 1.4;
+    }
+
+    .publish-embed-page .pe-main-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.45fr) minmax(300px, .85fr);
+        gap: 20px;
+        align-items: start;
+    }
+
+    .publish-embed-page .pe-card-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 21px 22px;
+        border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .publish-embed-page .pe-card-heading h5 {
+        margin: 0 0 6px;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 15px;
+        font-weight: 750;
+    }
+
+    .publish-embed-page .pe-card-heading > i {
+        color: #0da88b;
+        font-size: 19px;
+    }
+
+    .publish-embed-page .pe-platform-tabs {
+        display: flex;
+        gap: 5px;
+        padding: 13px 18px 0;
+        border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        overflow-x: auto;
+    }
+
+    .publish-embed-page .pe-platform-tab {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        flex: 0 0 auto;
+        padding: 11px 13px;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        border-radius: 8px 8px 0 0;
+        background: transparent;
+        color: var(--ap-muted, #718096);
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .publish-embed-page .pe-platform-tab:hover {
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        background: var(--ap-input-bg, rgba(13,168,139,.05));
+    }
+
+    .publish-embed-page .pe-platform-tab.active {
+        color: #0da88b;
+        border-bottom-color: #0da88b;
+        background: rgba(13,168,139,.07);
+    }
+
+    .publish-embed-page .pe-instructions { padding: 22px; }
+
+    .publish-embed-page .pe-instruction-title {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .publish-embed-page .pe-step-number {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        flex: 0 0 30px;
+        border-radius: 9px;
+        background: rgba(13,168,139,.13);
+        color: #0d9278;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .publish-embed-page .pe-instruction-title h6 {
+        margin: 2px 0 5px;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 13px;
+        font-weight: 750;
+    }
+
+    .publish-embed-page .pe-instruction-title p {
+        margin: 0;
+        color: var(--ap-muted, #718096);
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+    .publish-embed-page .pe-code-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+        padding: 12px 14px;
+        border: 1px solid var(--ap-border, var(--bs-border-color, #344d44));
+        border-bottom: 0;
+        border-radius: 10px 10px 0 0;
+        background: var(--ap-input-bg, #f4f8f7);
+    }
+
+    .publish-embed-page .pe-code-heading > div {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .publish-embed-page .pe-code-heading > div i {
+        color: #0da88b;
+        font-size: 15px;
+    }
+
+    .publish-embed-page .pe-copy-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        flex: 0 0 auto;
+        padding: 7px 10px;
+        border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+        border-radius: 8px;
+        background: var(--ap-card-bg, var(--bs-body-bg, #fff));
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 10px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .publish-embed-page .pe-copy-btn:hover {
+        border-color: #0da88b;
+        color: #0da88b;
+    }
+
+    .publish-embed-page .pe-code-block {
+        max-width: 100%;
+        max-height: 310px;
+        overflow: auto;
+        margin: 0;
+        padding: 17px;
+        border: 1px solid var(--ap-border, #263b35);
+        border-radius: 0 0 10px 10px;
+        background: #13211d;
+        color: #d6eee5;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 11px;
+        line-height: 1.8;
+        white-space: pre;
+        overflow-wrap: normal;
+        tab-size: 2;
+    }
+
+    .publish-embed-page .pe-code-block code {
+        font-family: inherit;
+        color: inherit;
+    }
+
+    .publish-embed-page .pe-second-step { margin-top: 24px; }
+
+    .publish-embed-page .pe-tip {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        margin-top: 19px;
+        padding: 14px;
+        border: 1px solid rgba(13,168,139,.22);
+        border-radius: 10px;
+        background: rgba(13,168,139,.07);
+    }
+
+    .publish-embed-page .pe-tip > i {
+        margin-top: 1px;
+        color: #0da88b;
+        font-size: 17px;
+    }
+
+    .publish-embed-page .pe-tip strong {
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 11px;
+    }
+
+    .publish-embed-page .pe-tip p {
+        margin: 5px 0 0;
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+        line-height: 1.6;
+    }
+
+    .publish-embed-page .pe-domain-card { overflow: hidden; }
+
+    .publish-embed-page .pe-security-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        margin: 17px 18px 0;
+        padding: 12px;
+        border: 1px solid rgba(224,162,60,.28);
+        border-radius: 9px;
+        background: rgba(224,162,60,.08);
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+        line-height: 1.6;
+    }
+
+    .publish-embed-page .pe-security-note i {
+        color: #d99a30;
+        font-size: 15px;
+    }
+
+    .publish-embed-page .pe-domain-form { padding: 20px 18px 15px; }
+
+    .publish-embed-page .pe-domain-form > label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+    }
+
+    .publish-embed-page .pe-domain-input-row {
+        display: flex;
+        gap: 8px;
+    }
+
+    .publish-embed-page .pe-domain-input-row input {
+        flex: 1;
+        min-width: 0;
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+        border-radius: 10px;
+        background: var(--ap-input-bg, var(--bs-tertiary-bg, #f4f8f7));
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font: inherit;
+        font-size: 12px;
+        outline: none;
+    }
+
+    .publish-embed-page .pe-domain-input-row input:focus {
+        border-color: #0da88b;
+        box-shadow: 0 0 0 3px rgba(13,168,139,.13);
+    }
+
+    .publish-embed-page .pe-add-domain { padding: 9px 12px; }
+
+    .publish-embed-page .pe-domain-form > small {
+        display: block;
+        margin-top: 8px;
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .publish-embed-page .pe-domain-error {
+        margin-top: 7px;
+        color: #dc5353;
+        font-size: 11px;
+    }
+
+    .publish-embed-page .pe-domain-list-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin: 0 18px;
+        padding: 15px 0;
+        border-top: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .publish-embed-page .pe-domain-list-heading strong {
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 11px;
+    }
+
+    .publish-embed-page .pe-domain-list-heading span {
+        display: grid;
+        place-items: center;
+        min-width: 24px;
+        height: 24px;
+        padding: 0 7px;
+        border-radius: 20px;
+        background: rgba(13,168,139,.12);
+        color: #0d9278;
+        font-size: 10px;
+        font-weight: 800;
+    }
+
+    .publish-embed-page .pe-domain-list { padding: 0 18px 18px; }
+
+    .publish-embed-page .pe-domain-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .publish-embed-page .pe-domain-row:last-child { border-bottom: 0; }
+
+    .publish-embed-page .pe-domain-icon {
+        display: grid;
+        place-items: center;
+        width: 35px;
+        height: 35px;
+        flex: 0 0 35px;
+        border-radius: 9px;
+        background: var(--ap-input-bg, #f4f8f7);
+        color: #0da88b;
+        font-size: 15px;
+    }
+
+    .publish-embed-page .pe-domain-details {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .publish-embed-page .pe-domain-details strong {
+        display: block;
+        overflow-wrap: anywhere;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .publish-embed-page .pe-domain-details small {
+        display: block;
+        margin-top: 4px;
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+    }
+
+    .publish-embed-page .pe-domain-remove {
+        display: grid;
+        place-items: center;
+        width: 31px;
+        height: 31px;
+        flex: 0 0 31px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--ap-muted, #718096);
+        cursor: pointer;
+    }
+
+    .publish-embed-page .pe-domain-remove:hover {
+        border-color: rgba(220,83,83,.25);
+        background: rgba(220,83,83,.08);
+        color: #dc5353;
+    }
+
+    .publish-embed-page .pe-domain-empty {
+        padding: 25px 15px 28px;
+        text-align: center;
+        color: var(--ap-muted, #718096);
+    }
+
+    .publish-embed-page .pe-domain-empty > * { display: block; }
+
+    .publish-embed-page .pe-domain-empty i {
+        margin-bottom: 10px;
+        color: #0da88b;
+        font-size: 25px;
+    }
+
+    .publish-embed-page .pe-domain-empty strong {
+        margin-bottom: 5px;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 12px;
+    }
+
+    .publish-embed-page .pe-domain-empty span { font-size: 10px; }
+
+    .publish-embed-page .pe-checklist-card { margin-top: 20px; }
+
+    .publish-embed-page .pe-checklist {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        padding: 20px 22px;
+    }
+
+    .publish-embed-page .pe-check-item {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        min-width: 0;
+        padding: 15px;
+        border: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        border-radius: 11px;
+        background: var(--ap-input-bg, var(--bs-tertiary-bg, #f8faf9));
+        cursor: pointer;
+    }
+
+    .publish-embed-page .pe-check-item input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+    }
+
+    .publish-embed-page .pe-custom-check {
+        display: grid;
+        place-items: center;
+        width: 20px;
+        height: 20px;
+        flex: 0 0 20px;
+        border: 1px solid var(--ap-border, #cbd5d1);
+        border-radius: 6px;
+        background: var(--ap-card-bg, #fff);
+        color: transparent;
+    }
+
+    .publish-embed-page .pe-check-item input:checked + .pe-custom-check {
+        border-color: #0da88b;
+        background: #0da88b;
+        color: #fff;
+    }
+
+    .publish-embed-page .pe-check-item input:focus-visible + .pe-custom-check {
+        outline: 3px solid rgba(13,168,139,.25);
+    }
+
+    .publish-embed-page .pe-check-copy { min-width: 0; }
+
+    .publish-embed-page .pe-check-copy strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .publish-embed-page .pe-check-copy small {
+        display: block;
+        color: var(--ap-muted, #718096);
+        font-size: 10px;
+        line-height: 1.6;
+    }
+
+    .publish-embed-page .pe-toast {
+        position: fixed;
+        z-index: 11000;
+        right: 24px;
+        bottom: 85px;
+        display: none;
+        max-width: calc(100vw - 32px);
+        padding: 13px 17px;
+        border-radius: 10px;
+        background: #087f68;
+        color: #fff;
+        font-size: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+
+    .publish-embed-page .pe-toast.is-visible { display: block; }
+
+    /* Dark theme */
+    html[data-theme="dark"] .publish-embed-page .pe-widget-info select,
+    body[data-theme="dark"] .publish-embed-page .pe-widget-info select,
+    html[data-bs-theme="dark"] .publish-embed-page .pe-widget-info select,
+    body[data-bs-theme="dark"] .publish-embed-page .pe-widget-info select {
+        background-color: #10221c !important;
+        color: #f0f5f3 !important;
+        border-color: #344d44 !important;
+        color-scheme: dark;
+    }
+
+    html[data-theme="dark"] .publish-embed-page .pe-widget-info select option,
+    body[data-theme="dark"] .publish-embed-page .pe-widget-info select option,
+    html[data-bs-theme="dark"] .publish-embed-page .pe-widget-info select option,
+    body[data-bs-theme="dark"] .publish-embed-page .pe-widget-info select option {
+        background-color: #10221c;
+        color: #f0f5f3;
+    }
+
+    @@media (max-width: 1199.98px) {
+        .publish-embed-page .pe-main-grid {
+            grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+            gap: 14px;
+        }
+
+        .publish-embed-page .pe-instructions { padding: 18px; }
+        .publish-embed-page .pe-checklist { padding: 18px; gap: 9px; }
+    }
+
+    @@media (max-width: 991.98px) {
+        .publish-embed-page .pe-main-grid { grid-template-columns: 1fr; }
+        .publish-embed-page .pe-summary-grid { gap: 10px; }
+        .publish-embed-page .pe-summary-card { padding: 14px; }
+    }
+
+    @@media (max-width: 767.98px) {
+        .publish-embed-page .pe-summary-grid { grid-template-columns: 1fr; }
+        .publish-embed-page .pe-checklist { grid-template-columns: 1fr; }
+        .publish-embed-page .pe-widget-selector { flex-wrap: wrap; }
+        .publish-embed-page .pe-version {
+            width: 100%;
+            margin-left: 59px;
+            padding: 0;
+            border: 0;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .publish-embed-page .pe-page-header h2 { font-size: 23px; }
+        .publish-embed-page .pe-header-actions { width: 100%; justify-content: space-between; }
+        .publish-embed-page .pe-widget-selector { padding: 14px; }
+        .publish-embed-page .pe-card-heading { padding: 17px; }
+        .publish-embed-page .pe-platform-tabs { padding-left: 10px; padding-right: 10px; }
+        .publish-embed-page .pe-platform-tab { padding: 10px; }
+        .publish-embed-page .pe-instructions { padding: 15px; }
+        .publish-embed-page .pe-domain-form { padding: 16px 14px; }
+        .publish-embed-page .pe-domain-list-heading { margin: 0 14px; }
+        .publish-embed-page .pe-domain-list { padding: 0 14px 14px; }
+        .publish-embed-page .pe-checklist { padding: 14px; }
+        .publish-embed-page .pe-code-block { font-size: 10px; }
+    }
+</style>
+
+<script>
+(function () {
+    "use strict";
+
+    const root = document.querySelector(".publish-embed-page");
+    if (!root || root.dataset.peInitialized === "true") return;
+    root.dataset.peInitialized = "true";
+
+    const $ = id => root.querySelector("#" + id);
+
+    const widgets = {
+        pk_demo_sofa_finder: {
+            name: "Sofa Finder Widget",
+            version: "1.0.0"
+        },
+        pk_furniture_recommendation: {
+            name: "Furniture Recommendation Widget",
+            version: "1.0.0"
+        },
+        pk_demo_recommendation: {
+            name: "Demo Recommendation Widget",
+            version: "1.0.0"
+        }
+    };
+
+    const platforms = {
+        html: {
+            label: "Custom HTML",
+            codeLabel: "HTML embed snippet",
+            heading: "Copy your embed code",
+            description: "Copy the snippet below and add it to your website.",
+            stepTwoHeading: "Paste the code into your website",
+            stepTwoDescription: "Place the snippet before the closing body tag, then save your page.",
+            tip: "Add the snippet once per website. The widget can then load wherever the configured script is included."
+        },
+        wordpress: {
+            label: "WordPress",
+            codeLabel: "WordPress embed snippet",
+            heading: "Copy your widget snippet",
+            description: "Use the same standard embed snippet on your WordPress website.",
+            stepTwoHeading: "Add the snippet to WordPress",
+            stepTwoDescription: "Use a trusted custom-code plugin or your theme's appropriate footer code area.",
+            tip: "Back up your site before changing theme files. Plugin names and available options vary by WordPress setup."
+        },
+        shopify: {
+            label: "Shopify",
+            codeLabel: "Shopify embed snippet",
+            heading: "Copy your widget snippet",
+            description: "Prepare the snippet for your Shopify storefront.",
+            stepTwoHeading: "Add the snippet to your theme",
+            stepTwoDescription: "In your Shopify admin, open the theme code editor and locate the appropriate layout or supported custom-code area.",
+            tip: "Duplicate your theme before editing it. Check the storefront after installation and theme updates."
+        },
+        wix: {
+            label: "Wix",
+            codeLabel: "Wix embed snippet",
+            heading: "Copy your widget snippet",
+            description: "Prepare the snippet for your Wix website.",
+            stepTwoHeading: "Add the code using Wix",
+            stepTwoDescription: "Use Wix's supported custom-code or embed feature and select the pages where the widget should appear.",
+            tip: "Availability and placement of custom code can depend on your Wix plan and site configuration."
+        }
+    };
+
+    let activePlatform = "html";
+    let isPublished = false;
+    let toastTimer = null;
+    let domains = [
+        { id: 1, value: "example.com" },
+        { id: 2, value: "store.example.com" }
+    ];
+
+    function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, ch => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[ch]);
+    }
+
+    function getWidget() {
+        return widgets[$("peWidgetSelect").value] || widgets.pk_demo_sofa_finder;
+    }
+
+    function getEmbedCode() {
+        const widgetId = $("peWidgetSelect").value;
+
+        // Illustrative placeholder only. Replace the CDN URL with the real
+        // production widget loader URL before using this snippet on a live site.
+        return '<!-- AskPearls Widget -->\n' +
+            '<div id="askpearls-widget" data-widget-id="' + widgetId + '"></div>\n' +
+            '<script src="https://cdn.askpearls.com/widget.js" defer><' + '/script>';
+    }
+
+    function renderCode() {
+        $("peEmbedCode").textContent = getEmbedCode();
+    }
+
+    function renderPlatform(platform) {
+        activePlatform = platform;
+        const config = platforms[platform] || platforms.html;
+
+        root.querySelectorAll(".pe-platform-tab").forEach(button => {
+            const active = button.dataset.pePlatform === platform;
+            button.classList.toggle("active", active);
+            button.setAttribute("aria-selected", active ? "true" : "false");
+        });
+
+        $("peSummaryPlatform").textContent = config.label;
+        $("peCodeLabel").textContent = config.codeLabel;
+        $("peInstructionHeading").textContent = config.heading;
+        $("peInstructionDescription").textContent = config.description;
+        $("peStepTwoHeading").textContent = config.stepTwoHeading;
+        $("peStepTwoDescription").textContent = config.stepTwoDescription;
+        $("peInstallTip").textContent = config.tip;
+
+        renderCode();
+    }
+
+    function renderStatus() {
+        const badge = $("peStatusBadge");
+        badge.classList.toggle("is-published", isPublished);
+        badge.innerHTML = isPublished
+            ? '<i class="bi bi-check-circle-fill"></i> Published'
+            : '<i class="bi bi-circle-fill"></i> Draft';
+
+        $("peSummaryStatus").textContent = isPublished ? "Published" : "Draft";
+        $("peStatusDescription").textContent = isPublished
+            ? "Published in this demo session"
+            : "Not published yet";
+
+        $("pePublishBtn").innerHTML = isPublished
+            ? '<i class="bi bi-check-lg"></i> Published'
+            : '<i class="bi bi-rocket-takeoff"></i> Publish Widget';
+
+        $("pePublishBtn").disabled = isPublished;
+        $("pePublishBtn").style.opacity = isPublished ? ".75" : "1";
+    }
+
+    function renderDomains() {
+        const list = $("peDomainList");
+        list.innerHTML = "";
+
+        domains.forEach(domain => {
+            const row = document.createElement("div");
+            row.className = "pe-domain-row";
+            row.innerHTML =
+                '<div class="pe-domain-icon"><i class="bi bi-globe2"></i></div>' +
+                '<div class="pe-domain-details">' +
+                    '<strong>' + escapeHtml(domain.value) + '</strong>' +
+                    '<small><i class="bi bi-check-circle"></i> Allowlist entry (demo)</small>' +
+                '</div>' +
+                '<button type="button" class="pe-domain-remove" data-domain-id="' +
+                    domain.id + '" aria-label="Remove ' + escapeHtml(domain.value) +
+                    '" title="Remove domain"><i class="bi bi-trash3"></i></button>';
+
+            list.appendChild(row);
+        });
+
+        $("peDomainCount").textContent = domains.length +
+            (domains.length === 1 ? " domain" : " domains");
+        $("peDomainListCount").textContent = domains.length;
+        $("peDomainEmpty").hidden = domains.length !== 0;
+        list.hidden = domains.length === 0;
+    }
+
+    function normalizeDomain(rawValue) {
+        let value = rawValue.trim().toLowerCase();
+
+        if (!value) return null;
+
+        // Accept a hostname or a full URL, then retain only the hostname.
+        try {
+            if (/^https?:\/\//i.test(value)) {
+                const parsed = new URL(value);
+                if (parsed.username || parsed.password) return null;
+                value = parsed.hostname;
+            }
+        } catch (_) {
+            return null;
+        }
+
+        value = value.replace(/\.$/, "");
+
+        if (value.length > 253 || value.includes("/") ||
+            value.includes(":") || value.includes(" ") ||
+            value.includes("*") || value.includes("?")) {
+            return null;
+        }
+
+        const labels = value.split(".");
+        if (labels.length < 2) return null;
+
+        const validLabel = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/;
+        if (!labels.every(label => label.length <= 63 && validLabel.test(label))) {
+            return null;
+        }
+
+        return value;
+    }
+
+    function showToast(message) {
+        const toast = $("peToast");
+        toast.textContent = message;
+        toast.classList.add("is-visible");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2800);
+    }
+
+    async function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            return;
+        }
+
+        const temporary = document.createElement("textarea");
+        temporary.value = text;
+        temporary.setAttribute("readonly", "");
+        temporary.style.position = "fixed";
+        temporary.style.opacity = "0";
+        document.body.appendChild(temporary);
+        temporary.select();
+
+        const copied = document.execCommand("copy");
+        temporary.remove();
+
+        if (!copied) throw new Error("Copy command was not available.");
+    }
+
+    root.querySelectorAll(".pe-platform-tab").forEach(button => {
+        button.addEventListener("click", () => {
+            renderPlatform(button.dataset.pePlatform);
+        });
+    });
+
+    $("peWidgetSelect").addEventListener("change", () => {
+        const widget = getWidget();
+        $("peVersion").textContent = "v" + widget.version;
+        renderCode();
+        showToast("Selected " + widget.name + ".");
+    });
+
+    $("peCopyCode").addEventListener("click", async () => {
+        try {
+            await copyText($("peEmbedCode").textContent);
+            $("peCopyCode").innerHTML = '<i class="bi bi-check2"></i> Copied';
+            showToast("Embed snippet copied.");
+            setTimeout(() => {
+                if (root.isConnected) {
+                    $("peCopyCode").innerHTML = '<i class="bi bi-clipboard"></i> Copy code';
+                }
+            }, 1800);
+        } catch (_) {
+            showToast("Copy was blocked by the browser. Select the code and copy it manually.");
+        }
+    });
+
+    $("pePublishBtn").addEventListener("click", () => {
+        if (isPublished) return;
+
+        isPublished = true;
+        renderStatus();
+        showToast("Demo publish complete. No backend request was made.");
+    });
+
+    $("peDomainForm").addEventListener("submit", event => {
+        event.preventDefault();
+
+        const input = $("peDomainInput");
+        const error = $("peDomainError");
+        const domain = normalizeDomain(input.value);
+
+        error.textContent = "";
+
+        if (!domain) {
+            error.textContent = "Enter a valid domain, such as example.com.";
+            input.focus();
+            return;
+        }
+
+        if (domains.some(item => item.value === domain)) {
+            error.textContent = "This domain is already in the list.";
+            input.focus();
+            return;
+        }
+
+        domains.push({
+            id: Date.now(),
+            value: domain
+        });
+
+        input.value = "";
+        renderDomains();
+        showToast("Domain added to the mock allowlist.");
+    });
+
+    $("peDomainList").addEventListener("click", event => {
+        const button = event.target.closest("[data-domain-id]");
+        if (!button) return;
+
+        const id = Number(button.dataset.domainId);
+        const domain = domains.find(item => item.id === id);
+        if (!domain) return;
+
+        domains = domains.filter(item => item.id !== id);
+        renderDomains();
+        showToast(domain.value + " removed from the mock allowlist.");
+    });
+
+    // The checklist is a front-end readiness aid; it does not gate publishing.
+    renderPlatform("html");
+    renderStatus();
+    renderDomains();
+})();
+</script>

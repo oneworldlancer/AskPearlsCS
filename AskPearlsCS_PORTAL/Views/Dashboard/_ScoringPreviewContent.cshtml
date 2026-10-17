@@ -1,0 +1,141 @@
+<div class="ap-page sp-page" data-ap-page="scoring-preview">
+    <!-- Shared AskPearls breadcrumb -->
+    <nav class="ap-breadcrumb" aria-label="Breadcrumb">
+        <a href="/Dashboard">AskPearls</a>
+        <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
+        <span class="ap-breadcrumb-current" aria-current="page">Scoring &amp; Preview</span>
+    </nav>
+
+    <header class="ap-page-header">
+        <div class="ap-page-heading">
+            <h1 class="ap-page-title">Scoring &amp; Preview</h1>
+            <p class="ap-page-description">Configure answer scoring and understand why each recommendation ranks where it does.</p>
+        </div>
+        <div class="ap-page-actions">
+            <span class="sp-demo-badge"><i class="bi bi-flask"></i> Interactive demo</span>
+        </div>
+    </header>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+            <div class="sp-stat">
+                <span class="text-muted small">Points per question</span>
+                <strong>50</strong>
+                <small>Each answer allocation must total 50.</small>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="sp-stat">
+                <span class="text-muted small">Sample questions</span>
+                <strong id="spQuestionCount">3</strong>
+                <small>From the current sofa-finder Q&amp;A prototype.</small>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="sp-stat">
+                <span class="text-muted small">Maximum score</span>
+                <strong id="spMaximum">150</strong>
+                <small>Number of questions × 50.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="sp-panel mb-4">
+        <div class="sp-panel-head">
+            <div>
+                <h5 class="mb-1 fw-bold">1. Configure answer allocations</h5>
+                <p class="text-muted small mb-0">Choose a question and answer, then distribute its 50 points among the recommendations.</p>
+            </div>
+        </div>
+
+        <div class="sp-panel-body">
+            <div class="row g-3 mb-3">
+                <div class="col-12 col-md-6">
+                    <label class="form-label" for="spEditQuestion">Question</label>
+                    <select id="spEditQuestion" class="form-select">
+                        <option value="users">How many people will use the sofa?</option>
+                        <option value="priority">What matters most to you?</option>
+                        <option value="room_size">How much space do you have?</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label" for="spEditAnswer">Answer option</label>
+                    <select id="spEditAnswer" class="form-select"></select>
+                </div>
+            </div>
+
+            <div id="spAllocationEditor" class="row g-3"></div>
+
+            <div class="sp-allocation-footer mt-3">
+                <div>
+                    <span class="text-muted small">Allocated points</span>
+                    <strong id="spAllocationTotal">50 / 50</strong>
+                </div>
+                <span id="spAllocationStatus" class="sp-valid">Valid allocation</span>
+            </div>
+            <div class="sp-progress mt-2">
+                <div id="spAllocationBar" style="width:100%"></div>
+            </div>
+            <p class="text-muted small mt-3 mb-0">
+                Changes are temporary and held in this page only. No database or widget configuration is changed.
+            </p>
+        </div>
+    </div>
+
+    <div class="sp-panel mb-4">
+        <div class="sp-panel-head">
+            <div>
+                <h5 class="mb-1 fw-bold">2. Simulate a visitor</h5>
+                <p class="text-muted small mb-0">Change answers to recalculate the recommendation scores instantly.</p>
+            </div>
+            <button type="button" class="btn btn-outline-secondary btn-sm" id="spResetAnswers">
+                <i class="bi bi-arrow-counterclockwise"></i> Reset answers
+            </button>
+        </div>
+        <div class="sp-panel-body">
+            <div class="row g-3" id="spVisitorAnswers"></div>
+        </div>
+    </div>
+
+    <div class="sp-panel mb-4">
+        <div class="sp-panel-head">
+            <div>
+                <h5 class="mb-1 fw-bold">3. Ranked recommendations</h5>
+                <p class="text-muted small mb-0">Each selected answer contributes its configured points to each recommendation.</p>
+            </div>
+        </div>
+        <div class="sp-panel-body">
+            <div id="spRanking"></div>
+            <div id="spRankingEmpty" class="text-muted small d-none">
+                Correct the allocation totals to 50 before using the preview.
+            </div>
+        </div>
+    </div>
+
+    <div class="sp-panel">
+        <div class="sp-panel-head">
+            <div>
+                <h5 class="mb-1 fw-bold">4. Score breakdown</h5>
+                <p class="text-muted small mb-0">See the exact points contributed by each selected answer.</p>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table sp-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Selected answer</th>
+                        <th>Oslo Sofa</th>
+                        <th>Luna Sofa</th>
+                        <th>Haven Sofa</th>
+                    </tr>
+                </thead>
+                <tbody id="spBreakdown"></tbody>
+                <tfoot id="spBreakdownFooter"></tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+ <link href="~/app_page_css/app_page_scoring_preview_css.css" rel="stylesheet" />
+
+  <script src="~/app_page_js/app_page_scoring_preview_js.js" />
+

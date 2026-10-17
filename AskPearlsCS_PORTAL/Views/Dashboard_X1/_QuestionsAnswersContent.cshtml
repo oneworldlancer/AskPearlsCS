@@ -1,0 +1,1445 @@
+﻿
+    <style>
+            :root {
+                color-scheme: light;
+                --page: #f5faf8;
+                --surface: #ffffff;
+                --surface-2: #f2f8f6;
+                --text: #172b3d;
+                --muted: #698096;
+                --border: #dce9e4;
+                --primary: #0da88a;
+                --primary-hover: #098b72;
+                --active: #e4f7f1;
+                --shadow: 0 16px 50px rgba(0, 0, 0, .18);
+                --overlay: rgba(5, 20, 18, .65);
+                --danger: #e65b70;
+            }
+
+            html[data-theme="dark"] {
+                color-scheme: dark;
+                --page: #071b18;
+                --surface: #0e2722;
+                --surface-2: #142f29;
+                --text: #eff8f4;
+                --muted: #a0b8ae;
+                --border: #29483e;
+                --primary: #0da88a;
+                --primary-hover: #17bd9c;
+                --active: #174b3e;
+                --shadow: 0 16px 50px rgba(0, 0, 0, .4);
+                --overlay: rgba(0, 0, 0, .72);
+                --danger: #ff8795;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                font-family: Inter, "Segoe UI", Arial, sans-serif;
+                background: var(--page);
+                color: var(--text);
+                font-size: 14px;
+            }
+
+            button, input, textarea {
+                font: inherit;
+            }
+
+            button {
+                cursor: pointer;
+            }
+
+                button:focus-visible, input:focus-visible, textarea:focus-visible {
+                    outline: 3px solid rgba(13, 168, 138, .3);
+                    outline-offset: 2px;
+                }
+
+                button:disabled {
+                    opacity: .5;
+                    cursor: not-allowed;
+                }
+
+            .topbar {
+                min-height: 68px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                padding: 12px 24px;
+                background: var(--surface);
+                border-bottom: 1px solid var(--border);
+            }
+
+            .brand {
+                font-size: 22px;
+                font-weight: 800;
+            }
+
+                .brand span {
+                    color: var(--primary);
+                }
+
+            .top-actions, .button-row {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .page {
+                max-width: 1600px;
+                margin: auto;
+                padding: 24px;
+            }
+
+            .page-heading {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 20px;
+                flex-wrap: wrap;
+                margin-bottom: 24px;
+            }
+
+            .breadcrumb {
+                color: var(--muted);
+                margin-bottom: 12px;
+            }
+
+                .breadcrumb a {
+                    color: var(--primary);
+                    text-decoration: none;
+                }
+
+            h1 {
+                margin: 0 0 10px;
+                font-size: clamp(25px, 3vw, 34px);
+            }
+
+            h2, h3, p {
+                margin-top: 0;
+            }
+
+            h2 {
+                font-size: 19px;
+            }
+
+            h3 {
+                font-size: 15px;
+                margin-bottom: 8px;
+            }
+
+            .subtitle, .muted {
+                color: var(--muted);
+            }
+
+            .subtitle {
+                margin-bottom: 0;
+                line-height: 1.6;
+            }
+
+            .button {
+                min-height: 42px;
+                padding: 10px 16px;
+                border: 1px solid var(--border);
+                border-radius: 9px;
+                background: var(--surface);
+                color: var(--text);
+                font-weight: 650;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                gap: 7px;
+                white-space: nowrap;
+                text-decoration: none;
+            }
+
+                .button:hover {
+                    border-color: var(--primary);
+                }
+
+            .button-primary {
+                color: #fff;
+                background: var(--primary);
+                border-color: var(--primary);
+            }
+
+                .button-primary:hover {
+                    background: var(--primary-hover);
+                }
+
+            .button-small {
+                min-height: 38px;
+                padding: 8px 12px;
+            }
+
+            .button-danger {
+                color: var(--danger);
+                border-color: var(--danger);
+            }
+
+            .status-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 14px;
+                border: 1px solid var(--border);
+                border-radius: 24px;
+                background: var(--surface);
+                color: var(--muted);
+                white-space: nowrap;
+            }
+
+            .status-dot {
+                width: 8px;
+                height: 8px;
+                background: #f5a623;
+                border-radius: 50%;
+            }
+
+            .widget-summary {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 20px;
+                margin-bottom: 24px;
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+            }
+
+            .widget-icon {
+                width: 48px;
+                height: 48px;
+                flex: 0 0 48px;
+                display: grid;
+                place-items: center;
+                border-radius: 12px;
+                background: var(--primary);
+                color: white;
+                font-size: 25px;
+            }
+
+            .widget-meta {
+                flex: 1;
+                min-width: 0;
+            }
+
+                .widget-meta strong {
+                    display: block;
+                    font-size: 17px;
+                    margin-bottom: 6px;
+                }
+
+                .widget-meta span {
+                    color: var(--muted);
+                }
+
+            .workspace {
+                display: grid;
+                grid-template-columns: minmax(230px, .82fr) minmax(320px, 1.5fr) minmax(280px, 1.1fr);
+                gap: 20px;
+                align-items: start;
+            }
+
+            .card {
+                min-width: 0;
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                overflow: hidden;
+            }
+
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                padding: 20px;
+                border-bottom: 1px solid var(--border);
+            }
+
+                .card-header h2 {
+                    margin-bottom: 8px;
+                }
+
+                .card-header p {
+                    margin-bottom: 0;
+                    line-height: 1.5;
+                }
+
+            .question-list {
+                padding: 10px;
+            }
+
+            .question-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                width: 100%;
+                padding: 13px 10px;
+                margin-bottom: 8px;
+                text-align: left;
+                color: var(--text);
+                background: transparent;
+                border: 1px solid transparent;
+                border-radius: 10px;
+            }
+
+                .question-item:hover {
+                    background: var(--surface-2);
+                }
+
+                .question-item.active {
+                    background: var(--active);
+                    border-color: #86d9c5;
+                }
+
+            .question-number {
+                width: 34px;
+                height: 34px;
+                flex: 0 0 34px;
+                display: grid;
+                place-items: center;
+                border: 1px solid var(--border);
+                border-radius: 50%;
+                font-weight: 750;
+            }
+
+            .question-item.active .question-number {
+                background: var(--primary);
+                border-color: var(--primary);
+                color: #fff;
+            }
+
+            .question-label {
+                min-width: 0;
+            }
+
+                .question-label strong {
+                    display: block;
+                    line-height: 1.45;
+                }
+
+                .question-label small {
+                    display: block;
+                    margin-top: 4px;
+                    color: var(--muted);
+                }
+
+            .card-body {
+                padding: 20px;
+            }
+
+            .section-heading {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 12px;
+                margin-bottom: 22px;
+            }
+
+                .section-heading p {
+                    margin-bottom: 0;
+                    line-height: 1.5;
+                }
+
+            .field {
+                margin-bottom: 18px;
+            }
+
+                .field label, .field-label {
+                    display: block;
+                    margin-bottom: 8px;
+                    font-size: 12px;
+                    font-weight: 750;
+                    text-transform: uppercase;
+                    letter-spacing: .035em;
+                }
+
+            .readonly-value {
+                width: 100%;
+                padding: 13px;
+                min-height: 44px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--surface-2);
+                overflow-wrap: anywhere;
+            }
+
+            .option-display {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                padding: 11px 12px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                margin-bottom: 8px;
+            }
+
+                .option-display span:first-child {
+                    color: var(--muted);
+                    width: 20px;
+                }
+
+            .empty-state {
+                color: var(--muted);
+                line-height: 1.6;
+            }
+
+            .preview-title {
+                margin: 0 0 8px;
+            }
+
+            .preview-shell {
+                margin-top: 18px;
+                padding: 16px;
+                background: var(--surface-2);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+            }
+
+            .preview-card {
+                background: #fff;
+                color: #172b3d;
+                padding: 20px;
+                border: 1px solid #e1eae6;
+                border-radius: 14px;
+            }
+
+            .preview-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 750;
+            }
+
+            .preview-brand-icon {
+                display: grid;
+                place-items: center;
+                width: 38px;
+                height: 38px;
+                border-radius: 9px;
+                background: var(--primary);
+                color: white;
+                font-size: 20px;
+            }
+
+            .progress-meta {
+                display: flex;
+                justify-content: space-between;
+                color: #698096;
+                font-size: 12px;
+                margin: 22px 0 10px;
+            }
+
+            .progress-track {
+                height: 6px;
+                background: #e2ece8;
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            .progress-fill {
+                height: 100%;
+                width: 33%;
+                background: var(--primary);
+            }
+
+            .preview-question {
+                font-size: 22px;
+                line-height: 1.4;
+                margin: 24px 0 12px;
+            }
+
+            .preview-help {
+                color: #698096;
+                line-height: 1.6;
+            }
+
+            .preview-option {
+                padding: 12px;
+                margin-top: 9px;
+                border: 1px solid #dce9e4;
+                border-radius: 8px;
+                color: #344c60;
+            }
+
+            .footer {
+                margin-top: 32px;
+                padding: 14px;
+                text-align: center;
+                color: var(--muted);
+                border-top: 1px solid var(--border);
+            }
+
+            /* Modal is HIDDEN by default. JavaScript opens it only on Add/Edit. */
+            .qna-modal-backdrop[hidden] {
+                display: none !important;
+            }
+
+            .qna-modal-backdrop {
+                position: fixed;
+                inset: 0;
+                z-index: 9999;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 16px;
+                background: var(--overlay);
+                backdrop-filter: blur(5px);
+            }
+
+            .qna-modal {
+                width: min(960px, 100%);
+                height: auto;
+                max-height: calc(100vh - 32px);
+                max-height: calc(100dvh - 32px);
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+                background: var(--surface);
+                color: var(--text);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                box-shadow: var(--shadow);
+            }
+
+            .qna-modal-header {
+                flex: 0 0 auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 16px;
+                padding: 20px 24px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .qna-modal-heading {
+                display: flex;
+                gap: 14px;
+                align-items: center;
+            }
+
+            .qna-modal-heading-icon {
+                width: 34px;
+                height: 34px;
+                display: grid;
+                place-items: center;
+                color: var(--primary);
+                font-size: 23px;
+            }
+
+            .qna-modal-title {
+                margin: 0 0 5px;
+                font-size: 20px;
+            }
+
+            .qna-modal-subtitle {
+                margin: 0;
+                color: var(--muted);
+                line-height: 1.5;
+            }
+
+            .qna-modal-close {
+                flex: 0 0 auto;
+                border: 0;
+                background: transparent;
+                color: var(--text);
+                font-size: 27px;
+                line-height: 1;
+                padding: 3px 6px;
+            }
+
+            #qnaQuestionForm {
+                display: flex;
+                flex-direction: column;
+                flex: 1 1 auto;
+                min-height: 0;
+                overflow: hidden;
+            }
+
+            .qna-modal-body {
+                flex: 1 1 auto;
+                min-height: 0;
+                overflow-x: hidden;
+                overflow-y: auto;
+                overscroll-behavior: contain;
+                -webkit-overflow-scrolling: touch;
+                padding: 22px 24px;
+            }
+
+            .qna-modal-grid {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                gap: 24px;
+            }
+
+            .qna-modal-section {
+                min-width: 0;
+            }
+
+            .qna-modal-section-title {
+                margin: 0 0 8px;
+                font-size: 15px;
+            }
+
+            .qna-modal-section-description {
+                color: var(--muted);
+                line-height: 1.5;
+                margin-bottom: 22px;
+                font-size: 13px;
+            }
+
+            .qna-required-star {
+                color: #e65b70;
+            }
+
+            .qna-form-field {
+                margin-bottom: 18px;
+            }
+
+            .qna-form-label {
+                display: block;
+                margin-bottom: 8px;
+                font-size: 12px;
+                font-weight: 750;
+            }
+
+            .qna-form-control {
+                display: block;
+                width: 100%;
+                min-width: 0;
+                padding: 12px;
+                color: var(--text);
+                background: var(--surface-2);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+            }
+
+            textarea.qna-form-control {
+                min-height: 94px;
+                resize: vertical;
+                line-height: 1.5;
+            }
+
+            #qnaInputHelper {
+                min-height: 90px;
+            }
+
+            .qna-form-control::placeholder {
+                color: var(--muted);
+                opacity: 1;
+            }
+
+            .qna-field-help {
+                display: block;
+                margin-top: 8px;
+                color: var(--muted);
+                line-height: 1.5;
+                font-size: 12px;
+            }
+
+            .qna-required-setting {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                padding: 14px;
+                background: var(--surface-2);
+                border: 1px solid var(--border);
+                border-radius: 9px;
+            }
+
+                .qna-required-setting strong {
+                    display: block;
+                    font-size: 12px;
+                    margin-bottom: 5px;
+                }
+
+                .qna-required-setting small {
+                    display: block;
+                    color: var(--muted);
+                    line-height: 1.5;
+                }
+
+            .qna-switch {
+                position: relative;
+                flex: 0 0 42px;
+                width: 42px;
+                height: 24px;
+            }
+
+                .qna-switch input {
+                    position: absolute;
+                    opacity: 0;
+                    width: 1px;
+                    height: 1px;
+                }
+
+            .qna-switch-track {
+                position: absolute;
+                inset: 0;
+                cursor: pointer;
+                border-radius: 20px;
+                background: #9eaaa5;
+                transition: background .2s;
+            }
+
+                .qna-switch-track::before {
+                    content: "";
+                    position: absolute;
+                    width: 18px;
+                    height: 18px;
+                    top: 3px;
+                    left: 3px;
+                    border-radius: 50%;
+                    background: #fff;
+                    transition: transform .2s;
+                }
+
+            .qna-switch input:checked + .qna-switch-track {
+                background: var(--primary);
+            }
+
+                .qna-switch input:checked + .qna-switch-track::before {
+                    transform: translateX(18px);
+                }
+
+            .qna-answer-editor-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 12px;
+                margin-bottom: 16px;
+            }
+
+                .qna-answer-editor-header .qna-modal-section-description {
+                    margin-bottom: 0;
+                }
+
+                .qna-answer-editor-header .button {
+                    flex: 0 0 auto;
+                }
+
+            .qna-answer-row {
+                display: grid;
+                grid-template-columns: 24px minmax(0, 1fr) 38px;
+                gap: 8px;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            .qna-answer-number {
+                text-align: center;
+                font-weight: 750;
+                color: var(--muted);
+            }
+
+            .qna-answer-row .qna-form-control {
+                min-height: 42px;
+            }
+
+            .qna-remove-option {
+                min-height: 38px;
+                width: 38px;
+                display: grid;
+                place-items: center;
+                border: 1px solid var(--danger);
+                border-radius: 8px;
+                background: transparent;
+                color: var(--danger);
+                font-size: 19px;
+            }
+
+            .qna-modal-error {
+                display: none;
+                margin-top: 16px;
+                padding: 12px;
+                color: var(--danger);
+                background: var(--surface-2);
+                border: 1px solid var(--danger);
+                border-radius: 8px;
+                line-height: 1.5;
+            }
+
+                .qna-modal-error.visible {
+                    display: block;
+                }
+
+            .qna-modal-footer {
+                flex: 0 0 auto;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                flex-wrap: nowrap;
+                gap: 10px;
+                padding: 16px 24px;
+                border-top: 1px solid var(--border);
+                background: var(--surface);
+            }
+
+                .qna-modal-footer .button {
+                    flex: 0 0 auto;
+                    white-space: nowrap;
+                }
+
+            .toast {
+                position: fixed;
+                z-index: 10001;
+                bottom: 20px;
+                right: 20px;
+                max-width: calc(100% - 40px);
+                padding: 14px 18px;
+                color: white;
+                background: #137b61;
+                border-radius: 9px;
+                box-shadow: var(--shadow);
+            }
+
+                .toast[hidden] {
+                    display: none !important;
+                }
+
+            @@media (max-width: 1100px) {
+                .workspace {
+                    grid-template-columns: minmax(220px, .8fr) minmax(0, 1.4fr);
+                }
+
+                .preview-column {
+                    grid-column: 1 / -1;
+                }
+
+                .preview-shell {
+                    max-width: 540px;
+                }
+            }
+
+            @@media (max-width: 700px) {
+                .topbar {
+                    padding: 12px 16px;
+                }
+
+                .page {
+                    padding: 18px 12px;
+                }
+
+                .page-heading {
+                    gap: 16px;
+                }
+
+                .workspace {
+                    grid-template-columns: minmax(0, 1fr);
+                    gap: 16px;
+                }
+
+                .preview-column {
+                    grid-column: auto;
+                }
+
+                .widget-summary {
+                    padding: 14px;
+                }
+
+                .qna-modal-backdrop {
+                    padding: 8px;
+                }
+
+                .qna-modal {
+                    max-height: calc(100vh - 16px);
+                    max-height: calc(100dvh - 16px);
+                    border-radius: 12px;
+                }
+
+                .qna-modal-header {
+                    padding: 16px;
+                }
+
+                .qna-modal-body {
+                    padding: 16px;
+                }
+
+                .qna-modal-grid {
+                    grid-template-columns: minmax(0, 1fr);
+                    gap: 24px;
+                }
+
+                .qna-modal-footer {
+                    padding: 12px 16px;
+                }
+
+                .qna-answer-editor-header {
+                    flex-wrap: wrap;
+                }
+            }
+
+            @@media (max-width: 380px) {
+                .qna-modal-title {
+                    font-size: 18px;
+                }
+
+                .qna-modal-footer {
+                    gap: 6px;
+                }
+
+                    .qna-modal-footer .button {
+                        padding: 9px 10px;
+                        font-size: 12px;
+                    }
+            }
+
+
+
+            
+/* =====================================================
+   Q&A PAGE — FIX CONTENT SPACING IN THE PORTAL
+   ===================================================== */
+
+/* Main content injected by the AJAX section loader */
+#apMainContent {
+    min-width: 0;
+}
+
+/* Scope spacing to this page only */
+#apMainContent .page-heading,
+#apMainContent .widget-summary,
+#apMainContent .workspace {
+    margin-left: 28px;
+    margin-right: 28px;
+}
+
+/* Add breathing room above the page heading */
+#apMainContent .page-heading {
+    margin-top: 28px;
+}
+
+/* Keep the summary and workspace spaced consistently */
+#apMainContent .widget-summary {
+    margin-top: 0;
+}
+
+#apMainContent .workspace {
+    margin-top: 0;
+}
+
+/* Responsive adjustments */
+@@media (max-width: 700px) {
+    #apMainContent .page-heading,
+    #apMainContent .widget-summary,
+    #apMainContent .workspace {
+        margin-left: 14px;
+        margin-right: 14px;
+    }
+
+    #apMainContent .page-heading {
+        margin-top: 20px;
+    }
+}
+
+    </style>
+
+        <div class="page-heading">
+            <div>
+                <div class="breadcrumb"><a href="#" id="backToWidgets">← My Widgets</a> &nbsp;/&nbsp; Questions &amp; Answers</div>
+                <h1>Questions &amp; Answers</h1>
+                <p class="subtitle">Design the questions visitors answer in your DecisionOS experience.</p>
+            </div>
+            <div class="top-actions">
+                <span class="status-pill"><span class="status-dot"></span><span id="draftStatus">Unsaved draft</span></span>
+                <button class="button" type="button" id="previewButton">◉ Preview</button>
+                <button class="button button-primary" type="button" id="saveDraftButton">▣ Save Draft</button>
+            </div>
+        </div>
+
+        <section class="widget-summary">
+            <div class="widget-icon">✦</div>
+            <div class="widget-meta">
+                <strong>Sofa Finder</strong>
+                <span>DecisionOS · Demo Website · UI sample</span>
+            </div>
+            <div><span class="muted">Questions</span> &nbsp; <strong id="questionCount">3</strong></div>
+        </section>
+
+        <div class="workspace">
+            <section class="card">
+                <div class="card-header">
+                    <div>
+                        <h2>Your questions</h2>
+                        <p class="muted">Select a question to view details or edit it.</p>
+                    </div>
+                    <button class="button button-primary" id="addQuestionButton" type="button">＋ Add</button>
+                </div>
+                <div class="question-list" id="questionList"></div>
+                <div class="card-body muted">♣ &nbsp; Keep questions clear and easy for visitors to answer.</div>
+            </section>
+
+            <section class="card">
+                <div class="card-body">
+                    <div class="section-heading">
+                        <div>
+                            <h2>Question overview</h2>
+                            <p class="muted">View the selected question and its answer options.</p>
+                        </div>
+                        <button class="button" id="editQuestionButton" type="button">✎ Edit Question</button>
+                    </div>
+                    <div id="questionOverview"></div>
+                </div>
+            </section>
+
+            <section class="preview-column">
+                <h2 class="preview-title">Visitor preview</h2>
+                <p class="muted">See how your question appears to a visitor.</p>
+                <div class="preview-shell">
+                    <div class="preview-card">
+                        <div class="preview-brand">
+                            <div class="preview-brand-icon">✦</div>
+                            <span>DecisionOS</span>
+                        </div>
+                        <div class="progress-meta">
+                            <span id="previewProgressLabel">Question 1 of 3</span>
+                            <span id="previewProgressPercent">33%</span>
+                        </div>
+                        <div class="progress-track"><div class="progress-fill" id="previewProgressFill"></div></div>
+                        <h2 class="preview-question" id="previewQuestion"></h2>
+                        <p class="preview-help" id="previewHelper"></p>
+                        <div id="previewOptions"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    <!-- The hidden attribute guarantees the modal does NOT open on page load. -->
+    <div class="qna-modal-backdrop" id="qnaModalBackdrop" hidden aria-hidden="true">
+        <section class="qna-modal" role="dialog" aria-modal="true" aria-labelledby="qnaModalTitle">
+            <div class="qna-modal-header">
+                <div class="qna-modal-heading">
+                    <div class="qna-modal-heading-icon" aria-hidden="true">＋</div>
+                    <div>
+                        <h2 class="qna-modal-title" id="qnaModalTitle">Add Question</h2>
+                        <p class="qna-modal-subtitle">Configure the question and its answer options.</p>
+                    </div>
+                </div>
+                <button type="button" class="qna-modal-close" id="qnaModalClose" aria-label="Close dialog">×</button>
+            </div>
+
+            <form id="qnaQuestionForm">
+                <div class="qna-modal-body">
+                    <div class="qna-modal-grid">
+                        <section class="qna-modal-section">
+                            <h3 class="qna-modal-section-title">Question details</h3>
+                            <p class="qna-modal-section-description">Define the question visitors will see.</p>
+
+                            <div class="qna-form-field">
+                                <label class="qna-form-label" for="qnaInputText">Question text <span class="qna-required-star">*</span></label>
+                                <textarea class="qna-form-control" id="qnaInputText" maxlength="300" required placeholder="e.g. How many people will use the sofa?"></textarea>
+                            </div>
+
+                            <div class="qna-form-field">
+                                <label class="qna-form-label" for="qnaInputKey">Question identifier <span class="qna-required-star">*</span></label>
+                                <input class="qna-form-control" id="qnaInputKey" maxlength="80" required pattern="[a-zA-Z][a-zA-Z0-9_]*" placeholder="e.g. users" autocomplete="off">
+                                <small class="qna-field-help">Use letters, numbers and underscores; start with a letter.</small>
+                            </div>
+
+                            <div class="qna-form-field">
+                                <label class="qna-form-label" for="qnaInputHelper">Helper text</label>
+                                <textarea class="qna-form-control" id="qnaInputHelper" maxlength="200" rows="3" placeholder="Optional guidance for visitors"></textarea>
+                            </div>
+
+                            <div class="qna-required-setting">
+                                <div>
+                                    <strong>Required question</strong>
+                                    <small>Visitors must answer before continuing.</small>
+                                </div>
+                                <label class="qna-switch">
+                                    <input type="checkbox" id="qnaInputRequired" checked>
+                                    <span class="qna-switch-track"></span>
+                                </label>
+                            </div>
+                        </section>
+
+                        <section class="qna-modal-section">
+                            <div class="qna-answer-editor-header">
+                                <div>
+                                    <h3 class="qna-modal-section-title">Answer options</h3>
+                                    <p class="qna-modal-section-description">Add the possible answers visitors can choose.</p>
+                                </div>
+                                <button type="button" class="button button-small" id="qnaAddOptionButton">＋ Add option</button>
+                            </div>
+
+                            <div class="qna-answer-editor-list" id="qnaAnswerEditorList"></div>
+                            <small class="qna-field-help">Keep each answer short and distinct. Decision-scoring configuration can be connected later.</small>
+                        </section>
+                    </div>
+
+                    <div class="qna-modal-error" id="qnaModalError" role="alert"></div>
+                </div>
+
+                <div class="qna-modal-footer">
+                    <button type="button" class="button" id="qnaCancelButton">Cancel</button>
+                    <button type="submit" class="button button-primary" id="qnaSaveQuestionButton">✓ Save Question</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="toast" id="toast" hidden role="status"></div>
+ 
+
+    <script>
+            (() => {
+                "use strict";
+
+                const $ = id => document.getElementById(id);
+
+                let selectedId = 1;
+                let editingId = null;
+                let nextId = 4;
+                let previousFocus = null;
+                let toastTimer = null;
+
+                let questions = [
+                    {
+                        id: 1,
+                        text: "How many people will use the sofa?",
+                        key: "users",
+                        helper: "Choose the option that best matches your needs.",
+                        required: true,
+                        options: ["1–2 people", "3–4 people", "5 or more people"]
+                    },
+                    {
+                        id: 2,
+                        text: "What matters most to you?",
+                        key: "priority",
+                        helper: "Choose what matters most.",
+                        required: true,
+                        options: ["Comfort", "Style", "Space"]
+                    },
+                    {
+                        id: 3,
+                        text: "How much space do you have?",
+                        key: "space",
+                        helper: "Choose the option closest to your available space.",
+                        required: true,
+                        options: ["Small", "Medium", "Large"]
+                    }
+                ];
+
+                const backdrop = $("qnaModalBackdrop");
+                const form = $("qnaQuestionForm");
+                const answerList = $("qnaAnswerEditorList");
+                const modalBody = backdrop.querySelector(".qna-modal-body");
+
+                function escapeHtml(value) {
+                    return String(value).replace(/[&<>"']/g, character => ({
+                        "&": "&amp;",
+                        "<": "&lt;",
+                        ">": "&gt;",
+                        '"': "&quot;",
+                        "'": "&#39;"
+                    })[character]);
+                }
+
+                function selectedQuestion() {
+                    return questions.find(question => question.id === selectedId) || null;
+                }
+
+                function markDirty() {
+                    $("draftStatus").textContent = "Unsaved draft";
+                }
+
+                function render() {
+                    $("questionCount").textContent = questions.length;
+
+                    $("questionList").innerHTML = questions.length
+                        ? questions.map((question, index) => `
+                            <button type="button"
+                                class="question-item ${question.id === selectedId ? "active" : ""}"
+                                data-select-question="${question.id}">
+                                <span class="question-number">${index + 1}</span>
+                                <span class="question-label">
+                                    <strong>${escapeHtml(question.text)}</strong>
+                                    <small>${escapeHtml(question.key)}</small>
+                                </span>
+                            </button>
+                        `).join("")
+                        : `<p class="empty-state">No questions yet. Select Add to create your first question.</p>`;
+
+                    const question = selectedQuestion();
+
+                    $("editQuestionButton").disabled = !question;
+
+                    if (!question) {
+                        $("questionOverview").innerHTML = `<p class="empty-state">Select Add Question to get started.</p>`;
+                        renderPreview(null);
+                        return;
+                    }
+
+                    $("questionOverview").innerHTML = `
+                        <div class="field">
+                            <div class="field-label">Question text</div>
+                            <div class="readonly-value">${escapeHtml(question.text)}</div>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">Question identifier</div>
+                            <div class="readonly-value">${escapeHtml(question.key)}</div>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">Helper text</div>
+                            <div class="readonly-value">${escapeHtml(question.helper || "—")}</div>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">Required question</div>
+                            <div class="readonly-value">${question.required ? "Yes" : "No"}</div>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">Answer options (${question.options.length})</div>
+                            ${question.options.map((option, index) => `
+                                <div class="option-display">
+                                    <span>${index + 1}</span>
+                                    <span>${escapeHtml(option)}</span>
+                                </div>
+                            `).join("")}
+                        </div>
+                    `;
+
+                    renderPreview(question);
+                }
+
+                function renderPreview(question) {
+                    const total = questions.length;
+                    const index = question ? questions.findIndex(item => item.id === question.id) : 0;
+                    const number = question ? index + 1 : 0;
+                    const percent = total ? Math.round(number / total * 100) : 0;
+
+                    $("previewProgressLabel").textContent = total ? `Question ${number} of ${total}` : "No questions";
+                    $("previewProgressPercent").textContent = `${percent}%`;
+                    $("previewProgressFill").style.width = `${percent}%`;
+                    $("previewQuestion").textContent = question ? question.text : "Your question will appear here.";
+                    $("previewHelper").textContent = question ? question.helper : "";
+
+                    $("previewOptions").innerHTML = question
+                        ? question.options.map(option => `<div class="preview-option">${escapeHtml(option)}</div>`).join("")
+                        : "";
+                }
+
+                function showToast(message) {
+                    const toast = $("toast");
+                    toast.textContent = message;
+                    toast.hidden = false;
+                    clearTimeout(toastTimer);
+                    toastTimer = setTimeout(() => { toast.hidden = true; }, 2600);
+                }
+
+                function clearError() {
+                    $("qnaModalError").textContent = "";
+                    $("qnaModalError").classList.remove("visible");
+                }
+
+                function showError(message) {
+                    $("qnaModalError").textContent = message;
+                    $("qnaModalError").classList.add("visible");
+                }
+
+                function addOption(value = "") {
+                    const count = answerList.children.length;
+                    if (count >= 30) {
+                        showError("You can add up to 30 answer options per question.");
+                        return;
+                    }
+
+                    clearError();
+
+                    const row = document.createElement("div");
+                    row.className = "qna-answer-row";
+                    row.innerHTML = `
+                        <span class="qna-answer-number"></span>
+                        <input class="qna-form-control qna-answer-input"
+                               maxlength="150" required
+                               placeholder="Enter answer option">
+                        <button type="button" class="qna-remove-option" aria-label="Remove answer option">×</button>
+                    `;
+
+                    row.querySelector("input").value = value;
+                    row.querySelector(".qna-remove-option").addEventListener("click", () => {
+                        if (answerList.children.length <= 2) {
+                            showError("Each question must have at least two answer options.");
+                            return;
+                        }
+                        row.remove();
+                        updateOptionNumbers();
+                        clearError();
+                    });
+
+                    answerList.appendChild(row);
+                    updateOptionNumbers();
+                }
+
+                function updateOptionNumbers() {
+                    [...answerList.children].forEach((row, index) => {
+                        row.querySelector(".qna-answer-number").textContent = index + 1;
+                    });
+                }
+
+                function openModal(question = null) {
+                    previousFocus = document.activeElement;
+                    editingId = question ? question.id : null;
+
+                    $("qnaModalTitle").textContent = question ? "Edit Question" : "Add Question";
+                    $("qnaInputText").value = question ? question.text : "";
+                    $("qnaInputKey").value = question ? question.key : "";
+                    $("qnaInputHelper").value = question ? question.helper : "";
+                    $("qnaInputRequired").checked = question ? question.required : true;
+                    $("qnaSaveQuestionButton").textContent = question ? "✓ Save Changes" : "✓ Save Question";
+
+                    answerList.replaceChildren();
+                    const options = question ? question.options : ["", ""];
+                    options.forEach(option => addOption(option));
+
+                    clearError();
+
+                    // Explicitly show only when this function is called by Add/Edit.
+                    backdrop.hidden = false;
+                    backdrop.setAttribute("aria-hidden", "false");
+                    document.body.style.overflow = "hidden";
+
+                    modalBody.scrollTop = 0;
+
+                    requestAnimationFrame(() => {
+                        $("qnaInputText").focus();
+                    });
+                }
+
+                function closeModal() {
+                    backdrop.hidden = true;
+                    backdrop.setAttribute("aria-hidden", "true");
+                    document.body.style.overflow = "";
+                    clearError();
+
+                    if (previousFocus && typeof previousFocus.focus === "function") {
+                        previousFocus.focus();
+                    }
+                }
+
+                function saveQuestion(event) {
+                    event.preventDefault();
+                    clearError();
+
+                    const text = $("qnaInputText").value.trim();
+                    const key = $("qnaInputKey").value.trim();
+                    const helper = $("qnaInputHelper").value.trim();
+                    const required = $("qnaInputRequired").checked;
+                    const options = [...answerList.querySelectorAll(".qna-answer-input")]
+                        .map(input => input.value.trim());
+
+                    if (!text) {
+                        showError("Enter the question text.");
+                        $("qnaInputText").focus();
+                        return;
+                    }
+
+                    if (!/^[a-zA-Z][a-zA-Z0-9_]*$/.test(key)) {
+                        showError("The identifier must start with a letter and contain only letters, numbers, or underscores.");
+                        $("qnaInputKey").focus();
+                        return;
+                    }
+
+                    const duplicateKey = questions.some(question =>
+                        question.key.toLowerCase() === key.toLowerCase() &&
+                        question.id !== editingId
+                    );
+
+                    if (duplicateKey) {
+                        showError("That question identifier is already in use. Choose a unique identifier.");
+                        $("qnaInputKey").focus();
+                        return;
+                    }
+
+                    if (options.length < 2 || options.some(option => !option)) {
+                        showError("Enter at least two answer options, and make sure none are empty.");
+                        return;
+                    }
+
+                    if (new Set(options.map(option => option.toLowerCase())).size !== options.length) {
+                        showError("Answer options must be distinct. Remove duplicate options.");
+                        return;
+                    }
+
+                    if (editingId !== null) {
+                        const index = questions.findIndex(question => question.id === editingId);
+                        if (index !== -1) {
+                            questions[index] = { id: editingId, text, key, helper, required, options };
+                            selectedId = editingId;
+                        }
+                    } else {
+                        const question = { id: nextId++, text, key, helper, required, options };
+                        questions.push(question);
+                        selectedId = question.id;
+                    }
+
+                    closeModal();
+                    render();
+                    markDirty();
+                    showToast("Question saved in this page's temporary UI state.");
+                }
+
+                // Sidebar/navigation is intentionally NOT wired to open this modal.
+                $("addQuestionButton").addEventListener("click", () => openModal(null));
+
+                $("editQuestionButton").addEventListener("click", () => {
+                    const question = selectedQuestion();
+                    if (question) openModal(question);
+                });
+
+                $("qnaModalClose").addEventListener("click", closeModal);
+                $("qnaCancelButton").addEventListener("click", closeModal);
+                $("qnaAddOptionButton").addEventListener("click", () => addOption());
+                form.addEventListener("submit", saveQuestion);
+
+                backdrop.addEventListener("click", event => {
+                    if (event.target === backdrop) closeModal();
+                });
+
+                document.addEventListener("keydown", event => {
+                    if (event.key === "Escape" && !backdrop.hidden) closeModal();
+                });
+
+                $("questionList").addEventListener("click", event => {
+                    const button = event.target.closest("[data-select-question]");
+                    if (!button) return;
+
+                    selectedId = Number(button.dataset.selectQuestion);
+                    render();
+                });
+
+                $("themeToggle").addEventListener("click", () => {
+                    const html = document.documentElement;
+                    const nextTheme = html.dataset.theme === "dark" ? "light" : "dark";
+                    html.dataset.theme = nextTheme;
+                    $("themeToggle").textContent = nextTheme === "dark" ? "☀ Light theme" : "☾ Dark theme";
+                });
+
+                $("saveDraftButton").addEventListener("click", () => {
+                    // Demo only: deliberately does not call an API or database.
+                    $("draftStatus").textContent = "Draft saved locally for this session";
+                    showToast("Demo only: connect persistence after the UI is complete.");
+                });
+
+                $("previewButton").addEventListener("click", () => {
+                    document.querySelector(".preview-column").scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+                });
+
+                $("backToWidgets").addEventListener("click", event => {
+                    event.preventDefault();
+                    showToast("Demo page: navigation will be connected in the Razor portal.");
+                });
+
+                render();
+            })();
+    </script>

@@ -1,0 +1,294 @@
+﻿
+/* =========================================================
+   AskPearls Merchant Portal
+   Shared Page Styles
+   File: wwwroot/app_css/app_page_shared_css.css
+   ========================================================= */
+
+/* ---------- Shared design tokens ---------- */
+
+:root {
+    --ap-page-bg: var(--bs-body-bg, #f6f8fb);
+    --ap-surface: var(--bs-card-bg, #ffffff);
+    --ap-text: var(--bs-body-color, #243247);
+    --ap-muted: #748196;
+    --ap-border: var(--bs-border-color, #e4e9f0);
+    --ap-primary: #16866f;
+    --ap-primary-hover: #116c5a;
+    --ap-radius: 14px;
+    --ap-radius-sm: 9px;
+    --ap-page-padding: 24px;
+    --ap-section-gap: 24px;
+    --ap-shadow: 0 4px 18px rgba(30, 45, 65, 0.045);
+}
+
+/* ---------- Main page container ---------- */
+
+.ap-page {
+    width: 100%;
+    min-width: 0;
+    min-height: 100%;
+    padding: var(--ap-page-padding);
+    color: var(--ap-text);
+    background: var(--ap-page-bg);
+    box-sizing: border-box;
+}
+
+    .ap-page *,
+    .ap-page *::before,
+    .ap-page *::after {
+        box-sizing: border-box;
+    }
+
+/* ---------- Breadcrumb ---------- */
+
+.ap-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin: 0 0 12px;
+    padding: 0;
+    color: var(--ap-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+    .ap-breadcrumb a {
+        color: var(--ap-muted);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+        .ap-breadcrumb a:hover {
+            color: var(--ap-primary);
+        }
+
+.ap-breadcrumb-separator {
+    color: var(--ap-muted);
+    opacity: 0.7;
+    user-select: none;
+}
+
+.ap-breadcrumb-current {
+    color: var(--ap-text);
+    font-weight: 600;
+}
+
+/* ---------- Page heading ---------- */
+
+.ap-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: var(--ap-section-gap);
+}
+
+.ap-page-heading {
+    min-width: 0;
+    flex: 1 1 280px;
+}
+
+.ap-page-title {
+    margin: 0;
+    color: var(--ap-text);
+    font-size: clamp(23px, 2vw, 30px);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.4px;
+}
+
+.ap-page-description {
+    margin: 8px 0 0;
+    color: var(--ap-muted);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.ap-page-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* ---------- Sections and layouts ---------- */
+
+.ap-page-section {
+    margin-bottom: var(--ap-section-gap);
+}
+
+    .ap-page-section:last-child {
+        margin-bottom: 0;
+    }
+
+.ap-section-title {
+    margin: 0 0 14px;
+    color: var(--ap-text);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.ap-section-description {
+    margin: -5px 0 16px;
+    color: var(--ap-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.ap-page-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.ap-col-12 {
+    grid-column: span 12;
+}
+
+.ap-col-8 {
+    grid-column: span 8;
+}
+
+.ap-col-6 {
+    grid-column: span 6;
+}
+
+.ap-col-4 {
+    grid-column: span 4;
+}
+
+/* ---------- Shared cards ---------- */
+
+.ap-card {
+    min-width: 0;
+    padding: 22px;
+    background: var(--ap-surface);
+    border: 1px solid var(--ap-border);
+    border-radius: var(--ap-radius);
+    box-shadow: var(--ap-shadow);
+}
+
+.ap-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.ap-card-title {
+    margin: 0;
+    color: var(--ap-text);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.ap-card-description {
+    margin: 6px 0 0;
+    color: var(--ap-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ---------- Common buttons ---------- */
+
+.ap-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 9px 16px;
+    color: #ffffff;
+    background: var(--ap-primary);
+    border: 1px solid var(--ap-primary);
+    border-radius: var(--ap-radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+    .ap-btn-primary:hover,
+    .ap-btn-primary:focus-visible {
+        color: #ffffff;
+        background: var(--ap-primary-hover);
+        border-color: var(--ap-primary-hover);
+    }
+
+/* ---------- Shared empty states ---------- */
+
+.ap-empty-state {
+    padding: 36px 20px;
+    color: var(--ap-muted);
+    text-align: center;
+    border: 1px dashed var(--ap-border);
+    border-radius: var(--ap-radius);
+}
+
+.ap-empty-state-title {
+    margin: 0 0 8px;
+    color: var(--ap-text);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.ap-empty-state-description {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ---------- Responsive layout ---------- */
+
+@media (max-width: 991.98px) {
+    :root {
+        --ap-page-padding: 20px;
+        --ap-section-gap: 20px;
+    }
+
+    .ap-col-8,
+    .ap-col-6,
+    .ap-col-4 {
+        grid-column: span 12;
+    }
+}
+
+@media (max-width: 575.98px) {
+    :root {
+        --ap-page-padding: 14px;
+        --ap-section-gap: 18px;
+    }
+
+    .ap-page-title {
+        font-size: 23px;
+    }
+
+    .ap-page-header {
+        gap: 12px;
+    }
+
+    .ap-page-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .ap-card {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .ap-breadcrumb {
+        font-size: 12px;
+        gap: 7px;
+    }
+}

@@ -406,3 +406,67 @@ text-decoration:none;
         flex: 0 0 auto;
         white-space: nowrap;
     }
+
+
+
+/* =========================================================
+   AskPearls Sidebar — Light Mode Readability
+   Preserve the dark teal sidebar in both themes.
+   ========================================================= */
+
+#askPearlsSidebar .ap-nav-link,
+#askPearlsSidebar .ap-nav-link:link,
+#askPearlsSidebar .ap-nav-link:visited {
+    color: #C7D8E0 !important;
+    opacity: 1 !important;
+    font-weight: 500;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+    #askPearlsSidebar .ap-nav-link i,
+    #askPearlsSidebar .ap-nav-link svg,
+    #askPearlsSidebar .ap-nav-link .nav-icon {
+        color: #B8CDD6 !important;
+        opacity: 1 !important;
+    }
+
+    /* Hover: improve visibility without changing the layout */
+    #askPearlsSidebar .ap-nav-link:hover {
+        color: #FFFFFF !important;
+        background-color: rgba(255, 255, 255, 0.08);
+    }
+
+        #askPearlsSidebar .ap-nav-link:hover i,
+        #askPearlsSidebar .ap-nav-link:hover svg,
+        #askPearlsSidebar .ap-nav-link:hover .nav-icon {
+            color: #FFFFFF !important;
+        }
+
+    /* Current page */
+    #askPearlsSidebar .ap-nav-link.active,
+    #askPearlsSidebar .ap-nav-link[aria-current="page"] {
+        color: #FFFFFF !important;
+        background-color: #07543F !important;
+        font-weight: 600;
+    }
+
+        #askPearlsSidebar .ap-nav-link.active i,
+        #askPearlsSidebar .ap-nav-link.active svg,
+        #askPearlsSidebar .ap-nav-link.active .nav-icon {
+            color: #FFFFFF !important;
+        }
+
+/* Sidebar section headings */
+#askPearlsSidebar .sidebar-heading,
+#askPearlsSidebar .nav-section-title {
+    color: #AFC5D0 !important;
+    opacity: 1 !important;
+    font-weight: 700;
+}
+
+/* Sidebar group descriptions and secondary labels */
+#askPearlsSidebar .text-muted,
+#askPearlsSidebar .nav-description {
+    color: #B8CDD6 !important;
+    opacity: 1 !important;
+}

@@ -1,0 +1,1112 @@
+﻿<!-- PAGE 4: RECOMMENDATION ITEMS -->
+<div class="recommendation-page container-fluid py-4">
+
+    <!-- Page Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Recommendation Items</h2>
+            <p class="text-muted mb-0">
+                Manage the products, services, or outcomes your DecisionOS widgets recommend.
+            </p>
+        </div>
+
+        <button type="button" class="ri-btn-primary" id="riAddButton">
+            <i class="bi bi-plus-lg"></i>
+            Add Recommendation
+        </button>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="ri-stat-card">
+                <div class="ri-stat-icon ri-icon-purple">
+                    <i class="bi bi-layers"></i>
+                </div>
+                <div>
+                    <div class="ri-stat-label">Total Items</div>
+                    <div class="ri-stat-value" id="riTotalCount">3</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="ri-stat-card">
+                <div class="ri-stat-icon ri-icon-green">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <div>
+                    <div class="ri-stat-label">Active Items</div>
+                    <div class="ri-stat-value" id="riActiveCount">3</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="ri-stat-card">
+                <div class="ri-stat-icon ri-icon-blue">
+                    <i class="bi bi-diagram-3"></i>
+                </div>
+                <div>
+                    <div class="ri-stat-label">Used in Rules</div>
+                    <div class="ri-stat-value">—</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="ri-stat-card">
+                <div class="ri-stat-icon ri-icon-orange">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+                <div>
+                    <div class="ri-stat-label">Recommendations Served</div>
+                    <div class="ri-stat-value">—</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory -->
+    <div class="ri-panel">
+
+        <div class="ri-panel-header">
+            <div>
+                <h5 class="fw-bold mb-1">Recommendation Inventory</h5>
+                <p class="text-muted small mb-0">
+                    Create and maintain the outcomes available to your decision widgets.
+                </p>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="ri-toolbar">
+            <div class="ri-search">
+                <i class="bi bi-search"></i>
+                <input type="search"
+                       id="riSearch"
+                       placeholder="Search by name or identifier..."
+                       aria-label="Search recommendation items">
+            </div>
+
+            <select id="riStatusFilter" aria-label="Filter by status">
+                <option value="all">All statuses</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table ri-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Recommendation Item</th>
+                        <th>Identifier</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="riTableBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div class="ri-empty-state d-none" id="riEmptyState">
+            <div class="ri-empty-icon">
+                <i class="bi bi-inboxes"></i>
+            </div>
+            <h5 class="fw-bold mt-3">No recommendation items found</h5>
+            <p class="text-muted mb-3">
+                Add your first recommendation or change your search filters.
+            </p>
+            <button type="button" class="ri-btn-primary" id="riEmptyAddButton">
+                <i class="bi bi-plus-lg"></i>
+                Add Recommendation
+            </button>
+        </div>
+
+        <div class="ri-panel-footer">
+            <span class="text-muted small" id="riResultsCount">Showing 3 items</span>
+        </div>
+    </div>
+</div>
+
+<!-- Add / Edit Modal -->
+<div class="ri-modal-backdrop" id="riModalBackdrop" aria-hidden="true">
+    <section class="ri-modal"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="riModalTitle">
+
+        <header class="ri-modal-header">
+            <div class="d-flex align-items-center gap-3">
+                <div class="ri-modal-icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-1" id="riModalTitle">Add Recommendation</h5>
+                    <p class="text-muted small mb-0">
+                        Configure the recommendation item details.
+                    </p>
+                </div>
+            </div>
+
+            <button type="button"
+                    class="ri-close-button"
+                    id="riModalClose"
+                    aria-label="Close dialog">
+                &times;
+            </button>
+        </header>
+
+        <form id="riForm">
+            <div class="ri-modal-body">
+
+                <div class="ri-form-field">
+                    <label for="riName">Recommendation name <span>*</span></label>
+                    <input type="text"
+                           id="riName"
+                           maxlength="150"
+                           required
+                           placeholder="e.g. Oslo Sofa">
+                </div>
+
+                <div class="ri-form-field">
+                    <label for="riKey">Unique identifier <span>*</span></label>
+                    <input type="text"
+                           id="riKey"
+                           maxlength="100"
+                           required
+                           pattern="[a-zA-Z][a-zA-Z0-9_]*"
+                           placeholder="e.g. oslo_sofa"
+                           autocomplete="off">
+                    <small>Use letters, numbers and underscores. Start with a letter.</small>
+                </div>
+
+                <div class="ri-form-field">
+                    <label for="riDescription">Description</label>
+                    <textarea id="riDescription"
+                              maxlength="500"
+                              rows="3"
+                              placeholder="Describe this recommendation and when it is suitable."></textarea>
+                </div>
+
+                <div class="ri-form-field">
+                    <label for="riImageUrl">Image URL <span class="text-muted">(optional)</span></label>
+                    <input type="url"
+                           id="riImageUrl"
+                           placeholder="https://example.com/image.jpg">
+                    <small>Image upload and media-library integration can be added later.</small>
+                </div>
+
+                <div class="ri-form-field">
+                    <label>Status</label>
+                    <label class="ri-status-setting">
+                        <span>
+                            <strong>Active recommendation</strong>
+                            <small>Allow this item to be used in decision rules.</small>
+                        </span>
+                        <span class="ri-switch">
+                            <input type="checkbox" id="riActive" checked>
+                            <span class="ri-switch-track"></span>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="ri-form-error" id="riFormError" role="alert"></div>
+            </div>
+
+            <footer class="ri-modal-footer">
+                <button type="button" class="ri-btn-outline" id="riCancelButton">
+                    Cancel
+                </button>
+                <button type="submit" class="ri-btn-primary" id="riSaveButton">
+                    <i class="bi bi-check-lg"></i>
+                    Save Recommendation
+                </button>
+            </footer>
+        </form>
+    </section>
+</div>
+
+<style>
+    /* =========================================================
+       RECOMMENDATION ITEMS
+       Scoped styles: will not overwrite the rest of the portal.
+       ========================================================= */
+
+    .recommendation-page {
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+    }
+
+        .recommendation-page .text-muted {
+            color: var(--ap-muted, var(--bs-secondary-color, #718096)) !important;
+        }
+
+    .ri-stat-card,
+    .ri-panel {
+        background: var(--ap-card-bg, var(--bs-body-bg, #ffffff));
+        border: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        border-radius: 14px;
+    }
+
+    .ri-stat-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 20px;
+        height: 100%;
+    }
+
+    .ri-stat-icon {
+        width: 46px;
+        height: 46px;
+        flex: 0 0 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 20px;
+    }
+
+    .ri-icon-purple {
+        background: #eee8ff;
+        color: #7651c7;
+    }
+
+    .ri-icon-green {
+        background: #dff7ed;
+        color: #159b70;
+    }
+
+    .ri-icon-blue {
+        background: #e2efff;
+        color: #3979d6;
+    }
+
+    .ri-icon-orange {
+        background: #fff0dc;
+        color: #c47a1b;
+    }
+
+    .ri-stat-label {
+        color: var(--ap-muted, #718096);
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    .ri-stat-value {
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 25px;
+        font-weight: 750;
+        line-height: 1.1;
+    }
+
+    .ri-panel {
+        overflow: hidden;
+    }
+
+    .ri-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 22px 24px;
+        border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .ri-toolbar {
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) 180px;
+        gap: 12px;
+        padding: 18px 24px;
+    }
+
+    .ri-search {
+        position: relative;
+    }
+
+        .ri-search > i {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--ap-muted, #718096);
+            pointer-events: none;
+        }
+
+        .ri-search input,
+        .ri-toolbar select,
+        .ri-form-field input,
+        .ri-form-field textarea {
+            width: 100%;
+            min-width: 0;
+            color: var(--ap-text, var(--bs-body-color, #17212b));
+            background: var(--ap-input-bg, var(--bs-tertiary-bg, #f4f8f7));
+            border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+            border-radius: 9px;
+            padding: 11px 13px;
+            font: inherit;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .ri-search input {
+            padding-left: 38px;
+        }
+
+            .ri-search input:focus,
+            .ri-toolbar select:focus,
+            .ri-form-field input:focus,
+            .ri-form-field textarea:focus {
+                border-color: #13ad91;
+                box-shadow: 0 0 0 3px rgba(19, 173, 145, .13);
+            }
+
+    .ri-table {
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        --bs-table-bg: transparent;
+        --bs-table-color: var(--ap-text, var(--bs-body-color, #17212b));
+        --bs-table-border-color: var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+        .ri-table thead th {
+            padding: 13px 18px;
+            background: var(--ap-table-header, var(--bs-tertiary-bg, #f7faf9));
+            color: var(--ap-muted, #718096);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .035em;
+            white-space: nowrap;
+        }
+
+        .ri-table tbody td {
+            padding: 16px 18px;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+    .ri-item-name {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 175px;
+    }
+
+    .ri-item-icon {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        color: #159b82;
+        background: rgba(19, 173, 145, .12);
+        font-size: 18px;
+    }
+
+    .ri-item-title {
+        font-weight: 700;
+        margin-bottom: 3px;
+    }
+
+    .ri-item-subtitle {
+        font-size: 11px;
+        color: var(--ap-muted, #718096);
+    }
+
+    .ri-key {
+        display: inline-block;
+        padding: 5px 8px;
+        border-radius: 6px;
+        color: var(--ap-muted, #64748b);
+        background: var(--ap-input-bg, var(--bs-tertiary-bg, #f4f8f7));
+        font-family: Consolas, monospace;
+        font-size: 11px;
+        overflow-wrap: anywhere;
+    }
+
+    .ri-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 30px;
+        padding: 5px 10px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+        .ri-status-badge::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+    .ri-status-active {
+        color: #12815f;
+        background: rgba(22, 163, 117, .12);
+    }
+
+    .ri-status-inactive {
+        color: var(--ap-muted, #718096);
+        background: var(--ap-input-bg, var(--bs-tertiary-bg, #f1f5f4));
+    }
+
+    .ri-action-group {
+        display: flex;
+        justify-content: flex-end;
+        gap: 7px;
+    }
+
+    .ri-action-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+        border-radius: 8px;
+        padding: 7px 10px;
+        background: transparent;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+        .ri-action-button:hover,
+        .ri-btn-outline:hover {
+            border-color: #13ad91;
+            color: #13ad91;
+        }
+
+    .ri-btn-primary,
+    .ri-btn-outline {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        border-radius: 9px;
+        padding: 10px 15px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background .15s ease, border-color .15s ease;
+    }
+
+    .ri-btn-primary {
+        border: 1px solid #0da88b;
+        background: #0da88b;
+        color: #fff;
+    }
+
+        .ri-btn-primary:hover {
+            background: #078d74;
+            border-color: #078d74;
+            color: #fff;
+        }
+
+    .ri-btn-outline {
+        border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+        background: transparent;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+    }
+
+    .ri-panel-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 24px;
+        border-top: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .ri-empty-state {
+        text-align: center;
+        padding: 55px 20px;
+    }
+
+    .ri-empty-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        border-radius: 18px;
+        background: rgba(19, 173, 145, .1);
+        color: #13ad91;
+        font-size: 27px;
+    }
+
+    /* Modal */
+
+    .ri-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(8, 19, 23, .65);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+    }
+
+        .ri-modal-backdrop.is-open {
+            display: flex;
+        }
+
+    .ri-modal {
+        display: flex;
+        flex-direction: column;
+        width: min(100%, 720px);
+        max-height: calc(100dvh - 40px);
+        overflow: hidden;
+        border: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        border-radius: 17px;
+        background: var(--ap-modal-bg, var(--bs-body-bg, #fff));
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        box-shadow: 0 25px 90px rgba(0, 0, 0, .25);
+    }
+
+    .ri-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 20px 24px;
+        flex: 0 0 auto;
+        border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+    }
+
+    .ri-modal-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 11px;
+        background: rgba(19, 173, 145, .12);
+        color: #13ad91;
+        font-size: 19px;
+    }
+
+    .ri-close-button {
+        width: 36px;
+        height: 36px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--ap-text, var(--bs-body-color, #17212b));
+        font-size: 25px;
+        cursor: pointer;
+    }
+
+        .ri-close-button:hover {
+            background: var(--ap-input-bg, var(--bs-tertiary-bg, #f4f8f7));
+        }
+
+    #riForm {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .ri-modal-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: 23px 24px;
+    }
+
+    .ri-form-field {
+        margin-bottom: 20px;
+    }
+
+        .ri-form-field > label:first-child {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .ri-form-field > label > span:not(.ri-switch) {
+            color: #e05263;
+        }
+
+        .ri-form-field small,
+        .ri-status-setting small {
+            display: block;
+            margin-top: 7px;
+            color: var(--ap-muted, #718096);
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .ri-form-field textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+    .ri-status-setting {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 15px;
+        border: 1px solid var(--ap-border, var(--bs-border-color, #dce8e4));
+        border-radius: 10px;
+        background: var(--ap-input-bg, var(--bs-tertiary-bg, #f4f8f7));
+    }
+
+        .ri-status-setting strong {
+            font-size: 12px;
+        }
+
+        .ri-status-setting small {
+            margin-top: 4px;
+        }
+
+    .ri-switch {
+        position: relative;
+        display: inline-block;
+        width: 42px;
+        height: 24px;
+        flex: 0 0 42px;
+    }
+
+        .ri-switch input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+
+    .ri-switch-track {
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        background: #9aa8a5;
+        cursor: pointer;
+        transition: background .2s ease;
+    }
+
+        .ri-switch-track::before {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #fff;
+            transition: transform .2s ease;
+        }
+
+    .ri-switch input:checked + .ri-switch-track {
+        background: #0da88b;
+    }
+
+        .ri-switch input:checked + .ri-switch-track::before {
+            transform: translateX(18px);
+        }
+
+    .ri-switch input:focus-visible + .ri-switch-track {
+        outline: 3px solid rgba(19, 173, 145, .25);
+    }
+
+    .ri-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 24px;
+        flex: 0 0 auto;
+        border-top: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        background: var(--ap-modal-bg, var(--bs-body-bg, #fff));
+    }
+
+    .ri-form-error {
+        display: none;
+        padding: 10px 12px;
+        border: 1px solid #efb2b8;
+        border-radius: 8px;
+        color: #c43c4c;
+        background: rgba(224, 82, 99, .08);
+        font-size: 12px;
+    }
+
+        .ri-form-error:not(:empty) {
+            display: block;
+        }
+
+    body.ri-modal-open {
+        overflow: hidden;
+    }
+
+    /* Responsive */
+
+    @@media (max-width: 767.98px) {
+        .ri-toolbar {
+            grid-template-columns: 1fr;
+            padding: 15px;
+        }
+
+        .ri-panel-header {
+            padding: 18px 16px;
+        }
+
+        .ri-table thead {
+            display: none;
+        }
+
+        .ri-table tbody tr {
+            display: block;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--ap-border, var(--bs-border-color, #e2e8f0));
+        }
+
+        .ri-table tbody td {
+            display: block;
+            padding: 7px 0;
+            border: 0;
+        }
+
+            .ri-table tbody td::before {
+                content: attr(data-label);
+                display: block;
+                margin-bottom: 5px;
+                color: var(--ap-muted, #718096);
+                font-size: 10px;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+
+            .ri-table tbody td:first-child::before {
+                display: none;
+            }
+
+        .ri-action-group {
+            justify-content: flex-start;
+        }
+
+        .ri-modal-backdrop {
+            padding: 10px;
+            align-items: center;
+        }
+
+        .ri-modal {
+            max-height: calc(100dvh - 20px);
+            border-radius: 13px;
+        }
+
+        .ri-modal-header {
+            padding: 15px;
+        }
+
+        .ri-modal-body {
+            padding: 18px 15px;
+        }
+
+        .ri-modal-footer {
+            padding: 12px 15px;
+        }
+    }
+
+    @@media (max-width: 399px) {
+        .ri-btn-primary,
+        .ri-btn-outline {
+            padding: 9px 10px;
+            font-size: 12px;
+        }
+
+        .ri-stat-card {
+            padding: 14px;
+        }
+
+        .ri-panel-footer {
+            padding: 12px 15px;
+        }
+    }
+</style>
+
+<script>
+    (function() {
+        "use strict";
+
+        // Prevent duplicate initialization if this partial is loaded again by AJAX.
+        if (window.askPearlsRecommendationItemsInitialized) {
+            if (typeof window.askPearlsRecommendationItemsRefresh === "function") {
+                window.askPearlsRecommendationItemsRefresh();
+            }
+            return;
+        }
+
+        window.askPearlsRecommendationItemsInitialized = true;
+
+        // Temporary UI-only data. Replace with API data after all portal pages are complete.
+        let recommendationItems = [
+            {
+                id: 1,
+                name: "Oslo Sofa",
+                key: "oslo_sofa",
+                description: "A compact, practical sofa for everyday comfort.",
+                imageUrl: "",
+                active: true
+            },
+            {
+                id: 2,
+                name: "Luna Sofa",
+                key: "luna_sofa",
+                description: "A contemporary sofa with a style-focused design.",
+                imageUrl: "",
+                active: true
+            },
+            {
+                id: 3,
+                name: "Haven Sofa",
+                key: "haven_sofa",
+                description: "A spacious option for larger living areas.",
+                imageUrl: "",
+                active: true
+            }
+        ];
+
+        let editingId = null;
+
+        const $ = id => document.getElementById(id);
+
+        const elements = {
+            body: $("riTableBody"),
+            search: $("riSearch"),
+            filter: $("riStatusFilter"),
+            total: $("riTotalCount"),
+            active: $("riActiveCount"),
+            results: $("riResultsCount"),
+            empty: $("riEmptyState"),
+            backdrop: $("riModalBackdrop"),
+            form: $("riForm"),
+            title: $("riModalTitle"),
+            name: $("riName"),
+            key: $("riKey"),
+            description: $("riDescription"),
+            imageUrl: $("riImageUrl"),
+            activeInput: $("riActive"),
+            error: $("riFormError"),
+            save: $("riSaveButton")
+        };
+
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, character => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            })[character]);
+        }
+
+        function render() {
+            const searchValue = elements.search.value.trim().toLowerCase();
+            const statusValue = elements.filter.value;
+
+            const filteredItems = recommendationItems.filter(item => {
+                const matchesSearch =
+                    (item.name + " " + item.key + " " + item.description)
+                        .toLowerCase().includes(searchValue);
+
+                const matchesStatus =
+                    statusValue === "all" ||
+                    (statusValue === "active" && item.active) ||
+                    (statusValue === "inactive" && !item.active);
+
+                return matchesSearch && matchesStatus;
+            });
+
+            elements.total.textContent = recommendationItems.length;
+            elements.active.textContent =
+                recommendationItems.filter(item => item.active).length;
+
+            elements.results.textContent =
+                `Showing ${filteredItems.length} of ${recommendationItems.length} items`;
+
+            elements.empty.classList.toggle("d-none", filteredItems.length !== 0);
+
+            elements.body.innerHTML = filteredItems.map(item => `
+                <tr>
+                    <td data-label="Recommendation Item">
+                        <div class="ri-item-name">
+                            <div class="ri-item-icon">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                            <div>
+                                <div class="ri-item-title">${escapeHtml(item.name)}</div>
+                                <div class="ri-item-subtitle">Recommendation outcome</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-label="Identifier">
+                        <code class="ri-key">${escapeHtml(item.key)}</code>
+                    </td>
+                    <td data-label="Description">
+                        <span>${escapeHtml(item.description || "—")}</span>
+                    </td>
+                    <td data-label="Status">
+                        <span class="ri-status-badge ${item.active ? "ri-status-active" : "ri-status-inactive"}">
+                            ${item.active ? "Active" : "Inactive"}
+                        </span>
+                    </td>
+                    <td data-label="Actions">
+                        <div class="ri-action-group">
+                            <button type="button"
+                                    class="ri-action-button"
+                                    data-ri-action="edit"
+                                    data-ri-id="${item.id}">
+                                <i class="bi bi-pencil"></i> Edit
+                            </button>
+                            <button type="button"
+                                    class="ri-action-button"
+                                    data-ri-action="toggle"
+                                    data-ri-id="${item.id}">
+                                <i class="bi bi-${item.active ? "pause-circle" : "play-circle"}"></i>
+                                ${item.active ? "Deactivate" : "Activate"}
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join("");
+        }
+
+        function openModal(item) {
+            editingId = item ? item.id : null;
+
+            elements.title.textContent =
+                item ? "Edit Recommendation" : "Add Recommendation";
+
+            elements.save.innerHTML = item
+                ? '<i class="bi bi-check-lg"></i> Save Changes'
+                : '<i class="bi bi-check-lg"></i> Save Recommendation';
+
+            elements.name.value = item ? item.name : "";
+            elements.key.value = item ? item.key : "";
+            elements.description.value = item ? item.description : "";
+            elements.imageUrl.value = item ? item.imageUrl : "";
+            elements.activeInput.checked = item ? item.active : true;
+            elements.error.textContent = "";
+
+            elements.backdrop.classList.add("is-open");
+            elements.backdrop.setAttribute("aria-hidden", "false");
+            document.body.classList.add("ri-modal-open");
+
+            requestAnimationFrame(() => elements.name.focus());
+        }
+
+        function closeModal() {
+            elements.backdrop.classList.remove("is-open");
+            elements.backdrop.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("ri-modal-open");
+            elements.form.reset();
+            elements.error.textContent = "";
+            editingId = null;
+        }
+
+        function saveItem(event) {
+            event.preventDefault();
+            elements.error.textContent = "";
+
+            const name = elements.name.value.trim();
+            const key = elements.key.value.trim();
+            const description = elements.description.value.trim();
+            const imageUrl = elements.imageUrl.value.trim();
+
+            if (!name || !key) {
+                elements.error.textContent =
+                    "Please enter both a recommendation name and identifier.";
+                return;
+            }
+
+            const duplicate = recommendationItems.some(item =>
+                item.key.toLowerCase() === key.toLowerCase() &&
+                item.id !== editingId
+            );
+
+            if (duplicate) {
+                elements.error.textContent =
+                    "This identifier is already in use. Choose a unique identifier.";
+                elements.key.focus();
+                return;
+            }
+
+            const item = {
+                id: editingId ?? Math.max(0, ...recommendationItems.map(x => x.id)) + 1,
+                name,
+                key,
+                description,
+                imageUrl,
+                active: elements.activeInput.checked
+            };
+
+            if (editingId !== null) {
+                recommendationItems = recommendationItems.map(existing =>
+                    existing.id === editingId ? item : existing
+                );
+            } else {
+                recommendationItems.push(item);
+            }
+
+            closeModal();
+            render();
+        }
+
+        elements.search.addEventListener("input", render);
+        elements.filter.addEventListener("change", render);
+        elements.form.addEventListener("submit", saveItem);
+
+        $("riAddButton").addEventListener("click", () => openModal(null));
+        $("riEmptyAddButton").addEventListener("click", () => openModal(null));
+        $("riModalClose").addEventListener("click", closeModal);
+        $("riCancelButton").addEventListener("click", closeModal);
+
+        elements.backdrop.addEventListener("click", event => {
+            if (event.target === elements.backdrop) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape" &&
+                elements.backdrop.classList.contains("is-open")) {
+                closeModal();
+            }
+        });
+
+        elements.body.addEventListener("click", event => {
+            const button = event.target.closest("[data-ri-action]");
+            if (!button) return;
+
+            const id = Number(button.dataset.riId);
+            const item = recommendationItems.find(x => x.id === id);
+            if (!item) return;
+
+            if (button.dataset.riAction === "edit") {
+                openModal(item);
+            } else if (button.dataset.riAction === "toggle") {
+                item.active = !item.active;
+                render();
+            }
+        });
+
+        window.askPearlsRecommendationItemsRefresh = render;
+
+        render();
+    })();
+</script>
+```
