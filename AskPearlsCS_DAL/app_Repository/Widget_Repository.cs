@@ -27,8 +27,10 @@ namespace AskPearlsCS_DAL.app_Repository
                 .AskpearlsPortalUserWebsiteWidgetLists
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x =>
-                    x.WidgetPublicKey  == publicKey &&
-                    x.WidgetStatusCode == "published");
+                    x.WidgetPublicKey == publicKey &&
+                    x.WidgetStatusCode == "published" &&
+                    x.IsActive == true &&
+                    x.IsVisible == true);
 
             return Widget_Mapper.ToDomain(entity);
         }

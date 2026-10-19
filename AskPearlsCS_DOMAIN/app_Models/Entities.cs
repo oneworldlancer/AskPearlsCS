@@ -9,14 +9,14 @@ public abstract class Entity
 
 public class User : Entity
 {
-    public string Email { get; set; } = "";
-    public string DisplayName { get; set; } = "";
+    public string Email { get; set; } = "0";
+    public string DisplayName { get; set; } = "0";
 }
 
 public class Organization : Entity
 {
-    public string Name { get; set; } = "";
-    public string Slug { get; set; } = "";
+    public string Name { get; set; } = "0";
+    public string Slug { get; set; } = "0";
     public string Status { get; set; } = "Active";
 }
 
@@ -30,8 +30,8 @@ public class OrganizationMember : Entity
 public class Website : Entity
 {
     public Guid OrganizationId { get; set; }
-    public string Name { get; set; } = "";
-    public string Domain { get; set; } = "";
+    public string Name { get; set; } = "0";
+    public string Domain { get; set; } = "0";
     public bool IsActive { get; set; } = true;
 }
 
@@ -51,21 +51,21 @@ public class Widget : Entity
     public Guid WebsiteId { get; set; }
 
     // Business / application identity
-    public string WidgetTokenId { get; set; } = "";
+    public string WidgetTokenId { get; set; } = "0";
 
-    public string WidgetCode { get; set; } = "";
-    public string WidgetType { get; set; } = "";
+    public string WidgetCode { get; set; } = "0";
+    public string WidgetType { get; set; } = "0";
 
-    public string WidgetName { get; set; } = "";
-    public string WidgetTitle { get; set; } = "";
-    public string WidgetDescription { get; set; } = "";
+    public string WidgetName { get; set; } = "0";
+    public string WidgetTitle { get; set; } = "0";
+    public string WidgetDescription { get; set; } = "0";
 
     // Public identifier used by the embed script
-    public string WidgetPublicKey { get; set; } = "";
+    public string WidgetPublicKey { get; set; } = "0";
 
     public string WidgetStatusCode { get; set; } = "draft";
     public string WidgetStatusText { get; set; } = "draft";
-       public string WidgetStatus { get; set; } = "draft";
+    public string WidgetStatus { get; set; } = "draft";
 
     public int WidgetPublishedVersion { get; set; }
 }
@@ -163,20 +163,20 @@ public class DecisionRule : Entity
     public string WidgetVersionTokenId { get; set; }
         = string.Empty;
 
-     //public string WidgetVersionTokenId { get; set; }
-     //   = string.Empty;
+    //public string WidgetVersionTokenId { get; set; }
+    //   = string.Empty;
 
-     public string WidgetQuestionTokenId { get; set; }
-        = string.Empty;
+    public string WidgetQuestionTokenId { get; set; }
+       = string.Empty;
 
-     public string WidgetQuestionKey { get; set; }
-        = string.Empty;
+    public string WidgetQuestionKey { get; set; }
+       = string.Empty;
 
-     public string WidgetAnswerTokenId { get; set; }
-        = string.Empty;
+    public string WidgetAnswerTokenId { get; set; }
+       = string.Empty;
 
-     public string WidgetAnswerKey { get; set; }
-        = string.Empty;
+    public string WidgetAnswerKey { get; set; }
+       = string.Empty;
 
     public string QuestionTokenId { get; set; }
         = string.Empty;
@@ -202,9 +202,13 @@ public class DecisionRule : Entity
 
 public class WidgetEvent : Entity
 {
-    public string WidgetEventTokenId { get; set; } = "";
+    public string WidgetEventTokenId { get; set; } = "0";
 
     public Guid OrganizationId { get; set; }
+
+    public string OrganizationTokenId { get; set; } = "0";
+
+    public string WidgetTokenId { get; set; } = "0";
 
     public Guid WebsiteId { get; set; }
 
@@ -212,11 +216,13 @@ public class WidgetEvent : Entity
 
     public Guid? WidgetVersionId { get; set; }
 
-    public string SessionId { get; set; } = "";
+    public string SessionId { get; set; } = "0";
 
     public string? VisitorId { get; set; }
 
-    public string EventType { get; set; } = "";
+    public string EventType { get; set; } = "0";
+
+    public string PayloadJson { get; set; } = "0";
 
     public Guid? QuestionId { get; set; }
 
@@ -249,17 +255,17 @@ public class RecommendationItem : Entity
 {
     public Guid WidgetVersionId { get; set; }
 
-    public string RecommendationTokenId { get; set; } = "";
+    public string RecommendationTokenId { get; set; } = "0";
 
-    public string Key { get; set; } = "";
+    public string Key { get; set; } = "0";
 
-    public string Code { get; set; } = "";
+    public string Code { get; set; } = "0";
 
-    public string Type { get; set; } = "";
+    public string Type { get; set; } = "0";
 
-    public string Name { get; set; } = "";
+    public string Name { get; set; } = "0";
 
-    public string Title { get; set; } = "";
+    public string Title { get; set; } = "0";
 
     public string? ShortDescription { get; set; }
 
@@ -293,7 +299,7 @@ public class RecommendationItem : Entity
 
 public class WidgetSession : Entity
 {
-    public string WidgetSessionTokenId { get; set; } = "";
+    public string WidgetSessionTokenId { get; set; } = "0";
 
     public Guid OrganizationId { get; set; }
 
@@ -303,7 +309,7 @@ public class WidgetSession : Entity
 
     public Guid? WidgetVersionId { get; set; }
 
-    public string SessionId { get; set; } = "";
+    public string SessionId { get; set; } = "0";
 
     public string? VisitorId { get; set; }
 

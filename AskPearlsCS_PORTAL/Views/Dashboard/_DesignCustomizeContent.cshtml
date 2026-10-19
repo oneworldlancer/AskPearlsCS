@@ -1,5 +1,5 @@
 <!-- PAGE: DESIGN & CUSTOMIZE -->
-<div class="ap-page design-customize-page" data-ap-page="design-customize">
+<div class="ap-page design-customize-page" data-ap-page="design-customize" data-api-base="https://localhost:7014/api" data-demo-owner-user-token="1101" data-widget-public-key="pk_demo_sofa_finder">
     <!-- Shared AskPearls breadcrumb -->
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
@@ -31,7 +31,7 @@
         <div class="dc-selector-info">
             <label for="dcWidgetSelect">Widget to customize</label>
             <select id="dcWidgetSelect">
-                <option value="sofa">Sofa Finder Widget</option>
+                <option value="sofa" data-public-key="pk_demo_sofa_finder">Sofa Finder Widget</option>
                 <option value="furniture">Furniture Recommendation Widget</option>
                 <option value="demo">Demo Recommendation Widget</option>
             </select>
@@ -80,6 +80,16 @@
                         <input type="text" id="dcTextHex" value="#17212B"
                                maxlength="7" aria-label="Text color hex value">
                     </div>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcTheme">Widget theme</label>
+                    <select id="dcTheme">
+                        <option value="custom">Custom colors</option>
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                    </select>
+                    <small>Choose a light or dark palette, or use your custom background and text colors.</small>
                 </div>
 
                 <div class="dc-field">
@@ -278,5 +288,5 @@
 
                         <link href="~/app_page_css/app_page_design_customize_css.css" rel="stylesheet" />
 
-  <script src="~/app_page_js/app_page_design_customize_js.js" />
+  <script src="~/app_page_js/app_page_design_customize_js.js"></script>
 

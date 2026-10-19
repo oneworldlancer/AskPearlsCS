@@ -67,24 +67,28 @@
 
         .ap-card {
             position: fixed;
-            right: 24px;
-            bottom: 24px;
-            width: 360px;
+            right: var(--ap-right, 24px);
+            left: var(--ap-left, auto);
+            top: var(--ap-top, auto);
+            bottom: var(--ap-bottom, 24px);
+            transform: var(--ap-transform, none);
+            width: var(--ap-width, 360px);
             max-width: calc(100vw - 32px);
             max-height: calc(100vh - 32px);
             overflow-y: auto;
-            background: #fff;
-            color: #172033;
+            background: var(--ap-background, #fff);
+            color: var(--ap-text, #172033);
             border: 1px solid #e5e7eb;
-            border-radius: 18px;
-            box-shadow: 0 18px 50px rgba(0,0,0,.16);
-            font-family: Arial, Helvetica, sans-serif;
+            border-radius: var(--ap-radius, 18px);
+            box-shadow: var(--ap-shadow, 0 18px 50px rgba(0,0,0,.16));
+            font-family: var(--ap-font, Arial, Helvetica, sans-serif);
+            font-size: var(--ap-font-size, 14px);
             z-index: 2147483647;
         }
 
         .ap-head {
             padding: 20px;
-            background: #0d6efd;
+            background: var(--ap-primary, #0d6efd);
             color: #fff;
         }
 
@@ -112,7 +116,7 @@
 
         .ap-progress {
             height: 5px;
-            background: #e9ecef;
+            background: var(--ap-progress-bg, #e9ecef);
             border-radius: 10px;
             overflow: hidden;
             margin-bottom: 18px;
@@ -120,13 +124,13 @@
 
         .ap-progress-bar {
             height: 100%;
-            background: #0d6efd;
+            background: var(--ap-primary, #0d6efd);
             transition: width .3s ease;
         }
 
         .ap-question-count {
             margin-bottom: 9px;
-            color: #667085;
+            color: var(--ap-muted-text, #667085);
             font-size: 12px;
         }
 
@@ -135,6 +139,7 @@
             line-height: 1.45;
             font-weight: 700;
             margin-bottom: 17px;
+            color: var(--ap-text, #172033);
         }
 
         .ap-options {
@@ -146,10 +151,10 @@
         .ap-answer {
             width: 100%;
             padding: 13px 14px;
-            border: 1px solid #d0d5dd;
-            border-radius: 10px;
-            background: #fff;
-            color: #172033;
+            border: 1px solid var(--ap-answer-border, #d0d5dd);
+            border-radius: var(--ap-button-radius, 10px);
+            background: var(--ap-answer-bg, #fff);
+            color: var(--ap-answer-text, var(--ap-text, #172033));
             text-align: left;
             font-size: 14px;
             cursor: pointer;
@@ -158,8 +163,8 @@
 
         .ap-answer:hover,
         .ap-answer:focus-visible {
-            background: #eff6ff;
-            border-color: #0d6efd;
+            background: var(--ap-answer-hover, #eff6ff);
+            border-color: var(--ap-primary, #0d6efd);
             outline: none;
         }
 
@@ -174,6 +179,11 @@
             font-size: 14px;
             line-height: 1.5;
         }
+
+        .ap-welcome { padding: 22px 20px 18px; }
+        .ap-welcome-description { margin: 10px 0 18px; line-height: 1.55; }
+        .ap-welcome-start { width: 100%; }
+        .ap-footer { margin-top: 16px; color: #667085; font-size: 11px; text-align: center; }
 
         .ap-error { color: #b42318; }
 
@@ -199,7 +209,7 @@
         }
 
         .ap-result-label {
-            color: #667085;
+            color: var(--ap-text, #667085);
             font-size: 12px;
             margin-bottom: 5px;
         }
@@ -214,12 +224,12 @@
         .ap-result-short {
             font-size: 14px;
             line-height: 1.55;
-            color: #475467;
+            color: var(--ap-text, #475467);
         }
 
         .ap-score {
             margin-top: 12px;
-            color: #667085;
+            color: var(--ap-text, #667085);
             font-size: 12px;
         }
 
@@ -240,7 +250,7 @@
             gap: 8px;
             font-size: 13px;
             line-height: 1.45;
-            color: #344054;
+            color: var(--ap-text, #344054);
         }
 
         .ap-check { color: #198754; font-weight: 700; }
@@ -270,7 +280,7 @@
         .ap-restart {
             display: inline-block;
             padding: 11px 13px;
-            border-radius: 9px;
+            border-radius: var(--ap-button-radius, 9px);
             font-size: 13px;
             font-weight: 700;
             text-decoration: none;
@@ -278,12 +288,12 @@
         }
 
         .ap-cta {
-            background: #0d6efd;
+            background: var(--ap-primary, #0d6efd);
             color: #fff;
-            border: 1px solid #0d6efd;
+            border: 1px solid var(--ap-primary, #0d6efd);
         }
 
-        .ap-cta:hover { background: #0b5ed7; }
+        .ap-cta:hover { filter: brightness(.92); }
 
         .ap-restart {
             background: #fff;
@@ -295,9 +305,10 @@
 
         @media (max-width: 480px) {
             .ap-card {
-                right: 12px;
-                bottom: 12px;
-                width: calc(100vw - 24px);
+                right: var(--ap-mobile-right, 12px);
+                left: var(--ap-mobile-left, auto);
+                bottom: var(--ap-mobile-bottom, 12px);
+                width: min(var(--ap-width, 360px), calc(100vw - 24px));
                 max-width: none;
                 max-height: calc(100vh - 24px);
             }
@@ -305,6 +316,123 @@
     `;
 
     root.appendChild(style);
+
+    // Apply the published design configuration when available. If it cannot
+    // be loaded, the widget continues with its built-in defaults.
+    function applyPublishedDesign (design) {
+        if (!design || typeof design !== "object") return;
+
+        const hex = value => /^#[0-9a-f]{6}$/i.test(value || "");
+        const hostStyle = host.style;
+        const theme = [ "custom", "light", "dark" ].includes(design.theme)
+            ? design.theme
+            : "custom";
+        designConfig.theme = theme;
+        const themeBackground = theme === "dark" ? "#15231E"
+            : theme === "light" ? "#FFFFFF" : design.background;
+        const configuredText = hex(design.text) ? design.text : "#17212B";
+        // Theme chooses a readable default only when the saved text color is
+        // still the original default. Explicit merchant text colors win.
+        const themeText = theme === "dark" && configuredText.toUpperCase() === "#17212B"
+            ? "#E7F0EC"
+            : configuredText;
+
+        if (hex(design.primary)) hostStyle.setProperty("--ap-primary", design.primary);
+        if (hex(themeBackground)) hostStyle.setProperty("--ap-background", themeBackground);
+        if (hex(themeText)) hostStyle.setProperty("--ap-text", themeText);
+        if (theme === "dark") {
+            hostStyle.setProperty("--ap-answer-bg", "#20342D");
+            hostStyle.setProperty("--ap-answer-text", configuredText);
+            hostStyle.setProperty("--ap-answer-border", "#496157");
+            hostStyle.setProperty("--ap-answer-hover", "#2B443A");
+            hostStyle.setProperty("--ap-muted-text", "#B9C8C0");
+            hostStyle.setProperty("--ap-progress-bg", "#344740");
+        } else if (theme === "light") {
+            hostStyle.setProperty("--ap-answer-bg", "#FFFFFF");
+            hostStyle.setProperty("--ap-answer-text", "#17212B");
+            hostStyle.setProperty("--ap-answer-border", "#D0D5DD");
+            hostStyle.setProperty("--ap-answer-hover", "#EFF6FF");
+            hostStyle.setProperty("--ap-muted-text", "#667085");
+            hostStyle.setProperty("--ap-progress-bg", "#E9ECEF");
+        } else {
+            hostStyle.setProperty("--ap-answer-bg", "#FFFFFF");
+            hostStyle.setProperty("--ap-answer-text", hex(design.text) ? design.text : "#17212B");
+            hostStyle.setProperty("--ap-answer-border", "#D0D5DD");
+            hostStyle.setProperty("--ap-answer-hover", "#EFF6FF");
+            hostStyle.setProperty("--ap-muted-text", hex(design.text) ? design.text : "#667085");
+            hostStyle.setProperty("--ap-progress-bg", "#E9ECEF");
+        }
+        if (typeof design.font === "string" && design.font.length <= 80) {
+            hostStyle.setProperty("--ap-font", design.font);
+        }
+        if (Number.isFinite(Number(design.width))) {
+            hostStyle.setProperty("--ap-width", `${ Math.min(520, Math.max(300, Number(design.width))) }px`);
+        }
+        if (Number.isFinite(Number(design.radius))) {
+            hostStyle.setProperty("--ap-radius", `${ Math.min(28, Math.max(0, Number(design.radius))) }px`);
+        }
+        if (Number.isFinite(Number(design.fontSize))) {
+            hostStyle.setProperty("--ap-font-size", `${ Math.min(18, Math.max(12, Number(design.fontSize))) }px`);
+        }
+        const buttonShape = design.buttonShape || "rounded";
+        const buttonRadius = buttonShape === "rounded" && Number.isFinite(Number(design.radius))
+            ? `${ Math.min(28, Math.max(0, Number(design.radius))) }px`
+            : buttonShape === "pill" ? "999px" : buttonShape === "square" ? "2px" : "9px";
+        hostStyle.setProperty(
+            "--ap-button-radius",
+            buttonRadius
+        );
+        if (typeof design.heading === "string" && design.heading.trim()) {
+            designConfig.heading = design.heading.trim();
+        }
+        if (typeof design.description === "string") {
+            designConfig.description = design.description.trim();
+        }
+        if (typeof design.buttonText === "string") {
+            designConfig.buttonText = design.buttonText.trim();
+        }
+        if (typeof design.footer === "string") {
+            designConfig.footer = design.footer.trim();
+        }
+        hostStyle.setProperty(
+            "--ap-shadow",
+            design.shadow === false ? "none" : "0 18px 50px rgba(0,0,0,.16)"
+        );
+
+        const position = design.position || "bottom-right";
+        if (position === "bottom-left") {
+            hostStyle.setProperty("--ap-left", "24px");
+            hostStyle.setProperty("--ap-right", "auto");
+            hostStyle.setProperty("--ap-mobile-left", "12px");
+            hostStyle.setProperty("--ap-mobile-right", "auto");
+        } else if (position === "center") {
+            hostStyle.setProperty("--ap-left", "50%");
+            hostStyle.setProperty("--ap-right", "auto");
+            hostStyle.setProperty("--ap-top", "50%");
+            hostStyle.setProperty("--ap-bottom", "auto");
+            hostStyle.setProperty("--ap-transform", "translate(-50%, -50%)");
+            hostStyle.setProperty("--ap-mobile-left", "50%");
+            hostStyle.setProperty("--ap-mobile-right", "auto");
+            hostStyle.setProperty("--ap-mobile-bottom", "50%");
+        }
+    }
+
+    const designConfig = {};
+
+    async function loadPublishedDesign () {
+        const response = await fetch(
+            `${ apiUrl }/api/widgets/${ encodeURIComponent(publicKey) }/version`,
+            { method: "GET", headers: { "Accept": "application/json" } }
+        );
+        if (!response.ok) {
+            throw new Error(`Published design API returned HTTP ${ response.status }`);
+        }
+
+        const data = await response.json();
+        let design = data.configurationJson || data.ConfigurationJson || data.configuration;
+        if (typeof design === "string") design = JSON.parse(design);
+        applyPublishedDesign(design);
+    }
 
     // ----------------------------------------------------------
     // 4. State
@@ -317,11 +445,36 @@
 
     const answers = {};
 
-    const sessionId =
-        window.crypto && window.crypto.randomUUID
-            ? window.crypto.randomUUID()
-            : "session-" + Date.now() + "-" +
-            Math.random().toString(36).slice(2);
+    let widgetSessionTokenId = null;
+
+    async function startSession () {
+        const response = await fetch(`${ apiUrl }/api/sessions`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                publicKey: publicKey
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(
+                `Session API returned HTTP ${ response.status }`
+            );
+        }
+
+        const result = await response.json();
+
+        if (!result || result.success !== true ||
+            !result.widgetSessionTokenId) {
+            throw new Error(
+                "The session API did not return a session token."
+            );
+        }
+
+        widgetSessionTokenId = result.widgetSessionTokenId;
+    }
 
     // ----------------------------------------------------------
     // 5. Safe HTML helpers
@@ -358,15 +511,46 @@
     }
 
     function getWidgetTitle () {
-        return config?.widget?.title ||
+        return designConfig.heading ||
+            config?.widget?.title ||
             config?.widget?.name ||
             "Find Your Perfect Match";
     }
 
     function getWidgetSubtitle () {
-        return config?.widget?.subtitle ||
+        return designConfig.description ||
+            config?.widget?.subtitle ||
             config?.widget?.description ||
             "";
+    }
+
+    function renderWelcome () {
+        root.querySelector(".ap-card")?.remove();
+
+        const card = document.createElement("div");
+        card.className = "ap-card";
+        const description = designConfig.description || getWidgetSubtitle();
+        const buttonText = designConfig.buttonText || "Get started";
+        const footer = designConfig.footer || "Powered by AskPearls";
+
+        card.innerHTML = `
+            <div class="ap-head">
+                <div class="ap-brand">AskPearls DecisionOS</div>
+                <div class="ap-title">${ escapeHtml(getWidgetTitle()) }</div>
+            </div>
+            <div class="ap-welcome">
+                ${ description ? `<p class="ap-welcome-description">${ escapeHtml(description) }</p>` : "" }
+                <button type="button" class="ap-cta ap-welcome-start">${ escapeHtml(buttonText) }</button>
+                ${ footer ? `<div class="ap-footer">${ escapeHtml(footer) }</div>` : "" }
+            </div>
+        `;
+
+        card.querySelector(".ap-welcome-start")?.addEventListener("click", () => {
+            sendEvent("widget_started", {});
+            renderQuestion();
+        });
+
+        root.appendChild(card);
     }
 
     // ----------------------------------------------------------
@@ -374,6 +558,13 @@
     // ----------------------------------------------------------
 
     function sendEvent (eventType, payload) {
+        if (!widgetSessionTokenId) {
+            console.warn(
+                "AskPearls analytics skipped: no active widget session."
+            );
+            return;
+        }
+
         fetch(`${ apiUrl }/api/events`, {
             method: "POST",
             headers: {
@@ -381,7 +572,7 @@
             },
             body: JSON.stringify({
                 publicKey: publicKey,
-                sessionId: sessionId,
+                widgetSessionTokenId: widgetSessionTokenId,
                 eventType: eventType,
                 payload: payload || {}
             })
@@ -700,6 +891,14 @@
                 percentage: best.percentage
             });
 
+            sendEvent("decision.completed", {
+                recommendationKey: best.key,
+                score: best.score,
+                maximumScore: best.maximumScore ||
+                    decision.maximumScore,
+                percentage: best.percentage
+            });
+
             renderRecommendation(
                 best,
                 decision.maximumScore
@@ -894,6 +1093,12 @@
     async function load () {
         showLoading("Loading published questions...");
 
+        try {
+            await loadPublishedDesign();
+        } catch (error) {
+            console.warn("AskPearls: published design settings could not be loaded; using defaults.", error);
+        }
+
         const url =
             `${ apiUrl }/api/widgets/` +
             `${ encodeURIComponent(publicKey) }/questions`;
@@ -947,21 +1152,24 @@
             questionCount: questions.length
         });
 
-        renderQuestion();
+        renderWelcome();
     }
 
     // ----------------------------------------------------------
     // 13. Initialize
     // ----------------------------------------------------------
 
-    load().catch(error => {
-        console.error("AskPearls widget initialization failed.", error);
+    startSession()
+        .then(load)
+        .catch(error => {
+            console.error("AskPearls widget initialization failed.", error);
 
-        showError(
-            "Unable to load the AskPearls widget. " +
-            "Please try again later.",
-            load
-        );
-    });
+            showError(
+                "Unable to load the AskPearls widget. " +
+                "Please try again later.",
+                load
+            );
+        });
 
 })(window, document);
+
