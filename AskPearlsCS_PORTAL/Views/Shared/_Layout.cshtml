@@ -148,7 +148,7 @@
 
         <div class="header-right">
             <div class="header-actions-desktop">
-                <div class="header-action-wrap dropdown lang-dropdown">
+                <div class="header-action-wrap dropdown lang-dropdown d-none">
                     <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Language">
                         <img src="../MemberView/assets/flag/us.png" alt="EN" class="lang-flag">
                         <span class="lang-code">EN</span>
@@ -187,7 +187,7 @@
                     </div>
                 </div>
 
-                <div class="header-action-wrap dropdown quickaccess-dropdown">
+                <div class="header-action-wrap dropdown quickaccess-dropdown d-none">
                     <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Quick Access">
                         <i class="ph-light ph-squares-four"></i>
                     </button>
@@ -306,7 +306,7 @@
                     </div>
                 </div>
 
-                <div class="header-action-wrap dropdown messages-dropdown">
+                <div class="header-action-wrap dropdown messages-dropdown d-none">
                     <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Messages">
                         <i class="bi bi-chat-left-text"></i>
                         <span class="header-badge">5</span>
@@ -442,12 +442,12 @@
                 <span class="mobile-menu-label">Alerts</span>
             </a>
 
-            <a href="apps-chat.html" class="mobile-menu-item">
+            <a href="apps-chat.html" class="mobile-menu-item d-none">
                 <i class="bi bi-chat-left-text"></i>
                 <span class="mobile-menu-label">Messages</span>
             </a>
 
-            <a href="apps-calendar.html" class="mobile-menu-item">
+            <a href="apps-calendar.html" class="mobile-menu-item d-none">
                 <i class="bi bi-calendar3"></i>
                 <span class="mobile-menu-label">Calendar</span>
             </a>
@@ -457,7 +457,7 @@
                 <span class="mobile-menu-label">Profile</span>
             </a>
 
-            <a href="settings.html" class="mobile-menu-item">
+            <a href="settings.html" class="mobile-menu-item d-none">
                 <i class="bi bi-sliders"></i>
                 <span class="mobile-menu-label">Settings</span>
             </a>
@@ -477,7 +477,7 @@
     <!-- ==========================================
      AskPearls Merchant Portal - Left Sidebar
      ========================================== -->
-    <aside id="askPearlsSidebar" class="sidebar ap-sidebar" style="margin-bottom:50px;-ms-overflow-style: none;scrollbar-width: none;">
+    <aside id="askPearlsSidebar" class="sidebar ap-sidebar" style="margin-bottom:60px;-ms-overflow-style: none;scrollbar-width: none;border-bottom-right-radius:10px;border-top-right-radius:10px;">
 
         <!-- Scrollable sidebar content -->
         <div class="ap-sidebar-scroll">
@@ -801,7 +801,7 @@
 
             Developed by
 
-            <a href="https://oneworldlancer.com"
+            <a href="https://OneWorldLancer.com"
                target="_blank" class="fw-bold"
                rel="noopener noreferrer">
                 OneWorldLancer
@@ -831,12 +831,31 @@
         </main>
 
         @* background-color:#152365; *@
-        <footer id="footer" class="footer text-center mt-auto" style="padding:5px;height:50px;
-            font-size:small;">
+        
+<footer class="ap-footer ap-footer--minimal">
+            <a class="ap-footer__company" href="https://AskPearls.com" target="_blank">
+        AskPearls Limited
+    </a>
+    <div class="ap-footer__copyright">
 
-            @{
-                var _iYear = DateTime.Now.Year;
+                @{
+                    var _iYear = DateTime.Now.Year;
+                }
+                Patent Pending. &copy; Copyright @{
+
+                @_iYear.ToString()
+                                        ;
+
             }
+            . All Rights Reserved.
+    </div>
+</footer>
+      <style>
+
+      </style>
+
+        <footer id="footer" class="footer text-center mt-auto d-none" style="padding:5px;height:50px;
+            font-size:small;">
 
        
             @* class="d-block d-lg-none" *@
@@ -1496,6 +1515,24 @@
 
                 success: function(html) {
                     $("#apMainContent").html(html);
+             
+             
+                    // Smoothly scroll the right content wrapper to the top
+                    $("#apMainContent").stop().animate(
+                        { scrollTop: 0 },
+                        1000
+                    );
+
+                    // $("html, body").stop().animate(
+                    //     { scrollTop: 0 },
+                    //     500
+                    // );
+                    // // Scroll the right content wrapper to the top
+                    // $("#apMainContent").scrollTop(0);
+
+                    // // Also reset the window if the browser page itself scrolls
+                    // $("html, body").scrollTop(0);
+
                 },
 
                 error: function(xhr) {
@@ -1516,8 +1553,9 @@
 
         $(document).on(
             "click",
-            "#apMainContent [data-page='widget-builder']",
-            function(e) {
+            //"#apMainContent [data-page='widget-builder']",
+            "#apMainContent [data-page]",
+           function(e) {
                 e.preventDefault();
 
                 const section = $(this).data("page");
@@ -1528,7 +1566,26 @@
                     data: { section: section },
 
                     success: function(html) {
+                      
                         $("#apMainContent").html(html);
+
+                        // Smoothly scroll the right content wrapper to the top
+                        $("#apMainContent").stop().animate(
+                            { scrollTop: 0 },
+                            1000
+                        );
+  
+//                         $("html, body").stop().animate(
+//     { scrollTop: 0 },
+//     500
+// );
+                        
+                        // // Scroll the right content wrapper to the top
+                // $("#apMainContent").scrollTop(0);
+
+                // // Also reset the window if the browser page itself scrolls
+                // $("html, body").scrollTop(0);
+
                     },
 
                     error: function() {
@@ -1537,6 +1594,87 @@
                 });
             }
         );
+
+
+
+        
+        (function() {
+            'use strict';
+
+            function initAskPearlsSidebar() {
+                const sidebar = document.getElementById('askPearlsSidebar');
+                const toggle = document.querySelector('.sidebar-toggle');
+                const backdrop = document.getElementById('apSidebarBackdrop');
+
+                if (!sidebar || !toggle || !backdrop) {
+                    return;
+                }
+
+                const mobileQuery = window.matchMedia('(max-width: 1199.98px)');
+
+                function openSidebar() {
+                    if (!mobileQuery.matches) return;
+
+                    document.body.classList.add('sidebar-open');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    backdrop.setAttribute('aria-hidden', 'false');
+                }
+
+                function closeSidebar() {
+                    document.body.classList.remove('sidebar-open');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    backdrop.setAttribute('aria-hidden', 'true');
+                }
+
+                toggle.setAttribute('aria-controls', 'askPearlsSidebar');
+                toggle.setAttribute('aria-expanded', 'false');
+
+                toggle.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    if (!mobileQuery.matches) return;
+
+                    if (document.body.classList.contains('sidebar-open')) {
+                        closeSidebar();
+                    } else {
+                        openSidebar();
+                    }
+                });
+
+                backdrop.addEventListener('click', closeSidebar);
+
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape') {
+                        closeSidebar();
+                    }
+                });
+
+                sidebar.querySelectorAll('.ap-nav-link[data-page]').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        if (mobileQuery.matches) {
+                            closeSidebar();
+                        }
+                    });
+                });
+
+                function handleBreakpointChange() {
+                    closeSidebar();
+                }
+
+                if (mobileQuery.addEventListener) {
+                    mobileQuery.addEventListener('change', handleBreakpointChange);
+                } else {
+                    mobileQuery.addListener(handleBreakpointChange);
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initAskPearlsSidebar);
+            } else {
+                initAskPearlsSidebar();
+            }
+        })();
+
 
 
 </script>
@@ -1558,7 +1696,7 @@
 <!-- Template Main JS Files -->
 <script src="MemberView/assets/js/theme.js"></script>
 <script src="MemberView/assets/js/main.js"></script>
-
+<script src="~/app_js/askpearls-sidebar-toggle.js"></script>
 </body>
 
 </html>

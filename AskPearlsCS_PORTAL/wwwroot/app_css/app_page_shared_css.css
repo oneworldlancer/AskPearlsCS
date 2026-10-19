@@ -29,6 +29,11 @@
     --ap-shadow: 0 4px 18px rgba(30, 45, 65, 0.045);
     --ap-breadcrumb-font-size: 13px;
     --ap-page-title-size: clamp(23px, 2vw, 30px);
+    /* Shared form controls: ivory in light theme, dark green in dark theme. */
+    --ap-control-bg: #ffffcc;
+    --ap-control-text: #263238;
+    --ap-control-placeholder: #667085;
+    --ap-control-border: #d9e2e8;
 }
 
 /* =========================================================
@@ -55,6 +60,11 @@ body[data-theme="dark"] {
     --ap-primary-hover: #36df91;
     --ap-primary-soft: #18392d;
     --ap-shadow: 0 4px 18px rgba(0, 0, 0, 0.14);
+    /* Shared form controls: dark green with light, readable text. */
+    --ap-control-bg: #102720;
+    --ap-control-text: #e7f2ee;
+    --ap-control-placeholder: #9bb0a7;
+    --ap-control-border: #29483f;
 }
 
 /* =========================================================
@@ -751,42 +761,138 @@ body.dark-mode .modal small,
 }
 
 
-/* AskPearls — Fix Widget Builder input contrast */
+/* =========================================================
+   AskPearls — Shared theme-aware form controls
+   Light theme: ivory background + dark text.
+   Dark theme: dark-green background + light text.
+   Applies consistently to standardized portal content.
+   ========================================================= */
+
 #apMainContent input,
 #apMainContent textarea,
 #apMainContent select,
 #apMainContent .form-control,
-#apMainContent .form-select {
-    color: #263238 !important;
-    -webkit-text-fill-color: #263238 !important;
-    caret-color: #263238 !important;
+#apMainContent .form-select,
+.ap-page input,
+.ap-page textarea,
+.ap-page select,
+.ap-page .form-control,
+.ap-page .form-select,
+.main-content.page-dashboard input,
+.main-content.page-dashboard textarea,
+.main-content.page-dashboard select,
+.main-content.page-dashboard .form-control,
+.main-content.page-dashboard .form-select,
+.page-widget-builder input,
+.page-widget-builder textarea,
+.page-widget-builder select,
+.page-widget-builder .form-control,
+.page-widget-builder .form-select,
+.page-my-widgets input,
+.page-my-widgets textarea,
+.page-my-widgets select,
+.page-my-widgets .form-control,
+.page-my-widgets .form-select {
+    color: var(--ap-control-text) !important;
+    -webkit-text-fill-color: var(--ap-control-text) !important;
+    caret-color: var(--ap-control-text) !important;
+    background-color: var(--ap-control-bg) !important;
+    border-color: var(--ap-control-border) !important;
 }
 
-    /* Input placeholder text */
+    /* Keep native select menus readable in both themes. */
+    #apMainContent select option,
+    #apMainContent .form-select option,
+    .ap-page select option,
+    .ap-page .form-select option,
+    .main-content.page-dashboard select option,
+    .main-content.page-dashboard .form-select option,
+    .page-widget-builder select option,
+    .page-widget-builder .form-select option,
+    .page-my-widgets select option,
+    .page-my-widgets .form-select option {
+        color: var(--ap-control-text) !important;
+        background-color: var(--ap-control-bg) !important;
+    }
+
+    /* Placeholder contrast follows the active theme. */
     #apMainContent input::placeholder,
     #apMainContent textarea::placeholder,
-    #apMainContent .form-control::placeholder {
-        color: #667085 !important;
-        -webkit-text-fill-color: #667085 !important;
-        opacity: 1 !important;
+    #apMainContent .form-control::placeholder,
+    .ap-page input::placeholder,
+    .ap-page textarea::placeholder,
+    .ap-page .form-control::placeholder,
+    .main-content.page-dashboard input::placeholder,
+    .main-content.page-dashboard textarea::placeholder,
+    .main-content.page-dashboard .form-control::placeholder,
+    .page-widget-builder input::placeholder,
+    .page-widget-builder textarea::placeholder,
+    .page-widget-builder .form-control::placeholder,
+    .page-my-widgets input::placeholder,
+    .page-my-widgets textarea::placeholder,
+    .page-my-widgets .form-control::placeholder {
+        color: var(--ap-control-placeholder) !important;
+        -webkit-text-fill-color: var(--ap-control-placeholder) !important;
+        opacity: 1;
     }
 
-    /* Keep readable text when browser autofill is active */
+    /* Preserve readable text when browser autofill is active. */
     #apMainContent input:-webkit-autofill,
     #apMainContent input:-webkit-autofill:hover,
-    #apMainContent input:-webkit-autofill:focus {
-        -webkit-text-fill-color: #263238 !important;
+    #apMainContent input:-webkit-autofill:focus,
+    .ap-page input:-webkit-autofill,
+    .ap-page input:-webkit-autofill:hover,
+    .ap-page input:-webkit-autofill:focus,
+    .page-widget-builder input:-webkit-autofill,
+    .page-widget-builder input:-webkit-autofill:hover,
+    .page-widget-builder input:-webkit-autofill:focus {
+        -webkit-text-fill-color: var(--ap-control-text) !important;
+        box-shadow: 0 0 0 1000px var(--ap-control-bg) inset !important;
+        caret-color: var(--ap-control-text) !important;
+    }
+
+    /* Disabled controls remain legible without pretending to be active. */
+    #apMainContent input:disabled,
+    #apMainContent textarea:disabled,
+    #apMainContent select:disabled,
+    .ap-page input:disabled,
+    .ap-page textarea:disabled,
+    .ap-page select:disabled,
+    .main-content.page-dashboard input:disabled,
+    .main-content.page-dashboard textarea:disabled,
+    .main-content.page-dashboard select:disabled,
+    .page-widget-builder input:disabled,
+    .page-widget-builder textarea:disabled,
+    .page-widget-builder select:disabled,
+    .page-my-widgets input:disabled,
+    .page-my-widgets textarea:disabled,
+    .page-my-widgets select:disabled {
+        opacity: 0.72;
     }
 
 
-#apMainContent select,
-#apMainContent .form-select {
-    color: #263238 !important;
-    -webkit-text-fill-color: #263238 !important;
-    background-color: #ffffcc;
+
+:root {
+    --ap-font-family: var(--default-font, "Inter"), Arial, sans-serif;
 }
 
-    #apMainContent select option {
-        color: #263238 !important;
-        background-color: #ffffcc !important;
+html,
+body {
+    font-family: var(--ap-font-family);
+}
+
+.ap-page,
+.ap-page * {
+    font-family: inherit;
+}
+
+
+a .btn, a:link .btn, a:visited .btn, a:hover .btn {
+        text-decoration: none !important;
     }
+
+
+
+.btn-success, .btn-outline-success {
+    text-decoration: none !important;
+}

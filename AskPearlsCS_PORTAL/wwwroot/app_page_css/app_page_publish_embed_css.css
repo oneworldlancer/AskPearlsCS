@@ -1,4 +1,4 @@
-﻿
+
 /* Match the shared page inset used by Design & Customize and other portal pages. */
 .publish-embed-page {
     --pe-accent: #0da88b;
@@ -1664,3 +1664,292 @@ body[data-bs-theme="dark"] .publish-embed-page .pe-custom-check {
             margin-bottom: 16px;
         }
 }
+
+
+/* =========================================================
+   RESPONSIVE POLISH — Publish & Embed
+   Scoped to this page; does not change publishing/backend logic.
+   ========================================================= */
+.ap-page.publish-embed-page,
+.ap-page.publish-embed-page * {
+    box-sizing: border-box;
+}
+
+.ap-page.publish-embed-page {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.ap-page.publish-embed-page .ap-breadcrumb,
+.ap-page.publish-embed-page .pe-page-header,
+.ap-page.publish-embed-page .pe-widget-selector,
+.ap-page.publish-embed-page .pe-summary-grid,
+.ap-page.publish-embed-page .pe-main-grid,
+.ap-page.publish-embed-page .pe-card,
+.ap-page.publish-embed-page .pe-checklist {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.ap-page.publish-embed-page .pe-page-header {
+    align-items: flex-start;
+}
+
+.ap-page.publish-embed-page .pe-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-width: 0;
+}
+
+.ap-page.publish-embed-page .pe-widget-selector {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+}
+
+.ap-page.publish-embed-page .pe-widget-info,
+.ap-page.publish-embed-page .pe-version,
+.ap-page.publish-embed-page .pe-summary-card > div:last-child,
+.ap-page.publish-embed-page .pe-card-heading > div {
+    min-width: 0;
+}
+
+.ap-page.publish-embed-page select,
+.ap-page.publish-embed-page input,
+.ap-page.publish-embed-page button {
+    max-width: 100%;
+}
+
+.ap-page.publish-embed-page .pe-main-grid {
+    grid-template-columns: minmax(0, 1.5fr) minmax(280px, .9fr);
+    align-items: start;
+}
+
+.ap-page.publish-embed-page .pe-code-block {
+    max-width: 100%;
+    white-space: pre;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+}
+
+.ap-page.publish-embed-page .pe-checklist {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+/* Actual markup uses .pe-check-item (not the older .pe-checklist-card). */
+.ap-page.publish-embed-page .pe-check-item {
+    min-width: 0;
+    max-width: 100%;
+    cursor: pointer;
+}
+
+.ap-page.publish-embed-page .pe-check-item > * {
+    min-width: 0;
+}
+
+.ap-page.publish-embed-page .pe-check-copy,
+.ap-page.publish-embed-page .pe-check-item small,
+.ap-page.publish-embed-page .pe-check-item strong {
+    overflow-wrap: anywhere;
+}
+
+.ap-page.publish-embed-page :focus-visible {
+    outline: 2px solid var(--pe-accent, #0da88b);
+    outline-offset: 3px;
+}
+
+@media (max-width: 1199.98px) {
+    .ap-page.publish-embed-page .pe-main-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ap-page.publish-embed-page .pe-checklist {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767.98px) {
+    .ap-page.publish-embed-page {
+        padding: 20px 16px !important;
+    }
+
+    .ap-page.publish-embed-page .pe-page-header {
+        align-items: stretch;
+        gap: 14px;
+    }
+
+    .ap-page.publish-embed-page .pe-header-actions {
+        justify-content: flex-start;
+    }
+
+    .ap-page.publish-embed-page .pe-widget-selector {
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: start;
+    }
+
+    .ap-page.publish-embed-page .pe-version {
+        grid-column: 2;
+    }
+
+    .ap-page.publish-embed-page .pe-summary-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ap-page.publish-embed-page .pe-checklist {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .ap-page.publish-embed-page {
+        padding: 16px 12px !important;
+    }
+
+    .ap-page.publish-embed-page .pe-page-header h1 {
+        font-size: clamp(22px, 6vw, 27px);
+        line-height: 1.2;
+    }
+
+    .ap-page.publish-embed-page .pe-header-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .ap-page.publish-embed-page #pePublishBtn {
+        flex: 1 1 auto;
+    }
+
+    .ap-page.publish-embed-page .pe-widget-selector {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .ap-page.publish-embed-page .pe-version {
+        grid-column: auto;
+    }
+
+    .ap-page.publish-embed-page .pe-domain-input-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ap-page.publish-embed-page .pe-domain-input-row input,
+    .ap-page.publish-embed-page .pe-add-domain {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .ap-page.publish-embed-page .pe-card {
+        padding: 16px;
+    }
+
+    .ap-page.publish-embed-page .pe-card-heading {
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+
+
+/* Publish & Embed — make allowed-domain icons visible in dark mode */
+html[data-theme="dark"] .publish-embed-page .pe-domain-icon,
+body[data-theme="dark"] .publish-embed-page .pe-domain-icon,
+html[data-bs-theme="dark"] .publish-embed-page .pe-domain-icon,
+body[data-bs-theme="dark"] .publish-embed-page .pe-domain-icon {
+    background-color: #102C25 !important;
+    color: #0DA88B !important;
+    border: 1px solid #29483E !important;
+}
+
+    html[data-theme="dark"] .publish-embed-page .pe-domain-icon i,
+    body[data-theme="dark"] .publish-embed-page .pe-domain-icon i,
+    html[data-bs-theme="dark"] .publish-embed-page .pe-domain-icon i,
+    body[data-bs-theme="dark"] .publish-embed-page .pe-domain-icon i {
+        color: #0DA88B !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+
+/* Publish & Embed — make allowed-domain icons visible in dark mode */
+html[data-theme="dark"] .publish-embed-page .pe-domain-icon,
+body[data-theme="dark"] .publish-embed-page .pe-domain-icon,
+html[data-bs-theme="dark"] .publish-embed-page .pe-domain-icon,
+body[data-bs-theme="dark"] .publish-embed-page .pe-domain-icon {
+    background-color: #102C25 !important;
+    color: #0DA88B !important;
+    border: 1px solid #29483E !important;
+}
+
+    html[data-theme="dark"] .publish-embed-page .pe-domain-icon i,
+    body[data-theme="dark"] .publish-embed-page .pe-domain-icon i,
+    html[data-bs-theme="dark"] .publish-embed-page .pe-domain-icon i,
+    body[data-bs-theme="dark"] .publish-embed-page .pe-domain-icon i {
+        color: #0DA88B !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+
+
+/* Publish & Embed — readable checklist cards in dark theme */
+/* Cards remain light, so their text must remain dark. */
+
+html[data-theme="dark"] .ap-page.publish-embed-page .pe-check-item,
+body[data-theme="dark"] .ap-page.publish-embed-page .pe-check-item,
+html[data-bs-theme="dark"] .ap-page.publish-embed-page .pe-check-item,
+body[data-bs-theme="dark"] .ap-page.publish-embed-page .pe-check-item {
+    background-color: #F8FAF9 !important;
+    border-color: #29483E !important;
+}
+
+html[data-theme="dark"] .ap-page.publish-embed-page .pe-check-copy strong,
+body[data-theme="dark"] .ap-page.publish-embed-page .pe-check-copy strong,
+html[data-bs-theme="dark"] .ap-page.publish-embed-page .pe-check-copy strong,
+body[data-bs-theme="dark"] .ap-page.publish-embed-page .pe-check-copy strong {
+    color: #243247 !important;
+    -webkit-text-fill-color: #243247 !important;
+    opacity: 1 !important;
+}
+
+html[data-theme="dark"] .ap-page.publish-embed-page .pe-check-copy small,
+body[data-theme="dark"] .ap-page.publish-embed-page .pe-check-copy small,
+html[data-bs-theme="dark"] .ap-page.publish-embed-page .pe-check-copy small,
+body[data-bs-theme="dark"] .ap-page.publish-embed-page .pe-check-copy small {
+    color: #536579 !important;
+    -webkit-text-fill-color: #536579 !important;
+    opacity: 1 !important;
+}
+
+/* Publish & Embed — readable widget dropdown in light theme */
+html:not([data-theme="dark"]) .ap-page select,
+html:not([data-theme="dark"]) .ap-page #peWidgetSelect {
+    background-color: #ffffcc !important;
+    color: #263238 !important;
+    -webkit-text-fill-color: #263238 !important;
+    border: 1px solid #dce4df;
+    opacity: 1 !important;
+}
+
+    /* Selected value and dropdown options */
+    html:not([data-theme="dark"]) .ap-page select option,
+    html:not([data-theme="dark"]) .ap-page #peWidgetSelect option {
+        background-color: #ffffcc !important;
+        color: #263238 !important;
+    }
+
+    /* Keep placeholder and disabled text readable */
+    html:not([data-theme="dark"]) .ap-page select:disabled,
+    html:not([data-theme="dark"]) .ap-page #peWidgetSelect:disabled {
+        color: #263238 !important;
+        -webkit-text-fill-color: #263238 !important;
+        opacity: 1 !important;
+    }

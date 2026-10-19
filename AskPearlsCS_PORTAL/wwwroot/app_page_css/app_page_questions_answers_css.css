@@ -938,3 +938,43 @@ html[data-theme="dark"] .qna-page .qna-form-control {
         color: var(--ap-muted, #a8bdb5);
         opacity: 1;
     }
+
+
+
+/* Questions & Answers — Required question setting in dark theme */
+html[data-theme="dark"] .qna-page .qna-required-setting {
+    background: #102720;
+    border-color: #29483f;
+    color: #e7f2ee;
+}
+
+    html[data-theme="dark"] .qna-page .qna-required-setting strong {
+        color: #f3faf7;
+    }
+
+    html[data-theme="dark"] .qna-page .qna-required-setting small {
+        color: #b5c9c1;
+    }
+
+html[data-theme="dark"] .qna-page .qna-switch-track {
+    background: #50665e;
+}
+
+html[data-theme="dark"] .qna-page .qna-switch input:checked + .qna-switch-track {
+    background: #17bd9c;
+}
+
+html[data-theme="dark"] .qna-page .qna-switch input:focus-visible + .qna-switch-track {
+    outline: 3px solid rgba(23, 189, 156, 0.4);
+    outline-offset: 3px;
+}
+
+
+/* Q&A — Ivory-yellow backgrounds in LIGHT theme */
+html:not([data-theme="dark"]) .qna-page .readonly-value,
+html:not([data-theme="dark"]) .qna-page .option-display,
+html:not([data-theme="dark"]) .qna-page .preview-option {
+    background-color: #ffffcc !important;
+    color: #263238 !important;
+    border-color: #dce4df;
+}

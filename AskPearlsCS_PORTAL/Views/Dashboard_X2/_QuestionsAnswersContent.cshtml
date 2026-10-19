@@ -1,0 +1,196 @@
+
+
+<div class="qna-page ap-page" data-ap-page="questions">
+    <nav class="ap-breadcrumb" aria-label="Breadcrumb">
+        <a href="/Dashboard">AskPearls</a>
+        <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
+        <span class="ap-breadcrumb-current" aria-current="page">Questions &amp; Answers</span>
+    </nav>
+
+    <header class="ap-page-header">
+        <div class="ap-page-heading">
+            <h1 class="ap-page-title">Questions &amp; Answers</h1>
+            <p class="ap-page-description">
+                Design the questions visitors answer in your DecisionOS experience.
+            </p>
+        </div>
+
+        <div class="ap-page-actions">
+            <span class="status-pill">
+                <span class="status-dot"></span>
+                <span id="draftStatus">Unsaved draft</span>
+            </span>
+            <button class="button" type="button" id="previewButton">◉ Preview</button>
+            <button class="button button-primary" type="button" id="saveDraftButton">▣ Save Draft</button>
+        </div>
+    </header>
+
+    <section class="widget-summary">
+        <div class="widget-icon">✦</div>
+        <div class="widget-meta">
+            <strong>Sofa Finder</strong>
+            <span>DecisionOS · Demo Website · UI sample</span>
+        </div>
+        <div>
+            <span class="muted">Questions</span>
+            &nbsp;
+            <strong id="questionCount">3</strong>
+        </div>
+    </section>
+
+    <div class="workspace">
+        <section class="card">
+            <div class="card-header">
+                <div>
+                    <h2>Your questions</h2>
+                    <p class="muted">Select a question to view details or edit it.</p>
+                </div>
+                <button class="button button-primary" id="addQuestionButton" type="button">＋ Add</button>
+            </div>
+
+            <div class="question-list" id="questionList"></div>
+
+            <div class="card-body muted">
+                ♣ &nbsp; Keep questions clear and easy for visitors to answer.
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-body">
+                <div class="section-heading">
+                    <div>
+                        <h2>Question overview</h2>
+                        <p class="muted">View the selected question and its answer options.</p>
+                    </div>
+                    <button class="button" id="editQuestionButton" type="button">✎ Edit Question</button>
+                </div>
+                <div id="questionOverview"></div>
+            </div>
+        </section>
+
+        <section class="preview-column">
+            <h2 class="preview-title">Visitor preview</h2>
+            <p class="muted">See how your question appears to a visitor.</p>
+
+            <div class="preview-shell">
+                <div class="preview-card">
+                    <div class="preview-brand">
+                        <div class="preview-brand-icon">✦</div>
+                        <span>DecisionOS</span>
+                    </div>
+
+                    <div class="progress-meta">
+                        <span id="previewProgressLabel">Question 1 of 3</span>
+                        <span id="previewProgressPercent">33%</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div class="progress-fill" id="previewProgressFill"></div>
+                    </div>
+
+                    <h2 class="preview-question" id="previewQuestion"></h2>
+                    <p class="preview-help" id="previewHelper"></p>
+                    <div id="previewOptions"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="qna-modal-backdrop" id="qnaModalBackdrop" hidden aria-hidden="true">
+        <section class="qna-modal" role="dialog" aria-modal="true" aria-labelledby="qnaModalTitle">
+            <div class="qna-modal-header">
+                <div class="qna-modal-heading">
+                    <div class="qna-modal-heading-icon" aria-hidden="true">＋</div>
+                    <div>
+                        <h2 class="qna-modal-title" id="qnaModalTitle">Add Question</h2>
+                        <p class="qna-modal-subtitle">Configure the question and its answer options.</p>
+                    </div>
+                </div>
+                <button type="button" class="qna-modal-close" id="qnaModalClose" aria-label="Close dialog">×</button>
+            </div>
+
+            <form id="qnaQuestionForm">
+                <div class="qna-modal-body">
+                    <div class="qna-modal-grid">
+                        <section class="qna-modal-section">
+                            <h3 class="qna-modal-section-title">Question details</h3>
+                            <p class="qna-modal-section-description">Define the question visitors will see.</p>
+
+                            <div class="qna-form-field">
+                                <label class="qna-form-label" for="qnaInputText">
+                                    Question text <span class="qna-required-star">*</span>
+                                </label>
+                                <textarea class="qna-form-control" id="qnaInputText" maxlength="300" required
+                                          placeholder="e.g. How many people will use the sofa?"></textarea>
+                            </div>
+
+                            <div class="qna-form-field">
+                                <label class="qna-form-label" for="qnaInputKey">
+                                    Question identifier <span class="qna-required-star">*</span>
+                                </label>
+                                <input class="qna-form-control" id="qnaInputKey" maxlength="80" required
+                                       pattern="[a-zA-Z][a-zA-Z0-9_]*"
+                                       placeholder="e.g. users" autocomplete="off">
+                                <small class="qna-field-help">
+                                    Use letters, numbers and underscores; start with a letter.
+                                </small>
+                            </div>
+
+                            <div class="qna-form-field">
+                                <label class="qna-form-label" for="qnaInputHelper">Helper text</label>
+                                <textarea class="qna-form-control" id="qnaInputHelper" maxlength="200" rows="3"
+                                          placeholder="Optional guidance for visitors"></textarea>
+                            </div>
+
+                            <div class="qna-required-setting">
+                                <div>
+                                    <strong>Required question</strong>
+                                    <small>Visitors must answer before continuing.</small>
+                                </div>
+                                <label class="qna-switch">
+                                    <input type="checkbox" id="qnaInputRequired" checked>
+                                    <span class="qna-switch-track"></span>
+                                </label>
+                            </div>
+                        </section>
+
+                        <section class="qna-modal-section">
+                            <div class="qna-answer-editor-header">
+                                <div>
+                                    <h3 class="qna-modal-section-title">Answer options</h3>
+                                    <p class="qna-modal-section-description">
+                                        Add the possible answers visitors can choose.
+                                    </p>
+                                </div>
+                                <button type="button" class="button button-small" id="qnaAddOptionButton">
+                                    ＋ Add option
+                                </button>
+                            </div>
+
+                            <div class="qna-answer-editor-list" id="qnaAnswerEditorList"></div>
+                            <small class="qna-field-help">
+                                Keep each answer short and distinct. Decision-scoring configuration can be connected later.
+                            </small>
+                        </section>
+                    </div>
+
+                    <div class="qna-modal-error" id="qnaModalError" role="alert"></div>
+                </div>
+
+                <div class="qna-modal-footer">
+                    <button type="button" class="button" id="qnaCancelButton">Cancel</button>
+                    <button type="submit" class="button button-primary" id="qnaSaveQuestionButton">
+                        ✓ Save Question
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="toast" id="toast" hidden role="status"></div>
+</div>
+
+                    <link href="~/app_page_css/app_page_questions_answers_css.css" rel="stylesheet" />
+
+  <script src="~/app_page_js/app_page_questions_answers_js.js" />
+

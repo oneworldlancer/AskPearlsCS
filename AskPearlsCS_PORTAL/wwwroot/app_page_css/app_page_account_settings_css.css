@@ -2206,3 +2206,10 @@ body[data-bs-theme="dark"] .account-settings-page .as-session-item {
             font-size: 23px;
         }
 }
+
+
+
+/* Preferences: spacing above the global theme notice */
+.account-settings-page [data-as-panel="preferences"] .as-info-banner {
+    margin-top: 16px;
+}

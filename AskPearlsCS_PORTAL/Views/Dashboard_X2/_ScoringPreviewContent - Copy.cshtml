@@ -1,0 +1,779 @@
+
+<div class="sp-page container-fluid py-4">
+    <!-- Shared AskPearls breadcrumb -->
+    <nav class="ap-breadcrumb" aria-label="Breadcrumb">
+        <a href="/Dashboard">AskPearls</a>
+        <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
+        <span class="ap-breadcrumb-current" aria-current="page">Scoring &amp; Preview</span>
+    </nav>
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Scoring &amp; Preview</h2>
+            <p class="text-muted mb-0">Configure answer scoring and understand why each recommendation ranks where it does.</p>
+        </div>
+        <span class="sp-demo-badge"><i class="bi bi-flask"></i> Interactive demo</span>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+            <div class="sp-stat">
+                <span class="text-muted small">Points per question</span>
+                <strong>50</strong>
+                <small>Each answer allocation must total 50.</small>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="sp-stat">
+                <span class="text-muted small">Sample questions</span>
+                <strong id="spQuestionCount">3</strong>
+                <small>From the current sofa-finder Q&amp;A prototype.</small>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="sp-stat">
+                <span class="text-muted small">Maximum score</span>
+                <strong id="spMaximum">150</strong>
+                <small>Number of questions × 50.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="sp-panel mb-4">
+        <div class="sp-panel-head">
+            <div>
+                <h5 class="mb-1 fw-bold">1. Configure answer allocations</h5>
+                <p class="text-muted small mb-0">Choose a question and answer, then distribute its 50 points among the recommendations.</p>
+            </div>
+        </div>
+
+        <div class="sp-panel-body">
+            <div class="row g-3 mb-3">
+                <div class="col-12 col-md-6">
+                    <label class="form-label" for="spEditQuestion">Question</label>
+                    <select id="spEditQuestion" class="form-select">
+                        <option value="users">How many people will use the sofa?</option>
+                        <option value="priority">What matters most to you?</option>
+                        <option value="room_size">How much space do you have?</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label" for="spEditAnswer">Answer option</label>
+                    <select id="spEditAnswer" class="form-select"></select>
+                </div>
+            </div>
+
+            <div id="spAllocationEditor" class="row g-3"></div>
+
+            <div class="sp-allocation-footer mt-3">
+                <div>
+                    <span class="text-muted small">Allocated points</span>
+                    <strong id="spAllocationTotal">50 / 50</strong>
+                </div>
+                <span id="spAllocationStatus" class="sp-valid">Valid allocation</span>
+            </div>
+            <div class="sp-progress mt-2">
+                <div id="spAllocationBar" style="width:100%"></div>
+            </div>
+            <p class="text-muted small mt-3 mb-0">
+                Changes are temporary and held in this page only. No database or widget configuration is changed.
+            </p>
+        </div>
+    </div>
+
+    <div class="sp-panel mb-4">
+        <div class="sp-panel-head">
+            <div>
+                <h5 class="mb-1 fw-bold">2. Simulate a visitor</h5>
+                <p class="text-muted small mb-0">Change answers to recalculate the recommendation scores instantly.</p>
+            </div>
+            <button type="button" class="btn btn-outline-secondary btn-sm" id="spResetAnswers">
+                <i class="bi bi-arrow-counterclockwise"></i> Reset answers
+            </button>
+        </div>
+        <div class="sp-panel-body">
+            <div class="row g-3" id="spVisitorAnswers"></div>
+        </div>
+    </div>
+
+    <div class="sp-panel mb-4">
+        <div class="sp-panel-head">
+            <div>
+                <h5 class="mb-1 fw-bold">3. Ranked recommendations</h5>
+                <p class="text-muted small mb-0">Each selected answer contributes its configured points to each recommendation.</p>
+            </div>
+        </div>
+        <div class="sp-panel-body">
+            <div id="spRanking"></div>
+            <div id="spRankingEmpty" class="text-muted small d-none">
+                Correct the allocation totals to 50 before using the preview.
+            </div>
+        </div>
+    </div>
+
+    <div class="sp-panel">
+        <div class="sp-panel-head">
+            <div>
+                <h5 class="mb-1 fw-bold">4. Score breakdown</h5>
+                <p class="text-muted small mb-0">See the exact points contributed by each selected answer.</p>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table sp-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Selected answer</th>
+                        <th>Oslo Sofa</th>
+                        <th>Luna Sofa</th>
+                        <th>Haven Sofa</th>
+                    </tr>
+                </thead>
+                <tbody id="spBreakdown"></tbody>
+                <tfoot id="spBreakdownFooter"></tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .sp-page {
+        color: var(--ap-text,var(--bs-body-color,#17212b));
+    }
+
+        .sp-page .text-muted {
+            color: var(--ap-muted,var(--bs-secondary-color,#718096)) !important;
+        }
+
+    .sp-demo-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 12px;
+        border-radius: 20px;
+        color: #087e68;
+        background: rgba(13,168,139,.12);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .sp-stat, .sp-panel {
+        background: var(--ap-card-bg,var(--bs-body-bg,#fff));
+        border: 1px solid var(--ap-border,var(--bs-border-color,#e2e8f0));
+        border-radius: 14px;
+    }
+
+    .sp-stat {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        height: 100%;
+    }
+
+        .sp-stat strong {
+            font-size: 28px;
+            line-height: 1.2;
+        }
+
+        .sp-stat small {
+            color: var(--ap-muted,#718096);
+        }
+
+    .sp-panel {
+        overflow: hidden;
+    }
+
+    .sp-panel-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 20px 22px;
+        border-bottom: 1px solid var(--ap-border,var(--bs-border-color,#e2e8f0));
+    }
+
+    .sp-panel-body {
+        padding: 22px;
+    }
+
+    .sp-page .form-label {
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .sp-page .form-select, .sp-page .form-control {
+        background-color: var(--ap-input-bg,var(--bs-tertiary-bg,#f4f8f7));
+        color: var(--ap-text,var(--bs-body-color,#17212b));
+        border-color: var(--ap-border,var(--bs-border-color,#dce8e4));
+    }
+
+    .sp-allocation-card {
+        padding: 15px;
+        height: 100%;
+        border-radius: 11px;
+        border: 1px solid var(--ap-border,var(--bs-border-color,#e2e8f0));
+        background: var(--ap-input-bg,var(--bs-tertiary-bg,#f7faf9));
+    }
+
+        .sp-allocation-card label {
+            font-size: 12px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .sp-allocation-card input {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+    .sp-allocation-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+        .sp-allocation-footer strong {
+            display: block;
+            font-size: 21px;
+        }
+
+    .sp-valid {
+        color: #12815f;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .sp-invalid {
+        color: #d04450;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .sp-progress {
+        height: 7px;
+        overflow: hidden;
+        border-radius: 20px;
+        background: var(--ap-border,#e2e8f0);
+    }
+
+        .sp-progress > div {
+            height: 100%;
+            background: #0da88b;
+            transition: width .2s ease;
+        }
+
+            .sp-progress > div.invalid {
+                background: #d04450;
+            }
+
+    .sp-answer-card {
+        padding: 15px;
+        height: 100%;
+        border: 1px solid var(--ap-border,var(--bs-border-color,#e2e8f0));
+        border-radius: 10px;
+    }
+
+        .sp-answer-card label {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+    .sp-result {
+        padding: 16px;
+        border: 1px solid var(--ap-border,var(--bs-border-color,#e2e8f0));
+        border-radius: 12px;
+        margin-bottom: 12px;
+    }
+
+        .sp-result.sp-winner {
+            border-color: #0da88b;
+            box-shadow: 0 0 0 1px rgba(13,168,139,.12);
+        }
+
+    .sp-result-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .sp-rank {
+        display: inline-grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+        background: var(--ap-input-bg,#edf4f1);
+        font-weight: 800;
+    }
+
+    .sp-score {
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    .sp-match-track {
+        height: 8px;
+        background: var(--ap-border,#e2e8f0);
+        border-radius: 20px;
+        overflow: hidden;
+        margin: 12px 0 8px;
+    }
+
+        .sp-match-track div {
+            height: 100%;
+            background: #0da88b;
+            border-radius: 20px;
+        }
+
+    .sp-table {
+        color: var(--ap-text,var(--bs-body-color,#17212b));
+        --bs-table-bg: transparent;
+        --bs-table-color: var(--ap-text,var(--bs-body-color,#17212b));
+        --bs-table-border-color: var(--ap-border,var(--bs-border-color,#e2e8f0));
+    }
+
+        .sp-table th {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--ap-muted,#718096);
+            background: var(--ap-table-header,var(--bs-tertiary-bg,#f7faf9));
+        }
+
+        .sp-table td, .sp-table th {
+            padding: 13px 16px;
+        }
+
+    .sp-points {
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+    }
+
+    @@media(max - width:767.98px) {
+        .sp-panel-head, .sp-panel-body {
+            padding: 16px;
+        }
+
+        .sp-stat {
+            padding: 15px;
+        }
+
+        .sp-table td, .sp-table th {
+            padding: 11px;
+            font-size: 12px;
+        }
+    }
+
+    
+/* =====================================================
+   SCORING & PREVIEW — DARK THEME FIX
+   Scoped to this page only
+   ===================================================== */
+
+html[data-theme="dark"] .sp-page {
+    color: #eff8f4;
+}
+
+/* Main headings and section headings */
+html[data-theme="dark"] .sp-page h1,
+html[data-theme="dark"] .sp-page h2,
+html[data-theme="dark"] .sp-page h3,
+html[data-theme="dark"] .sp-page h4,
+html[data-theme="dark"] .sp-page h5,
+html[data-theme="dark"] .sp-page label,
+html[data-theme="dark"] .sp-page .form-label {
+    color: #eff8f4;
+}
+
+/* Supporting text */
+html[data-theme="dark"] .sp-page .text-muted,
+html[data-theme="dark"] .sp-page p,
+html[data-theme="dark"] .sp-page small {
+    color: #a9c1b8 !important;
+}
+
+/* Statistics and panel surfaces */
+html[data-theme="dark"] .sp-page .sp-stat,
+html[data-theme="dark"] .sp-page .sp-panel,
+html[data-theme="dark"] .sp-page .sp-result,
+html[data-theme="dark"] .sp-page .sp-allocation-card,
+html[data-theme="dark"] .sp-page .sp-answer-card {
+    background: #0e2722;
+    color: #eff8f4;
+    border-color: #29483e;
+}
+
+/* Panel headers */
+html[data-theme="dark"] .sp-page .sp-panel-head {
+    background: #102c25;
+    border-color: #29483e;
+}
+
+/* Selects and text/number inputs */
+html[data-theme="dark"] .sp-page .form-select,
+html[data-theme="dark"] .sp-page .form-control {
+    background-color: #071b18;
+    color: #eff8f4;
+    border-color: #35584b;
+}
+
+/* Dropdown options */
+html[data-theme="dark"] .sp-page select option {
+    background-color: #0e2722;
+    color: #eff8f4;
+}
+
+/* Number allocation inputs */
+html[data-theme="dark"] .sp-page .sp-allocation-card input {
+    background-color: #18352c;
+    color: #ffffff;
+    border-color: #426657;
+}
+
+/* Keyboard focus */
+html[data-theme="dark"] .sp-page .form-select:focus,
+html[data-theme="dark"] .sp-page .form-control:focus {
+    border-color: #17bd9c;
+    box-shadow: 0 0 0 3px rgba(23, 189, 156, .18);
+}
+
+/* Allocation totals and ranking scores */
+html[data-theme="dark"] .sp-page .sp-allocation-footer strong,
+html[data-theme="dark"] .sp-page .sp-stat strong,
+html[data-theme="dark"] .sp-page .sp-score,
+html[data-theme="dark"] .sp-page .sp-points {
+    color: #eff8f4;
+}
+
+/* Winner highlight */
+html[data-theme="dark"] .sp-page .sp-result.sp-winner {
+    background: #10372c;
+    border-color: #17bd9c;
+}
+
+/* Rank number */
+html[data-theme="dark"] .sp-page .sp-rank {
+    background: #183d31;
+    color: #eff8f4;
+}
+
+/* Progress track */
+html[data-theme="dark"] .sp-page .sp-progress,
+html[data-theme="dark"] .sp-page .sp-match-track {
+    background: #29483e;
+}
+
+/* Breakdown table */
+html[data-theme="dark"] .sp-page .sp-table {
+    color: #eff8f4;
+    --bs-table-color: #eff8f4;
+    --bs-table-bg: transparent;
+    --bs-table-border-color: #29483e;
+}
+
+html[data-theme="dark"] .sp-page .sp-table th {
+    color: #c1d8ce;
+    background: #102c25;
+}
+
+html[data-theme="dark"] .sp-page .sp-table td {
+    color: #eff8f4;
+}
+
+/* Status labels */
+html[data-theme="dark"] .sp-page .sp-valid {
+    color: #47dfb3;
+}
+
+html[data-theme="dark"] .sp-page .sp-invalid {
+    color: #ff9aa5;
+}
+
+/* Demo badge */
+html[data-theme="dark"] .sp-page .sp-demo-badge {
+    color: #64e5c2;
+    background: #143c31;
+}
+
+/* Invalid allocation bar */
+html[data-theme="dark"] .sp-page .sp-progress > div.invalid {
+    background: #ff8795;
+}
+
+
+</style>
+
+<script>
+    (function() {
+        "use strict";
+
+        const root = document.querySelector(".sp-page");
+        if (!root || root.dataset.initialized === "true") return;
+        root.dataset.initialized = "true";
+
+        const MAX_PER_QUESTION = 50;
+
+        const questions = [
+            {
+                key: "users",
+                text: "How many people will use the sofa?",
+                answers: [
+                    { value: "1-2", text: "1–2 people" },
+                    { value: "3-4", text: "3–4 people" },
+                    { value: "5-plus", text: "5 or more people" }
+                ]
+            },
+            {
+                key: "priority",
+                text: "What matters most to you?",
+                answers: [
+                    { value: "comfort", text: "Comfort" },
+                    { value: "style", text: "Style" },
+                    { value: "space-saving", text: "Space saving" }
+                ]
+            },
+            {
+                key: "room_size",
+                text: "How much space do you have?",
+                answers: [
+                    { value: "small", text: "Small room" },
+                    { value: "medium", text: "Medium room" },
+                    { value: "large", text: "Large room" }
+                ]
+            }
+        ];
+
+        const recommendations = [
+            { key: "oslo_sofa", name: "Oslo Sofa", description: "Compact and practical for everyday comfort." },
+            { key: "luna_sofa", name: "Luna Sofa", description: "A contemporary, style-focused option." },
+            { key: "haven_sofa", name: "Haven Sofa", description: "A spacious option for larger living areas." }
+        ];
+
+        // Demo defaults only. Every answer distributes exactly 50 points.
+        // Shape: allocations[questionKey][answerValue] = [Oslo, Luna, Haven].
+        const allocations = {
+            users: {
+                "1-2": [30, 10, 10],
+                "3-4": [15, 20, 15],
+                "5-plus": [5, 10, 35]
+            },
+            priority: {
+                comfort: [20, 15, 15],
+                style: [10, 30, 10],
+                "space-saving": [35, 10, 5]
+            },
+            room_size: {
+                small: [35, 10, 5],
+                medium: [15, 20, 15],
+                large: [5, 10, 35]
+            }
+        };
+
+        const visitorAnswers = {
+            users: "3-4",
+            priority: "comfort",
+            room_size: "small"
+        };
+
+        const $ = id => root.querySelector("#" + id);
+        const editQuestion = $("spEditQuestion");
+        const editAnswer = $("spEditAnswer");
+
+        $("spQuestionCount").textContent = questions.length;
+        $("spMaximum").textContent = questions.length * MAX_PER_QUESTION;
+
+        function getQuestion(key) {
+            return questions.find(q => q.key === key);
+        }
+
+        function getAnswerLabel(questionKey, answerValue) {
+            const question = getQuestion(questionKey);
+            const answer = question && question.answers.find(a => a.value === answerValue);
+            return answer ? answer.text : answerValue;
+        }
+
+        function renderAnswerOptions() {
+            const question = getQuestion(editQuestion.value);
+            editAnswer.innerHTML = question.answers.map(a =>
+                `<option value="${a.value}">${a.text}</option>`
+            ).join("");
+            renderAllocationEditor();
+        }
+
+        function renderAllocationEditor() {
+            const qKey = editQuestion.value;
+            const aValue = editAnswer.value;
+            const values = allocations[qKey][aValue];
+
+            $("spAllocationEditor").innerHTML = recommendations.map((r, i) => `
+                <div class="col-12 col-md-4">
+                    <div class="sp-allocation-card">
+                        <label for="spPoints${i}">${r.name} points</label>
+                        <input class="form-control sp-point-input" type="number"
+                            id="spPoints${i}" min="0" max="50" step="1"
+                            value="${values[i]}" data-index="${i}">
+                        <small class="text-muted d-block mt-2">${r.description}</small>
+                    </div>
+                </div>
+            `).join("");
+
+            root.querySelectorAll(".sp-point-input").forEach(input => {
+                input.addEventListener("input", () => {
+                    const index = Number(input.dataset.index);
+                    const value = input.value === "" ? 0 : Number(input.value);
+                    if (!Number.isFinite(value) || value < 0 || value > 50 || !Number.isInteger(value)) {
+                        input.classList.add("is-invalid");
+                        updateAllocationStatus();
+                        return;
+                    }
+                    input.classList.remove("is-invalid");
+                    allocations[qKey][aValue][index] = value;
+                    updateAllocationStatus();
+                    renderResults();
+                });
+            });
+
+            updateAllocationStatus();
+        }
+
+        function updateAllocationStatus() {
+            const values = allocations[editQuestion.value][editAnswer.value];
+            const total = values.reduce((sum, n) => sum + n, 0);
+            const valid = total === MAX_PER_QUESTION;
+            $("spAllocationTotal").textContent = `${total} / ${MAX_PER_QUESTION}`;
+            $("spAllocationStatus").textContent = valid ? "Valid allocation" : `Needs ${MAX_PER_QUESTION - total} points`;
+            $("spAllocationStatus").className = valid ? "sp-valid" : "sp-invalid";
+            $("spAllocationBar").style.width = Math.max(0, Math.min(100, total / MAX_PER_QUESTION * 100)) + "%";
+            $("spAllocationBar").classList.toggle("invalid", !valid);
+        }
+
+        function renderVisitorAnswers() {
+            $("spVisitorAnswers").innerHTML = questions.map(q => `
+                <div class="col-12 col-md-4">
+                    <div class="sp-answer-card">
+                        <label for="spVisitor_${q.key}">${q.text}</label>
+                        <select class="form-select" id="spVisitor_${q.key}" data-question="${q.key}">
+                            ${q.answers.map(a => `
+                                <option value="${a.value}" ${visitorAnswers[q.key] === a.value ? "selected" : ""}>${a.text}</option>
+                            `).join("")}
+                        </select>
+                    </div>
+                </div>
+            `).join("");
+
+            root.querySelectorAll("[data-question]").forEach(select => {
+                select.addEventListener("change", () => {
+                    visitorAnswers[select.dataset.question] = select.value;
+                    renderResults();
+                });
+            });
+        }
+
+        function calculateResults() {
+            const results = recommendations.map((recommendation, index) => {
+                let score = 0;
+                const reasons = [];
+
+                questions.forEach(q => {
+                    const answer = visitorAnswers[q.key];
+                    const points = allocations[q.key][answer][index];
+                    score += points;
+                    reasons.push(`${q.text}: ${getAnswerLabel(q.key, answer)} (+${points})`);
+                });
+
+                return {
+                    ...recommendation,
+                    score,
+                    maximum: questions.length * MAX_PER_QUESTION,
+                    percentage: Math.round(score / (questions.length * MAX_PER_QUESTION) * 100),
+                    reasons
+                };
+            });
+
+            return results.sort((a, b) => b.score - a.score);
+        }
+
+        function renderResults() {
+            const allValid = questions.every(q =>
+                q.answers.every(a =>
+                    allocations[q.key][a.value].reduce((sum, n) => sum + n, 0) === MAX_PER_QUESTION
+                )
+            );
+
+            $("spRankingEmpty").classList.toggle("d-none", allValid);
+            $("spRanking").classList.toggle("d-none", !allValid);
+
+            if (!allValid) {
+                $("spBreakdown").innerHTML = "";
+                $("spBreakdownFooter").innerHTML = "";
+                return;
+            }
+
+            const results = calculateResults();
+            const winner = results[0];
+
+            $("spRanking").innerHTML = results.map((r, index) => `
+                <div class="sp-result ${index === 0 ? "sp-winner" : ""}">
+                    <div class="sp-result-top">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="sp-rank">${index + 1}</span>
+                            <div>
+                                <div class="fw-bold">${r.name} ${index === 0 ? '<span class="sp-valid ms-2">Top match</span>' : ""}</div>
+                                <div class="text-muted small">${r.description}</div>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="sp-score">${r.score} / ${r.maximum}</div>
+                            <div class="text-muted small">${r.percentage}% match</div>
+                        </div>
+                    </div>
+                    <div class="sp-match-track"><div style="width:${r.percentage}%"></div></div>
+                    <div class="text-muted small">${r.reasons.join(" · ")}</div>
+                </div>
+            `).join("");
+
+            $("spBreakdown").innerHTML = questions.map(q => {
+                const answer = visitorAnswers[q.key];
+                const points = allocations[q.key][answer];
+                return `
+                    <tr>
+                        <td><strong>${q.text}</strong><div class="text-muted small">${getAnswerLabel(q.key, answer)}</div></td>
+                        ${points.map(value => `<td><span class="sp-points">${value}</span> <span class="text-muted small">pts</span></td>`).join("")}
+                    </tr>
+                `;
+            }).join("");
+
+            const totals = recommendations.map((r, i) =>
+                questions.reduce((sum, q) => sum + allocations[q.key][visitorAnswers[q.key]][i], 0)
+            );
+
+            $("spBreakdownFooter").innerHTML = `
+                <tr>
+                    <th>Total score</th>
+                    ${totals.map(total => `<th>${total} / ${questions.length * MAX_PER_QUESTION}</th>`).join("")}
+                </tr>
+            `;
+        }
+
+        editQuestion.addEventListener("change", renderAnswerOptions);
+        editAnswer.addEventListener("change", renderAllocationEditor);
+
+        $("spResetAnswers").addEventListener("click", () => {
+            visitorAnswers.users = "3-4";
+            visitorAnswers.priority = "comfort";
+            visitorAnswers.room_size = "small";
+            renderVisitorAnswers();
+            renderResults();
+        });
+
+        renderAnswerOptions();
+        renderVisitorAnswers();
+        renderResults();
+    })();
+</script>

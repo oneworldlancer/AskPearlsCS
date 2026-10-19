@@ -1,0 +1,282 @@
+<!-- PAGE: DESIGN & CUSTOMIZE -->
+<div class="ap-page design-customize-page" data-ap-page="design-customize">
+    <!-- Shared AskPearls breadcrumb -->
+    <nav class="ap-breadcrumb" aria-label="Breadcrumb">
+        <a href="/Dashboard">AskPearls</a>
+        <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
+        <span class="ap-breadcrumb-current" aria-current="page">Design &amp; Customize</span>
+    </nav>
+
+
+    <header class="dc-page-header ap-page-header">
+        <div class="ap-page-heading">
+            <h1 class="ap-page-title">Design &amp; Customize</h1>
+            <p class="ap-page-description">Personalize your widget's appearance and see your changes instantly.</p>
+        </div>
+        <div class="dc-header-actions ap-page-actions">
+            <span class="dc-draft-indicator" id="dcDraftIndicator">
+                <i class="bi bi-circle-fill"></i> Unsaved changes
+            </span>
+            <button type="button" class="dc-btn-outline" id="dcReset">
+                <i class="bi bi-arrow-counterclockwise"></i> Reset
+            </button>
+            <button type="button" class="dc-btn-primary" id="dcSave">
+                <i class="bi bi-check-lg"></i> Save Draft
+            </button>
+        </div>
+    </header>
+
+    <div class="dc-widget-selector">
+        <div class="dc-selector-icon"><i class="bi bi-grid-1x2"></i></div>
+        <div class="dc-selector-info">
+            <label for="dcWidgetSelect">Widget to customize</label>
+            <select id="dcWidgetSelect">
+                <option value="sofa">Sofa Finder Widget</option>
+                <option value="furniture">Furniture Recommendation Widget</option>
+                <option value="demo">Demo Recommendation Widget</option>
+            </select>
+        </div>
+        <span class="dc-demo-badge">Preview mode</span>
+    </div>
+
+    <div class="dc-workspace">
+
+        <!-- SETTINGS -->
+        <section class="dc-settings">
+
+            <div class="dc-section-heading">
+                <div>
+                    <h5>Widget Appearance</h5>
+                    <p>Customize colors, typography, and shape.</p>
+                </div>
+                <i class="bi bi-palette"></i>
+            </div>
+
+            <div class="dc-settings-body">
+
+                <div class="dc-field">
+                    <label for="dcPrimaryColor">Primary color</label>
+                    <div class="dc-color-control">
+                        <input type="color" id="dcPrimaryColor" value="#0da88b">
+                        <input type="text" id="dcPrimaryHex" value="#0DA88B"
+                               maxlength="7" aria-label="Primary color hex value">
+                    </div>
+                    <small>Used for buttons and important accents.</small>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcBackgroundColor">Widget background</label>
+                    <div class="dc-color-control">
+                        <input type="color" id="dcBackgroundColor" value="#ffffff">
+                        <input type="text" id="dcBackgroundHex" value="#FFFFFF"
+                               maxlength="7" aria-label="Widget background hex value">
+                    </div>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcTextColor">Text color</label>
+                    <div class="dc-color-control">
+                        <input type="color" id="dcTextColor" value="#17212b">
+                        <input type="text" id="dcTextHex" value="#17212B"
+                               maxlength="7" aria-label="Text color hex value">
+                    </div>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcFontFamily">Typography</label>
+                    <select id="dcFontFamily">
+                        <option value="Inter, Arial, sans-serif">Inter / System</option>
+                        <option value="Arial, sans-serif">Arial</option>
+                        <option value="Georgia, serif">Georgia</option>
+                        <option value="Verdana, sans-serif">Verdana</option>
+                    </select>
+                </div>
+
+                <div class="dc-field">
+                    <div class="dc-label-row">
+                        <label for="dcFontSize">Font size</label>
+                        <span id="dcFontSizeValue">14 px</span>
+                    </div>
+                    <input type="range" id="dcFontSize" min="12" max="18" value="14">
+                </div>
+
+                <div class="dc-field">
+                    <div class="dc-label-row">
+                        <label for="dcRadius">Corner radius</label>
+                        <span id="dcRadiusValue">12 px</span>
+                    </div>
+                    <input type="range" id="dcRadius" min="0" max="28" value="12">
+                </div>
+
+                <div class="dc-field">
+                    <label>Widget shadow</label>
+                    <label class="dc-toggle-row">
+                        <span>
+                            <strong>Enable shadow</strong>
+                            <small>Add depth to the widget container.</small>
+                        </span>
+                        <span class="dc-switch">
+                            <input type="checkbox" id="dcShadow" checked>
+                            <span class="dc-switch-track"></span>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="dc-divider"></div>
+
+                <div class="dc-section-heading dc-subheading">
+                    <div>
+                        <h5>Layout &amp; Position</h5>
+                        <p>Choose the widget's size and placement.</p>
+                    </div>
+                    <i class="bi bi-arrows-move"></i>
+                </div>
+
+                <div class="dc-field">
+                    <div class="dc-label-row">
+                        <label for="dcWidth">Widget width</label>
+                        <span id="dcWidthValue">360 px</span>
+                    </div>
+                    <input type="range" id="dcWidth" min="300" max="520" step="10" value="360">
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcPosition">Widget position</label>
+                    <select id="dcPosition">
+                        <option value="bottom-right">Bottom right</option>
+                        <option value="bottom-left">Bottom left</option>
+                        <option value="center">Centered preview</option>
+                    </select>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcButtonShape">Button shape</label>
+                    <select id="dcButtonShape">
+                        <option value="rounded">Rounded</option>
+                        <option value="pill">Pill</option>
+                        <option value="square">Square</option>
+                    </select>
+                </div>
+
+                <div class="dc-divider"></div>
+
+                <div class="dc-section-heading dc-subheading">
+                    <div>
+                        <h5>Welcome Content</h5>
+                        <p>Customize the message visitors see.</p>
+                    </div>
+                    <i class="bi bi-chat-square-text"></i>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcHeading">Welcome heading</label>
+                    <input type="text" id="dcHeading" maxlength="100"
+                           value="Find your perfect sofa">
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcDescription">Welcome message</label>
+                    <textarea id="dcDescription" rows="3" maxlength="250">Answer a few quick questions and discover the sofa that fits your home.</textarea>
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcButtonText">Button label</label>
+                    <input type="text" id="dcButtonText" maxlength="40"
+                           value="Get started">
+                </div>
+
+                <div class="dc-field">
+                    <label for="dcFooterText">Footer text</label>
+                    <input type="text" id="dcFooterText" maxlength="80"
+                           value="Powered by AskPearls">
+                </div>
+            </div>
+        </section>
+
+        <!-- LIVE PREVIEW -->
+        <section class="dc-preview-panel">
+            <div class="dc-preview-header">
+                <div>
+                    <h5>Live Preview</h5>
+                    <p>Changes appear here instantly.</p>
+                </div>
+                <div class="dc-preview-actions">
+                    <button type="button" class="dc-preview-mode active"
+                            data-dc-mode="light" title="Light preview">
+                        <i class="bi bi-sun"></i>
+                    </button>
+                    <button type="button" class="dc-preview-mode"
+                            data-dc-mode="dark" title="Dark preview">
+                        <i class="bi bi-moon"></i>
+                    </button>
+                    <button type="button" class="dc-preview-mode"
+                            data-dc-mode="mobile" title="Mobile preview">
+                        <i class="bi bi-phone"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="dc-preview-canvas" id="dcPreviewCanvas">
+                <div class="dc-preview-position" id="dcPreviewPosition">
+                    <div class="dc-widget-preview" id="dcWidgetPreview">
+                        <div class="dc-widget-top">
+                            <div class="dc-widget-brand">
+                                <div class="dc-brand-icon"><i class="bi bi-stars"></i></div>
+                                <span>AskPearls Assistant</span>
+                            </div>
+                            <button type="button" class="dc-widget-menu"
+                                    aria-label="Preview menu">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+                        </div>
+
+                        <div class="dc-widget-content">
+                            <div class="dc-welcome-icon"><i class="bi bi-stars"></i></div>
+                            <h3 id="dcPreviewHeading">Find your perfect sofa</h3>
+                            <p id="dcPreviewDescription">
+                                Answer a few quick questions and discover the sofa that fits your home.
+                            </p>
+
+                            <div class="dc-preview-question">
+                                <span class="dc-preview-step">01</span>
+                                <div>
+                                    <strong>What best describes your living space?</strong>
+                                    <small>Choose the option that fits you best.</small>
+                                </div>
+                            </div>
+
+                            <button type="button" class="dc-preview-answer">
+                                <span><i class="bi bi-house"></i> Apartment</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                            <button type="button" class="dc-preview-answer">
+                                <span><i class="bi bi-house-door"></i> House</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+
+                            <button type="button" class="dc-preview-cta" id="dcPreviewButton">
+                                Get started <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <div class="dc-widget-footer" id="dcPreviewFooter">
+                            Powered by AskPearls
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dc-canvas-caption">
+                    <i class="bi bi-info-circle"></i>
+                    Illustrative preview — actual appearance may vary by website.
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="dc-toast" id="dcToast" role="status" aria-live="polite"></div>
+</div>
+
+                        <link href="~/app_page_css/app_page_design_customize_css.css" rel="stylesheet" />
+
+  <script src="~/app_page_js/app_page_design_customize_js.js"></script>
+

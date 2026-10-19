@@ -12,7 +12,6 @@
     <Folder Include="wwwroot\app_crmx\assets\illustrations\" />
     <Folder Include="wwwroot\app_crmx\assets\images\" />
     <Folder Include="wwwroot\app_page_load_js\" />
-    <Folder Include="wwwroot\app_js\" />
   </ItemGroup>
 
 </Project>

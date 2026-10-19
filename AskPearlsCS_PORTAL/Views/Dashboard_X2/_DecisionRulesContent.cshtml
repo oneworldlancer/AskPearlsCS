@@ -1,0 +1,351 @@
+<div class="ap-page decision-rules-page" data-ap-page="decision-rules">
+    <!-- Shared AskPearls breadcrumb -->
+    <nav class="ap-breadcrumb" aria-label="Breadcrumb">
+        <a href="/Dashboard">AskPearls</a>
+        <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
+        <span class="ap-breadcrumb-current" aria-current="page">Decision Rules</span>
+    </nav>
+
+ <header class="ap-page-header dr-header">
+        <div class="ap-page-heading">
+            <h1 class="ap-page-title">Decision Rules</h1>
+            <p class="ap-page-description">Define how visitor answers determine the recommendations your widgets display.</p>
+        </div>
+        <div class="ap-page-actions">
+        <button type="button" class="dr-btn dr-btn-primary" data-dr-action="add">
+            <span aria-hidden="true">＋</span> Create Rule
+        </button>
+        </div>
+    </header>
+
+    <div class="dr-stats">
+        <div class="dr-stat">
+            <div class="dr-stat-icon dr-purple">◇</div>
+            <div>
+                <div class="dr-stat-label">Total Rules</div>
+                <div class="dr-stat-value" data-dr-stat="total">0</div>
+            </div>
+        </div>
+        <div class="dr-stat">
+            <div class="dr-stat-icon dr-green">✓</div>
+            <div>
+                <div class="dr-stat-label">Active Rules</div>
+                <div class="dr-stat-value" data-dr-stat="active">0</div>
+            </div>
+        </div>
+        <div class="dr-stat">
+            <div class="dr-stat-icon dr-blue">⚙</div>
+            <div>
+                <div class="dr-stat-label">Draft Rules</div>
+                <div class="dr-stat-value" data-dr-stat="draft">0</div>
+            </div>
+        </div>
+        <div class="dr-stat">
+            <div class="dr-stat-icon dr-orange">↗</div>
+            <div>
+                <div class="dr-stat-label">Recommendations Covered</div>
+                <div class="dr-stat-value" data-dr-stat="covered">0</div>
+            </div>
+        </div>
+    </div>
+
+    <section class="dr-panel">
+        <div class="dr-panel-header">
+            <h3>Rules Inventory</h3>
+            <p>Create and manage the conditions that control your recommendation outcomes.</p>
+        </div>
+
+        <div class="dr-toolbar">
+            <div class="dr-search">
+                <span aria-hidden="true">⌕</span>
+                <input type="search" class="dr-input" data-dr-search
+                       placeholder="Search by rule name or identifier..."
+                       aria-label="Search decision rules">
+            </div>
+            <select class="dr-select" data-dr-filter aria-label="Filter by status">
+                <option value="all">All statuses</option>
+                <option value="active">Active</option>
+                <option value="draft">Draft</option>
+                <option value="inactive">Inactive</option>
+            </select>
+        </div>
+
+        <div class="dr-table-wrap">
+            <table class="dr-table">
+                <thead>
+                    <tr>
+                        <th>Rule</th>
+                        <th>Conditions</th>
+                        <th>Recommendation</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th style="text-align:right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody data-dr-rows></tbody>
+            </table>
+        </div>
+
+        <div class="dr-empty" data-dr-empty hidden>
+            <strong>No decision rules found</strong>
+            Try another search or create your first rule.
+        </div>
+
+        <div class="dr-table-footer" data-dr-count>Showing 0 rules</div>
+    </section>
+
+    <!-- Create/Edit modal -->
+    <div class="dr-modal-overlay" data-dr-modal aria-hidden="true">
+        <section class="dr-modal" role="dialog" aria-modal="true"
+                 aria-labelledby="dr-modal-title">
+            <div class="dr-modal-header">
+                <div class="dr-modal-icon">⚙</div>
+                <div>
+                    <h3 data-dr-modal-title id="dr-modal-title">Create Decision Rule</h3>
+                    <p>Configure rule details, conditions, and recommendation outcomes.</p>
+                </div>
+                <button type="button" class="dr-modal-close" data-dr-action="close"
+                        aria-label="Close modal">
+                    &times;
+                </button>
+            </div>
+
+            <form data-dr-form>
+                <div class="dr-modal-body">
+                    <div class="dr-validation" data-dr-validation role="alert"></div>
+
+                    <div class="dr-field">
+                        <label for="dr-name">
+                            Rule name <span class="dr-required">*</span>
+                        </label>
+                        <input id="dr-name" name="name" class="dr-input" required
+                               maxlength="100"
+                               placeholder="e.g. Small Space — Sofa Finder">
+                    </div>
+
+                    <div class="dr-field">
+                        <label for="dr-key">
+                            Unique identifier <span class="dr-required">*</span>
+                        </label>
+                        <input id="dr-key" name="key" class="dr-input" required
+                               maxlength="80" pattern="[a-z][a-z0-9_]*"
+                               placeholder="e.g. small_space_sofa">
+                        <div class="dr-help">
+                            Use lowercase letters, numbers and underscores. Start with a letter.
+                        </div>
+                    </div>
+
+                    <div class="dr-field">
+                        <label for="dr-description">Description</label>
+                        <textarea id="dr-description" name="description"
+                                  class="dr-textarea" rows="3" maxlength="500"
+                                  placeholder="Explain when this rule should apply."></textarea>
+                    </div>
+
+                    <!-- Condition Builder -->
+                    <div class="dr-condition-builder">
+                        <div class="dr-condition-heading">
+                            <div>
+                                <h4>Rule Conditions</h4>
+                                <p>Choose which visitor answers must match this rule.</p>
+                            </div>
+                            <span class="dr-condition-count" data-dr-condition-count>0 conditions</span>
+                        </div>
+
+                        <div class="dr-logic-box">
+                            <div class="dr-logic-copy">
+                                <strong>Match conditions using</strong>
+                                <span>Choose how multiple conditions are evaluated.</span>
+                            </div>
+                            <div class="dr-logic-toggle" role="group" aria-label="Condition matching logic">
+                                <button type="button" class="dr-logic-option is-selected"
+                                        data-dr-logic="all" aria-pressed="true">
+                                    ALL
+                                </button>
+                                <button type="button" class="dr-logic-option"
+                                        data-dr-logic="any" aria-pressed="false">
+                                    ANY
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="dr-logic-explanation" data-dr-logic-explanation>
+                            Every condition must match for this rule to apply.
+                        </div>
+
+                        <div class="dr-condition-list" data-dr-condition-list></div>
+
+                        <button type="button" class="dr-btn dr-add-condition"
+                                data-dr-action="add-condition">
+                            <span aria-hidden="true">＋</span> Add Condition
+                        </button>
+
+                        <div class="dr-rule-summary">
+                            <div class="dr-summary-icon">✦</div>
+                            <div>
+                                <strong>Rule summary</strong>
+                                <p data-dr-rule-summary>
+                                    Add a condition to define when this rule should apply.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dr-field">
+                        <label for="dr-recommendation">
+                            Recommendation item <span class="dr-required">*</span>
+                        </label>
+                        <select id="dr-recommendation" name="recommendation"
+                                class="dr-select" style="width:100%;" required>
+                            <option value="">Select a recommendation</option>
+                            <option value="Oslo Sofa">Oslo Sofa</option>
+                            <option value="Luna Sofa">Luna Sofa</option>
+                            <option value="Haven Sofa">Haven Sofa</option>
+                        </select>
+                        <div class="dr-help">
+                            Sample recommendation items for the UI prototype.
+                        </div>
+                    </div>
+
+                    <!-- Test Rule Preview -->
+<div class="dr-test-panel">
+    <div class="dr-test-heading">
+        <div>
+            <h4>Test Rule</h4>
+            <p>Simulate a visitor's answers to check whether this rule matches.</p>
+        </div>
+        <span class="dr-test-badge">Preview only</span>
+    </div>
+
+    <div class="dr-test-grid">
+        <div class="dr-field">
+            <label for="dr-test-room-size">Living room size</label>
+            <select id="dr-test-room-size" class="dr-select">
+                <option value="">Not answered</option>
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+            </select>
+        </div>
+
+        <div class="dr-field">
+            <label for="dr-test-budget">Budget</label>
+     <select id="dr-test-budget" class="dr-select">
+    <option value="">Not answered</option>
+    <option value="budget">Budget-friendly</option>
+    <option value="mid_range">Mid-range</option>
+    <option value="premium">Premium</option>
+</select>
+        </div>
+
+        <div class="dr-field">
+            <label for="dr-test-comfort">Comfort preference</label>
+            <select id="dr-test-comfort" class="dr-select">
+                <option value="">Not answered</option>
+                <option value="standard">Standard comfort</option>
+                <option value="high">Extra comfort</option>
+            </select>
+        </div>
+
+        <div class="dr-field">
+            <label for="dr-test-style">Preferred style</label>
+            <select id="dr-test-style" class="dr-select">
+                <option value="">Not answered</option>
+                <option value="modern">Modern</option>
+                <option value="classic">Classic</option>
+                <option value="minimal">Minimal</option>
+            </select>
+        </div>
+    </div>
+
+<button type="button"
+        class="dr-btn dr-btn-primary"
+        data-dr-action="test-rule">
+    Test Rule
+</button>
+
+    <div class="dr-test-result"
+         data-dr-test-result
+         role="status"
+         aria-live="polite"
+         hidden>
+    </div>
+</div>
+<!-- End Test Rule Preview -->
+
+                    <div class="dr-field">
+                        <label for="dr-priority">Priority</label>
+                        <input id="dr-priority" name="priority" class="dr-input"
+                               type="number" min="1" max="999" value="1" required>
+                        <div class="dr-help">
+                            Lower numbers indicate higher priority.
+                        </div>
+                    </div>
+
+                    <div class="dr-field">
+                        <label>Status</label>
+                        <div class="dr-status-box">
+                            <div>
+                                <strong>Active rule</strong>
+                                <p>Allow this rule to be considered by the decision engine.</p>
+                            </div>
+                            <label class="dr-toggle" aria-label="Active rule">
+                                <input type="checkbox" name="active" checked>
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dr-modal-footer">
+                    <button type="button" class="dr-btn" data-dr-action="close">
+                        Cancel
+                    </button>
+                    <button type="submit" class="dr-btn dr-btn-primary">
+                        ✓ <span data-dr-save-label>Save Rule</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <!-- Delete confirmation -->
+    <div class="dr-modal-overlay" data-dr-delete-modal aria-hidden="true">
+        <section class="dr-modal" role="dialog" aria-modal="true"
+                 aria-labelledby="dr-delete-title" style="max-width:440px;">
+            <div class="dr-modal-header">
+                <div class="dr-modal-icon"
+                     style="background:#ffebee;color:#c62828;">!</div>
+                <div>
+                    <h3 id="dr-delete-title">Delete Decision Rule?</h3>
+                    <p>This action removes the rule from the local demo.</p>
+                </div>
+                <button type="button" class="dr-modal-close"
+                        data-dr-action="cancel-delete"
+                        aria-label="Close confirmation">
+                    &times;
+                </button>
+            </div>
+            <div class="dr-modal-body">
+                <p style="margin:0;color:var(--ap-text,#172033);font-size:13px;"
+                   data-dr-delete-message></p>
+            </div>
+            <div class="dr-modal-footer">
+                <button type="button" class="dr-btn" data-dr-action="cancel-delete">
+                    Cancel
+                </button>
+                <button type="button" class="dr-btn dr-btn-danger"
+                        data-dr-action="confirm-delete">
+                    Delete Rule
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <div class="dr-toast" data-dr-toast role="status" aria-live="polite"></div>
+</div>
+
+            <link href="~/app_page_css/app_page_decision_rules_css.css" rel="stylesheet" />
+
+  <script src="~/app_page_js/app_page_decision_rules_js.js" />
+

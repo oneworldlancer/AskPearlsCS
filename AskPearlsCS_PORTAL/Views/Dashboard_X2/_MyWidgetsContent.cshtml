@@ -1,0 +1,158 @@
+
+
+<div class="ap-page page-widgets"
+     data-ap-page="my-widgets">
+
+    <!-- Shared breadcrumb -->
+    <nav class="ap-breadcrumb" aria-label="Breadcrumb">
+        <a href="/Dashboard">AskPearls</a>
+        <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
+        <span class="ap-breadcrumb-current" aria-current="page">
+            My Widgets
+        </span>
+    </nav>
+
+    <!-- Standardized page heading -->
+    <header class="ap-page-header">
+        <div class="ap-page-heading">
+            <h1 class="ap-page-title">My Widgets</h1>
+            <p class="ap-page-description">
+                Create, organize, and manage your DecisionOS widgets.
+            </p>
+        </div>
+
+        <div class="ap-page-actions">
+            <a href="#"
+               data-page="widget-builder"
+               class="btn btn-success ap-widget-builder-link">
+                <i class="bi bi-plus-lg me-2" aria-hidden="true"></i>
+                Create New Widget
+            </a>
+        </div>
+    </header>
+
+    <!-- Summary cards: awaiting real database integration -->
+    <section class="ap-page-section" aria-label="Widget summary">
+        <div class="row g-3">
+
+            <div class="col-12 col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-2">All Widgets</p>
+                                <h2 class="h3 fw-bold mb-0">—</h2>
+                            </div>
+                            <i class="bi bi-grid text-success fs-2"
+                               aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-2">Published</p>
+                                <h2 class="h3 fw-bold mb-0">—</h2>
+                            </div>
+                            <i class="bi bi-globe text-success fs-2"
+                               aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-2">Drafts</p>
+                                <h2 class="h3 fw-bold mb-0">—</h2>
+                            </div>
+                            <i class="bi bi-pencil-square text-success fs-2"
+                               aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Widget inventory -->
+    <section class="ap-page-section">
+        <div class="card">
+
+            <div class="card-header px-4 py-4">
+                <div class="widget-inventory-toolbar">
+
+                    <!-- Inventory title -->
+                    <div class="widget-inventory-intro">
+                        <h2 class="h5 fw-bold mb-1">Widget Inventory</h2>
+                        <p class="text-muted small mb-0">
+                            Your decision experiences will appear here.
+                        </p>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="widget-inventory-search">
+                        <input id="widgetSearch"
+                               type="search"
+                               class="form-control"
+                               placeholder="Search widgets..."
+                               aria-label="Search widgets">
+                    </div>
+
+                    <!-- Status filter -->
+                    <div class="widget-inventory-status">
+                        <select id="widgetStatusFilter"
+                                class="form-select"
+                                aria-label="Filter widgets by status">
+                            <option value="all">All statuses</option>
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-body px-4 pb-4">
+
+                <!-- Empty state until connected to real data -->
+                <div id="widgetEmptyState" class="text-center py-5">
+                    <i class="bi bi-window-stack text-success"
+                       style="font-size: 3rem;"
+                       aria-hidden="true"></i>
+
+                    <h3 class="h5 fw-bold mt-3">
+                        No widgets to display yet
+                    </h3>
+
+                    <p class="text-muted mb-3">
+                        Create your first widget to start building
+                        a guided decision experience for your visitors.
+                    </p>
+
+                    <a href="#"
+                       data-page="widget-builder"
+                       class="btn btn-success ap-widget-builder-link">
+                        <i class="bi bi-plus-lg me-2" aria-hidden="true"></i>
+                        Create Your First Widget
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<link href="~/app_page_css/app_page_my_widgets_css.css" rel="stylesheet" />
+
+
+

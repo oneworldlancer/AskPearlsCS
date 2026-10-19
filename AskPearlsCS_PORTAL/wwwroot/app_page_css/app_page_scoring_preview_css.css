@@ -8,25 +8,25 @@
     color: var(--ap-text,var(--bs-body-color,#17212b));
 }
 
-.sp-page * {
-    box-sizing: border-box;
-}
+    .sp-page * {
+        box-sizing: border-box;
+    }
 
-.sp-page .ap-page-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 24px;
-}
+    .sp-page .ap-page-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
 
-.sp-page .ap-page-title {
-    margin: 0 0 8px;
-}
+    .sp-page .ap-page-title {
+        margin: 0 0 8px;
+    }
 
-.sp-page .ap-page-description {
-    margin: 0;
-}
+    .sp-page .ap-page-description {
+        margin: 0;
+    }
 
 @media (max-width: 650px) {
     .sp-page .ap-page-header {
@@ -524,4 +524,79 @@ html[data-theme="dark"] .sp-page {
         -webkit-text-fill-color: #f2fffb !important;
         border-color: #10b981 !important;
         box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.2) !important;
+    }
+
+
+
+/* =====================================================
+   FIX: Scoring & Preview dropdowns in LIGHT THEME
+   The earlier .sp-page rules force dark colors without
+   checking the active theme. These scoped overrides must
+   remain last in this stylesheet.
+   ===================================================== */
+html:not([data-theme="dark"]) .ap-page.sp-page #spEditQuestion,
+html:not([data-theme="dark"]) .ap-page.sp-page #spEditAnswer,
+html:not([data-theme="dark"]) .ap-page.sp-page #spVisitorAnswers select.form-select,
+html:not([data-theme="dark"]) .ap-page.sp-page #spVisitorAnswers .form-select,
+html:not([data-theme="dark"]) .ap-page.sp-page select[id^="spVisitor_"] {
+    background-color: #FFF9DF !important;
+    color: #26352F !important;
+    -webkit-text-fill-color: #26352F !important;
+    border-color: #E4D8A5 !important;
+    color-scheme: light !important;
+}
+
+    html:not([data-theme="dark"]) .ap-page.sp-page #spEditQuestion option,
+    html:not([data-theme="dark"]) .ap-page.sp-page #spEditAnswer option,
+    html:not([data-theme="dark"]) .ap-page.sp-page #spVisitorAnswers select.form-select option,
+    html:not([data-theme="dark"]) .ap-page.sp-page select[id^="spVisitor_"] option {
+        background-color: #FFF9DF !important;
+        color: #26352F !important;
+    }
+
+        html:not([data-theme="dark"]) .ap-page.sp-page #spEditQuestion option:checked,
+        html:not([data-theme="dark"]) .ap-page.sp-page #spEditAnswer option:checked,
+        html:not([data-theme="dark"]) .ap-page.sp-page #spVisitorAnswers select.form-select option:checked,
+        html:not([data-theme="dark"]) .ap-page.sp-page select[id^="spVisitor_"] option:checked {
+            background-color: #F3E9B8 !important;
+            color: #26352F !important;
+        }
+
+    html:not([data-theme="dark"]) .ap-page.sp-page #spEditQuestion:focus,
+    html:not([data-theme="dark"]) .ap-page.sp-page #spEditAnswer:focus,
+    html:not([data-theme="dark"]) .ap-page.sp-page #spVisitorAnswers select.form-select:focus,
+    html:not([data-theme="dark"]) .ap-page.sp-page select[id^="spVisitor_"]:focus {
+        border-color: #0DA88B !important;
+        box-shadow: 0 0 0 3px rgba(13, 168, 139, .16) !important;
+        outline: none;
+    }
+
+
+
+/* Scoring & Preview — exact light-theme color match */
+html:not([data-theme="dark"]) .ap-page.sp-page #spEditQuestion,
+html:not([data-theme="dark"]) .ap-page.sp-page #spEditAnswer,
+html:not([data-theme="dark"]) .ap-page.sp-page #spVisitorAnswers select,
+html:not([data-theme="dark"]) .ap-page.sp-page select[id^="spVisitor_"] {
+    background-color: #FFFFCC !important;
+    color: #243247 !important;
+    -webkit-text-fill-color: #243247 !important;
+    border-color: #DCE5B0 !important;
+    color-scheme: light !important;
+}
+
+    html:not([data-theme="dark"]) .ap-page.sp-page #spEditQuestion option,
+    html:not([data-theme="dark"]) .ap-page.sp-page #spEditAnswer option,
+    html:not([data-theme="dark"]) .ap-page.sp-page #spVisitorAnswers select option,
+    html:not([data-theme="dark"]) .ap-page.sp-page select[id^="spVisitor_"] option {
+        background-color: #FFFFCC !important;
+        color: #243247 !important;
+    }
+
+    html:not([data-theme="dark"]) .ap-page.sp-page #spEditQuestion:focus,
+    html:not([data-theme="dark"]) .ap-page.sp-page #spEditAnswer:focus,
+    html:not([data-theme="dark"]) .ap-page.sp-page #spVisitorAnswers select:focus,
+    html:not([data-theme="dark"]) .ap-page.sp-page select[id^="spVisitor_"]:focus {
+        border-color: #0DA88B !important;
+        box-shadow: 0 0 0 3px rgba(13, 168, 139, .16) !important;
     }

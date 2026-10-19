@@ -1,0 +1,214 @@
+<!-- PAGE: ANALYTICS & ACTIVITY -->
+<div class="ap-page analytics-page" data-ap-page="analytics">
+    <!-- Shared AskPearls breadcrumb -->
+    <nav class="ap-breadcrumb" aria-label="Breadcrumb">
+        <a href="/Dashboard">AskPearls</a>
+        <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
+        <span class="ap-breadcrumb-current" aria-current="page">Analytics &amp; Activity</span>
+    </nav>
+
+
+    <header class="ap-page-header an-header">
+        <div class="ap-page-heading">
+            <h1 class="ap-page-title">Analytics &amp; Activity</h1>
+            <p class="ap-page-description">Understand how visitors engage with your recommendation widgets.</p>
+        </div>
+        <div class="ap-page-actions">
+            <button type="button" class="an-btn-outline" id="anExportBtn">
+                <i class="bi bi-download"></i> Export CSV
+            </button>
+        </div>
+    </header>
+
+    <div class="an-filters">
+        <div class="an-filter-field">
+            <label for="anDateRange">Date range</label>
+            <select id="anDateRange">
+                <option value="7">Last 7 days</option>
+                <option value="30" selected>Last 30 days</option>
+                <option value="90">Last 90 days</option>
+            </select>
+        </div>
+        <div class="an-filter-field">
+            <label for="anWidget">Widget</label>
+            <select id="anWidget">
+                <option value="all">All widgets</option>
+                <option value="sofa">Sofa Finder</option>
+                <option value="furniture">Furniture Recommendation</option>
+                <option value="demo">Demo Recommendation</option>
+            </select>
+        </div>
+        <div class="an-filter-field">
+            <label for="anActivityType">Activity type</label>
+            <select id="anActivityType">
+                <option value="all">All activity</option>
+                <option value="started">Widget started</option>
+                <option value="completed">Completed</option>
+                <option value="published">Published</option>
+                <option value="recommended">Recommendation shown</option>
+            </select>
+        </div>
+        <button type="button" class="an-btn-outline an-reset-filter" id="anResetFilters">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset
+        </button>
+    </div>
+
+    <!-- KPI cards -->
+    <div class="an-kpi-grid">
+        <article class="an-kpi-card">
+            <div class="an-kpi-top">
+                <span>Widget views</span>
+                <span class="an-kpi-icon an-icon-green"><i class="bi bi-eye"></i></span>
+            </div>
+            <strong id="anViews">12,840</strong>
+            <div class="an-kpi-foot">
+                <span class="an-trend-up"><i class="bi bi-arrow-up-right"></i> 12.8%</span>
+                <span>vs. previous period</span>
+            </div>
+        </article>
+        <article class="an-kpi-card">
+            <div class="an-kpi-top">
+                <span>Interactions</span>
+                <span class="an-kpi-icon an-icon-blue"><i class="bi bi-mouse"></i></span>
+            </div>
+            <strong id="anInteractions">4,620</strong>
+            <div class="an-kpi-foot">
+                <span class="an-trend-up"><i class="bi bi-arrow-up-right"></i> 8.4%</span>
+                <span>vs. previous period</span>
+            </div>
+        </article>
+        <article class="an-kpi-card">
+            <div class="an-kpi-top">
+                <span>Completion rate</span>
+                <span class="an-kpi-icon an-icon-purple"><i class="bi bi-check2-circle"></i></span>
+            </div>
+            <strong id="anCompletion">68.4%</strong>
+            <div class="an-kpi-foot">
+                <span class="an-trend-up"><i class="bi bi-arrow-up-right"></i> 4.2%</span>
+                <span>vs. previous period</span>
+            </div>
+        </article>
+        <article class="an-kpi-card">
+            <div class="an-kpi-top">
+                <span>Recommendations</span>
+                <span class="an-kpi-icon an-icon-orange"><i class="bi bi-stars"></i></span>
+            </div>
+            <strong id="anRecommendations">2,175</strong>
+            <div class="an-kpi-foot">
+                <span class="an-kpi-neutral"><i class="bi bi-dash"></i> 0.6%</span>
+                <span>vs. previous period</span>
+            </div>
+        </article>
+    </div>
+
+    <!-- Charts -->
+    <div class="an-chart-grid">
+        <section class="an-card an-performance-card">
+            <div class="an-card-heading">
+                <div>
+                    <h5>Widget performance</h5>
+                    <p>Views and interactions over the selected period.</p>
+                </div>
+                <span class="an-demo-label"><i class="bi bi-circle-fill"></i> Demo data</span>
+            </div>
+            <div class="an-chart-legend">
+                <span><i class="an-legend-dot an-dot-views"></i> Views</span>
+                <span><i class="an-legend-dot an-dot-interactions"></i> Interactions</span>
+            </div>
+            <div class="an-chart-wrap">
+                <svg id="anPerformanceChart" class="an-chart"
+                     viewBox="0 0 680 260" role="img"
+                     aria-label="Illustrative chart of widget views and interactions">
+                </svg>
+            </div>
+        </section>
+
+        <section class="an-card an-funnel-card">
+            <div class="an-card-heading">
+                <div>
+                    <h5>Engagement funnel</h5>
+                    <p>How visitors move through your widget.</p>
+                </div>
+                <i class="bi bi-filter-circle"></i>
+            </div>
+            <div class="an-funnel" id="anFunnel">
+                <div class="an-funnel-row">
+                    <div class="an-funnel-label"><span>Widget views</span><strong>12,840</strong></div>
+                    <div class="an-funnel-track"><div class="an-funnel-fill an-fill-one" style="width:100%"></div></div>
+                </div>
+                <div class="an-funnel-row">
+                    <div class="an-funnel-label"><span>Started</span><strong>7,310</strong></div>
+                    <div class="an-funnel-track"><div class="an-funnel-fill an-fill-two" style="width:56.9%"></div></div>
+                </div>
+                <div class="an-funnel-row">
+                    <div class="an-funnel-label"><span>Completed</span><strong>5,000</strong></div>
+                    <div class="an-funnel-track"><div class="an-funnel-fill an-fill-three" style="width:38.9%"></div></div>
+                </div>
+                <div class="an-funnel-row">
+                    <div class="an-funnel-label"><span>Recommendation shown</span><strong>2,175</strong></div>
+                    <div class="an-funnel-track"><div class="an-funnel-fill an-fill-four" style="width:16.9%"></div></div>
+                </div>
+                <div class="an-funnel-note">
+                    <i class="bi bi-info-circle"></i>
+                    Illustrative values for the UI prototype.
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Widget comparison -->
+    <section class="an-card an-table-card">
+        <div class="an-card-heading an-table-heading">
+            <div>
+                <h5>Widget comparison</h5>
+                <p>Compare engagement across your widgets.</p>
+            </div>
+            <span class="an-table-count" id="anWidgetCount">3 widgets</span>
+        </div>
+        <div class="an-table-scroll">
+            <table class="an-table">
+                <thead>
+                    <tr>
+                        <th>Widget</th>
+                        <th>Views</th>
+                        <th>Interactions</th>
+                        <th>Completion rate</th>
+                        <th>Recommendations</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="anWidgetTableBody"></tbody>
+            </table>
+        </div>
+        <div class="an-empty" id="anWidgetEmpty" hidden>
+            <i class="bi bi-bar-chart"></i>
+            <strong>No widgets match this filter</strong>
+            <span>Choose another widget to view its performance.</span>
+        </div>
+    </section>
+
+    <!-- Activity timeline -->
+    <section class="an-card an-activity-card">
+        <div class="an-card-heading an-table-heading">
+            <div>
+                <h5>Recent activity</h5>
+                <p>Recent events across your recommendation widgets.</p>
+            </div>
+            <span class="an-table-count" id="anActivityCount">6 events</span>
+        </div>
+
+        <div class="an-activity-list" id="anActivityList"></div>
+        <div class="an-empty" id="anActivityEmpty" hidden>
+            <i class="bi bi-clock-history"></i>
+            <strong>No activity found</strong>
+            <span>Try selecting a different activity type.</span>
+        </div>
+    </section>
+
+    <div class="an-toast" id="anToast" role="status" aria-live="polite"></div>
+</div>
+
+<link href="~/app_page_css/app_page_analytics_css.css" rel="stylesheet" />
+
+<script src="~/app_page_js/app_page_analytics_js.js" />
+

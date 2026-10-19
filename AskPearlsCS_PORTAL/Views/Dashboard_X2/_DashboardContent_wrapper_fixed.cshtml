@@ -1,0 +1,546 @@
+<link href="~/app_page_css/app_page_dashboard_css.css" rel="stylesheet" />
+
+<div class="ap-page page-dashboard"
+     data-ap-page="dashboard">
+
+    <!-- Breadcrumb -->
+    <nav class="ap-breadcrumb mb-3" aria-label="Breadcrumb">
+        <a href="/Dashboard" class="ap-breadcrumb-link">AskPearls</a>
+        <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
+        <span class="ap-breadcrumb-current" aria-current="page">Dashboard</span>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="d-flex flex-wrap justify-content-between
+        align-items-center gap-3 mb-4 ap-dashboard-header">
+        <div>
+            <h1 class="h3 fw-bold mb-1 ap-dashboard-heading">
+                Welcome to AskPearls DecisionOS XXX
+            </h1>
+            <p class="mb-0 ap-dashboard-muted">
+                Build intelligent product recommendation experiences
+                for your website visitors.
+            </p>
+        </div>
+
+        <a href="#"
+           data-page="widget-builder"
+           class="btn btn-success ap-dashboard-primary-btn">
+            <i class="bi bi-plus-lg me-2"></i>
+            Create New Widget
+        </a>
+    </section>
+
+    <!-- Getting Started -->
+    <section class="card shadow-sm mb-4 ap-dashboard-card
+        ap-dashboard-welcome">
+        <div class="card-body p-4">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="badge ap-dashboard-start-badge mb-3">
+                        GET STARTED
+                    </span>
+
+                    <h2 class="h4 fw-bold ap-dashboard-heading">
+                        Turn website visitors into confident buyers
+                    </h2>
+
+                    <p class="ap-dashboard-muted mb-3">
+                        Create a guided decision widget, define your
+                        questions and recommendations, and publish it
+                        on your website.
+                    </p>
+
+                    <a href="#"
+                       data-page="widget-builder"
+                       class="btn btn-success ap-dashboard-primary-btn">
+                        Create your first widget
+                        <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 text-center">
+                    <i class="bi bi-diagram-3 text-success"
+                       style="font-size: 5rem;"
+                       aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Widget Overview -->
+    <section class="row g-3 mb-4"
+             aria-label="Widget overview">
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100 ap-dashboard-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between
+                        align-items-start">
+                        <div>
+                            <p class="mb-2 ap-dashboard-muted">
+                                My Widgets
+                            </p>
+                            <h3 class="h4 fw-bold mb-1 ap-dashboard-heading">—</h3>
+                            <small class="ap-dashboard-muted">
+                                Widget inventory
+                            </small>
+                        </div>
+                        <i class="bi bi-grid text-success fs-3"
+                           aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100 ap-dashboard-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between
+                        align-items-start">
+                        <div>
+                            <p class="mb-2 ap-dashboard-muted">
+                                Published
+                            </p>
+                            <h3 class="h4 fw-bold mb-1 ap-dashboard-heading">—</h3>
+                            <small class="ap-dashboard-muted">
+                                Live on websites
+                            </small>
+                        </div>
+                        <i class="bi bi-globe text-success fs-3"
+                           aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100 ap-dashboard-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between
+                        align-items-start">
+                        <div>
+                            <p class="mb-2 ap-dashboard-muted">
+                                Drafts
+                            </p>
+                            <h3 class="h4 fw-bold mb-1 ap-dashboard-heading">—</h3>
+                            <small class="ap-dashboard-muted">
+                                In progress
+                            </small>
+                        </div>
+                        <i class="bi bi-pencil-square text-success fs-3"
+                           aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100 ap-dashboard-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between
+                        align-items-start">
+                        <div>
+                            <p class="mb-2 ap-dashboard-muted">
+                                Visitor Interactions
+                            </p>
+                            <h3 class="h4 fw-bold mb-1 ap-dashboard-heading">—</h3>
+                            <small class="ap-dashboard-muted">
+                                Analytics
+                            </small>
+                        </div>
+                        <i class="bi bi-graph-up-arrow text-success fs-3"
+                           aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Builder Workflow -->
+    <section class="card shadow-sm mb-4 ap-dashboard-card">
+        <div class="card-header border-0 pt-4 px-4
+            ap-dashboard-card-header">
+            <h2 class="h5 fw-bold mb-1 ap-dashboard-heading">
+                Your Widget Builder
+            </h2>
+            <p class="small mb-0 ap-dashboard-muted">
+                Everything you need to build and publish a decision experience.
+            </p>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="row g-3">
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="border rounded-3 p-3 h-100
+                        ap-dashboard-workflow-item">
+                        <i class="bi bi-window text-success fs-3"
+                           aria-hidden="true"></i>
+                        <h3 class="h6 fw-bold mt-3 ap-dashboard-heading">
+                            1. Create a Widget
+                        </h3>
+                        <p class="small ap-dashboard-muted">
+                            Name your widget and select the website
+                            where it will appear.
+                        </p>
+                        <a href="#"
+                           data-page="widget-builder"
+                           class="btn btn-outline-success btn-sm">
+                            Get started
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="border rounded-3 p-3 h-100
+                        ap-dashboard-workflow-item">
+                        <i class="bi bi-ui-checks text-success fs-3"
+                           aria-hidden="true"></i>
+                        <h3 class="h6 fw-bold mt-3 ap-dashboard-heading">
+                            2. Questions &amp; Answers
+                        </h3>
+                        <p class="small ap-dashboard-muted">
+                            Create the questions that guide visitors
+                            toward suitable recommendations.
+                        </p>
+                        <span class="badge ap-dashboard-neutral-badge">
+                            Configure after creation
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="border rounded-3 p-3 h-100
+                        ap-dashboard-workflow-item">
+                        <i class="bi bi-box-seam text-success fs-3"
+                           aria-hidden="true"></i>
+                        <h3 class="h6 fw-bold mt-3 ap-dashboard-heading">
+                            3. Recommendation Items
+                        </h3>
+                        <p class="small ap-dashboard-muted">
+                            Add the products or services your widget
+                            can recommend.
+                        </p>
+                        <span class="badge ap-dashboard-neutral-badge">
+                            Configure after creation
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="border rounded-3 p-3 h-100
+                        ap-dashboard-workflow-item">
+                        <i class="bi bi-sliders text-success fs-3"
+                           aria-hidden="true"></i>
+                        <h3 class="h6 fw-bold mt-3 ap-dashboard-heading">
+                            4. Decision Rules
+                        </h3>
+                        <p class="small ap-dashboard-muted">
+                            Allocate relevance scores to match answers
+                            with your recommendation items.
+                        </p>
+                        <span class="badge ap-dashboard-neutral-badge">
+                            Configure after creation
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="border rounded-3 p-3 h-100
+                        ap-dashboard-workflow-item">
+                        <i class="bi bi-palette text-success fs-3"
+                           aria-hidden="true"></i>
+                        <h3 class="h6 fw-bold mt-3 ap-dashboard-heading">
+                            5. Design &amp; Preview
+                        </h3>
+                        <p class="small ap-dashboard-muted">
+                            Customize the widget and preview
+                            the visitor experience.
+                        </p>
+                        <span class="badge ap-dashboard-neutral-badge">
+                            Configure after creation
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="border rounded-3 p-3 h-100
+                        ap-dashboard-workflow-item">
+                        <i class="bi bi-code-slash text-success fs-3"
+                           aria-hidden="true"></i>
+                        <h3 class="h6 fw-bold mt-3 ap-dashboard-heading">
+                            6. Publish &amp; Embed
+                        </h3>
+                        <p class="small ap-dashboard-muted">
+                            Publish a configured widget and install
+                            its embed code on your website.
+                        </p>
+                        <span class="badge ap-dashboard-neutral-badge">
+                            Configure after creation
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Widgets -->
+    <section class="card shadow-sm ap-dashboard-card">
+        <div class="card-header border-0 pt-4 px-4
+            d-flex flex-wrap justify-content-between
+            align-items-center gap-2
+            ap-dashboard-card-header">
+            <div>
+                <h2 class="h5 fw-bold mb-1 ap-dashboard-heading">
+                    Recent Widgets
+                </h2>
+                <p class="small mb-0 ap-dashboard-muted">
+                    Your recently created decision experiences.
+                </p>
+            </div>
+
+            <a asp-controller="Widget"
+               asp-action="Index"
+               class="btn btn-outline-success btn-sm">
+                View All Widgets
+            </a>
+        </div>
+
+        <div class="card-body px-4 pb-4">
+            <div class="text-center py-4">
+                <i class="bi bi-window-stack ap-dashboard-muted"
+                   style="font-size: 2.5rem;"
+                   aria-hidden="true"></i>
+
+                <h3 class="h6 fw-bold mt-3 ap-dashboard-heading">
+                    Your widget list will appear here
+                </h3>
+
+                <p class="small mb-3 ap-dashboard-muted">
+                    Create your first widget to begin building
+                    your DecisionOS experience.
+                </p>
+
+                <a href="#"
+                   data-page="widget-builder"
+                   class="btn btn-success btn-sm">
+                    <i class="bi bi-plus-lg me-1"></i>
+                    Create New Widget
+                </a>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<style>
+    /* =====================================================
+           AskPearls Dashboard
+           Theme-aware styles scoped to this page
+           ===================================================== */
+
+    /* Shared AskPearls page wrapper: avoid Bootstrap container gutters */
+    .ap-page.page-dashboard {
+        display: block;
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        margin: 0;
+        padding: var(--ap-page-padding, 24px);
+        box-sizing: border-box;
+    }
+
+    [data-ap-page="dashboard"] {
+        color: var(--ap-text, #243447);
+    }
+
+        [data-ap-page="dashboard"] .ap-breadcrumb {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        [data-ap-page="dashboard"] .ap-breadcrumb-link {
+            color: var(--ap-primary, #087f6b);
+            text-decoration: none;
+        }
+
+            [data-ap-page="dashboard"] .ap-breadcrumb-link:hover {
+                text-decoration: underline;
+            }
+
+        [data-ap-page="dashboard"] .ap-breadcrumb-separator {
+            color: var(--ap-muted, #64748b);
+        }
+
+        [data-ap-page="dashboard"] .ap-breadcrumb-current {
+            color: var(--ap-text, #243447);
+            font-weight: 500;
+        }
+
+        [data-ap-page="dashboard"] .ap-dashboard-heading {
+            color: var(--ap-text, #243447);
+        }
+
+        [data-ap-page="dashboard"] .ap-dashboard-muted {
+            color: var(--ap-muted, #64748b);
+        }
+
+        [data-ap-page="dashboard"] .ap-dashboard-card {
+            background-color: var(--ap-surface, #ffffff);
+            color: var(--ap-text, #243447);
+            border: 1px solid var(--ap-border, #dfe5ec);
+            border-radius: var(--ap-radius, 12px);
+        }
+
+        [data-ap-page="dashboard"] .ap-dashboard-card-header {
+            background-color: transparent;
+            color: var(--ap-text, #243447);
+        }
+
+        [data-ap-page="dashboard"] .ap-dashboard-workflow-item {
+            background-color: var(--ap-surface, #ffffff);
+            border-color: var(--ap-border, #dfe5ec) !important;
+        }
+
+        [data-ap-page="dashboard"] .ap-dashboard-start-badge {
+            background-color: #d9fbe8;
+            color: #087443;
+        }
+
+        [data-ap-page="dashboard"] .ap-dashboard-neutral-badge {
+            background-color: var(--ap-page-bg, #f1f5f9);
+            color: var(--ap-text, #243447);
+            border: 1px solid var(--ap-border, #dfe5ec);
+            white-space: normal;
+            text-align: left;
+        }
+
+        [data-ap-page="dashboard"] .ap-dashboard-primary-btn {
+            font-weight: 600;
+        }
+
+    /* Dark mode: Bootstrap 5 data-bs-theme */
+    html[data-bs-theme="dark"] [data-ap-page="dashboard"],
+    body[data-bs-theme="dark"] [data-ap-page="dashboard"],
+    [data-bs-theme="dark"] [data-ap-page="dashboard"] {
+        --ap-page-bg: #0b1513;
+        --ap-surface: #11211d;
+        --ap-text: #edf5f2;
+        --ap-muted: #b8c9c3;
+        --ap-border: #2b443d;
+        --ap-primary: #36df91;
+    }
+
+    /* Dark mode: common class-based theme toggles */
+    html.dark [data-ap-page="dashboard"],
+    body.dark [data-ap-page="dashboard"],
+    html.dark-theme [data-ap-page="dashboard"],
+    body.dark-theme [data-ap-page="dashboard"],
+    html[data-theme="dark"] [data-ap-page="dashboard"],
+    body[data-theme="dark"] [data-ap-page="dashboard"] {
+        --ap-page-bg: #0b1513;
+        --ap-surface: #11211d;
+        --ap-text: #edf5f2;
+        --ap-muted: #b8c9c3;
+        --ap-border: #2b443d;
+        --ap-primary: #36df91;
+    }
+
+        /* Explicit dark-mode card surfaces */
+        html[data-bs-theme="dark"] [data-ap-page="dashboard"] .card,
+        body[data-bs-theme="dark"] [data-ap-page="dashboard"] .card,
+        html.dark [data-ap-page="dashboard"] .card,
+        body.dark [data-ap-page="dashboard"] .card,
+        html.dark-theme [data-ap-page="dashboard"] .card,
+        body.dark-theme [data-ap-page="dashboard"] .card,
+        html[data-theme="dark"] [data-ap-page="dashboard"] .card,
+        body[data-theme="dark"] [data-ap-page="dashboard"] .card {
+            background-color: #11211d !important;
+            color: #edf5f2 !important;
+            border-color: #2b443d !important;
+        }
+
+        html[data-bs-theme="dark"] [data-ap-page="dashboard"] .card-header,
+        body[data-bs-theme="dark"] [data-ap-page="dashboard"] .card-header,
+        html.dark [data-ap-page="dashboard"] .card-header,
+        body.dark [data-ap-page="dashboard"] .card-header,
+        html.dark-theme [data-ap-page="dashboard"] .card-header,
+        body.dark-theme [data-ap-page="dashboard"] .card-header,
+        html[data-theme="dark"] [data-ap-page="dashboard"] .card-header,
+        body[data-theme="dark"] [data-ap-page="dashboard"] .card-header {
+            background-color: transparent !important;
+            color: #edf5f2 !important;
+        }
+
+        /* Override Bootstrap text-muted, which may be too dim in dark mode */
+        html[data-bs-theme="dark"] [data-ap-page="dashboard"] .text-muted,
+        body[data-bs-theme="dark"] [data-ap-page="dashboard"] .text-muted,
+        html.dark [data-ap-page="dashboard"] .text-muted,
+        body.dark [data-ap-page="dashboard"] .text-muted,
+        html.dark-theme [data-ap-page="dashboard"] .text-muted,
+        body.dark-theme [data-ap-page="dashboard"] .text-muted,
+        html[data-theme="dark"] [data-ap-page="dashboard"] .text-muted,
+        body[data-theme="dark"] [data-ap-page="dashboard"] .text-muted {
+            color: #b8c9c3 !important;
+        }
+
+        /* Headings and strong text */
+        html[data-bs-theme="dark"] [data-ap-page="dashboard"] h1,
+        html[data-bs-theme="dark"] [data-ap-page="dashboard"] h2,
+        html[data-bs-theme="dark"] [data-ap-page="dashboard"] h3,
+        body[data-bs-theme="dark"] [data-ap-page="dashboard"] h1,
+        body[data-bs-theme="dark"] [data-ap-page="dashboard"] h2,
+        body[data-bs-theme="dark"] [data-ap-page="dashboard"] h3,
+        html.dark [data-ap-page="dashboard"] h1,
+        html.dark [data-ap-page="dashboard"] h2,
+        html.dark [data-ap-page="dashboard"] h3,
+        body.dark [data-ap-page="dashboard"] h1,
+        body.dark [data-ap-page="dashboard"] h2,
+        body.dark [data-ap-page="dashboard"] h3,
+        html[data-theme="dark"] [data-ap-page="dashboard"] h1,
+        html[data-theme="dark"] [data-ap-page="dashboard"] h2,
+        html[data-theme="dark"] [data-ap-page="dashboard"] h3,
+        body[data-theme="dark"] [data-ap-page="dashboard"] h1,
+        body[data-theme="dark"] [data-ap-page="dashboard"] h2,
+        body[data-theme="dark"] [data-ap-page="dashboard"] h3 {
+            color: #edf5f2 !important;
+        }
+
+        /* Workflow borders and badges */
+        html[data-bs-theme="dark"] [data-ap-page="dashboard"] .border,
+        body[data-bs-theme="dark"] [data-ap-page="dashboard"] .border,
+        html.dark [data-ap-page="dashboard"] .border,
+        body.dark [data-ap-page="dashboard"] .border,
+        html[data-theme="dark"] [data-ap-page="dashboard"] .border,
+        body[data-theme="dark"] [data-ap-page="dashboard"] .border {
+            border-color: #2b443d !important;
+        }
+
+        html[data-bs-theme="dark"] [data-ap-page="dashboard"] .ap-dashboard-neutral-badge,
+        body[data-bs-theme="dark"] [data-ap-page="dashboard"] .ap-dashboard-neutral-badge,
+        html.dark [data-ap-page="dashboard"] .ap-dashboard-neutral-badge,
+        body.dark [data-ap-page="dashboard"] .ap-dashboard-neutral-badge,
+        html[data-theme="dark"] [data-ap-page="dashboard"] .ap-dashboard-neutral-badge,
+        body[data-theme="dark"] [data-ap-page="dashboard"] .ap-dashboard-neutral-badge {
+            background-color: #20342e !important;
+            color: #edf5f2 !important;
+            border-color: #3a574c !important;
+        }
+
+    @@media (max-width: 575.98px) {
+        [data-ap-page="dashboard"] .ap-breadcrumb {
+            gap: 7px;
+        }
+
+        [data-ap-page="dashboard"] .ap-dashboard-welcome .card-body {
+            padding: 1.25rem !important;
+        }
+    }
+</style>

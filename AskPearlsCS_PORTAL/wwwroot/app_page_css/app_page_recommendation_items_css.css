@@ -724,3 +724,54 @@ body.dark .recommendation-page .ri-stat-icon svg {
     fill: currentColor;
     stroke: currentColor;
 }
+
+
+/* Recommendation Items — consistent dropdown arrow spacing */
+.recommendation-page .ri-toolbar select#riStatusFilter {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 11px 2.5rem 11px 13px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16'%3E%3Cpath fill='%23b8c9c5' d='m3 5 5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+}
+
+
+
+/* =========================================================
+   FIX: Match Recommendation Items to AskPearls typography
+   ========================================================= */
+
+.recommendation-page.ap-page,
+.recommendation-page .ri-panel,
+.recommendation-page .ri-panel *,
+.recommendation-page .ri-stat-card,
+.recommendation-page .ri-stat-card *,
+.recommendation-page .ri-toolbar,
+.recommendation-page .ri-toolbar *,
+.recommendation-page .ri-table,
+.recommendation-page .ri-table * {
+    font-family: var(--default-font, Arial, sans-serif) !important;
+}
+
+/* Keep Bootstrap icon glyphs using their own icon font. */
+.recommendation-page .bi {
+    font-family: bootstrap-icons !important;
+}
+
+
+/* Recommendation Items — enforce the portal font in the modal */
+.recommendation-page .ri-modal,
+.recommendation-page .ri-modal *,
+#riModalBackdrop .ri-modal,
+#riModalBackdrop .ri-modal * {
+    font-family: var(--default-font, Arial, sans-serif) !important;
+}
+
+    /* Preserve Bootstrap Icons */
+    .recommendation-page .ri-modal .bi,
+    #riModalBackdrop .ri-modal .bi {
+        font-family: "bootstrap-icons" !important;
+    }
