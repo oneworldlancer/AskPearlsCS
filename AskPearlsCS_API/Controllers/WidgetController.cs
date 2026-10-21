@@ -55,6 +55,114 @@ public class WidgetController : ControllerBase
         _environment = environment;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetMyWidgets()
+    {
+        if (!TryGetDemoOwner(out var error)) return error!;
+
+        var widgets = await _db.AskpearlsPortalUserWebsiteWidgetLists
+            .AsNoTracking()
+            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+                        x.IsActive == true && x.IsVisible == true)
+            .OrderBy(x => x.WidgetName)
+            .Select(x => new
+            {
+                x.WidgetTokenId,
+                x.WidgetPublicKey,
+                x.WidgetName,
+                x.WidgetTitle,
+                x.WidgetDescription,
+                x.WidgetStatusCode,
+                x.WidgetPublishedVersion
+            })
+            .ToListAsync();
+
+        var widgetKeys = widgets
+            .Where(x => !string.IsNullOrWhiteSpace(x.WidgetPublicKey))
+            .Select(x => x.WidgetPublicKey!)
+            .ToArray();
+
+        var versions = widgetKeys.Length == 0
+            ? new List<AskpearlsPortalUserWebsiteWidgetVersionList>()
+            : await _db.AskpearlsPortalUserWebsiteWidgetVersionLists
+                .AsNoTracking()
+                .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+                            widgetKeys.Contains(x.WidgetPublicKey!) &&
+                            x.IsActive == true && x.IsVisible == true)
+                .Select(x => new AskpearlsPortalUserWebsiteWidgetVersionList
+                {
+                    WidgetPublicKey = x.WidgetPublicKey,
+                    WidgetVersionNumber = x.WidgetVersionNumber,
+                    WidgetStatusCode = x.WidgetStatusCode,
+                    UpdatedAtUtc = x.UpdatedAtUtc,
+                    CreatedAtUtc = x.CreatedAtUtc
+                })
+                .ToListAsync();
+
+        var questions = await _db.AskpearlsPortalUserWebsiteWidgetQuestionLists
+            .AsNoTracking()
+            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+                        widgetKeys.Contains(x.WidgetPublicKey!) &&
+                        x.IsActive == true && x.IsVisible == true)
+            .Select(x => new { x.WidgetPublicKey, x.WidgetVersionNumber })
+            .ToListAsync();
+
+        var recommendations = await _db.AskpearlsPortalUserWebsiteWidgetRecommendationLists
+            .AsNoTracking()
+            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+                        widgetKeys.Contains(x.WidgetPublicKey!) &&
+                        x.IsActive == true && x.IsVisible == true)
+            .Select(x => new { x.WidgetPublicKey, x.WidgetVersionNumber })
+            .ToListAsync();
+
+        var result = widgets.Select(widget =>
+        {
+            var widgetVersions = versions
+                .Where(version => version.WidgetPublicKey == widget.WidgetPublicKey)
+                .ToList();
+            var draft = widgetVersions
+                .Where(version => string.Equals(version.WidgetStatusCode, "draft", StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(version => version.UpdatedAtUtc ?? version.CreatedAtUtc)
+                .FirstOrDefault();
+            var published = widgetVersions
+                .Where(version => string.Equals(version.WidgetStatusCode, "published", StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(version => version.WidgetVersionNumber == widget.WidgetPublishedVersion)
+                .ThenByDescending(version => version.UpdatedAtUtc ?? version.CreatedAtUtc)
+                .FirstOrDefault();
+
+            var status = draft is not null
+                ? "draft"
+                : published is not null
+                    ? "published"
+                    : (widget.WidgetStatusCode ?? "draft").ToLowerInvariant();
+            var currentVersion = draft ?? published;
+            var currentVersionNumber = currentVersion?.WidgetVersionNumber ?? widget.WidgetPublishedVersion;
+            var currentPublicKey = widget.WidgetPublicKey;
+            var questionCount = questions.Count(x =>
+                string.Equals(x.WidgetPublicKey, currentPublicKey, StringComparison.OrdinalIgnoreCase) &&
+                (string.IsNullOrWhiteSpace(currentVersionNumber) ||
+                 string.Equals(x.WidgetVersionNumber, currentVersionNumber, StringComparison.OrdinalIgnoreCase)));
+            var recommendationCount = recommendations.Count(x =>
+                string.Equals(x.WidgetPublicKey, currentPublicKey, StringComparison.OrdinalIgnoreCase) &&
+                (string.IsNullOrWhiteSpace(currentVersionNumber) ||
+                 string.Equals(x.WidgetVersionNumber, currentVersionNumber, StringComparison.OrdinalIgnoreCase)));
+
+            return new
+            {
+                publicKey = widget.WidgetPublicKey,
+                name = widget.WidgetName ?? widget.WidgetTitle ?? "Untitled widget",
+                description = widget.WidgetDescription ?? string.Empty,
+                status,
+                versionNumber = currentVersionNumber,
+                updatedAt = currentVersion?.UpdatedAtUtc ?? currentVersion?.CreatedAtUtc,
+                questionCount,
+                recommendationCount
+            };
+        });
+
+        return Ok(new { success = true, widgets = result });
+    }
+
     // Local demo identity from the user's test data. These routes are disabled
     // outside Development and must be replaced by the portal's Google login model.
     private const string DemoOwnerUserTokenId = "1101";
@@ -390,6 +498,7 @@ public class WidgetController : ControllerBase
 
 
     //[HttpGet("{publicKey}")]
+    [NonAction]
     public async Task<IActionResult> GetPublished_X3(string publicKey)
     {
         if (publicKey != "pk_demo_sofa_finder")
@@ -1125,6 +1234,7 @@ public class WidgetController : ControllerBase
 
 
     //    [HttpGet("{publicKey}")]
+    [NonAction]
     public async Task<IActionResult> GetPublished_X2(string publicKey)
     {
         if (publicKey != "pk_demo_sofa_finder")
@@ -1705,6 +1815,7 @@ public class WidgetController : ControllerBase
     }
 
     ////[HttpGet("{publicKey}")]
+    [NonAction]
     public async Task<IActionResult> GetPublished_X1(string publicKey)
     {
 

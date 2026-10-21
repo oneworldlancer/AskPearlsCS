@@ -1,158 +1,89 @@
-
-
 <div class="ap-page page-widgets"
-     data-ap-page="my-widgets">
-
-    <!-- Shared breadcrumb -->
+     data-ap-page="my-widgets"
+     data-api-base="https://localhost:7014/api"
+     data-demo-owner-user-token="1101">
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
         <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
-        <span class="ap-breadcrumb-current" aria-current="page">
-            My Widgets
-        </span>
+        <span class="ap-breadcrumb-current" aria-current="page">My Widgets</span>
     </nav>
 
-    <!-- Standardized page heading -->
-    <header class="ap-page-header">
+    <header class="ap-page-header widgets-page-heading">
         <div class="ap-page-heading">
             <h1 class="ap-page-title">My Widgets</h1>
-            <p class="ap-page-description">
-                Create, organize, and manage your DecisionOS widgets.
-            </p>
-        </div>
-
-        <div class="ap-page-actions">
-            <a href="#"
-               data-page="widget-builder"
-               class="btn btn-success ap-widget-builder-link">
-                <i class="bi bi-plus-lg me-2" aria-hidden="true"></i>
-                Create New Widget
-            </a>
+            <p class="ap-page-description">Manage, edit and publish your decision widgets. Select a widget to open its workspace.</p>
         </div>
     </header>
 
-    <!-- Summary cards: awaiting real database integration -->
-    <section class="ap-page-section" aria-label="Widget summary">
+    <section class="active-widget-picker" aria-label="Active widget">
+        <div class="active-widget-picker-icon" aria-hidden="true"><i class="bi bi-grid-1x2"></i></div>
+        <div class="active-widget-picker-main">
+            <label for="activeWidgetSelect">Select widget</label>
+            <select id="activeWidgetSelect" class="active-widget-select" aria-label="Select active widget" disabled>
+                <option value="">Loading widgets…</option>
+            </select>
+            <small id="activeWidgetMessage">Choose the widget you want to manage.</small>
+        </div>
+        <div class="active-widget-picker-version" aria-live="polite">
+            <span>Current version</span>
+            <strong id="activeWidgetVersion">—</strong>
+            <span id="activeWidgetStatus" class="widget-status-badge" hidden></span>
+        </div>
+    </section>
+
+    <section class="ap-page-section widget-summary" aria-label="Widget summary">
         <div class="row g-3">
-
             <div class="col-12 col-md-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="text-muted mb-2">All Widgets</p>
-                                <h2 class="h3 fw-bold mb-0">—</h2>
-                            </div>
-                            <i class="bi bi-grid text-success fs-2"
-                               aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
+                <article class="card widget-summary-card"><i class="bi bi-grid" aria-hidden="true"></i><div><span>All Widgets</span><strong id="widgetCountAll">—</strong></div></article>
             </div>
-
             <div class="col-12 col-md-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="text-muted mb-2">Published</p>
-                                <h2 class="h3 fw-bold mb-0">—</h2>
-                            </div>
-                            <i class="bi bi-globe text-success fs-2"
-                               aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
+                <article class="card widget-summary-card"><i class="bi bi-globe" aria-hidden="true"></i><div><span>Published</span><strong id="widgetCountPublished">—</strong></div></article>
             </div>
-
             <div class="col-12 col-md-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="text-muted mb-2">Drafts</p>
-                                <h2 class="h3 fw-bold mb-0">—</h2>
-                            </div>
-                            <i class="bi bi-pencil-square text-success fs-2"
-                               aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
+                <article class="card widget-summary-card"><i class="bi bi-pencil-square" aria-hidden="true"></i><div><span>Drafts</span><strong id="widgetCountDrafts">—</strong></div></article>
             </div>
-
         </div>
     </section>
 
-    <!-- Widget inventory -->
     <section class="ap-page-section">
-        <div class="card">
-
-            <div class="card-header px-4 py-4">
-                <div class="widget-inventory-toolbar">
-
-                    <!-- Inventory title -->
-                    <div class="widget-inventory-intro">
-                        <h2 class="h5 fw-bold mb-1">Widget Inventory</h2>
-                        <p class="text-muted small mb-0">
-                            Your decision experiences will appear here.
-                        </p>
-                    </div>
-
-                    <!-- Search -->
-                    <div class="widget-inventory-search">
-                        <input id="widgetSearch"
-                               type="search"
-                               class="form-control"
-                               placeholder="Search widgets..."
-                               aria-label="Search widgets">
-                    </div>
-
-                    <!-- Status filter -->
-                    <div class="widget-inventory-status">
-                        <select id="widgetStatusFilter"
-                                class="form-select"
-                                aria-label="Filter widgets by status">
-                            <option value="all">All statuses</option>
-                            <option value="published">Published</option>
-                            <option value="draft">Draft</option>
-                        </select>
-                    </div>
-
+        <div class="card widget-inventory-card">
+            <div class="card-header widget-inventory-header">
+                <div class="widget-inventory-intro">
+                    <h2 class="h5 fw-bold mb-1">Your widgets</h2>
+                    <p class="text-muted small mb-0">Create and manage decision experiences for your customers.</p>
                 </div>
+                <input id="widgetSearch" class="form-control widget-inventory-search" type="search" placeholder="Search widgets…" aria-label="Search widgets">
+                <select id="widgetStatusFilter" class="form-select widget-inventory-status" aria-label="Filter by widget status">
+                    <option value="all">All statuses</option>
+                    <option value="published">Published</option>
+                    <option value="draft">Draft</option>
+                </select>
+                <a href="#" data-page="widget-builder" class="btn btn-success ap-widget-builder-link">
+                    <i class="bi bi-plus-circle me-2" aria-hidden="true"></i>Create new widget
+                </a>
             </div>
 
-            <div class="card-body px-4 pb-4">
-
-                <!-- Empty state until connected to real data -->
-                <div id="widgetEmptyState" class="text-center py-5">
-                    <i class="bi bi-window-stack text-success"
-                       style="font-size: 3rem;"
-                       aria-hidden="true"></i>
-
-                    <h3 class="h5 fw-bold mt-3">
-                        No widgets to display yet
-                    </h3>
-
-                    <p class="text-muted mb-3">
-                        Create your first widget to start building
-                        a guided decision experience for your visitors.
-                    </p>
-
-                    <a href="#"
-                       data-page="widget-builder"
-                       class="btn btn-success ap-widget-builder-link">
-                        <i class="bi bi-plus-lg me-2" aria-hidden="true"></i>
-                        Create Your First Widget
-                    </a>
+            <div class="widget-table-scroll" aria-live="polite">
+                <div id="widgetLoadingState" class="widget-loading-state">
+                    <span class="spinner-border spinner-border-sm text-success" aria-hidden="true"></span>
+                    <span>Loading your widgets…</span>
                 </div>
-
+                <div id="widgetErrorState" class="widget-error-state" role="alert" hidden>
+                    <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+                    <span>We couldn't load your widgets.</span>
+                    <button type="button" id="widgetRetry" class="btn btn-outline-success btn-sm">Try again</button>
+                </div>
+                <div id="widgetInventoryList" class="widget-inventory-list" hidden></div>
+                <div id="widgetEmptyState" class="text-center py-5" hidden>
+                    <i class="bi bi-window-stack text-success" aria-hidden="true"></i>
+                    <h3 class="h5 fw-bold mt-3">No widgets to display yet</h3>
+                    <p class="text-muted mb-3" id="widgetEmptyMessage">Create your first widget to start building a guided decision experience for your visitors.</p>
+                    <a href="#" data-page="widget-builder" class="btn btn-success ap-widget-builder-link">Create your first widget</a>
+                </div>
             </div>
         </div>
     </section>
-
 </div>
 
-<link href="~/app_page_css/app_page_my_widgets_css.css" rel="stylesheet" />
-
-
-
+<link href="~/app_page_css/app_page_my_widgets_css.css?v=20261021-2" rel="stylesheet" />
+<script src="~/app_page_js/app_page_my_widgets_js.js"></script>

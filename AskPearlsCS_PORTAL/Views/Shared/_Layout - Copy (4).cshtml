@@ -1,0 +1,1618 @@
+﻿@{
+    // ViewData["Title"] = "Home Page";
+    Layout = null;
+}
+@*
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+ *@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - NiceAdmin</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="NiceAdmin - Bootstrap Admin Template">
+    <meta name="keywords" content="admin, dashboard, bootstrap">
+
+    <!-- Favicons -->
+    <link href="MemberView/assets/img/favicon.png" rel="icon">
+    <link href="MemberView/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts - Nunito Sans + Poppins + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="css2?family=JetBrains+Mono:wght@400;500;600&family=Nunito+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    @*     <a href="~/lib/jquery/dist/jquery.min.map">~/lib/jquery/dist/jquery.min.map</a>
+    <a href="~/lib/jquery/dist/jquery.slim.min.map">~/lib/jquery/dist/jquery.slim.min.map</a> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.slim.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.slim.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    <!-- APP CSS Files -->
+    <link href="~/app_css/app_page_shared_css.css" rel="stylesheet" />
+    <link href="~/app_css/app_align_CSS.css" rel="stylesheet">
+    <link href="~/app_css/app_link_CSS.css" rel="stylesheet">
+    <link href="~/app_css/app_scrollbar_css.css" rel="stylesheet" />
+
+
+    <link href="~/app_crm/css/layout.css" rel="stylesheet" />
+
+    <link href="~/app_css/app_portal_chat_crm_css.css" rel="stylesheet" />
+
+    
+    <!-- Vendor CSS Files -->
+    <link href="MemberView/vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="MemberView/vendors/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="MemberView/vendors/remixicon/remixicon.css" rel="stylesheet">
+    <link href="MemberView/vendors/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="MemberView/vendors/phosphor-icons/phosphor-icons.css" rel="stylesheet">
+    <link href="MemberView/vendors/lucide-icons/lucide.css" rel="stylesheet">
+    <link href="MemberView/vendors/simple-datatables/style.css" rel="stylesheet">
+    <link href="MemberView/vendors/quill/quill.snow.css" rel="stylesheet">
+    <link href="MemberView/vendors/quill/quill.bubble.css" rel="stylesheet">
+    <link href="MemberView/vendors/choices.js/choices.min.css" rel="stylesheet">
+    <link href="MemberView/vendors/flatpickr/flatpickr.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="MemberView/assets/css/main.css" rel="stylesheet">
+
+    <link href="~/app_css/app_menu_sidebar_css.css" rel="stylesheet" />
+    <style>
+            .form-control {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            input.form-control {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            .form-control-sm {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+            input.form-control-sm {
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+        
+            input[type=text], input[type=text]:focus, input[type=email]:focus, input[type=url]:focus, input[type=password]:focus, input[type=number]:focus, textarea, textarea:focus {
+                /*background-color: lightblue;*/
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+            }
+
+
+            input[type=text], input[type=email], input[type=password], input[type=url], input[type=number], textarea {
+                /*background-color: lightblue;*/
+                /*background: blue;*/
+                background-color: #ffffcc !important;
+                border: 1px solid #3c8116;
+                /*   border:  1px solid lightblue ;*/
+            }
+
+    </style>
+
+
+    <!-- =======================================================
+    * Template Name: NiceAdmin - Bootstrap Admin Template
+    * Template URL: https://bootstrapmade.com/flex-admin-bootstrap-template/
+    * Updated: Apr 8, 2026 with Bootstrap v5.3.8
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+<body class="vh-100">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+
+            @*            *@
+            <a href="/Dashboard" class="header-brand header-logo" aria-label="Ask Pearls home">
+                @* <span class="header-logo"> *@
+
+                <img id="img_logo_portal" src="~/app_img/logo-default-light.png" style="width:auto;height:60px;" alt="AskPearls">
+                @* <img src="../MemberView/assets/img/logo.webp" alt="Ask Pearls"> *@
+                @* </span> *@
+                @*  <span class="header-context">
+                    <strong class="header-context-title">Ask Pearls</strong>
+                </span> *@
+            </a>
+            <button class="sidebar-toggle d-block" title="Toggle Sidebar" aria-label="Toggle sidebar">
+                <span class="menu-lines" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+        </div>
+
+        <div class="header-search-wrap">
+            <form class="search-form" action="search-results.html" method="GET">
+                <i class="bi bi-search search-icon"></i>
+                <input type="search" name="q" placeholder="Search projects, invoices, users..." autocomplete="off">
+                <kbd class="search-shortcut">/</kbd>
+            </form>
+        </div>
+
+        <div class="header-right">
+            <div class="header-actions-desktop">
+                <div class="header-action-wrap dropdown lang-dropdown d-none">
+                    <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Language">
+                        <img src="../MemberView/assets/flag/us.png" alt="EN" class="lang-flag">
+                        <span class="lang-code">EN</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end lang-menu">
+                        <div class="menu-title">Select Language</div>
+                        <a class="lang-item active" href="#">
+                            <img src="../MemberView/assets/flag/us.png" alt="EN" class="lang-flag">
+                            <span class="lang-copy">
+                                <span class="lang-name">English</span>
+                                <span class="lang-meta">United States</span>
+                            </span>
+                            <i class="bi bi-check2"></i>
+                        </a>
+                        <a class="lang-item" href="#">
+                            <img src="../MemberView/assets/flag/fr.png" alt="FR" class="lang-flag">
+                            <span class="lang-copy">
+                                <span class="lang-name">Français</span>
+                                <span class="lang-meta">France</span>
+                            </span>
+                        </a>
+                        <a class="lang-item" href="#">
+                            <img src="../MemberView/assets/flag/de.png" alt="DE" class="lang-flag">
+                            <span class="lang-copy">
+                                <span class="lang-name">Deutsch</span>
+                                <span class="lang-meta">Germany</span>
+                            </span>
+                        </a>
+                        <a class="lang-item" href="#">
+                            <img src="../MemberView/assets/flag/es.png" alt="ES" class="lang-flag">
+                            <span class="lang-copy">
+                                <span class="lang-name">Español</span>
+                                <span class="lang-meta">Spain</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="header-action-wrap dropdown quickaccess-dropdown d-none">
+                    <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Quick Access">
+                        <i class="ph-light ph-squares-four"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end quickaccess-menu">
+                        <div class="menu-title">Quick Access</div>
+                        <a href="dashboard-projects.html" class="quickaccess-featured">
+                            <span class="quickaccess-featured-icon"><i class="bi bi-lightning-charge"></i></span>
+                            <span class="quickaccess-featured-copy">
+                                <strong>Create New Workspace</strong>
+                                <small>Launch projects, assign team, set timeline</small>
+                            </span>
+                        </a>
+                        <div class="quickaccess-grid">
+                            <a href="apps-calendar.html" class="quickaccess-item">
+                                <i class="bi bi-calendar3"></i>
+                                <span>Calendar</span>
+                                <small>Events</small>
+                            </a>
+                            <a href="apps-kanban.html" class="quickaccess-item">
+                                <i class="bi bi-kanban"></i>
+                                <span>Kanban</span>
+                                <small>Boards</small>
+                            </a>
+                            <a href="apps-chat.html" class="quickaccess-item">
+                                <i class="bi bi-chat-dots"></i>
+                                <span>Chat</span>
+                                <small>Inbox</small>
+                            </a>
+                            <a href="apps-email.html" class="quickaccess-item">
+                                <i class="bi bi-envelope"></i>
+                                <span>Email</span>
+                                <small>Campaigns</small>
+                            </a>
+                            <a href="apps-file-manager.html" class="quickaccess-item">
+                                <i class="bi bi-folder2-open"></i>
+                                <span>Files</span>
+                                <small>Assets</small>
+                            </a>
+                            <a href="apps-support.html" class="quickaccess-item">
+                                <i class="bi bi-headset"></i>
+                                <span>Support</span>
+                                <small>Tickets</small>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-action-wrap dropdown notification-dropdown">
+                    <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
+                        <i class="bi bi-bell"></i>
+                        <span class="header-badge">4</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end notification-menu">
+                        <div class="notification-header">
+                            <div>
+                                <h6>Notifications</h6>
+                                <span>4 unread</span>
+                            </div>
+                            <a href="#" data-notification-action="mark-all-read">Mark all read</a>
+                        </div>
+                        <div class="notification-summary">
+                            <a href="activity.html" class="notification-summary-item">
+                                <strong>7</strong>
+                                <span>Today</span>
+                            </a>
+                            <a href="notifications.html" class="notification-summary-item">
+                                <strong>23</strong>
+                                <span>This week</span>
+                            </a>
+                            <a href="roles.html" class="notification-summary-item">
+                                <strong>3</strong>
+                                <span>Approvals</span>
+                            </a>
+                        </div>
+                        <div class="notification-list">
+                            <div class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <div class="notification-icon info"><i class="bi bi-rocket-takeoff"></i></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">Deploy ready</div>
+                                    <div class="notification-text">Sprint release passed QA validation.</div>
+                                    <span class="notification-time">5m ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <img src="../MemberView/assets/img/avatars/avatar-2.webp" alt="" class="notification-avatar">
+                                <div class="notification-content">
+                                    <div class="notification-title">Mia sent feedback</div>
+                                    <div class="notification-text">Please review updated dashboard spacing.</div>
+                                    <span class="notification-time">21m ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <div class="notification-icon warning"><i class="bi bi-exclamation-triangle"></i></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">Storage alert</div>
+                                    <div class="notification-text">Media bucket reached 81% usage.</div>
+                                    <span class="notification-time">58m ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <div class="notification-icon success"><i class="bi bi-check2-circle"></i></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">Payment received</div>
+                                    <div class="notification-text">Invoice #INV-3921 settled successfully.</div>
+                                    <span class="notification-time">2h ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notification-footer">
+                            <a href="notifications.html">Open notification center <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-action-wrap dropdown messages-dropdown d-none">
+                    <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Messages">
+                        <i class="bi bi-chat-left-text"></i>
+                        <span class="header-badge">5</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end messages-menu">
+                        <div class="notification-header">
+                            <div>
+                                <h6>Messages</h6>
+                                <span>5 unread</span>
+                            </div>
+                            <a href="apps-chat.html">Open chat</a>
+                        </div>
+                        <div class="message-channels">
+                            <a href="apps-chat.html" class="message-channel active">Direct</a>
+                            <a href="apps-chat.html" class="message-channel">Team</a>
+                            <a href="apps-chat.html" class="message-channel">Clients</a>
+                        </div>
+                        <div class="notification-list">
+                            <a href="apps-chat.html" class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <img src="../MemberView/assets/img/avatars/avatar-2.webp" alt="" class="notification-avatar">
+                                <div class="notification-content">
+                                    <div class="notification-title">Mia Rodriguez</div>
+                                    <div class="notification-text">Can you review the analytics wireframe today?</div>
+                                    <span class="notification-time">2m ago</span>
+                                </div>
+                            </a>
+                            <a href="apps-chat.html" class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <img src="../MemberView/assets/img/avatars/avatar-3.webp" alt="" class="notification-avatar">
+                                <div class="notification-content">
+                                    <div class="notification-title">Dev Channel</div>
+                                    <div class="notification-text">Build passed. Ready for production deploy.</div>
+                                    <span class="notification-time">12m ago</span>
+                                </div>
+                            </a>
+                            <a href="apps-chat.html" class="notification-item unread">
+                                <span class="notification-dot"></span>
+                                <img src="../MemberView/assets/img/avatars/avatar-4.webp" alt="" class="notification-avatar">
+                                <div class="notification-content">
+                                    <div class="notification-title">Sarah Kim</div>
+                                    <div class="notification-text">Shared file: Q1-forecast-report.pdf</div>
+                                    <span class="notification-time">35m ago</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="notification-footer">
+                            <a href="apps-chat.html">View all messages <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="header-action theme-toggle" title="Toggle Theme">
+                    <i class="ph-light ph-moon-stars theme-icon-dark"></i>
+                    <i class="ph-light ph-sun theme-icon-light"></i>
+                </button>
+
+                <div class="header-action-wrap dropdown user-dropdown">
+                    <button class="dropdown-toggle user-trigger" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../MemberView/assets/img/profile-img.webp" alt="User" class="user-avatar">
+                        <div class="user-brief">
+                            <span class="user-name">John Doe</span>
+                            <span class="user-role">Product Admin</span>
+                        </div>
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-end user-menu">
+                        <div class="user-menu-header">
+                            <img src="../MemberView/assets/img/profile-img.webp" alt="User" class="user-menu-avatar">
+                            <div class="user-menu-info">
+                                <div class="user-menu-name">John Doe</div>
+                                <div class="user-menu-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b8d2d7d0d696dcd7ddf8ddc0d9d5c8d4dd96dbd7d5">[email&#160;protected]</a></div>
+                            </div>
+                        </div>
+                        <div class="user-menu-body">
+                            <a class="user-menu-item" href="profile.html">
+                                <i class="bi bi-person"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a class="user-menu-item" href="settings.html">
+                                <i class="bi bi-sliders"></i>
+                                <span>Preferences</span>
+                            </a>
+                            <a class="user-menu-item" href="activity.html">
+                                <i class="bi bi-activity"></i>
+                                <span>Activity Log</span>
+                            </a>
+                            <a class="user-menu-item" href="invoice-list.html">
+                                <i class="bi bi-credit-card"></i>
+                                <span>Billing</span>
+                            </a>
+                        </div>
+                        <div class="user-menu-footer">
+                            <a class="user-menu-logout" href="auth-login.html">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Sign Out</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-actions-mobile">
+                <button class="header-action search-toggle" title="Search">
+                    <i class="bi bi-search"></i>
+                </button>
+
+                <button class="header-action mobile-menu-toggle" title="More">
+                    <i class="bi bi-three-dots"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-search">
+        <form class="search-form" action="search-results.html" method="GET">
+            <input type="search" name="q" placeholder="Search..." autocomplete="off">
+            <button type="submit"><i class="bi bi-search"></i></button>
+        </form>
+    </div>
+
+    <div class="mobile-header-menu">
+        <div class="mobile-header-menu-content">
+            <button class="mobile-menu-item theme-toggle" title="Toggle Theme">
+                <i class="ph-light ph-moon-stars theme-icon-dark"></i>
+                <i class="ph-light ph-sun theme-icon-light"></i>
+                <span class="mobile-menu-label">Theme</span>
+            </button>
+
+            <a href="notifications.html" class="mobile-menu-item">
+                <i class="bi bi-bell"></i>
+                <span class="badge">4</span>
+                <span class="mobile-menu-label">Alerts</span>
+            </a>
+
+            <a href="apps-chat.html" class="mobile-menu-item d-none">
+                <i class="bi bi-chat-left-text"></i>
+                <span class="mobile-menu-label">Messages</span>
+            </a>
+
+            <a href="apps-calendar.html" class="mobile-menu-item d-none">
+                <i class="bi bi-calendar3"></i>
+                <span class="mobile-menu-label">Calendar</span>
+            </a>
+
+            <a href="profile.html" class="mobile-menu-item">
+                <i class="bi bi-person"></i>
+                <span class="mobile-menu-label">Profile</span>
+            </a>
+
+            <a href="settings.html" class="mobile-menu-item d-none">
+                <i class="bi bi-sliders"></i>
+                <span class="mobile-menu-label">Settings</span>
+            </a>
+
+            <a href="auth-login.html" class="mobile-menu-item mobile-menu-item-danger">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="mobile-menu-label">Sign Out</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    @* width:90px !important; *@
+
+  
+    <!-- AskPearls Agent Sidebar -->
+    <!-- ==========================================
+     AskPearls Merchant Portal - Left Sidebar
+     ========================================== -->
+  
+     <aside id="askPearlsSidebar" class="sidebar ap-sidebar" style="margin-bottom:60px;-ms-overflow-style: none;scrollbar-width: none;border-bottom-right-radius:10px;border-top-right-radius:10px;">
+
+        <!-- Scrollable sidebar content -->
+        <div class="ap-sidebar-scroll">
+
+            <!-- Sidebar heading -->
+            <div class="ap-sidebar-heading">
+                ASKPEARLS AGENTS
+            </div>
+
+            <!-- Agent accordion -->
+            <div class="accordion ap-agent-accordion" id="askPearlsAgentAccordion">
+
+                <!-- ACTIVE AGENT: DecisionOS -->
+                <div class="accordion-item ap-agent-item ap-agent-active">
+                    <h2 class="accordion-header" id="headingDecisionOS">
+                        <button class="accordion-button ap-agent-header"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseDecisionOS"
+                                aria-expanded="true"
+                                aria-controls="collapseDecisionOS">
+                            <span class="ap-agent-icon">
+                                <i class="bi bi-diagram-3"></i>
+                            </span>
+                            <span class="ap-agent-info">
+                                <span class="ap-agent-title-row">
+                                    <span class="ap-agent-title">DecisionOS</span>
+                                    <span class="ap-status ap-status-active">ACTIVE</span>
+                                </span>
+                                <span class="ap-agent-description">
+                                    Guided decisions &amp; recommendations
+                                </span>
+                            </span>
+                        </button>
+                    </h2>
+
+                    <div id="collapseDecisionOS"
+                         class="accordion-collapse collapse show"
+                         aria-labelledby="headingDecisionOS"
+                         data-bs-parent="#askPearlsAgentAccordion">
+                        <div class="accordion-body ap-agent-body">
+                            <nav class="ap-agent-navigation" aria-label="DecisionOS navigation">
+                                @* href="/dashboard" *@
+                                <a href="#" class="ap-nav-link active" data-page="dashboard">
+                                    <i class="bi bi-house-door"></i>
+                                    <span>Dashboard</span>
+                                </a>
+
+                                <!-- Widget selection and creation -->
+                                <a href="#" class="ap-nav-link" data-page="widgets">
+                                    <i class="bi bi-grid"></i>
+                                    <span>My Widgets</span>
+                                </a>
+
+                                <a href="#" class="ap-nav-link" data-page="widget-builder">
+                                    <i class="bi bi-sliders"></i>
+                                    <span>Widget Builder</span>
+                                </a>
+
+                                <!-- Build widget content and logic -->
+                                <div class="ap-nav-group-label">Your Widget</div>
+
+                                <a href="#" class="ap-nav-link" data-page="questions">
+                                    <i class="bi bi-ui-checks"></i>
+                                    <span>Questions &amp; Answers</span>
+                                </a>
+
+                                <a href="#" class="ap-nav-link" data-page="recommendation-items">
+                                    <i class="bi bi-box-seam"></i>
+                                    <span>Recommendation Items</span>
+                                </a>
+
+                                <a href="#" class="ap-nav-link" data-page="decision-rules">
+                                    <i class="bi bi-sliders"></i>
+                                    <span>Decision Rules</span>
+                                </a>
+
+                                <a href="#" class="ap-nav-link" data-page="scoring-preview">
+                                    <i class="bi bi-sliders"></i>
+                                    <span>Scoring &amp; Preview</span>
+                                </a>
+
+                                <a href="#" class="ap-nav-link" data-page="design-customize">
+                                    <i class="bi bi-palette"></i>
+                                    <span>Design &amp; Customize</span>
+                                </a>
+
+                                <!-- Launch and measure -->
+                                <div class="ap-nav-group-label">Launch</div>
+
+                                <a href="#" class="ap-nav-link" data-page="publish-embed">
+                                    <i class="bi bi-code-slash"></i>
+                                    <span>Publish &amp; Embed</span>
+                                </a>
+
+                                <a href="#" class="ap-nav-link" data-page="analytics">
+                                    <i class="bi bi-graph-up-arrow"></i>
+                                    <span>Analytics</span>
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FUTURE AGENT: EngageOS -->
+                <div class="accordion-item ap-agent-item ap-agent-disabled">
+                    <h2 class="accordion-header" id="headingEngageOS">
+                        <button class="accordion-button collapsed ap-agent-header" type="button" disabled aria-disabled="true">
+                            <span class="ap-agent-icon"><i class="bi bi-chat-dots"></i></span>
+                            <span class="ap-agent-info">
+                                <span class="ap-agent-title-row">
+                                    <span class="ap-agent-title">EngageOS</span>
+                                    <span class="ap-status ap-status-soon">COMING SOON</span>
+                                </span>
+                                <span class="ap-agent-description">Customer conversations</span>
+                            </span>
+                        </button>
+                    </h2>
+                </div>
+
+                <!-- FUTURE AGENT: LeadLens -->
+                <div class="accordion-item ap-agent-item ap-agent-disabled">
+                    <h2 class="accordion-header" id="headingLeadLens">
+                        <button class="accordion-button collapsed ap-agent-header" type="button" disabled aria-disabled="true">
+                            <span class="ap-agent-icon"><i class="bi bi-people"></i></span>
+                            <span class="ap-agent-info">
+                                <span class="ap-agent-title-row">
+                                    <span class="ap-agent-title">LeadLens</span>
+                                    <span class="ap-status ap-status-soon">COMING SOON</span>
+                                </span>
+                                <span class="ap-agent-description">Lead capture &amp; qualification</span>
+                            </span>
+                        </button>
+                    </h2>
+                </div>
+
+                <!-- FUTURE AGENT: AutomateOS -->
+                <div class="accordion-item ap-agent-item ap-agent-disabled">
+                    <h2 class="accordion-header" id="headingAutomateOS">
+                        <button class="accordion-button collapsed ap-agent-header" type="button" disabled aria-disabled="true">
+                            <span class="ap-agent-icon"><i class="bi bi-gear-wide-connected"></i></span>
+                            <span class="ap-agent-info">
+                                <span class="ap-agent-title-row">
+                                    <span class="ap-agent-title">AutomateOS</span>
+                                    <span class="ap-status ap-status-soon">COMING SOON</span>
+                                </span>
+                                <span class="ap-agent-description">Business workflow automation</span>
+                            </span>
+                        </button>
+                    </h2>
+                </div>
+
+                <!-- FUTURE AGENT: InsightOS -->
+                <div class="accordion-item ap-agent-item ap-agent-disabled">
+                    <h2 class="accordion-header" id="headingInsightOS">
+                        <button class="accordion-button collapsed ap-agent-header" type="button" disabled aria-disabled="true">
+                            <span class="ap-agent-icon"><i class="bi bi-bar-chart-line"></i></span>
+                            <span class="ap-agent-info">
+                                <span class="ap-agent-title-row">
+                                    <span class="ap-agent-title">InsightOS</span>
+                                    <span class="ap-status ap-status-soon">COMING SOON</span>
+                                </span>
+                                <span class="ap-agent-description">Business intelligence &amp; analytics</span>
+                            </span>
+                        </button>
+                    </h2>
+                </div>
+
+                <!-- FUTURE AGENT: ConvertOS -->
+                <div class="accordion-item ap-agent-item ap-agent-disabled">
+                    <h2 class="accordion-header" id="headingConvertOS">
+                        <button class="accordion-button collapsed ap-agent-header" type="button" disabled aria-disabled="true">
+                            <span class="ap-agent-icon"><i class="bi bi-bullseye"></i></span>
+                            <span class="ap-agent-info">
+                                <span class="ap-agent-title-row">
+                                    <span class="ap-agent-title">ConvertOS</span>
+                                    <span class="ap-status ap-status-soon">COMING SOON</span>
+                                </span>
+                                <span class="ap-agent-description">Conversion optimization</span>
+                            </span>
+                        </button>
+                    </h2>
+                </div>
+            </div>
+            <!-- End agent accordion -->
+            <!-- Account settings -->
+            <div class="ap-sidebar-bottom">
+                <a href="#" class="ap-nav-link ap-settings-link" data-page="account-settings">
+                    <i class="bi bi-gear"></i>
+                    <span>Account &amp; Settings</span>
+                    <i class="bi bi-chevron-right ap-settings-arrow"></i>
+                </a>
+            </div>
+        </div>
+        <!-- End scrollable sidebar content -->
+        <!-- Fixed bottom attribution -->
+        <div class="ap-sidebar-footer">
+            Developed by
+            <a href="https://OneWorldLancer.com" target="_blank" class="fw-bold" rel="noopener noreferrer">
+                OneWorldLancer
+            </a>
+        </div>
+    </aside>
+    <!-- End AskPearls Merchant Portal sidebar -->
+
+    <div id="apSidebarBackdrop"
+         class="ap-sidebar-backdrop"
+         aria-hidden="true"></div>
+
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay"></div>
+
+    <!-- Main Content -->
+   @*  <div class="d-flex flex-column vh-100"> *@
+       <div class="ap-portal-shell d-flex flex-column">
+
+        <!-- AskPearls DecisionOS Dashboard -->
+        @* <main id="apMainContent" class="main vh-100"> *@
+            <main id="apMainContent" class="main ap-portal-main" style="margin-bottom:20px !important;-ms-overflow-style: none;scrollbar-width: none;">
+            @RenderBody()
+
+        </main>
+
+        @* background-color:#152365; *@
+        
+<footer class="ap-footer ap-footer--minimal">
+            <a class="ap-footer__company" href="https://AskPearls.com" target="_blank">
+        AskPearls Limited
+    </a>
+    <div class="ap-footer__copyright">
+
+                @{
+                    var _iYear = DateTime.Now.Year;
+                }
+                Patent Pending. &copy; Copyright @{
+
+                @_iYear.ToString()
+                                        ;
+
+            }
+            . All Rights Reserved.
+    </div>
+</footer>
+      <style>
+
+      </style>
+
+        <footer id="footer" class="footer text-center mt-auto d-none" style="padding:5px;height:50px;
+            font-size:small;">
+
+       
+            @* class="d-block d-lg-none" *@
+            <div>
+
+                <div class="row">
+
+                    <div class="d-none col-3" style="padding-left:10px;padding-top:15px;padding-right:10px;">
+
+                        <div class="flex-row">
+                            <img src="~/app_img/img_x2.png" style="width:20px;height:20px;margin:5px;" />
+                            <span>
+                                For further information please <a href="https://AskPearls.com" target="_blank" style="text-decoration:underline;">click here</a> to visit our website.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 text-center" style="padding-top:0px;">
+                        <div>
+                            @* color:white; style="color:white;"*@
+                            <strong><span><a href="https://AskPearls.com" target="_blank" style="text-decoration:underline;">AskPearls Limited</a></span></strong>
+                        </div>
+                        @* class="copyright" *@
+                        <div>
+
+                            @* style="color:white;" *@   <span>
+                            Patent Pending. &copy; Copyright @{
+
+                            @_iYear.ToString()
+                            ;
+
+                        }
+                        . All Rights reserved.
+                    </span>
+                </div>
+
+            </div>
+
+    
+            <div class="d-none col-3" style="padding-left:10px;padding-top:15px;padding-right:10px;">
+
+                <div class="flex-row">
+                    <img src="~/app_img/img_x1.png" style="width:20px;height:20px;margin:5px;" />
+                    <span>4289 Express Lane - Suite EG6026, Sarasota, FL 34249, United States.</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</footer>
+</div>
+
+
+
+
+
+
+<!-- Button trigger modal -->
+@* <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button> *@
+
+<!-- Modals -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            @*       <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div> *@
+            <div class="modal-header m-0 p-0" style="width: 100%;">
+            </div>
+
+            <div class="modal-body m-0 p-0 g-0" style="width: 100%;height: 100%;overflow: hidden;">
+                @* container-fluid class="vh-100 vw-100 g-0" *@
+
+                <div style="width: 100%;height: 100%;">
+
+ 
+                    <div class="d-flex flex-row chat-layout g-0 m-0 p-0" style="width: 100%;height: 100%;overflow: hidden;background-color:blue;">
+
+                        <!-- Conversation List -->
+                        <!-- Mobile Sidebar Overlay -->
+                        @*   <div class="chat-sidebar-overlay" id="chatSidebarOverlay"></div> *@
+                        @* style="" *@
+                        <!-- Chat Sidebar -->
+                        <div class="chat-sidebarx flex-column">
+                            @* width:100px; *@
+                            <div id="div_Chat_MenuList" class="flex-column" style="height:100%;background-color:yellow;">
+
+                                <div class="mb-1" style="height:45px;">
+                                    <div>
+                                        <img src="~/app_img/img_chat_logo_transparent.png"
+                                             style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-1" style="height:45px;">
+                                    <div>
+                                        <img src="~/app_img/img_chat_search.png"
+                                             style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-1" style="height:45px;">
+                                    <div>
+                                        <img src="~/app_img/img_chat_filter.png"
+                                             style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;" />
+
+                                        <!-- Trigger Button -->
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bottomModal">
+                                            Filter-Modal
+                                        </button>
+
+
+                                    </div>
+                                </div>
+
+          
+                                <div class="mb-1" style="height:45px;">
+                                    <div>
+                                        <img src="~/app_img/img_chat_filter.png"
+                                             style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;" />
+                                    </div>
+                                </div>
+
+          
+                                <div class="mb-1" style="height:45px;">
+                                    <div>
+                                        <img src="~/app_img/img_chat_filter.png"
+                                             style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;" />
+                                    </div>
+                                </div>
+
+          
+                                <div class="mb-1" style="height:45px;">
+                                    <div>
+                                        <img src="~/app_img/img_chat_filter.png"
+                                             style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;" />
+                                    </div>
+                                </div>
+
+          
+                                <div class="mb-1" style="height:45px;">
+                                    <div>
+                                        <img src="~/app_img/img_chat_filter.png"
+                                             style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;" />
+                                    </div>
+                                </div>
+
+          
+                                <div class="mb-1" style="height:45px;">
+                                    <div>
+                                        <img src="~/app_img/img_chat_filter.png"
+                                             style="width:45px;height:45px;margin-top:10px;margin-left:15px;  border-radius: 50%;-o-object-fit: cover;object-fit: cover;" />
+                                    </div>
+                                </div>
+
+          
+                            </div>
+
+       
+
+
+
+
+                            <!-- Mobile Close Button -->
+                            @*  <button class="chat-sidebar-close" id="chatSidebarClose" aria-label="Close sidebar">
+            <i class="bi bi-x-lg"></i>
+          </button> *@
+      
+  
+
+                        </div>
+
+                    
+                        <div id="div_Chat_WidgetList" style="background-color:red;">
+
+                      
+                            <div style="height:165px;background-color:green;">
+                                <div class="chat-sidebar-header">
+                                    <div class="flex-row  m-0 p-0">
+                                        <h2 class="chat-sidebar-title">Messages</h2>
+                                        @* class="float-end" *@
+                                        @*  <button id="btn_Close_WidgetList"  type="button" aria-label="Close sidebar">
+               close me
+            </button> *@
+                                    </div>
+
+                                    <div class="chat-search">
+                                        <i class="bi bi-search chat-search-icon"></i>
+                                        <input type="text" class="form-control" placeholder="Search conversations...">
+                                    </div>
+                                </div>
+
+                                <div class="chat-tabs">
+                                    <button class="chat-tab active">All</button>
+                                    <button class="chat-tab">Unread <span class="badge bg-primary">3</span></button>
+                                    <button class="chat-tab">Groups</button>
+                                </div>
+                            </div>
+
+                            @*  overscroll-behavior: contain; background-color:red;*@
+                            <div id="div_Chat_UserList" class="chat-listX" style="height:550px;overflow-y:auto !important;">
+
+                                <!-- Chat Item 1 - Active -->
+                                <div class="chat-item active" data-chat="1">
+                                    <div class="chat-item-avatar">
+                                        <img src="../memberview/assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
+                                        <span class="chat-item-status online"></span>
+                                    </div>
+                                    <div class="chat-item-content">
+                                        <div class="chat-item-header">
+                                            <span class="chat-item-name">Sarah Wilson</span>
+                                            <span class="chat-item-time">2m ago</span>
+                                        </div>
+                                        <div class="chat-item-message">
+                                            <span class="chat-item-message-text">Sure, I'll send the files right away!</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Chat Item 2 -->
+                                <div class="chat-item" data-chat="2">
+                                    <div class="chat-item-avatar">
+                                        <img src="../memberview/assets/img/avatars/avatar-2.webp" alt="Mike Johnson">
+                                        <span class="chat-item-status away"></span>
+                                    </div>
+                                    <div class="chat-item-content">
+                                        <div class="chat-item-header">
+                                            <span class="chat-item-name">Mike Johnson</span>
+                                            <span class="chat-item-time">15m ago</span>
+                                        </div>
+                                        <div class="chat-item-message">
+                                            <span class="chat-item-message-text">The meeting has been rescheduled to 3 PM</span>
+                                            <span class="chat-item-unread">2</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Chat Item 3 -->
+                                <div class="chat-item" data-chat="3">
+                                    <div class="chat-item-avatar">
+                                        <img src="../memberview/assets/img/avatars/avatar-3.webp" alt="Emily Davis">
+                                        <span class="chat-item-status online"></span>
+                                    </div>
+                                    <div class="chat-item-content">
+                                        <div class="chat-item-header">
+                                            <span class="chat-item-name">Emily Davis</span>
+                                            <span class="chat-item-time">1h ago</span>
+                                        </div>
+                                        <div class="chat-item-message">
+                                            <span class="chat-item-message-text">Did you see the latest design updates?</span>
+                                            <span class="chat-item-unread">1</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Chat Item 4 -->
+                                <div class="chat-item" data-chat="4">
+                                    <div class="chat-item-avatar">
+                                        <img src="../memberview/assets/img/avatars/avatar-4.webp" alt="Design Team">
+                                        <span class="chat-item-status online"></span>
+                                    </div>
+                                    <div class="chat-item-content">
+                                        <div class="chat-item-header">
+                                            <span class="chat-item-name">Design Team</span>
+                                            <span class="chat-item-time">2h ago</span>
+                                        </div>
+                                        <div class="chat-item-message">
+                                            <span class="chat-item-message-text">Alex: Great work on the mockups everyone!</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Chat Item 5 -->
+                                <div class="chat-item" data-chat="5">
+                                    <div class="chat-item-avatar">
+                                        <img src="../memberview/assets/img/avatars/avatar-5.webp" alt="David Brown">
+                                        <span class="chat-item-status offline"></span>
+                                    </div>
+                                    <div class="chat-item-content">
+                                        <div class="chat-item-header">
+                                            <span class="chat-item-name">David Brown</span>
+                                            <span class="chat-item-time">Yesterday</span>
+                                        </div>
+                                        <div class="chat-item-message">
+                                            <span class="chat-item-message-text">Thanks for your help with the project!</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Chat Item 6 -->
+                                <div class="chat-item" data-chat="6">
+                                    <div class="chat-item-avatar">
+                                        <img src="../memberview/assets/img/avatars/avatar-6.webp" alt="Lisa Anderson">
+                                        <span class="chat-item-status busy"></span>
+                                    </div>
+                                    <div class="chat-item-content">
+                                        <div class="chat-item-header">
+                                            <span class="chat-item-name">Lisa Anderson</span>
+                                            <span class="chat-item-time">Yesterday</span>
+                                        </div>
+                                        <div class="chat-item-message">
+                                            <span class="chat-item-message-text">I'll review the document and get back to you</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Chat Item 7 -->
+                                <div class="chat-item" data-chat="7">
+                                    <div class="chat-item-avatar">
+                                        <img src="../memberview/assets/img/avatars/avatar-7.webp" alt="Product Team">
+                                        <span class="chat-item-status online"></span>
+                                    </div>
+                                    <div class="chat-item-content">
+                                        <div class="chat-item-header">
+                                            <span class="chat-item-name">Product Team</span>
+                                            <span class="chat-item-time">2 days ago</span>
+                                        </div>
+                                        <div class="chat-item-message">
+                                            <span class="chat-item-message-text">Sprint planning starts at 10 AM tomorrow</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Chat Item 8 -->
+                                <div class="chat-item" data-chat="8">
+                                    <div class="chat-item-avatar">
+                                        <img src="../memberview/assets/img/avatars/avatar-8.webp" alt="James Wilson">
+                                        <span class="chat-item-status offline"></span>
+                                    </div>
+                                    <div class="chat-item-content">
+                                        <div class="chat-item-header">
+                                            <span class="chat-item-name">James Wilson</span>
+                                            <span class="chat-item-time">3 days ago</span>
+                                        </div>
+                                        <div class="chat-item-message">
+                                            <span class="chat-item-message-text">Let me know when you're free for a call</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+     
+                        </div>
+
+            
+                        <!-- Chat -->
+                        @* style="background-color:orange;" *@
+                        <div id="div_Chat_MessageList" class="chat-column" style="width:100%;">
+
+                            @*   <header class="chat-header">
+                    chat-header
+                </header> *@
+
+                            <div class="chat-header">
+                                <!-- Mobile Sidebar Toggle -->
+                                <button class="chat-sidebar-toggle" id="chatSidebarToggle" aria-label="Open conversations">
+                                    <i class="bi bi-chat-left-text"></i>
+                                </button>
+
+                                <div class="chat-header-user">
+                                    <div class="chat-header-avatar">
+                                        <img src="~/MemberView/assets/img/avatars/avatar-1.webp" alt="Sarah Wilson">
+                                    </div>
+                                    <div class="chat-header-info">
+                                        <h5>Sarah Wilson</h5>
+                                        <span><i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i> Online</span>
+                                    </div>
+                                </div>
+                                <div class="chat-header-actions">
+                                    <button class="chat-header-btn" title="Voice Call">
+                                        <i class="bi bi-telephone"></i>
+                                    </button>
+                                    <button class="chat-header-btn" title="Video Call">
+                                        <i class="bi bi-camera-video"></i>
+                                    </button>
+                                    <button class="chat-header-btn" title="User Info" id="toggleInfoBtn">
+                                        <i class="bi bi-info-circle"></i>
+                                    </button>
+                                    <div class="dropdown">
+                                        <button class="chat-header-btn" data-bs-toggle="dropdown" data-bs-strategy="fixed">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-search me-2"></i> Search Messages</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-bell-slash me-2"></i> Mute Notifications</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-pin me-2"></i> Pin Conversation</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-archive me-2"></i> Archive Chat</a></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i> Delete Chat</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <section class="chat-body" style="-ms-overflow-style: none;scrollbar-width: none;">
+                                <div class="conversation-item">
+
+                                    <div class="avatar">
+                                    </div>
+
+                                    <div class="conversation-info">
+                                    </div>
+
+                                    <div class="conversation-meta">
+                                    </div>
+
+                                </div>
+
+                    
+                    
+                    
+                    
+                    
+                    
+                                chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+                                <br />  chat-body
+
+                                END MESSAGES
+                            </section>
+
+                            <footer class="chat-footer p-0 m-0 g-0">
+                                <!-- Chat Input -->
+                                <div class="chat-input p-0 m-0 g-0">
+                                    <div class="chat-input-wrapper">
+                                        <div class="chat-input-actions">
+                                            <button class="chat-input-btn" title="Attach File">
+                                                <i class="bi bi-paperclip"></i>
+                                            </button>
+                                            <button class="chat-input-btn" title="Send Image">
+                                                <i class="bi bi-image"></i>
+                                            </button>
+                                        </div>
+                                        <div class="chat-input-field">
+                                            <textarea id="messageInput" rows="1" placeholder="Type a message..."></textarea>
+                                        </div>
+                                        <div class="chat-input-actions">
+                                            <button class="chat-input-btn" title="Emoji">
+                                                <i class="bi bi-emoji-smile"></i>
+                                            </button>
+                                        </div>
+                                        <button class="chat-send-btn" id="sendBtn" title="Send Message">
+                                            <i class="bi bi-send"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </footer>
+
+                        </div>
+                        <!--<main class="col chat-column">
+                ...
+            </main>-->
+                        <!-- Customer -->
+                        @* col-auto  d-none d-lg-block *@
+                        <div id="div_Chat_UserInfoContainer" class="customer-column" style="background-color:lime;">
+                            <div id="div_Chat_UserInfoList" style="background-color:red;height:690px;overflow-y:auto;">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+       
+     
+
+                @*         <div  class="h-100 w-100 g-0"  style="width: 100%;background-color:red;">
+
+
+    </div> *@
+
+   
+            </div>
+            <div class="modal-footer m-0 p-0 g-0" style="background-color:lightgray;">
+                <span class="form-text mx-auto middleCenter" style="margin:10px;font-size:small;text-align:center;">Chat Widget - AskPearls Limited</span>
+                @*    FOOTER *@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal Container with custom 'modal-bottom' class -->
+<style>
+        /* Position the modal container at the very bottom */
+        .modal-bottom .modal-dialog {
+            position: fixed;
+            margin: 0;
+            width: 100%;
+            max-width: 100%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        /* Set the initial hidden position below the viewport */
+        .modal-bottom.fade .modal-dialog {
+            transform: translate3d(0, 100%, 0);
+            transition: transform 0.3s ease-out;
+        }
+
+        /* Slide it up to its final position when active */
+        .modal-bottom.show .modal-dialog {
+            transform: translate3d(0, 0, 0);
+        }
+
+        /* Round only the top corners of the modal sheet */
+        .modal-bottom .modal-content {
+            border-radius: 1rem 1rem 0 0;
+            border: none;
+        }
+
+</style>
+
+<div class="modal fade modal-bottom" id="bottomModal" data-bs-backdrop="static" tabindex="10000" aria-labelledby="bottomModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bottomModalLabel">Bottom Sheet Modal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>This modal slides gracefully from the bottom of the screen.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Back to Top -->
+@* <a href="#" class="back-to-top">
+        <i class="bi bi-arrow-up"></i>
+    </a> *@
+
+<!-- App Sidebar Toggle (for app pages with sidebars) -->
+<script src="MemberView/assets/js/apps-sidebar-toggle.js"></script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+        });
+</script>
+
+
+
+<script>
+
+
+        function setActiveSidebarItem (section) {
+            const $links = $("#askPearlsSidebar .ap-nav-link");
+
+            const $matchingLink = $links.filter(function () {
+                return $(this).attr("data-page") === section;
+            }).first();
+
+            if (!$matchingLink.length) {
+                console.warn("No sidebar item found for section:", section);
+                return;
+            }
+
+            $links.removeClass("active").removeAttr("aria-current");
+            $matchingLink.addClass("active").attr("aria-current", "page");
+        }
+
+        function loadPortalSection (section) {
+            if (!section) {
+                console.warn("No data-page attribute found.");
+                return;
+            }
+
+            console.log("Loading portal section:", section);
+
+            $.ajax({
+                url: "/Dashboard/LoadSection",
+                type: "GET",
+                data: { section: section },
+
+                success: function (html) {
+                    $("#apMainContent").html(html);
+                    setActiveSidebarItem(section);
+
+                    $("#apMainContent").stop().animate(
+                        { scrollTop: 0 },
+                        1000
+                    );
+                },
+
+                error: function (xhr) {
+                    console.error(
+                        "Section loading failed:",
+                        section,
+                        xhr.status,
+                        xhr.responseText
+                    );
+
+                    alert("Unable to load this Dashboard section. Check the browser console.");
+                }
+            });
+        }
+
+        // Sidebar menu clicks
+        $(document).on("click", "#askPearlsSidebar .ap-nav-link", function (e) {
+            e.preventDefault();
+            loadPortalSection($(this).attr("data-page"));
+        });
+
+        // Buttons and links inside the loaded page
+        $(document).on("click", "#apMainContent [data-page]", function (e) {
+            e.preventDefault();
+            loadPortalSection($(this).attr("data-page"));
+        });
+
+
+        // // // // // $(document).on("click", "#askPearlsSidebar .ap-nav-link", function(e) {
+        // // // // //     e.preventDefault();
+
+        // // // // //     const section = $(this).data("page");
+
+        // // // // //     if (!section) {
+        // // // // //         console.warn("No data-page attribute found.");
+        // // // // //         return;
+        // // // // //     }
+
+        // // // // //     console.log("Loading portal section:", section);
+
+        // // // // //     $("#askPearlsSidebar .ap-nav-link").removeClass("active");
+        // // // // //     $(this).addClass("active");
+
+        // // // // //     $.ajax({
+        // // // // //         url: "/Dashboard/LoadSection",
+        // // // // //         type: "GET",
+        // // // // //         data: { section: section },
+
+        // // // // //         success: function(html) {
+        // // // // //             $("#apMainContent").html(html);
+             
+             
+        // // // // //             // Smoothly scroll the right content wrapper to the top
+        // // // // //             $("#apMainContent").stop().animate(
+        // // // // //                 { scrollTop: 0 },
+        // // // // //                 1000
+        // // // // //             );
+
+        // // // // //         },
+
+        // // // // //         error: function(xhr) {
+        // // // // //             console.error(
+        // // // // //                 "Section loading failed:",
+        // // // // //                 xhr.status,
+        // // // // //                 xhr.responseText
+        // // // // //             );
+
+        // // // // //             alert("Unable to load the Dashboard section. Check the browser console.");
+        // // // // //         }
+        // // // // //     });
+        // // // // // });
+
+
+
+
+
+        // // // // // $(document).on(
+        // // // // //     "click",
+        // // // // //     //"#apMainContent [data-page='widget-builder']",
+        // // // // //     "#apMainContent [data-page]",
+        // // // // //    function(e) {
+        // // // // //         e.preventDefault();
+
+        // // // // //         const section = $(this).data("page");
+
+        // // // // //         $.ajax({
+        // // // // //             url: "/Dashboard/LoadSection",
+        // // // // //             type: "GET",
+        // // // // //             data: { section: section },
+
+        // // // // //             success: function(html) {
+                      
+        // // // // //                 $("#apMainContent").html(html);
+
+        // // // // //                 // Smoothly scroll the right content wrapper to the top
+        // // // // //                 $("#apMainContent").stop().animate(
+        // // // // //                     { scrollTop: 0 },
+        // // // // //                     1000
+        // // // // //                 );
+  
+        // // // // //             },
+
+        // // // // //             error: function() {
+        // // // // //                 console.error("Failed to load page:", section);
+        // // // // //             }
+        // // // // //         });
+        // // // // //     }
+        // // // // // );
+
+
+
+        
+        (function() {
+            'use strict';
+
+            function initAskPearlsSidebar() {
+                const sidebar = document.getElementById('askPearlsSidebar');
+                const toggle = document.querySelector('.sidebar-toggle');
+                const backdrop = document.getElementById('apSidebarBackdrop');
+
+                if (!sidebar || !toggle || !backdrop) {
+                    return;
+                }
+
+                const mobileQuery = window.matchMedia('(max-width: 1199.98px)');
+
+                function openSidebar() {
+                    if (!mobileQuery.matches) return;
+
+                    document.body.classList.add('sidebar-open');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    backdrop.setAttribute('aria-hidden', 'false');
+                }
+
+                function closeSidebar() {
+                    document.body.classList.remove('sidebar-open');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    backdrop.setAttribute('aria-hidden', 'true');
+                }
+
+                toggle.setAttribute('aria-controls', 'askPearlsSidebar');
+                toggle.setAttribute('aria-expanded', 'false');
+
+                toggle.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    if (!mobileQuery.matches) return;
+
+                    if (document.body.classList.contains('sidebar-open')) {
+                        closeSidebar();
+                    } else {
+                        openSidebar();
+                    }
+                });
+
+                backdrop.addEventListener('click', closeSidebar);
+
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape') {
+                        closeSidebar();
+                    }
+                });
+
+                sidebar.querySelectorAll('.ap-nav-link[data-page]').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        if (mobileQuery.matches) {
+                            closeSidebar();
+                        }
+                    });
+                });
+
+                function handleBreakpointChange() {
+                    closeSidebar();
+                }
+
+                if (mobileQuery.addEventListener) {
+                    mobileQuery.addEventListener('change', handleBreakpointChange);
+                } else {
+                    mobileQuery.addListener(handleBreakpointChange);
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initAskPearlsSidebar);
+            } else {
+                initAskPearlsSidebar();
+            }
+        })();
+
+
+
+</script>
+
+
+<!-- Vendor JS Files -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="MemberView/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="MemberView/vendors/apexcharts/apexcharts.min.js"></script>
+<script src="MemberView/vendors/chart.js/chart.umd.js"></script>
+<script src="MemberView/vendors/echarts/echarts.min.js"></script>
+<script src="MemberView/vendors/simple-datatables/simple-datatables.js"></script>
+<script src="MemberView/vendors/quill/quill.js"></script>
+<script src="MemberView/vendors/tinymce/tinymce.min.js"></script>
+<script src="MemberView/vendors/choices.js/choices.min.js"></script>
+<script src="MemberView/vendors/flatpickr/flatpickr.min.js"></script>
+<script src="MemberView/vendors/php-email-form/validate.js"></script>
+
+<!-- Template Main JS Files -->
+<script src="MemberView/assets/js/theme.js"></script>
+<script src="MemberView/assets/js/main.js"></script>
+<script src="~/app_js/askpearls-sidebar-toggle.js"></script>
+</body>
+
+</html>

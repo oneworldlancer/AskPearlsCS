@@ -1,4 +1,4 @@
-<div class="ap-page sp-page" data-ap-page="scoring-preview">
+<div class="ap-page sp-page" data-ap-page="scoring-preview" data-api-base="https://localhost:7014/api" data-demo-owner-user-token="1101">
     <!-- Shared AskPearls breadcrumb -->
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
@@ -15,6 +15,21 @@
             <span class="sp-demo-badge"><i class="bi bi-flask"></i> Interactive demo</span>
         </div>
     </header>
+
+    <section class="sp-widget-selector" aria-label="Active widget">
+        <div class="sp-selector-icon" aria-hidden="true"><i class="bi bi-grid-1x2"></i></div>
+        <div class="sp-selector-info">
+            <label for="spWidgetSelect">Select widget</label>
+            <select id="spWidgetSelect" class="form-select" disabled>
+                <option value="">Loading widgets…</option>
+            </select>
+            <small id="spWidgetMessage" class="sp-selector-message" aria-live="polite">Choose the widget to preview.</small>
+        </div>
+        <div class="sp-current-version">
+            <span>Current version</span>
+            <strong id="spWidgetVersion">—</strong>
+        </div>
+    </section>
 
     <div class="row g-3 mb-4">
         <div class="col-12 col-md-4">
@@ -135,7 +150,7 @@
         </div>
     </div>
 </div>
- <link href="~/app_page_css/app_page_scoring_preview_css.css" rel="stylesheet" />
+<link href="~/app_page_css/app_page_scoring_preview_css.css" rel="stylesheet" />
 
-  <script src="~/app_page_js/app_page_scoring_preview_js.js" />
+<script src="~/app_page_js/app_page_scoring_preview_js.js"></script>
 

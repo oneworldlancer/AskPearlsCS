@@ -1,5 +1,9 @@
 <!-- PAGE: PUBLISH & EMBED -->
-<div class="ap-page publish-embed-page" data-ap-page="publish-embed">
+<div class="ap-page publish-embed-page" data-ap-page="publish-embed"
+     data-api-base="https://localhost:7014/api"
+     data-api-origin="https://localhost:7139"
+     data-widget-script-url="https://localhost:7087/app.widgets/widget.js"
+     data-demo-owner-user-token="1101">
 
     <!-- Breadcrumb -->
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
@@ -24,7 +28,7 @@
                 <i class="bi bi-circle-fill"></i> Draft
             </span>
 
-            <button type="button" class="pe-btn-primary" id="pePublishBtn">
+            <button type="button" class="pe-btn-primary" id="pePublishBtn" disabled>
                 <i class="bi bi-rocket-takeoff"></i>
                 Publish Widget
             </button>
@@ -361,8 +365,27 @@
 
             <div class="pe-checklist-progress-track">
                 <div id="peChecklistProgressBar"
-                     class="pe-checklist-progress-bar"></div>
+                     class="pe-checklist-progress-bar"
+                     role="progressbar"
+                     aria-label="Go-live checklist progress"
+                     aria-valuemin="0"
+                     aria-valuemax="3"
+                     aria-valuenow="0"></div>
             </div>
+        </div>
+
+        <div class="pe-checklist-complete" id="peChecklistComplete" hidden>
+            <span class="pe-checklist-complete-icon" aria-hidden="true">
+                <i class="bi bi-check-lg"></i>
+            </span>
+            <div class="pe-checklist-complete-copy">
+                <strong>You're ready to go live</strong>
+                <span>Your checklist is complete. Continue to the publish controls when you're ready.</span>
+            </div>
+            <button type="button" class="pe-checklist-next" id="peChecklistNext">
+                Go to publish controls
+                <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </button>
         </div>
 
     </section>
@@ -380,4 +403,4 @@
       rel="stylesheet" />
 
 <!-- Page JavaScript -->
-<script src="~/app_page_js/app_page_publish_embed_js.js" />
+<script src="~/app_page_js/app_page_publish_embed_js.js"></script>

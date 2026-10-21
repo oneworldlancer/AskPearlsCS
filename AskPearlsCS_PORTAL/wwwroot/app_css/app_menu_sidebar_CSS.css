@@ -625,3 +625,28 @@ body[data-theme="dark"]  .ap-footer--minimal .ap-footer__copyright {
     }
 }
 
+
+
+
+/* The sidebar stays dark in both portal themes, so keep its future-agent
+                   headings and descriptions readable when the main portal is in light mode. */
+#askPearlsSidebar .ap-agent-disabled .ap-agent-title,
+#askPearlsSidebar .ap-agent-disabled .ap-agent-header {
+    color: #f1f5f9 !important;
+}
+
+#askPearlsSidebar .ap-agent-disabled .ap-agent-description {
+    color: #a9bec6 !important;
+}
+
+#askPearlsSidebar .ap-nav-group-label {
+    margin: 12px 12px 6px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(187, 211, 218, 0.16);
+    color: #91aab2;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}

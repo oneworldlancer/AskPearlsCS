@@ -1,7 +1,9 @@
 <link href="~/app_page_css/app_page_dashboard_css.css" rel="stylesheet" />
 
 <div class="ap-page page-dashboard"
-     data-ap-page="dashboard">
+     data-ap-page="dashboard"
+     data-api-base="https://localhost:7014/api"
+     data-demo-owner-user-token="1101">
 
     <!-- Breadcrumb -->
     <nav class="ap-breadcrumb mb-3" aria-label="Breadcrumb">
@@ -15,7 +17,7 @@
         align-items-center gap-3 mb-4 ap-dashboard-header">
         <div>
             <h1 class="h3 fw-bold mb-1 ap-dashboard-heading">
-                Welcome to AskPearls DecisionOS XXX
+                Welcome to AskPearls DecisionOS
             </h1>
             <p class="mb-0 ap-dashboard-muted">
                 Build intelligent product recommendation experiences
@@ -81,7 +83,7 @@
                             <p class="mb-2 ap-dashboard-muted">
                                 My Widgets
                             </p>
-                            <h3 class="h4 fw-bold mb-1 ap-dashboard-heading">—</h3>
+                            <h3 class="h4 fw-bold mb-1 ap-dashboard-heading" id="dashboardWidgetCountAll">—</h3>
                             <small class="ap-dashboard-muted">
                                 Widget inventory
                             </small>
@@ -102,7 +104,7 @@
                             <p class="mb-2 ap-dashboard-muted">
                                 Published
                             </p>
-                            <h3 class="h4 fw-bold mb-1 ap-dashboard-heading">—</h3>
+                            <h3 class="h4 fw-bold mb-1 ap-dashboard-heading" id="dashboardWidgetCountPublished">—</h3>
                             <small class="ap-dashboard-muted">
                                 Live on websites
                             </small>
@@ -123,7 +125,7 @@
                             <p class="mb-2 ap-dashboard-muted">
                                 Drafts
                             </p>
-                            <h3 class="h4 fw-bold mb-1 ap-dashboard-heading">—</h3>
+                            <h3 class="h4 fw-bold mb-1 ap-dashboard-heading" id="dashboardWidgetCountDrafts">—</h3>
                             <small class="ap-dashboard-muted">
                                 In progress
                             </small>
@@ -144,7 +146,7 @@
                             <p class="mb-2 ap-dashboard-muted">
                                 Visitor Interactions
                             </p>
-                            <h3 class="h4 fw-bold mb-1 ap-dashboard-heading">—</h3>
+                            <h3 class="h4 fw-bold mb-1 ap-dashboard-heading" id="dashboardInteractionCount">—</h3>
                             <small class="ap-dashboard-muted">
                                 Analytics
                             </small>
@@ -309,8 +311,20 @@
             </a>
         </div>
 
-        <div class="card-body px-4 pb-4">
-            <div class="text-center py-4">
+        <div class="card-body px-4 pb-4" aria-live="polite">
+            <div id="dashboardRecentLoading" class="text-center py-4">
+                <span class="spinner-border spinner-border-sm text-success" aria-hidden="true"></span>
+                <span class="ap-dashboard-muted">Loading your widgets…</span>
+            </div>
+
+            <div id="dashboardRecentError" class="text-center py-4" role="alert" hidden>
+                <p class="text-danger mb-2">We couldn't load your widgets.</p>
+                <button type="button" id="dashboardRecentRetry" class="btn btn-outline-success btn-sm">Try again</button>
+            </div>
+
+            <div id="dashboardRecentList" class="dashboard-recent-list" hidden></div>
+
+            <div id="dashboardRecentEmpty" class="text-center py-4" hidden>
                 <i class="bi bi-window-stack ap-dashboard-muted"
                    style="font-size: 2.5rem;"
                    aria-hidden="true"></i>
@@ -335,3 +349,5 @@
     </section>
 
 </div>
+
+<script src="~/app_page_js/app_page_dashboard_js.js"></script>

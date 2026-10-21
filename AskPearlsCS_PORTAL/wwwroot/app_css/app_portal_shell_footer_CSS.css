@@ -1,0 +1,23 @@
+/* Keep the fixed header, scrolling page area, and master footer inside the viewport. */
+.ap-portal-shell {
+    height: calc(100vh - var(--header-height, 64px));
+    min-height: 0;
+    margin-top: var(--header-height, 64px);
+    overflow: hidden;
+}
+
+#apMainContent.ap-portal-main {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    max-height: none !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.ap-portal-shell > .ap-footer {
+    flex: 0 0 auto;
+}

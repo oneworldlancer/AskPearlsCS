@@ -7,19 +7,23 @@
     root.dataset.peInitialized = "true";
 
     const $ = id => root.querySelector("#" + id);
+    const apiBase = (root.dataset.apiBase || "").replace(/\/+$/, "");
+    const apiOrigin = (root.dataset.apiOrigin || window.location.origin).replace(/\/+$/, "");
+    const widgetScriptUrl = (root.dataset.widgetScriptUrl || (apiOrigin + "/widget.js")).trim();
+    const demoOwnerToken = (root.dataset.demoOwnerUserToken || "").trim();
 
     const widgets = {
         pk_demo_sofa_finder: {
             name: "Sofa Finder Widget",
-            version: "1.0.0"
+            version: "—"
         },
         pk_furniture_recommendation: {
             name: "Furniture Recommendation Widget",
-            version: "1.0.0"
+            version: "—"
         },
         pk_demo_recommendation: {
             name: "Demo Recommendation Widget",
-            version: "1.0.0"
+            version: "—"
         }
     };
 
@@ -64,43 +68,42 @@
 
     let activePlatform = "html";
     let isPublished = false;
+    let hasDraft = false;
+    let isPublishing = false;
     let toastTimer = null;
     let domains = [
         { id: 1, value: "example.com" },
         { id: 2, value: "store.example.com" }
     ];
 
-    function escapeHtml(value) {
+    function escapeHtml (value) {
         return String(value ?? "").replace(/[&<>"']/g, ch => ({
             "&": "&amp;",
             "<": "&lt;",
             ">": "&gt;",
             '"': "&quot;",
             "'": "&#39;"
-        })[ch]);
+        })[ ch ]);
     }
 
-    function getWidget() {
-        return widgets[$("peWidgetSelect").value] || widgets.pk_demo_sofa_finder;
+    function getWidget () {
+        return widgets[ $("peWidgetSelect").value ] || widgets.pk_demo_sofa_finder;
     }
 
-    function getEmbedCode() {
+    function getEmbedCode () {
         const widgetId = $("peWidgetSelect").value;
-
-        // Illustrative placeholder only. Replace the CDN URL with the real
-        // production widget loader URL before using this snippet on a live site.
-        return '<!-- AskPearls Widget -->\n' +
-            '<div id="askpearls-widget" data-widget-id="' + widgetId + '"></div>\n' +
-            '<script src="https://cdn.askpearls.com/widget.js" defer><' + '/script>';
+        return '<!-- AskPearls DecisionOS widget -->\n' +
+            '<script src="' + widgetScriptUrl + '" data-widget="' + widgetId +
+            '" data-api-url="' + apiOrigin + '"><' + '/script>';
     }
 
-    function renderCode() {
+    function renderCode () {
         $("peEmbedCode").textContent = getEmbedCode();
     }
 
-    function renderPlatform(platform) {
+    function renderPlatform (platform) {
         activePlatform = platform;
-        const config = platforms[platform] || platforms.html;
+        const config = platforms[ platform ] || platforms.html;
 
         root.querySelectorAll(".pe-platform-tab").forEach(button => {
             const active = button.dataset.pePlatform === platform;
@@ -119,27 +122,36 @@
         renderCode();
     }
 
-    function renderStatus() {
+    function renderStatus () {
         const badge = $("peStatusBadge");
-        badge.classList.toggle("is-published", isPublished);
-        badge.innerHTML = isPublished
-            ? '<i class="bi bi-check-circle-fill"></i> Published'
-            : '<i class="bi bi-circle-fill"></i> Draft';
+        badge.classList.remove("is-error");
+        badge.dataset.status = hasDraft ? "draft" : isPublished ? "published" : "not-published";
+        badge.classList.toggle("is-published", isPublished && !hasDraft);
+        badge.classList.toggle("is-draft", hasDraft);
+        badge.innerHTML = hasDraft
+            ? '<i class="bi bi-circle-fill"></i> Draft ready to publish'
+            : isPublished
+                ? '<i class="bi bi-check-circle-fill"></i> Published'
+                : '<i class="bi bi-circle-fill"></i> Not published';
 
-        $("peSummaryStatus").textContent = isPublished ? "Published" : "Draft";
-        $("peStatusDescription").textContent = isPublished
-            ? "Published in this demo session"
-            : "Not published yet";
+        $("peSummaryStatus").textContent = hasDraft ? "Draft" : isPublished ? "Published" : "Not published";
+        $("peStatusDescription").textContent = hasDraft
+            ? (isPublished ? "A saved draft is ready; the current published version remains live." : "Saved draft is ready to publish.")
+            : isPublished ? "Published version is live." : "Save a design draft before publishing.";
 
-        $("pePublishBtn").innerHTML = isPublished
-            ? '<i class="bi bi-check-lg"></i> Published'
-            : '<i class="bi bi-rocket-takeoff"></i> Publish Widget';
-
-        $("pePublishBtn").disabled = isPublished;
-        $("pePublishBtn").style.opacity = isPublished ? ".75" : "1";
+        const button = $("pePublishBtn");
+        button.innerHTML = isPublishing
+            ? '<i class="bi bi-arrow-repeat"></i> Publishing…'
+            : hasDraft
+                ? '<i class="bi bi-rocket-takeoff"></i> Publish Widget'
+                : isPublished
+                    ? '<i class="bi bi-check-lg"></i> Published'
+                    : '<i class="bi bi-rocket-takeoff"></i> Publish Widget';
+        button.disabled = !hasDraft || isPublishing;
+        button.style.opacity = button.disabled ? ".75" : "1";
     }
 
-    function renderDomains() {
+    function renderDomains () {
         const list = $("peDomainList");
         list.innerHTML = "";
 
@@ -149,12 +161,12 @@
             row.innerHTML =
                 '<div class="pe-domain-icon"><i class="bi bi-globe2"></i></div>' +
                 '<div class="pe-domain-details">' +
-                    '<strong>' + escapeHtml(domain.value) + '</strong>' +
-                    '<small><i class="bi bi-check-circle"></i> Allowlist entry (demo)</small>' +
+                '<strong>' + escapeHtml(domain.value) + '</strong>' +
+                '<small><i class="bi bi-check-circle"></i> Allowlist entry (demo)</small>' +
                 '</div>' +
                 '<button type="button" class="pe-domain-remove" data-domain-id="' +
-                    domain.id + '" aria-label="Remove ' + escapeHtml(domain.value) +
-                    '" title="Remove domain"><i class="bi bi-trash3"></i></button>';
+                domain.id + '" aria-label="Remove ' + escapeHtml(domain.value) +
+                '" title="Remove domain"><i class="bi bi-trash3"></i></button>';
 
             list.appendChild(row);
         });
@@ -166,7 +178,7 @@
         list.hidden = domains.length === 0;
     }
 
-    function normalizeDomain(rawValue) {
+    function normalizeDomain (rawValue) {
         let value = rawValue.trim().toLowerCase();
 
         if (!value) return null;
@@ -201,7 +213,7 @@
         return value;
     }
 
-    function showToast(message) {
+    function showToast (message) {
         const toast = $("peToast");
         toast.textContent = message;
         toast.classList.add("is-visible");
@@ -209,7 +221,91 @@
         toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2800);
     }
 
-    async function copyText(text) {
+    function requestHeaders (json) {
+        const headers = { Accept: "application/json" };
+        if (json) headers[ "Content-Type" ] = "application/json";
+        if (demoOwnerToken) headers[ "X-Demo-Owner-User-Token" ] = demoOwnerToken;
+        return headers;
+    }
+
+    async function apiRequest (path, options) {
+        const response = await fetch(apiBase + path, {
+            ...(options || {}),
+            headers: { ...requestHeaders(Boolean(options && options.body)), ...((options && options.headers) || {}) }
+        });
+        const responseText = await response.text();
+        let data = {};
+        try { data = responseText ? JSON.parse(responseText) : {}; } catch (_) { data = {}; }
+        if (!response.ok) {
+            throw new Error(data.message || ("API request failed (HTTP " + response.status + ")."));
+        }
+        return data;
+    }
+
+    async function loadWidgetStatus () {
+        const widgetKey = $("peWidgetSelect").value;
+        const widget = getWidget();
+        const encodedKey = encodeURIComponent(widgetKey);
+        const badge = $("peStatusBadge");
+        badge.dataset.status = "loading";
+        badge.innerHTML = '<i class="bi bi-arrow-repeat"></i> Checking';
+
+        try {
+            const results = await Promise.allSettled([
+                apiRequest("/widgets/" + encodedKey + "/draft/configuration"),
+                apiRequest("/widgets/" + encodedKey + "/version")
+            ]);
+            const draftResponse = results[ 0 ].status === "fulfilled" ? results[ 0 ].value : null;
+            const publishedResponse = results[ 1 ].status === "fulfilled" ? results[ 1 ].value : null;
+            hasDraft = !!draftResponse && String(draftResponse.status || "").toLowerCase() === "draft";
+            isPublished = !!publishedResponse;
+
+            const currentVersion = hasDraft
+                ? draftResponse.versionNumber
+                : publishedResponse && publishedResponse.versionNumber;
+            widget.version = currentVersion ? String(currentVersion) : "—";
+            $("peVersion").textContent = currentVersion ? "v" + currentVersion : "—";
+            renderStatus();
+
+            if (!draftResponse && !publishedResponse) {
+                const reason = results[ 0 ].reason || results[ 1 ].reason;
+                showToast(reason && reason.message ? reason.message : "Could not load this widget. Check its public key and API settings.");
+                badge.dataset.status = "error";
+                badge.classList.add("is-error");
+            }
+        } catch (error) {
+            hasDraft = false;
+            isPublished = false;
+            $("peVersion").textContent = "—";
+            renderStatus();
+            $("peStatusBadge").dataset.status = "error";
+            $("peStatusBadge").classList.add("is-error");
+            showToast(error.message || "Could not load widget publishing status.");
+        }
+    }
+
+    async function publishWidget () {
+        if (!hasDraft || isPublishing) return;
+        const widgetKey = $("peWidgetSelect").value;
+        if (!window.confirm("Publish this saved draft? It will replace the currently published version.")) return;
+
+        isPublishing = true;
+        renderStatus();
+        try {
+            const result = await apiRequest("/widgets/" + encodeURIComponent(widgetKey) + "/publish", {
+                method: "POST"
+            });
+            showToast("Widget published successfully as version " + (result.versionNumber || "latest") + ".");
+            await loadWidgetStatus();
+        } catch (error) {
+            showToast(error.message || "Could not publish this widget.");
+        } finally {
+            isPublishing = false;
+            renderStatus();
+        }
+    }
+
+    async function copyText (text) {
         if (navigator.clipboard && window.isSecureContext) {
             await navigator.clipboard.writeText(text);
             return;
@@ -237,9 +333,10 @@
 
     $("peWidgetSelect").addEventListener("change", () => {
         const widget = getWidget();
-        $("peVersion").textContent = "v" + widget.version;
+        $("peVersion").textContent = widget.version === "—" ? "—" : "v" + widget.version;
         renderCode();
         showToast("Selected " + widget.name + ".");
+        loadWidgetStatus();
     });
 
     $("peCopyCode").addEventListener("click", async () => {
@@ -257,13 +354,7 @@
         }
     });
 
-    $("pePublishBtn").addEventListener("click", () => {
-        if (isPublished) return;
-
-        isPublished = true;
-        renderStatus();
-        showToast("Demo publish complete. No backend request was made.");
-    });
+    $("pePublishBtn").addEventListener("click", publishWidget);
 
     $("peDomainForm").addEventListener("submit", event => {
         event.preventDefault();
@@ -311,21 +402,46 @@
 
     // The checklist is a front-end readiness aid; it does not gate publishing.
     renderPlatform("html");
-    renderStatus();
     renderDomains();
+    renderCode();
+    loadWidgetStatus();
 })();
 
 
 (function initializePublishChecklist () {
+    const root = document.querySelector(".publish-embed-page");
     const checkboxes = Array.from(
         document.querySelectorAll(".pe-checklist-checkbox")
     );
 
     const status = document.getElementById("peChecklistStatus");
     const progressBar = document.getElementById("peChecklistProgressBar");
+    const widgetSelect = document.getElementById("peWidgetSelect");
+    const completionPanel = document.getElementById("peChecklistComplete");
+    const nextButton = document.getElementById("peChecklistNext");
+    const pageHeader = document.querySelector(".publish-embed-page .pe-page-header");
 
     if (!checkboxes.length || !status || !progressBar) {
         return;
+    }
+
+    const storageKey = () => {
+        const widgetKey = widgetSelect?.value || "default";
+        return "askpearls.publish-checklist." + widgetKey;
+    };
+
+    function restoreChecklist () {
+        let saved = null;
+        try {
+            saved = JSON.parse(window.localStorage.getItem(storageKey()) || "null");
+        } catch (_) {
+            // Keep the checklist usable when storage is disabled or unavailable.
+        }
+
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = Boolean(saved && saved[ checkbox.id ]);
+        });
+        updateChecklist();
     }
 
     function updateChecklist () {
@@ -342,12 +458,33 @@
             `${ completed } of ${ total } steps completed`;
 
         progressBar.style.width = `${ percentage }%`;
+        progressBar.setAttribute("aria-valuenow", String(completed));
+        progressBar.setAttribute("aria-valuemax", String(total));
+        if (completionPanel) {
+            completionPanel.hidden = completed !== total;
+        }
+
+        try {
+            const saved = Object.fromEntries(
+                checkboxes.map(checkbox => [ checkbox.id, checkbox.checked ])
+            );
+            window.localStorage.setItem(storageKey(), JSON.stringify(saved));
+        } catch (_) {
+            // Progress still updates for this page view if storage is unavailable.
+        }
     }
 
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener("change", updateChecklist);
     });
 
-    updateChecklist();
+    widgetSelect?.addEventListener("change", restoreChecklist);
+    nextButton?.addEventListener("click", () => {
+        pageHeader?.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.setTimeout(() => {
+            document.getElementById("pePublishBtn")?.focus({ preventScroll: true });
+        }, 350);
+    });
+    restoreChecklist();
 })();
 

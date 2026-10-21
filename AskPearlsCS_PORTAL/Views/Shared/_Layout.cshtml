@@ -477,6 +477,31 @@
     <!-- ==========================================
      AskPearls Merchant Portal - Left Sidebar
      ========================================== -->
+    <style>
+            /* The sidebar stays dark in both portal themes, so keep its future-agent
+                   headings and descriptions readable when the main portal is in light mode. */
+            #askPearlsSidebar .ap-agent-disabled .ap-agent-title,
+            #askPearlsSidebar .ap-agent-disabled .ap-agent-header {
+                color: #f1f5f9 !important;
+            }
+
+            #askPearlsSidebar .ap-agent-disabled .ap-agent-description {
+                color: #a9bec6 !important;
+            }
+
+            #askPearlsSidebar .ap-nav-group-label {
+                margin: 12px 12px 6px;
+                padding-top: 12px;
+                border-top: 1px solid rgba(187, 211, 218, 0.16);
+                color: #91aab2;
+                font-size: 0.68rem;
+                font-weight: 700;
+                letter-spacing: 0.09em;
+                line-height: 1.2;
+                text-transform: uppercase;
+            }
+    </style>
+
     <aside id="askPearlsSidebar" class="sidebar ap-sidebar" style="margin-bottom:60px;-ms-overflow-style: none;scrollbar-width: none;border-bottom-right-radius:10px;border-top-right-radius:10px;">
 
         <!-- Scrollable sidebar content -->
@@ -488,14 +513,10 @@
             </div>
 
             <!-- Agent accordion -->
-            <div class="accordion ap-agent-accordion"
-                 id="askPearlsAgentAccordion">
+            <div class="accordion ap-agent-accordion" id="askPearlsAgentAccordion">
 
-                <!-- ==================================
-                 ACTIVE AGENT: DecisionOS
-                 ================================== -->
+                <!-- ACTIVE AGENT: DecisionOS -->
                 <div class="accordion-item ap-agent-item ap-agent-active">
-
                     <h2 class="accordion-header" id="headingDecisionOS">
                         <button class="accordion-button ap-agent-header"
                                 type="button"
@@ -503,24 +524,18 @@
                                 data-bs-target="#collapseDecisionOS"
                                 aria-expanded="true"
                                 aria-controls="collapseDecisionOS">
-
                             <span class="ap-agent-icon">
                                 <i class="bi bi-diagram-3"></i>
                             </span>
-
                             <span class="ap-agent-info">
                                 <span class="ap-agent-title-row">
                                     <span class="ap-agent-title">DecisionOS</span>
-                                    <span class="ap-status ap-status-active">
-                                        ACTIVE
-                                    </span>
+                                    <span class="ap-status ap-status-active">ACTIVE</span>
                                 </span>
-
                                 <span class="ap-agent-description">
                                     Guided decisions &amp; recommendations
                                 </span>
                             </span>
-
                         </button>
                     </h2>
 
@@ -528,287 +543,168 @@
                          class="accordion-collapse collapse show"
                          aria-labelledby="headingDecisionOS"
                          data-bs-parent="#askPearlsAgentAccordion">
-
                         <div class="accordion-body ap-agent-body">
-
-                            <nav class="ap-agent-navigation"
-                                 aria-label="DecisionOS navigation">
+                            <nav class="ap-agent-navigation" aria-label="DecisionOS navigation">
                                 @* href="/dashboard" *@
-                                <a href="#"
-                                   class="ap-nav-link active"
-                                   data-page="dashboard">
+                                <a href="#" class="ap-nav-link active" data-page="dashboard">
                                     <i class="bi bi-house-door"></i>
                                     <span>Dashboard</span>
                                 </a>
 
-                                <a href="#"
-                                   class="ap-nav-link"
-                                   data-page="widget-builder">
-                                    <i class="bi bi-sliders"></i>
-                                    <span>Widget Builder</span>
-                                </a>
-
-                                <a href="#"
-                                   class="ap-nav-link"
-                                   data-page="widgets">
+                                <!-- Widget selection and creation -->
+                                <a href="#" class="ap-nav-link" data-page="widgets">
                                     <i class="bi bi-grid"></i>
                                     <span>My Widgets</span>
                                 </a>
 
-                                <a href="#"
-                                   class="ap-nav-link"
-                                   data-page="questions">
+                                <a href="#" class="ap-nav-link" data-page="widget-builder">
+                                    <i class="bi bi-sliders"></i>
+                                    <span>Widget Builder</span>
+                                </a>
+
+                                <!-- Build widget content and logic -->
+                                <div class="ap-nav-group-label">Your Widget</div>
+
+                                <a href="#" class="ap-nav-link" data-page="questions">
                                     <i class="bi bi-ui-checks"></i>
                                     <span>Questions &amp; Answers</span>
                                 </a>
 
-                                <a href="#"
-                                   class="ap-nav-link"
-                                   data-page="recommendation-items">
+                                <a href="#" class="ap-nav-link" data-page="recommendation-items">
                                     <i class="bi bi-box-seam"></i>
                                     <span>Recommendation Items</span>
                                 </a>
 
-                                <a href="#"
-                                   class="ap-nav-link"
-                                   data-page="decision-rules">
+                                <a href="#" class="ap-nav-link" data-page="decision-rules">
                                     <i class="bi bi-sliders"></i>
                                     <span>Decision Rules</span>
                                 </a>
 
-                                <a href="#"
-                                   class="ap-nav-link"
-                                   data-page="scoring-preview">
+                                <a href="#" class="ap-nav-link" data-page="scoring-preview">
                                     <i class="bi bi-sliders"></i>
                                     <span>Scoring &amp; Preview</span>
                                 </a>
 
-                                <a href="#"
-                                   class="ap-nav-link"
-                                   data-page="design-customize">
+                                <a href="#" class="ap-nav-link" data-page="design-customize">
                                     <i class="bi bi-palette"></i>
                                     <span>Design &amp; Customize</span>
                                 </a>
 
-                                <a href="#"
-                                   class="ap-nav-link"
-                                   data-page="publish-embed">
+                                <!-- Launch and measure -->
+                                <div class="ap-nav-group-label">Launch</div>
+
+                                <a href="#" class="ap-nav-link" data-page="publish-embed">
                                     <i class="bi bi-code-slash"></i>
                                     <span>Publish &amp; Embed</span>
                                 </a>
 
-                                <a href="#"
-                                   class="ap-nav-link"
-                                   data-page="analytics">
+                                <a href="#" class="ap-nav-link" data-page="analytics">
                                     <i class="bi bi-graph-up-arrow"></i>
                                     <span>Analytics</span>
                                 </a>
-
                             </nav>
-
                         </div>
                     </div>
                 </div>
 
-                <!-- ==================================
-                 FUTURE AGENT: EngageOS
-                 ================================== -->
+                <!-- FUTURE AGENT: EngageOS -->
                 <div class="accordion-item ap-agent-item ap-agent-disabled">
-
                     <h2 class="accordion-header" id="headingEngageOS">
-                        <button class="accordion-button collapsed ap-agent-header"
-                                type="button"
-                                disabled
-                                aria-disabled="true">
-
-                            <span class="ap-agent-icon">
-                                <i class="bi bi-chat-dots"></i>
-                            </span>
-
+                        <button class="accordion-button collapsed ap-agent-header" type="button" disabled aria-disabled="true">
+                            <span class="ap-agent-icon"><i class="bi bi-chat-dots"></i></span>
                             <span class="ap-agent-info">
                                 <span class="ap-agent-title-row">
                                     <span class="ap-agent-title">EngageOS</span>
-                                    <span class="ap-status ap-status-soon">
-                                        COMING SOON
-                                    </span>
+                                    <span class="ap-status ap-status-soon">COMING SOON</span>
                                 </span>
-
-                                <span class="ap-agent-description">
-                                    Customer conversations
-                                </span>
+                                <span class="ap-agent-description">Customer conversations</span>
                             </span>
-
                         </button>
                     </h2>
-
                 </div>
 
-                <!-- ==================================
-                 FUTURE AGENT: LeadLens
-                 ================================== -->
+                <!-- FUTURE AGENT: LeadLens -->
                 <div class="accordion-item ap-agent-item ap-agent-disabled">
-
                     <h2 class="accordion-header" id="headingLeadLens">
-                        <button class="accordion-button collapsed ap-agent-header"
-                                type="button"
-                                disabled
-                                aria-disabled="true">
-
-                            <span class="ap-agent-icon">
-                                <i class="bi bi-people"></i>
-                            </span>
-
+                        <button class="accordion-button collapsed ap-agent-header" type="button" disabled aria-disabled="true">
+                            <span class="ap-agent-icon"><i class="bi bi-people"></i></span>
                             <span class="ap-agent-info">
                                 <span class="ap-agent-title-row">
                                     <span class="ap-agent-title">LeadLens</span>
-                                    <span class="ap-status ap-status-soon">
-                                        COMING SOON
-                                    </span>
+                                    <span class="ap-status ap-status-soon">COMING SOON</span>
                                 </span>
-
-                                <span class="ap-agent-description">
-                                    Lead capture &amp; qualification
-                                </span>
+                                <span class="ap-agent-description">Lead capture &amp; qualification</span>
                             </span>
-
                         </button>
                     </h2>
-
                 </div>
 
-                <!-- ==================================
-                 FUTURE AGENT: AutomateOS
-                 ================================== -->
+                <!-- FUTURE AGENT: AutomateOS -->
                 <div class="accordion-item ap-agent-item ap-agent-disabled">
-
                     <h2 class="accordion-header" id="headingAutomateOS">
-                        <button class="accordion-button collapsed ap-agent-header"
-                                type="button"
-                                disabled
-                                aria-disabled="true">
-
-                            <span class="ap-agent-icon">
-                                <i class="bi bi-gear-wide-connected"></i>
-                            </span>
-
+                        <button class="accordion-button collapsed ap-agent-header" type="button" disabled aria-disabled="true">
+                            <span class="ap-agent-icon"><i class="bi bi-gear-wide-connected"></i></span>
                             <span class="ap-agent-info">
                                 <span class="ap-agent-title-row">
                                     <span class="ap-agent-title">AutomateOS</span>
-                                    <span class="ap-status ap-status-soon">
-                                        COMING SOON
-                                    </span>
+                                    <span class="ap-status ap-status-soon">COMING SOON</span>
                                 </span>
-
-                                <span class="ap-agent-description">
-                                    Business workflow automation
-                                </span>
+                                <span class="ap-agent-description">Business workflow automation</span>
                             </span>
-
                         </button>
                     </h2>
-
                 </div>
 
-                <!-- ==================================
-                 FUTURE AGENT: InsightOS
-                 ================================== -->
+                <!-- FUTURE AGENT: InsightOS -->
                 <div class="accordion-item ap-agent-item ap-agent-disabled">
-
                     <h2 class="accordion-header" id="headingInsightOS">
-                        <button class="accordion-button collapsed ap-agent-header"
-                                type="button"
-                                disabled
-                                aria-disabled="true">
-
-                            <span class="ap-agent-icon">
-                                <i class="bi bi-bar-chart-line"></i>
-                            </span>
-
+                        <button class="accordion-button collapsed ap-agent-header" type="button" disabled aria-disabled="true">
+                            <span class="ap-agent-icon"><i class="bi bi-bar-chart-line"></i></span>
                             <span class="ap-agent-info">
                                 <span class="ap-agent-title-row">
                                     <span class="ap-agent-title">InsightOS</span>
-                                    <span class="ap-status ap-status-soon">
-                                        COMING SOON
-                                    </span>
+                                    <span class="ap-status ap-status-soon">COMING SOON</span>
                                 </span>
-
-                                <span class="ap-agent-description">
-                                    Business intelligence &amp; analytics
-                                </span>
+                                <span class="ap-agent-description">Business intelligence &amp; analytics</span>
                             </span>
-
                         </button>
                     </h2>
-
                 </div>
 
-                <!-- ==================================
-                 FUTURE AGENT: ConvertOS
-                 ================================== -->
+                <!-- FUTURE AGENT: ConvertOS -->
                 <div class="accordion-item ap-agent-item ap-agent-disabled">
-
                     <h2 class="accordion-header" id="headingConvertOS">
-                        <button class="accordion-button collapsed ap-agent-header"
-                                type="button"
-                                disabled
-                                aria-disabled="true">
-
-                            <span class="ap-agent-icon">
-                                <i class="bi bi-bullseye"></i>
-                            </span>
-
+                        <button class="accordion-button collapsed ap-agent-header" type="button" disabled aria-disabled="true">
+                            <span class="ap-agent-icon"><i class="bi bi-bullseye"></i></span>
                             <span class="ap-agent-info">
                                 <span class="ap-agent-title-row">
                                     <span class="ap-agent-title">ConvertOS</span>
-                                    <span class="ap-status ap-status-soon">
-                                        COMING SOON
-                                    </span>
+                                    <span class="ap-status ap-status-soon">COMING SOON</span>
                                 </span>
-
-                                <span class="ap-agent-description">
-                                    Conversion optimization
-                                </span>
+                                <span class="ap-agent-description">Conversion optimization</span>
                             </span>
-
                         </button>
                     </h2>
-
                 </div>
-
             </div>
             <!-- End agent accordion -->
             <!-- Account settings -->
             <div class="ap-sidebar-bottom">
-
-                <a href="#"
-                   class="ap-nav-link ap-settings-link"
-                   data-page="account-settings">
-
+                <a href="#" class="ap-nav-link ap-settings-link" data-page="account-settings">
                     <i class="bi bi-gear"></i>
-
                     <span>Account &amp; Settings</span>
-
                     <i class="bi bi-chevron-right ap-settings-arrow"></i>
-
                 </a>
-
             </div>
-
         </div>
         <!-- End scrollable sidebar content -->
         <!-- Fixed bottom attribution -->
         <div class="ap-sidebar-footer">
-
             Developed by
-
-            <a href="https://OneWorldLancer.com"
-               target="_blank" class="fw-bold"
-               rel="noopener noreferrer">
+            <a href="https://OneWorldLancer.com" target="_blank" class="fw-bold" rel="noopener noreferrer">
                 OneWorldLancer
             </a>
-
         </div>
-
     </aside>
     <!-- End AskPearls Merchant Portal sidebar -->
 
@@ -825,7 +721,7 @@
 
         <!-- AskPearls DecisionOS Dashboard -->
         @* <main id="apMainContent" class="main vh-100"> *@
-            <main id="apMainContent" class="main ap-portal-main" style="margin-bottom:20px !important;-ms-overflow-style: none;scrollbar-width: none;">
+            <main id="apMainContent" class="main ap-portal-main" style="margin-bottom:20px !important;padding-bottom:15px !important;-ms-overflow-style: none;scrollbar-width: none;">
             @RenderBody()
 
         </main>
@@ -1493,11 +1389,23 @@
 <script>
 
 
-        $(document).on("click", "#askPearlsSidebar .ap-nav-link", function(e) {
-            e.preventDefault();
+        function setActiveSidebarItem (section) {
+            const $links = $("#askPearlsSidebar .ap-nav-link");
 
-            const section = $(this).data("page");
+            const $matchingLink = $links.filter(function () {
+                return $(this).attr("data-page") === section;
+            }).first();
 
+            if (!$matchingLink.length) {
+                console.warn("No sidebar item found for section:", section);
+                return;
+            }
+
+            $links.removeClass("active").removeAttr("aria-current");
+            $matchingLink.addClass("active").attr("aria-current", "page");
+        }
+
+        function loadPortalSection (section) {
             if (!section) {
                 console.warn("No data-page attribute found.");
                 return;
@@ -1505,95 +1413,127 @@
 
             console.log("Loading portal section:", section);
 
-            $("#askPearlsSidebar .ap-nav-link").removeClass("active");
-            $(this).addClass("active");
-
             $.ajax({
                 url: "/Dashboard/LoadSection",
                 type: "GET",
                 data: { section: section },
 
-                success: function(html) {
+                success: function (html) {
                     $("#apMainContent").html(html);
-             
-             
-                    // Smoothly scroll the right content wrapper to the top
+                    setActiveSidebarItem(section);
+
                     $("#apMainContent").stop().animate(
                         { scrollTop: 0 },
                         1000
                     );
-
-                    // $("html, body").stop().animate(
-                    //     { scrollTop: 0 },
-                    //     500
-                    // );
-                    // // Scroll the right content wrapper to the top
-                    // $("#apMainContent").scrollTop(0);
-
-                    // // Also reset the window if the browser page itself scrolls
-                    // $("html, body").scrollTop(0);
-
                 },
 
-                error: function(xhr) {
+                error: function (xhr) {
                     console.error(
                         "Section loading failed:",
+                        section,
                         xhr.status,
                         xhr.responseText
                     );
 
-                    alert("Unable to load the Dashboard section. Check the browser console.");
+                    alert("Unable to load this Dashboard section. Check the browser console.");
                 }
             });
+        }
+
+        // Sidebar menu clicks
+        $(document).on("click", "#askPearlsSidebar .ap-nav-link", function (e) {
+            e.preventDefault();
+            loadPortalSection($(this).attr("data-page"));
+        });
+
+        // Buttons and links inside the loaded page
+        $(document).on("click", "#apMainContent [data-page]", function (e) {
+            e.preventDefault();
+            loadPortalSection($(this).attr("data-page"));
         });
 
 
+        // // // // // $(document).on("click", "#askPearlsSidebar .ap-nav-link", function(e) {
+        // // // // //     e.preventDefault();
+
+        // // // // //     const section = $(this).data("page");
+
+        // // // // //     if (!section) {
+        // // // // //         console.warn("No data-page attribute found.");
+        // // // // //         return;
+        // // // // //     }
+
+        // // // // //     console.log("Loading portal section:", section);
+
+        // // // // //     $("#askPearlsSidebar .ap-nav-link").removeClass("active");
+        // // // // //     $(this).addClass("active");
+
+        // // // // //     $.ajax({
+        // // // // //         url: "/Dashboard/LoadSection",
+        // // // // //         type: "GET",
+        // // // // //         data: { section: section },
+
+        // // // // //         success: function(html) {
+        // // // // //             $("#apMainContent").html(html);
+             
+             
+        // // // // //             // Smoothly scroll the right content wrapper to the top
+        // // // // //             $("#apMainContent").stop().animate(
+        // // // // //                 { scrollTop: 0 },
+        // // // // //                 1000
+        // // // // //             );
+
+        // // // // //         },
+
+        // // // // //         error: function(xhr) {
+        // // // // //             console.error(
+        // // // // //                 "Section loading failed:",
+        // // // // //                 xhr.status,
+        // // // // //                 xhr.responseText
+        // // // // //             );
+
+        // // // // //             alert("Unable to load the Dashboard section. Check the browser console.");
+        // // // // //         }
+        // // // // //     });
+        // // // // // });
 
 
 
-        $(document).on(
-            "click",
-            //"#apMainContent [data-page='widget-builder']",
-            "#apMainContent [data-page]",
-           function(e) {
-                e.preventDefault();
 
-                const section = $(this).data("page");
 
-                $.ajax({
-                    url: "/Dashboard/LoadSection",
-                    type: "GET",
-                    data: { section: section },
+        // // // // // $(document).on(
+        // // // // //     "click",
+        // // // // //     //"#apMainContent [data-page='widget-builder']",
+        // // // // //     "#apMainContent [data-page]",
+        // // // // //    function(e) {
+        // // // // //         e.preventDefault();
 
-                    success: function(html) {
+        // // // // //         const section = $(this).data("page");
+
+        // // // // //         $.ajax({
+        // // // // //             url: "/Dashboard/LoadSection",
+        // // // // //             type: "GET",
+        // // // // //             data: { section: section },
+
+        // // // // //             success: function(html) {
                       
-                        $("#apMainContent").html(html);
+        // // // // //                 $("#apMainContent").html(html);
 
-                        // Smoothly scroll the right content wrapper to the top
-                        $("#apMainContent").stop().animate(
-                            { scrollTop: 0 },
-                            1000
-                        );
+        // // // // //                 // Smoothly scroll the right content wrapper to the top
+        // // // // //                 $("#apMainContent").stop().animate(
+        // // // // //                     { scrollTop: 0 },
+        // // // // //                     1000
+        // // // // //                 );
   
-//                         $("html, body").stop().animate(
-//     { scrollTop: 0 },
-//     500
-// );
-                        
-                        // // Scroll the right content wrapper to the top
-                // $("#apMainContent").scrollTop(0);
+        // // // // //             },
 
-                // // Also reset the window if the browser page itself scrolls
-                // $("html, body").scrollTop(0);
-
-                    },
-
-                    error: function() {
-                        console.error("Failed to load page:", section);
-                    }
-                });
-            }
-        );
+        // // // // //             error: function() {
+        // // // // //                 console.error("Failed to load page:", section);
+        // // // // //             }
+        // // // // //         });
+        // // // // //     }
+        // // // // // );
 
 
 
