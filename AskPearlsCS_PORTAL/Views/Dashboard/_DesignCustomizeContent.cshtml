@@ -26,17 +26,21 @@
         </div>
     </header>
 
-    <div class="dc-widget-selector">
-        <div class="dc-selector-icon"><i class="bi bi-grid-1x2"></i></div>
-        <div class="dc-selector-info">
+    <div class="dc-widget-selector ap-widget-selector">
+        <div class="dc-selector-icon ap-widget-selector-icon"><i class="bi bi-grid-1x2"></i></div>
+        <div class="dc-selector-info ap-widget-selector-info">
             <label for="dcWidgetSelect">Widget to customize</label>
-            <select id="dcWidgetSelect">
+            <select id="dcWidgetSelect" class="ap-widget-selector-control">
                 <option value="sofa" data-public-key="pk_demo_sofa_finder">Sofa Finder Widget</option>
                 <option value="furniture">Furniture Recommendation Widget</option>
                 <option value="demo">Demo Recommendation Widget</option>
             </select>
+            <small class="ap-widget-selector-help">Choose the widget you want to customize.</small>
         </div>
-        <span class="dc-demo-badge">Preview mode</span>
+        <div class="dc-version ap-widget-selector-version">
+            <span>Draft / live</span>
+            <strong id="dcWidgetVersion">—</strong>
+        </div>
     </div>
 
     <div class="dc-workspace">
@@ -286,7 +290,6 @@
     <div class="dc-toast" id="dcToast" role="status" aria-live="polite"></div>
 </div>
 
-                        <link href="~/app_page_css/app_page_design_customize_css.css" rel="stylesheet" />
-
-  <script src="~/app_page_js/app_page_design_customize_js.js"></script>
+<link href="~/app_page_css/app_page_design_customize_css.css?v=20261021-4" rel="stylesheet" />
+<script src="~/app_page_js/app_page_design_customize_js.js"></script>
 

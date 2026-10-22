@@ -978,3 +978,89 @@ html:not([data-theme="dark"]) .qna-page .preview-option {
     color: #263238 !important;
     border-color: #dce4df;
 }
+
+/* Dark-theme hover: retain contrast on question rows and action buttons. */
+html[data-theme="dark"] .qna-page .question-item:hover,
+body[data-theme="dark"] .qna-page .question-item:hover,
+html[data-bs-theme="dark"] .qna-page .question-item:hover,
+body[data-bs-theme="dark"] .qna-page .question-item:hover {
+    background: #183f34 !important;
+    border-color: #39b99a !important;
+    color: #f4fbf8 !important;
+}
+
+    html[data-theme="dark"] .qna-page .question-item:hover strong,
+    html[data-theme="dark"] .qna-page .question-item:hover small,
+    body[data-theme="dark"] .qna-page .question-item:hover strong,
+    body[data-theme="dark"] .qna-page .question-item:hover small,
+    html[data-bs-theme="dark"] .qna-page .question-item:hover strong,
+    html[data-bs-theme="dark"] .qna-page .question-item:hover small,
+    body[data-bs-theme="dark"] .qna-page .question-item:hover strong,
+    body[data-bs-theme="dark"] .qna-page .question-item:hover small {
+        color: #f4fbf8 !important;
+    }
+
+html[data-theme="dark"] .qna-page .button:not(.button-primary):hover,
+body[data-theme="dark"] .qna-page .button:not(.button-primary):hover,
+html[data-bs-theme="dark"] .qna-page .button:not(.button-primary):hover,
+body[data-bs-theme="dark"] .qna-page .button:not(.button-primary):hover {
+    background: #183f34 !important;
+    border-color: #39b99a !important;
+    color: #f4fbf8 !important;
+}
+
+/* The visitor preview follows the portal theme so its dark-mode contrast is visible. */
+html[data-theme="dark"] .qna-page .preview-card,
+body[data-theme="dark"] .qna-page .preview-card,
+html[data-bs-theme="dark"] .qna-page .preview-card,
+body[data-bs-theme="dark"] .qna-page .preview-card {
+    background: #10221c !important;
+    color: #edf5f2 !important;
+    border-color: #29483f !important;
+}
+
+    html[data-theme="dark"] .qna-page .preview-card h2,
+    html[data-theme="dark"] .qna-page .preview-card p,
+    html[data-theme="dark"] .qna-page .preview-card span,
+    body[data-theme="dark"] .qna-page .preview-card h2,
+    body[data-theme="dark"] .qna-page .preview-card p,
+    body[data-theme="dark"] .qna-page .preview-card span,
+    html[data-bs-theme="dark"] .qna-page .preview-card h2,
+    html[data-bs-theme="dark"] .qna-page .preview-card p,
+    html[data-bs-theme="dark"] .qna-page .preview-card span,
+    body[data-bs-theme="dark"] .qna-page .preview-card h2,
+    body[data-bs-theme="dark"] .qna-page .preview-card p,
+    body[data-bs-theme="dark"] .qna-page .preview-card span {
+        color: #edf5f2 !important;
+    }
+
+html[data-theme="dark"] .qna-page .preview-option,
+body[data-theme="dark"] .qna-page .preview-option,
+html[data-bs-theme="dark"] .qna-page .preview-option,
+body[data-bs-theme="dark"] .qna-page .preview-option {
+    background: #142b23 !important;
+    color: #edf5f2 !important;
+    border-color: #35574b !important;
+}
+
+.qna-page .qna-api-message {
+    margin: -8px 0 20px;
+    padding: 10px 14px;
+    border: 1px solid var(--ap-border, #d9e2e8);
+    border-radius: 8px;
+    background: var(--ap-surface, #fff);
+    color: var(--ap-text, #243247);
+    font-size: 13px;
+}
+
+    .qna-page .qna-api-message.is-error {
+        border-color: #dc3545;
+        color: #b42332;
+    }
+
+[data-theme="dark"] .qna-page .qna-api-message,
+[data-bs-theme="dark"] .qna-page .qna-api-message {
+    background: #10221c;
+    color: #edf5f2;
+    border-color: #29483f;
+}

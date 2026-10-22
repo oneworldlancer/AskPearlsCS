@@ -15,19 +15,18 @@
         </div>
     </header>
 
-    <section class="active-widget-picker" aria-label="Active widget">
-        <div class="active-widget-picker-icon" aria-hidden="true"><i class="bi bi-grid-1x2"></i></div>
-        <div class="active-widget-picker-main">
+    <section class="active-widget-picker ap-widget-selector" aria-label="Active widget">
+        <div class="active-widget-picker-icon ap-widget-selector-icon" aria-hidden="true"><i class="bi bi-grid-1x2"></i></div>
+        <div class="active-widget-picker-main ap-widget-selector-info">
             <label for="activeWidgetSelect">Select widget</label>
-            <select id="activeWidgetSelect" class="active-widget-select" aria-label="Select active widget" disabled>
+            <select id="activeWidgetSelect" class="active-widget-select ap-widget-selector-control" aria-label="Select active widget" disabled>
                 <option value="">Loading widgets…</option>
             </select>
-            <small id="activeWidgetMessage">Choose the widget you want to manage.</small>
+            <small id="activeWidgetMessage" class="ap-widget-selector-help">Choose the widget you want to manage.</small>
         </div>
-        <div class="active-widget-picker-version" aria-live="polite">
-            <span>Current version</span>
+        <div class="active-widget-picker-version ap-widget-selector-version" aria-live="polite">
+            <span>Draft / live</span>
             <strong id="activeWidgetVersion">—</strong>
-            <span id="activeWidgetStatus" class="widget-status-badge" hidden></span>
         </div>
     </section>
 
@@ -85,5 +84,6 @@
     </section>
 </div>
 
-<link href="~/app_page_css/app_page_my_widgets_css.css?v=20261021-2" rel="stylesheet" />
+<link href="~/app_page_css/app_page_my_widgets_css.css?v=20261021-3" rel="stylesheet" />
+
 <script src="~/app_page_js/app_page_my_widgets_js.js"></script>

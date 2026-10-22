@@ -1,594 +1,198 @@
-﻿/* My Widgets page only. The portal owns the page wrapper and fixed footer. */
-.ap - page.page - widgets,
-.ap - page.page - widgets * {
-        box- sizing: border - box;
-}
-
-.ap - page.page - widgets {
-    display: block!important;
-    position: relative;
-    width: 100 %;
-    min - width: 0;
-    height: auto!important;
-    min - height: 0!important;
-    max - height: none!important;
-    overflow: visible;
-    align - self: stretch;
-    justify - self: stretch;
-    justify - content: flex - start!important;
-    align - content: start!important;
-    row - gap: 0!important;
-    margin - top: 0!important;
-    margin - bottom: 0!important;
-}
-
-.page - widgets.widgets - page - heading {
-    align - items: flex - start;
-    position: static;
-    margin - top: 0!important;
-    margin - bottom: 24px!important;
-    transform: none!important;
-}
-
-.page - widgets.active - widget - picker {
-    display: grid!important;
-    grid - template - columns: 45px minmax(0, 1fr) auto;
-    align - items: center;
-    gap: 14px;
-    grid - column: 1 / -1;
-    flex: 0 0 100 %;
-    width: 100 % !important;
-    max - width: none!important;
-    justify - self: stretch;
-    box - sizing: border - box;
-    margin: 0 0 20px!important;
-    padding: 17px 20px;
-    border: 1px solid var(--ap - border, #29443b);
-    border - radius: 14px;
-    background: var(--ap - surface, #101f1a);
-}
-
-.page - widgets.active - widget - picker - icon {
-    display: grid;
-    width: 45px;
-    height: 45px;
-    flex: 0 0 45px;
-    place - items: center;
-    border - radius: 12px;
-    color: #0da88b;
-    background: rgba(13, 168, 139, .13);
-    font - size: 20px;
-}
-
-.page - widgets.active - widget - picker - main {
-    display: flex;
-    flex: 1 1 auto;
-    flex - direction: column;
-    gap: 5px;
-    min - width: 0;
-}
-
-.page - widgets.active - widget - picker - main > label {
-    display: block;
-    margin: 0;
-    color: var(--ap - muted, #9db2aa);
-    font - size: 11px;
-    font - weight: 700;
-}
-
-.page - widgets.active - widget - picker - main > small {
-    color: var(--ap - muted, #aabbb4);
-    font - size: 10px;
-}
-
-.page - widgets.active - widget - picker.active - widget - select {
-    width: 100 %;
-    max - width: none!important;
-    min - width: 0;
-    height: 48px;
-    border: 1px solid var(--ap - border, var(--bs - border - color, #dce8e4));
-    border - radius: 10px;
-    padding: 9px 42px 9px 12px;
-    appearance: none;
-    -webkit - appearance: none;
-    background - image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23718096' d='M3 5.5 8 10.5 13 5.5z'/%3E%3C/svg%3E");
-    background - repeat: no - repeat;
-    background - position: right 14px center;
-    background - size: 16px;
-    color: var(--ap - text, #e7edf3);
-    background - color: var(--ap - input - bg, var(--ap - surface, #10251e));
-    font: inherit;
-    font - size: 13px;
-    font - weight: 700;
-}
-
-.page - widgets.active - widget - picker.active - widget - select:disabled {
-    opacity: 1;
-    cursor: not - allowed;
-}
-
-.page - widgets.active - widget - picker - version {
-    display: grid;
-    flex: 0 0 auto;
-    gap: 6px;
-    min - width: 110px;
-    padding - left: 20px;
-    border - left: 1px solid var(--ap - border, #29443b);
-}
-
-.page - widgets.active - widget - picker - version > span: first - child {
-    color: var(--ap - muted, #aabbb4);
-    font - size: 12px;
-}
-
-.page - widgets.active - widget - picker - version > strong {
-    color: var(--ap - text, #e7edf3);
-    font - size: 16px;
-}
-
-.page - widgets.widget - summary - card {
-    display: flex!important;
-    flex - direction: row!important;
-    min - width: 0;
-    align - items: center;
-    justify - content: flex - start!important;
-    gap: 15px;
-    padding: 22px 20px;
-    border - radius: 15px;
-}
-
-.page - widgets.widget - summary - card > div {
-    display: grid;
-    gap: 8px;
-    justify - items: start;
-    text - align: left;
-    flex: 1 1 auto;
-}
-
-.page - widgets.widget - summary - card span {
-    color: var(--ap - muted, #aabbb4);
-    margin - bottom: 4px;
-    font - size: 12px;
-}
-
-.page - widgets.widget - summary - card strong {
-    color: var(--ap - text, #e7edf3);
-    font - size: 26px;
-    font - weight: 700;
-    line - height: 1.2;
-}
-
-.page - widgets.widget - summary - card > i {
-    display: grid;
-    position: static!important;
-    width: 48px;
-    height: 48px;
-    flex: 0 0 48px;
-    place - items: center;
-    transform: none!important;
-    border - radius: 13px;
-    color: var(--ap - primary, #00a987);
-    background: color - mix(in srgb, var(--ap - primary, #00a987) 14 %, transparent);
-    font - size: 22px;
-}
-
-.page - widgets.widget - summary.row > div: nth - child(1).widget - summary - card > i {
-    color: #7552d6;
-    background: #efe8ff;
-}
-
-.page - widgets.widget - summary.row > div: nth - child(2).widget - summary - card > i {
-    color: #0da88b;
-    background: #dff7ef;
-}
-
-.page - widgets.widget - summary.row > div: nth - child(3).widget - summary - card > i {
-    color: #2d6cdf;
-    background: #e3efff;
-}
-
-.page - widgets > .widget - summary,
-.page - widgets > section: not(.active - widget - picker) {
-    align - self: stretch;
-    margin - top: 0!important;
-    margin - bottom: 20px!important;
-}
-
-.page - widgets.card {
-    color: var(--ap - text, #e7edf3);
-    background: var(--ap - surface, #101f1a);
-    border: 1px solid var(--ap - border, #29443b) !important;
-    border - radius: var(--ap - radius, 14px);
-    box - shadow: var(--ap - shadow, 0 4px 18px rgba(30, 45, 65, .045));
-}
-
-.page - widgets.widget - inventory - header {
-    display: grid;
-    grid - template - columns: minmax(220px, 1fr) minmax(180px, 250px) minmax(145px, 185px) auto;
-    align - items: center;
-    gap: 18px;
-    padding: 20px 24px;
-    color: var(--ap - text, #e7edf3);
-    background: transparent;
-    border - bottom: 1px solid var(--ap - border, #29443b);
-}
-
-.page - widgets.widget - inventory - intro,
-.page - widgets.widget - inventory - search,
-.page - widgets.widget - inventory - status {
-    min - width: 0;
-}
-
-.page - widgets.widget - inventory - search,
-.page - widgets.widget - inventory - status {
-    height: 42px;
-}
-
-.page - widgets.widget - inventory - search {
-    color: var(--ap - text, #e7edf3);
-    background: var(--ap - surface, #10251e);
-    border - color: var(--ap - border, #355348);
-}
-
-.page - widgets.widget - inventory - status {
-    color: var(--ap - text, #e7edf3);
-    background - color: var(--ap - surface, #10251e);
-    border - color: var(--ap - border, #355348);
-}
-
-.page - widgets.widget - inventory - header h2,
-.page - widgets.widget - row - copy strong {
-    color: var(--ap - text, #e7edf3);
-}
-
-.page - widgets.widget - inventory - header p,
-.page - widgets.widget - row - copy small,
-.page - widgets.widget - table - muted,
-.page - widgets.widget - table - version {
-    color: var(--ap - muted, #aabbb4);
-}
-
-.page - widgets.widget - table - scroll {
-    overflow - x: auto;
-    padding: 0 20px 12px;
-}
-
-.page - widgets.widget - inventory - list {
-    min - width: 720px;
-}
-
-.page - widgets.widget - table - heading {
-    display: grid;
-    grid - template - columns: minmax(0, 1fr) minmax(170px, .45fr) minmax(300px, auto);
-    align - items: center;
-    gap: 14px;
-    padding: 16px 12px 10px;
-    color: var(--ap - muted, #aabbb4);
-    font - size: 11px;
-    font - weight: 700;
-    letter - spacing: .06em;
-    text - transform: uppercase;
-}
-
-.page - widgets.widget - table - row {
-    display: grid;
-    grid - template - columns: minmax(0, 1fr) minmax(170px, .45fr) minmax(300px, auto);
-    align - items: center;
-    gap: 14px;
-    min - height: 78px;
-    padding: 10px 12px;
-    border - bottom: 1px solid var(--ap - border, #29443b);
-    transition: background - color .16s ease, box - shadow .16s ease;
-}
-
-.page - widgets.widget - table - row: first - child {
-    margin - top: 10px;
-}
-
-.page - widgets.widget - table - row: last - child {
-    border - bottom: 0;
-}
-
-.page - widgets.widget - table - row: hover,
-.page - widgets.widget - table - row.is - selected {
-    border - radius: 10px;
-    background: color - mix(in srgb, var(--ap - primary, #0da88b) 7 %, transparent);
-}
-
-.page - widgets.widget - table - row.is - selected {
-    box - shadow: inset 0 0 0 1px color - mix(in srgb, var(--ap - primary, #0da88b) 55 %, transparent);
-}
-
-.page - widgets.widget - table - name {
-    display: flex;
-    align - items: center;
-    gap: 14px;
-    min - width: 0;
-}
-
-.page - widgets.widget - row - icon {
-    display: grid;
-    width: 48px;
-    height: 48px;
-    flex: 0 0 48px;
-    place - items: center;
-    border: 1px solid color - mix(in srgb, var(--ap - primary, #0da88b) 45 %, transparent);
-    border - radius: 12px;
-    color: var(--ap - primary, #0da88b);
-    background: color - mix(in srgb, var(--ap - primary, #0da88b) 10 %, transparent);
-    font - size: 20px;
-}
-
-.page - widgets.widget - row - copy {
-    display: grid;
-    gap: 4px;
-    min - width: 0;
-}
-
-.page - widgets.widget - workspace - link {
-    color: inherit;
-    text - decoration: none;
-}
-
-.page - widgets.widget - workspace - link:hover strong,
-.page - widgets.widget - workspace - link: focus - visible strong {
-    color: var(--ap - primary, #00d67b);
-    text - decoration: underline;
-    text - underline - offset: 3px;
-}
-
-.page - widgets.widget - row - copy strong,
-.page - widgets.widget - row - copy small {
-    overflow: hidden;
-    text - overflow: ellipsis;
-    white - space: nowrap;
-}
-
-.page - widgets.widget - row - copy strong {
-    font - size: 14px;
-}
-
-.page - widgets.widget - row - copy small,
-.page - widgets.widget - table - cell small {
-    font - size: 12px;
-}
-
-.page - widgets.widget - table - cell {
-    display: grid;
-    justify - items: start;
-    gap: 4px;
-    color: var(--ap - text, #e7edf3);
-    font - size: 13px;
-}
-
-.page - widgets.widget - table - cell[ data - label="Status"] {
-    display: block;
-}
-
-.page - widgets.widget - status - version {
-    display: flex!important;
-    align - items: center;
-    justify - content: flex - start;
-    gap: 10px;
-    flex - wrap: nowrap;
-    white - space: nowrap;
-}
-
-.page - widgets.widget - table - number {
-    justify - items: center;
-}
-
-.page - widgets.widget - status - badge {
-    display: inline - flex;
-    align - items: center;
-    gap: 7px;
-    padding: 6px 10px;
-    border - radius: 999px;
-    color: #00d67b;
-    background: rgba(0, 214, 123, .12);
-    font - size: 11px;
-    font - weight: 700;
-    white - space: nowrap;
-}
-
-.page - widgets.widget - status - badge::before {
-    width: 8px;
-    height: 8px;
-    border - radius: 50 %;
-    background: currentColor;
-    content: "";
-}
-
-.page - widgets.widget - status - badge.is - draft {
-    color: #b9c8d5;
-    background: rgba(155, 174, 190, .14);
-}
-
-.page - widgets.widget - status - badge.is - unpublished {
-    color: #ffc107;
-    background: rgba(255, 193, 7, .12);
-}
-
-.page - widgets.widget - table - version {
-    padding - left: 0;
-    white - space: nowrap;
-}
-
-.page - widgets.widget - table - cell[ data - label ] small,
-.page - widgets.widget - table - cell > span > small {
-    display: block;
-}
-
-.page - widgets.widget - table - actions {
-    display: flex;
-    align - items: center;
-    justify - content: flex - end;
-    gap: 8px;
-    white - space: nowrap;
-}
-
-.page - widgets.widget - table - actions.btn {
-    white - space: nowrap;
-}
-
-.page - widgets.widget - table - actions.btn.disabled {
-    opacity: .45;
-    pointer - events: none;
-}
-
-.page - widgets.widget - table - actions.btn - icon {
-    color: var(--ap - text, #e7edf3);
-}
-
-.page - widgets.widget - loading - state,
-.page - widgets.widget - error - state {
-    display: flex;
-    align - items: center;
-    justify - content: center;
-    gap: 10px;
-    min - height: 220px;
-    color: var(--ap - muted, #aabbb4);
-}
-
-.page - widgets.widget - error - state {
-    color: #dc3545;
-}
-
-.page - widgets[ hidden ] {
-    display: none!important;
-}
-
-.page - widgets[ hidden ] {
-    display: none!important;
-}
-
-.page - widgets.text - muted {
-    color: var(--ap - muted, #aabbb4)!important;
-}
-
-.page - widgets.dropdown - menu {
-    z - index: 1055;
-}
-
-@media(max - width: 991.98px) {
-    .page - widgets.active - widget - picker {
-        width: 100 % !important;
+﻿(function () {
+    "use strict";
+
+    const root = document.querySelector('.page-widgets[data-ap-page="my-widgets"]');
+    if (!root || root.dataset.widgetsInitialized === "true") return;
+    root.dataset.widgetsInitialized = "true";
+
+    const apiBase = (root.dataset.apiBase || "").replace(/\/+$/, "");
+    const ownerToken = (root.dataset.demoOwnerUserToken || "").trim();
+    const loading = root.querySelector("#widgetLoadingState");
+    const error = root.querySelector("#widgetErrorState");
+    const list = root.querySelector("#widgetInventoryList");
+    const empty = root.querySelector("#widgetEmptyState");
+    const select = root.querySelector("#activeWidgetSelect");
+    const activeStatus = root.querySelector("#activeWidgetStatus");
+    const activeVersion = root.querySelector("#activeWidgetVersion");
+    const search = root.querySelector("#widgetSearch");
+    const statusFilter = root.querySelector("#widgetStatusFilter");
+    const counts = {
+        all: root.querySelector("#widgetCountAll"),
+        published: root.querySelector("#widgetCountPublished"),
+        drafts: root.querySelector("#widgetCountDrafts")
+    };
+    let widgets = [];
+    let selectedKey = "";
+
+    function escapeHtml (value) {
+        return String(value ?? "").replace(/[&<>"']/g, character => ({
+            "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+        })[ character ]);
     }
 
-    .page - widgets.widget - inventory - header {
-        grid - template - columns: minmax(0, 1fr) minmax(160px, 1fr) minmax(140px, .8fr);
+    function value (item, camel, pascal) {
+        return item[ camel ] ?? item[ pascal ];
     }
 
-    .page - widgets.widget - inventory - intro {
-        grid - column: 1 / -1;
+    function formatDate (raw) {
+        if (!raw) return '<span class="widget-table-muted">—</span>';
+        const date = new Date(raw);
+        if (Number.isNaN(date.getTime())) return '<span class="widget-table-muted">—</span>';
+        const absolute = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", year: "numeric" }).format(date);
+        const elapsed = Math.max(0, Date.now() - date.getTime());
+        const minutes = Math.floor(elapsed / 60000);
+        let relative = "just now";
+        if (minutes >= 60) {
+            const hours = Math.floor(minutes / 60);
+            relative = hours < 24 ? `${ hours } ${ hours === 1 ? "hour" : "hours" } ago` : `${ Math.floor(hours / 24) } ${ Math.floor(hours / 24) === 1 ? "day" : "days" } ago`;
+        } else if (minutes > 1) relative = `${ minutes } minutes ago`;
+        return `<span>${ escapeHtml(absolute) }<small>${ escapeHtml(relative) }</small></span>`;
     }
 
-    .page - widgets.widget - inventory - header.ap - widget - builder - link {
-        grid - column: 1 / -1;
-        justify - self: start;
-    }
-}
-
-@media(max - width: 575.98px) {
-    .page - widgets.active - widget - picker {
-        grid - template - columns: 45px minmax(0, 1fr);
-        align - items: start;
-        gap: 12px;
-        padding: 14px;
+    function statusLabel (status) {
+        return status === "published" ? "Published" : status === "draft" ? "Draft" : "Unpublished";
     }
 
-    .page - widgets.active - widget - picker - icon {
-        width: 45px;
-        height: 45px;
-        flex - basis: 45px;
+    function render () {
+        if (counts.all) counts.all.textContent = String(widgets.length);
+        if (counts.published) counts.published.textContent = String(widgets.filter(widget => widget.hasPublishedVersion).length);
+        if (counts.drafts) counts.drafts.textContent = String(widgets.filter(widget => widget.hasDraft).length);
+
+        const current = widgets.find(widget => widget.publicKey === selectedKey);
+        if (select) {
+            select.innerHTML = widgets.length
+                ? widgets.map(widget => `<option value="${ escapeHtml(widget.publicKey) }">${ escapeHtml(widget.name) }</option>`).join("")
+                : '<option value="">No widgets yet</option>';
+            select.disabled = widgets.length === 0;
+            select.value = current ? selectedKey : (widgets[ 0 ]?.publicKey || "");
+            selectedKey = select.value;
+        }
+        const active = widgets.find(widget => widget.publicKey === selectedKey);
+        if (activeVersion) activeVersion.textContent = active ? (active.hasDraft ? `Draft v${ active.draftVersionNumber || active.versionNumber }${ active.hasPublishedVersion ? " · Live v" + active.publishedVersionNumber : "" }` : "Live v" + (active.publishedVersionNumber || active.versionNumber)) : "—";
+        if (activeStatus) {
+            activeStatus.hidden = !active;
+            activeStatus.classList.toggle("is-draft", active?.status === "draft");
+            activeStatus.classList.toggle("is-unpublished", !!active && active.status !== "draft" && active.status !== "published");
+            activeStatus.textContent = active ? statusLabel(active.status) : "";
+        }
+
+        const query = (search?.value || "").trim().toLowerCase();
+        const filter = (statusFilter?.value || "all").toLowerCase();
+        const filtered = widgets.filter(widget => {
+            const matchesQuery = !query || [ widget.name, widget.description, widget.publicKey ]
+                .some(part => String(part || "").toLowerCase().includes(query));
+            return matchesQuery && (filter === "all" || (filter === "draft" ? widget.hasDraft : widget.hasPublishedVersion));
+        });
+        const tableHeading = '<div class="widget-table-heading" aria-hidden="true"><span>Name</span><span>Status</span><span>Actions</span></div>';
+        list.innerHTML = tableHeading + filtered.map(widget => {
+            const isSelected = widget.publicKey === selectedKey;
+            const publishDisabled = !widget.hasDraft;
+            const description = widget.description || "Decision experience";
+            const versionText = widget.hasDraft ? `Draft v${ escapeHtml(widget.draftVersionNumber || widget.versionNumber) }${ widget.hasPublishedVersion ? ` · Live v${ escapeHtml(widget.publishedVersionNumber) }` : "" }` : widget.hasPublishedVersion ? `Live v${ escapeHtml(widget.publishedVersionNumber || widget.versionNumber) }` : "—";
+            return `<div class="widget-table-row${ isSelected ? " is-selected" : "" }" data-widget-row="${ escapeHtml(widget.publicKey) }">
+                <div class="widget-table-name"><span class="widget-row-icon" aria-hidden="true"><i class="bi bi-window-stack"></i></span><a class="widget-row-copy widget-workspace-link" href="#" data-page="widget-builder" data-widget-open="${ escapeHtml(widget.publicKey) }"><strong>${ escapeHtml(widget.name) }</strong><small>${ escapeHtml(description) }</small></a></div>
+                <div class="widget-table-cell" data-label="Status"><div class="widget-status-version">${ widget.hasDraft ? '<span class="widget-status-badge is-draft">Draft</span>' : '' }${ widget.hasPublishedVersion ? '<span class="widget-status-badge is-published">Published</span>' : '' }${ !widget.hasDraft && !widget.hasPublishedVersion ? '<span class="widget-status-badge is-unpublished">Unpublished</span>' : '' }<small class="widget-table-version">${ versionText }</small></div></div>
+                <div class="widget-table-actions" data-label="Actions">
+                    <a class="btn btn-outline-success btn-sm${ publishDisabled ? " disabled" : "" }" href="#" ${ publishDisabled ? 'aria-disabled="true" tabindex="-1" title="There is no saved draft to publish"' : `data-page="publish-embed" data-widget-public-key="${ escapeHtml(widget.publicKey) }"` }><i class="bi bi-send me-1" aria-hidden="true"></i>Publish</a>
+                    <div class="dropdown"><button class="btn btn-icon btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions for ${ escapeHtml(widget.name) }"><i class="bi bi-three-dots" aria-hidden="true"></i></button><ul class="dropdown-menu dropdown-menu-end"><li><button class="dropdown-item" type="button" data-copy-widget-key="${ escapeHtml(widget.publicKey) }">Copy widget key</button></li></ul></div>
+                </div>
+            </div>`;
+        }).join("");
+
+        const hasWidgets = filtered.length > 0;
+        list.hidden = !hasWidgets;
+        empty.hidden = hasWidgets;
+        if (!hasWidgets && widgets.length > 0) {
+            const title = empty.querySelector("h3");
+            const message = empty.querySelector("#widgetEmptyMessage");
+            if (title) title.textContent = "No matching widgets";
+            if (message) message.textContent = "No widgets match your search or selected status. Update the filters and try again.";
+            const createLink = empty.querySelector(".ap-widget-builder-link");
+            if (createLink) createLink.hidden = true;
+        } else {
+            const title = empty.querySelector("h3");
+            const message = empty.querySelector("#widgetEmptyMessage");
+            if (title) title.textContent = "No widgets to display yet";
+            if (message) message.textContent = "Create your first widget to start building a guided decision experience for your visitors.";
+            const createLink = empty.querySelector(".ap-widget-builder-link");
+            if (createLink) createLink.hidden = false;
+        }
     }
 
-    .page - widgets.active - widget - picker - main {
-        grid - column: 2;
+    async function loadWidgets () {
+        loading.hidden = false;
+        error.hidden = true;
+        list.hidden = true;
+        empty.hidden = true;
+        try {
+            if (!apiBase) throw new Error("The widgets API address is not configured.");
+            const headers = { Accept: "application/json" };
+            if (ownerToken) headers[ "X-Demo-Owner-User-Token" ] = ownerToken;
+            const response = await fetch(`${ apiBase }/widgets`, { headers });
+            const body = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(body.message || "Widget inventory could not be loaded.");
+            const records = Array.isArray(body.widgets) ? body.widgets : [];
+            widgets = records.map(item => ({
+                publicKey: String(value(item, "publicKey", "PublicKey") || ""),
+                name: String(value(item, "name", "Name") || "Untitled widget"),
+                description: String(value(item, "description", "Description") || ""),
+                status: String(value(item, "status", "Status") || "draft").toLowerCase(),
+                versionNumber: String(value(item, "versionNumber", "VersionNumber") || ""),
+                draftVersionNumber: String(value(item, "draftVersionNumber", "DraftVersionNumber") || ""),
+                publishedVersionNumber: String(value(item, "publishedVersionNumber", "PublishedVersionNumber") || ""),
+                hasDraft: Boolean(value(item, "hasDraft", "HasDraft") ?? String(value(item, "status", "Status") || "").toLowerCase() === "draft"),
+                hasPublishedVersion: Boolean(value(item, "hasPublishedVersion", "HasPublishedVersion") ?? String(value(item, "status", "Status") || "").toLowerCase() === "published"),
+                updatedAt: value(item, "updatedAt", "UpdatedAtUtc") || value(item, "updatedAtUtc", "UpdatedAtUtc"),
+                questionCount: value(item, "questionCount", "QuestionCount"),
+                recommendationCount: value(item, "recommendationCount", "RecommendationCount")
+            })).filter(widget => widget.publicKey);
+            const savedKey = window.localStorage.getItem("askpearls.activeWidgetPublicKey");
+            selectedKey = widgets.some(widget => widget.publicKey === savedKey) ? savedKey : (widgets[ 0 ]?.publicKey || "");
+            loading.hidden = true;
+            render();
+        } catch (exception) {
+            loading.hidden = true;
+            error.hidden = false;
+            const message = error.querySelector("span");
+            if (message) message.textContent = exception.message || "We couldn't load your widgets.";
+        }
     }
 
-    .page - widgets.active - widget - picker - version {
-        grid - column: 2;
-        min - width: 0;
-        padding: 0;
-        border: 0;
-    }
-}
-
-@media(max - width: 767.98px) {
-    .page - widgets.widget - inventory - header {
-        grid - template - columns: minmax(0, 1fr);
-        align - items: stretch;
-        padding: 18px;
-    }
-
-    .page - widgets.widget - inventory - header.btn {
-        width: 100 %;
-    }
-
-    .page - widgets.widget - inventory - intro,
-    .page - widgets.widget - inventory - header.ap - widget - builder - link {
-        grid - column: auto;
-    }
-
-    .page - widgets.widget - table - scroll {
-        overflow: visible;
-        padding: 0 14px 14px;
-    }
-
-    .page - widgets.widget - inventory - list {
-        min - width: 0;
-    }
-
-    .page - widgets.widget - table - row {
-        grid - template - columns: repeat(2, minmax(0, 1fr));
-        gap: 14px 10px;
-        margin - top: 12px;
-        padding: 14px;
-        border: 1px solid var(--ap - border, #29443b);
-        border - radius: 12px;
-    }
-
-    .page - widgets.widget - table - heading {
-        display: none;
-    }
-
-    .page - widgets.widget - table - row: first - child {
-        margin - top: 12px;
-    }
-
-    .page - widgets.widget - table - name,
-    .page - widgets.widget - table - actions {
-        grid - column: 1 / -1;
-    }
-
-    .page - widgets.widget - table - cell[ data - label="Status"] {
-        align - self: center;
-    }
-
-    .page - widgets.widget - table - actions {
-        justify - content: flex - start;
-        flex - wrap: wrap;
-        padding - top: 10px;
-        border - top: 1px solid var(--ap - border, #29443b);
-    }
-
-    .page - widgets.widget - table - cell::before {
-        color: var(--ap - muted, #aabbb4);
-        font - size: 10px;
-        font - weight: 700;
-        letter - spacing: .06em;
-        text - transform: uppercase;
-        content: attr(data - label);
-    }
-
-    .page - widgets.widget - table - cell[ data - label="Status"] {
-        flex - wrap: wrap;
-    }
-}
-
-@media(prefers - reduced - motion: reduce) {
-    .page - widgets.widget - table - row {
-        transition: none;
-    }
-}
+    select?.addEventListener("change", () => {
+        selectedKey = select.value;
+        if (selectedKey) window.localStorage.setItem("askpearls.activeWidgetPublicKey", selectedKey);
+        render();
+    });
+    search?.addEventListener("input", render);
+    statusFilter?.addEventListener("change", render);
+    list?.addEventListener("click", event => {
+        const createLink = event.target.closest(".ap-widget-builder-link");
+        if (createLink) {
+            window.localStorage.setItem("askpearls.widgetBuilderMode", "create");
+            return;
+        }
+        const openLink = event.target.closest("[data-widget-open]");
+        if (openLink) {
+            window.localStorage.setItem("askpearls.widgetBuilderMode", "edit");
+            selectedKey = openLink.dataset.widgetOpen;
+            window.localStorage.setItem("askpearls.activeWidgetPublicKey", selectedKey);
+            return;
+        }
+        const row = event.target.closest("[data-widget-row]");
+        if (row && !event.target.closest("a,button")) {
+            window.localStorage.setItem("askpearls.widgetBuilderMode", "edit");
+            selectedKey = row.dataset.widgetRow;
+            window.localStorage.setItem("askpearls.activeWidgetPublicKey", selectedKey);
+            render();
+        }
+        const copyButton = event.target.closest("[data-copy-widget-key]");
+        if (copyButton) navigator.clipboard?.writeText(copyButton.dataset.copyWidgetKey);
+    });
+    root.querySelector("#widgetRetry")?.addEventListener("click", loadWidgets);
+    root.addEventListener("click", event => {
+        if (event.target.closest(".ap-widget-builder-link")) {
+            window.localStorage.setItem("askpearls.widgetBuilderMode", "create");
+        }
+    });
+    loadWidgets();
+})();

@@ -20,20 +20,56 @@
     min-width: 0;
 }
 
-.page-widget-builder *,
-.page-widget-builder *::before,
-.page-widget-builder *::after {
-    box-sizing: border-box;
-}
+    /* Builder-specific header and API feedback. Selector styling lives in the shared selector stylesheet. */
+    .page-widget-builder .wb-page-header {
+        margin: 0 0 28px;
+    }
+
+    .page-widget-builder .wb-api-message {
+        margin: -10px 0 20px;
+        padding: 10px 14px;
+        border: 1px solid var(--ap-border, #d9e2e8);
+        border-radius: 8px;
+        color: var(--ap-text, #243247);
+        background: var(--ap-surface, #fff);
+        font-size: 13px;
+    }
+
+    .page-widget-builder .wb-api-note {
+        margin: -10px 0 18px;
+        color: var(--ap-muted, #68778c);
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .page-widget-builder .wb-api-message.is-error {
+        border-color: #dc3545;
+        color: #b42332;
+    }
+
+    .page-widget-builder .wb-api-message.is-warning {
+        border-color: #d9a441;
+    }
+
+    .page-widget-builder .wb-draft-indicator {
+        white-space: nowrap;
+    }
 
 
-/* Readable secondary text in both portal themes */
-.page-widget-builder .text-muted,
-.page-widget-builder .form-text,
-.page-widget-builder .wb-step small,
-.page-widget-builder .wb-preview-sticky p {
-    color: var(--ap-muted, #68778c) !important;
-}
+    .page-widget-builder *,
+    .page-widget-builder *::before,
+    .page-widget-builder *::after {
+        box-sizing: border-box;
+    }
+
+
+    /* Readable secondary text in both portal themes */
+    .page-widget-builder .text-muted,
+    .page-widget-builder .form-text,
+    .page-widget-builder .wb-step small,
+    .page-widget-builder .wb-preview-sticky p {
+        color: var(--ap-muted, #68778c) !important;
+    }
 
 /* Explicit dark-theme contrast */
 [data-bs-theme="dark"] .page-widget-builder .text-muted,
@@ -484,6 +520,10 @@ body.dark-mode .page-widget-builder .wb-theme-option input:checked + span {
 }
 
 @media (max-width: 767.98px) {
+    .page-widget-builder .wb-header-actions {
+        flex-wrap: wrap;
+    }
+
     .page-widget-builder .wb-steps {
         grid-template-columns: 1fr;
         gap: 8px;
@@ -557,4 +597,3 @@ body.dark-mode .page-widget-builder .wb-theme-option input:checked + span {
         color: #526579 !important;
         opacity: 1 !important;
     }
-

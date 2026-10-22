@@ -1,4 +1,4 @@
-<div class="ap-page decision-rules-page" data-ap-page="decision-rules">
+<div class="ap-page decision-rules-page" data-ap-page="decision-rules" data-api-base="https://localhost:7014/api" data-demo-owner-user-token="1101">
     <!-- Shared AskPearls breadcrumb -->
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
@@ -6,17 +6,28 @@
         <span class="ap-breadcrumb-current" aria-current="page">Decision Rules</span>
     </nav>
 
- <header class="ap-page-header dr-header">
+    <header class="ap-page-header dr-header">
         <div class="ap-page-heading">
             <h1 class="ap-page-title">Decision Rules</h1>
             <p class="ap-page-description">Define how visitor answers determine the recommendations your widgets display.</p>
         </div>
         <div class="ap-page-actions">
-        <button type="button" class="dr-btn dr-btn-primary" data-dr-action="add">
-            <span aria-hidden="true">＋</span> Create Rule
-        </button>
+            <button type="button" class="dr-btn dr-btn-primary" data-dr-action="add">
+                <span aria-hidden="true">＋</span> Create Rule
+            </button>
         </div>
     </header>
+
+    <section class="ap-widget-selector dr-widget-selector" aria-label="Widget selection">
+        <div class="ap-widget-selector-icon" aria-hidden="true"><i class="bi bi-grid-1x2"></i></div>
+        <div class="ap-widget-selector-info">
+            <label for="drWidgetSelect">Select widget</label>
+            <select id="drWidgetSelect" class="ap-widget-selector-control" disabled><option value="">Loading widgets…</option></select>
+            <small class="ap-widget-selector-help">Choose the widget whose decision rules you want to manage.</small>
+        </div>
+        <div class="ap-widget-selector-version" aria-live="polite"><span>Draft / live</span><strong id="drWidgetVersion">—</strong></div>
+    </section>
+    <div class="dr-api-message" data-dr-api-message role="status" aria-live="polite" hidden></div>
 
     <div class="dr-stats">
         <div class="dr-stat">
@@ -202,76 +213,35 @@
                             <option value="Luna Sofa">Luna Sofa</option>
                             <option value="Haven Sofa">Haven Sofa</option>
                         </select>
-                        <div class="dr-help">
-                            Sample recommendation items for the UI prototype.
-                        </div>
+                        <div class="dr-help">Choose an active recommendation outcome for this rule.</div>
                     </div>
 
                     <!-- Test Rule Preview -->
-<div class="dr-test-panel">
-    <div class="dr-test-heading">
-        <div>
-            <h4>Test Rule</h4>
-            <p>Simulate a visitor's answers to check whether this rule matches.</p>
-        </div>
-        <span class="dr-test-badge">Preview only</span>
-    </div>
+                    <div class="dr-test-panel">
+                        <div class="dr-test-heading">
+                            <div>
+                                <h4>Test Rule</h4>
+                                <p>Simulate a visitor's answers to check whether this rule matches.</p>
+                            </div>
+                            <span class="dr-test-badge">Preview only</span>
+                        </div>
 
-    <div class="dr-test-grid">
-        <div class="dr-field">
-            <label for="dr-test-room-size">Living room size</label>
-            <select id="dr-test-room-size" class="dr-select">
-                <option value="">Not answered</option>
-                <option value="small">Small</option>
-                <option value="medium">Medium</option>
-                <option value="large">Large</option>
-            </select>
-        </div>
+                        <div class="dr-test-grid" data-dr-test-grid></div>
 
-        <div class="dr-field">
-            <label for="dr-test-budget">Budget</label>
-     <select id="dr-test-budget" class="dr-select">
-    <option value="">Not answered</option>
-    <option value="budget">Budget-friendly</option>
-    <option value="mid_range">Mid-range</option>
-    <option value="premium">Premium</option>
-</select>
-        </div>
+                        <button type="button"
+                                class="dr-btn dr-btn-primary"
+                                data-dr-action="test-rule">
+                            Test Rule
+                        </button>
 
-        <div class="dr-field">
-            <label for="dr-test-comfort">Comfort preference</label>
-            <select id="dr-test-comfort" class="dr-select">
-                <option value="">Not answered</option>
-                <option value="standard">Standard comfort</option>
-                <option value="high">Extra comfort</option>
-            </select>
-        </div>
-
-        <div class="dr-field">
-            <label for="dr-test-style">Preferred style</label>
-            <select id="dr-test-style" class="dr-select">
-                <option value="">Not answered</option>
-                <option value="modern">Modern</option>
-                <option value="classic">Classic</option>
-                <option value="minimal">Minimal</option>
-            </select>
-        </div>
-    </div>
-
-<button type="button"
-        class="dr-btn dr-btn-primary"
-        data-dr-action="test-rule">
-    Test Rule
-</button>
-
-    <div class="dr-test-result"
-         data-dr-test-result
-         role="status"
-         aria-live="polite"
-         hidden>
-    </div>
-</div>
-<!-- End Test Rule Preview -->
+                        <div class="dr-test-result"
+                             data-dr-test-result
+                             role="status"
+                             aria-live="polite"
+                             hidden>
+                        </div>
+                    </div>
+                    <!-- End Test Rule Preview -->
 
                     <div class="dr-field">
                         <label for="dr-priority">Priority</label>
@@ -315,10 +285,12 @@
                  aria-labelledby="dr-delete-title" style="max-width:440px;">
             <div class="dr-modal-header">
                 <div class="dr-modal-icon"
-                     style="background:#ffebee;color:#c62828;">!</div>
+                     style="background:#ffebee;color:#c62828;">
+                    !
+                </div>
                 <div>
                     <h3 id="dr-delete-title">Delete Decision Rule?</h3>
-                    <p>This action removes the rule from the local demo.</p>
+                    <p>This action removes the rule from the saved draft.</p>
                 </div>
                 <button type="button" class="dr-modal-close"
                         data-dr-action="cancel-delete"
@@ -345,7 +317,8 @@
     <div class="dr-toast" data-dr-toast role="status" aria-live="polite"></div>
 </div>
 
-            <link href="~/app_page_css/app_page_decision_rules_css.css" rel="stylesheet" />
 
-  <script src="~/app_page_js/app_page_decision_rules_js.js" />
+<link href="~/app_page_css/app_page_decision_rules_css.css" rel="stylesheet" />
+
+<script src="~/app_page_js/app_page_decision_rules_js.js"></script>
 

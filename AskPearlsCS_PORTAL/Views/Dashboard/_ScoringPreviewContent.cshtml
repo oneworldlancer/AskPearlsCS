@@ -16,17 +16,17 @@
         </div>
     </header>
 
-    <section class="sp-widget-selector" aria-label="Active widget">
-        <div class="sp-selector-icon" aria-hidden="true"><i class="bi bi-grid-1x2"></i></div>
-        <div class="sp-selector-info">
+    <section class="sp-widget-selector ap-widget-selector" aria-label="Active widget">
+        <div class="sp-selector-icon ap-widget-selector-icon" aria-hidden="true"><i class="bi bi-grid-1x2"></i></div>
+        <div class="sp-selector-info ap-widget-selector-info">
             <label for="spWidgetSelect">Select widget</label>
-            <select id="spWidgetSelect" class="form-select" disabled>
+            <select id="spWidgetSelect" class="form-select ap-widget-selector-control" disabled>
                 <option value="">Loading widgets…</option>
             </select>
-            <small id="spWidgetMessage" class="sp-selector-message" aria-live="polite">Choose the widget to preview.</small>
+            <small id="spWidgetMessage" class="sp-selector-message ap-widget-selector-help" aria-live="polite">Choose the widget to preview.</small>
         </div>
-        <div class="sp-current-version">
-            <span>Current version</span>
+        <div class="sp-current-version ap-widget-selector-version">
+            <span>Draft / live</span>
             <strong id="spWidgetVersion">—</strong>
         </div>
     </section>
@@ -150,7 +150,6 @@
         </div>
     </div>
 </div>
-<link href="~/app_page_css/app_page_scoring_preview_css.css" rel="stylesheet" />
-
+<link href="~/app_page_css/app_page_scoring_preview_css.css?v=20261021-4" rel="stylesheet" />
 <script src="~/app_page_js/app_page_scoring_preview_js.js"></script>
 

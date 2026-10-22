@@ -36,15 +36,15 @@
     </header>
 
     <!-- Widget selector -->
-    <section class="pe-card pe-widget-selector">
-        <div class="pe-widget-icon">
+    <section class="pe-card pe-widget-selector ap-widget-selector">
+        <div class="pe-widget-icon ap-widget-selector-icon">
             <i class="bi bi-grid-1x2"></i>
         </div>
 
-        <div class="pe-widget-info">
+        <div class="pe-widget-info ap-widget-selector-info">
             <label for="peWidgetSelect">Select widget</label>
 
-            <select id="peWidgetSelect">
+            <select id="peWidgetSelect" class="ap-widget-selector-control">
                 <option value="pk_demo_sofa_finder">Sofa Finder Widget</option>
                 <option value="pk_furniture_recommendation">
                     Furniture Recommendation Widget
@@ -54,11 +54,11 @@
                 </option>
             </select>
 
-            <small>Choose the widget you want to publish.</small>
+            <small class="ap-widget-selector-help">Choose the widget you want to publish.</small>
         </div>
 
-        <div class="pe-version">
-            <span>Current version</span>
+        <div class="pe-version ap-widget-selector-version">
+            <span>Draft / live</span>
             <strong id="peVersion">v1.0.0</strong>
         </div>
     </section>
@@ -399,8 +399,9 @@
 </div>
 
 <!-- Page CSS -->
-<link href="~/app_page_css/app_page_publish_embed_css.css"
+<link href="~/app_page_css/app_page_publish_embed_css.css?v=20261021-4"
       rel="stylesheet" />
 
 <!-- Page JavaScript -->
+
 <script src="~/app_page_js/app_page_publish_embed_js.js"></script>

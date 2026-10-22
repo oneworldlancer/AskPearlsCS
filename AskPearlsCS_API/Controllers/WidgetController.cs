@@ -29,6 +29,57 @@ public sealed record WidgetDesignDraftRequest(
     [property: JsonPropertyName("footer")] string Footer,
     [property: JsonPropertyName("theme")] string Theme = "custom");
 
+public sealed record WidgetQuestionDraftRequest(
+    [property: JsonPropertyName("text")] string Text,
+    [property: JsonPropertyName("key")] string Key,
+    [property: JsonPropertyName("helper")] string Helper,
+    [property: JsonPropertyName("required")] bool Required,
+    [property: JsonPropertyName("options")] IReadOnlyList<string> Options);
+
+public sealed record WidgetQuestionsDraftRequest(
+    [property: JsonPropertyName("questions")] IReadOnlyList<WidgetQuestionDraftRequest> Questions);
+
+public sealed record RecommendationDraftItemRequest(
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("key")] string Key,
+    [property: JsonPropertyName("description")] string Description,
+    [property: JsonPropertyName("imageUrl")] string? ImageUrl,
+    [property: JsonPropertyName("url")] string? Url,
+    [property: JsonPropertyName("ctaText")] string? CtaText,
+    [property: JsonPropertyName("active")] bool Active);
+
+public sealed record RecommendationDraftRequest(
+    [property: JsonPropertyName("items")] IReadOnlyList<RecommendationDraftItemRequest> Items);
+
+public sealed record DecisionRuleConditionDraftRequest(
+    [property: JsonPropertyName("questionKey")] string QuestionKey,
+    [property: JsonPropertyName("questionText")] string QuestionText,
+    [property: JsonPropertyName("answerKey")] string AnswerKey,
+    [property: JsonPropertyName("answerText")] string AnswerText);
+
+public sealed record DecisionRuleDraftItemRequest(
+    [property: JsonPropertyName("key")] string Key,
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("description")] string Description,
+    [property: JsonPropertyName("recommendationKey")] string RecommendationKey,
+    [property: JsonPropertyName("recommendationName")] string RecommendationName,
+    [property: JsonPropertyName("conditionLogic")] string ConditionLogic,
+    [property: JsonPropertyName("priority")] int Priority,
+    [property: JsonPropertyName("status")] string Status,
+    [property: JsonPropertyName("conditions")] IReadOnlyList<DecisionRuleConditionDraftRequest> Conditions);
+
+public sealed record DecisionRulesDraftRequest(
+    [property: JsonPropertyName("rules")] IReadOnlyList<DecisionRuleDraftItemRequest> Rules);
+
+public sealed record CreateWidgetRequest(
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("type")] string Type,
+    [property: JsonPropertyName("websiteTokenId")] string WebsiteTokenId,
+    [property: JsonPropertyName("websiteName")] string WebsiteName,
+    [property: JsonPropertyName("websiteAddress")] string WebsiteAddress,
+    [property: JsonPropertyName("title")] string Title,
+    [property: JsonPropertyName("description")] string Description);
+
 [ApiController]
 [Route("api/widgets")]
 public class WidgetController : ControllerBase
@@ -72,6 +123,9 @@ public class WidgetController : ControllerBase
                 x.WidgetName,
                 x.WidgetTitle,
                 x.WidgetDescription,
+                x.WebsiteTokenId,
+                x.WebsiteName,
+                x.WebsiteAddress,
                 x.WidgetStatusCode,
                 x.WidgetPublishedVersion
             })
@@ -154,6 +208,10 @@ public class WidgetController : ControllerBase
                 description = widget.WidgetDescription ?? string.Empty,
                 status,
                 versionNumber = currentVersionNumber,
+                draftVersionNumber = draft?.WidgetVersionNumber,
+                publishedVersionNumber = published?.WidgetVersionNumber ?? widget.WidgetPublishedVersion,
+                hasDraft = draft is not null,
+                hasPublishedVersion = published is not null || !string.IsNullOrWhiteSpace(widget.WidgetPublishedVersion),
                 updatedAt = currentVersion?.UpdatedAtUtc ?? currentVersion?.CreatedAtUtc,
                 questionCount,
                 recommendationCount
@@ -161,6 +219,146 @@ public class WidgetController : ControllerBase
         });
 
         return Ok(new { success = true, widgets = result });
+    }
+
+    [HttpGet("websites")]
+    public async Task<IActionResult> GetMyWebsites()
+    {
+        if (!TryGetDemoOwner(out var error)) return error!;
+        var websites = await _db.AskpearlsPortalUserWebsiteLists.AsNoTracking()
+            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.IsActive == true && x.IsVisible == true)
+            .OrderBy(x => x.WebsiteName)
+            .Select(x => new { websiteTokenId = x.WebsiteTokenId, name = x.WebsiteName, address = x.WebsiteAddress })
+            .ToListAsync();
+        return Ok(new { success = true, websites });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateWidget([FromBody] CreateWidgetRequest? request)
+    {
+        if (!TryGetDemoOwner(out var error)) return error!;
+        if (request is null || string.IsNullOrWhiteSpace(request.Name) || request.Name.Trim().Length > 100 ||
+            request.Type != "decision" || string.IsNullOrWhiteSpace(request.WebsiteTokenId) ||
+            string.IsNullOrWhiteSpace(request.Title) || request.Title.Trim().Length > 120 ||
+            request.Description?.Length > 500)
+            return BadRequest(new { success = false, message = "Enter a widget name, supported type, target website, title, and description of up to 500 characters." });
+
+        AskpearlsPortalUserWebsiteList? website = null;
+        if (!string.IsNullOrWhiteSpace(request.WebsiteTokenId))
+        {
+            website = await _db.AskpearlsPortalUserWebsiteLists.FirstOrDefaultAsync(x =>
+                x.WebsiteTokenId == request.WebsiteTokenId && x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+                x.IsActive == true && x.IsVisible == true);
+            if (website is null)
+                return BadRequest(new { success = false, message = "Choose a website belonging to the current portal account." });
+        }
+        else
+        {
+            if (string.IsNullOrWhiteSpace(request.WebsiteAddress) || request.WebsiteAddress.Length > 250 ||
+                !Uri.TryCreate(request.WebsiteAddress, UriKind.Absolute, out var siteUri) ||
+                siteUri.Scheme is not ("http" or "https") || string.IsNullOrWhiteSpace(siteUri.Host))
+                return BadRequest(new { success = false, message = "Enter a valid website address beginning with http:// or https://." });
+            website = await _db.AskpearlsPortalUserWebsiteLists.FirstOrDefaultAsync(x =>
+                x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WebsiteAddress == request.WebsiteAddress &&
+                x.IsActive == true && x.IsVisible == true);
+            if (website is null)
+            {
+                website = new AskpearlsPortalUserWebsiteList
+                {
+                    RowViewTokenId = Guid.NewGuid(),
+                    RowDataTokenId = Guid.NewGuid().ToString("N"),
+                    AccountType = "portal",
+                    OwnerUserTokenId = DemoOwnerUserTokenId,
+                    WebsiteTokenId = Guid.NewGuid().ToString("N"),
+                    WebsiteName = string.IsNullOrWhiteSpace(request.WebsiteName) ? siteUri.Host : request.WebsiteName.Trim(),
+                    WebsiteAddress = request.WebsiteAddress.Trim(),
+                    ActiveStatus = "active",
+                    IsNew = true,
+                    IsActive = true,
+                    IsVisible = true,
+                    CreatedAtUtc = DateTime.UtcNow,
+                    UpdatedAtUtc = DateTime.UtcNow
+                };
+                _db.AskpearlsPortalUserWebsiteLists.Add(website);
+            }
+        }
+
+        var now = DateTime.UtcNow;
+        var widgetToken = Guid.NewGuid().ToString("N");
+        var publicKey = "pk_" + Guid.NewGuid().ToString("N");
+        var versionToken = Guid.NewGuid().ToString("N");
+        var widget = new AskpearlsPortalUserWebsiteWidgetList
+        {
+            RowViewTokenId = Guid.NewGuid(),
+            RowDataTokenId = Guid.NewGuid().ToString("N"),
+            AccountType = website.AccountType,
+            OwnerUserTokenId = DemoOwnerUserTokenId,
+            OwnerMobileNumberTokenId = website.OwnerMobileNumberTokenId,
+            OrganizationTokenId = website.OrganizationTokenId,
+            CompanyTokenId = website.CompanyTokenId,
+            CompanyName = website.CompanyName,
+            WidgetTokenId = widgetToken,
+            WidgetCode = "decisionos",
+            WidgetType = "decision",
+            WidgetName = request.Name.Trim(),
+            WidgetTitle = request.Title.Trim(),
+            WidgetDescription = (request.Description ?? string.Empty).Trim(),
+            WebsiteTokenId = website.WebsiteTokenId,
+            WebsiteName = website.WebsiteName,
+            WebsiteAddress = website.WebsiteAddress,
+            WidgetPublicKey = publicKey,
+            WidgetStatusCode = "draft",
+            WidgetStatusText = "draft",
+            WidgetStatus = "draft",
+            WidgetPublishedVersion = null,
+            ActiveStatus = "pending",
+            IsNew = true,
+            IsActive = true,
+            IsVisible = true
+        };
+        var design = new WidgetDesignDraftRequest(
+            "#0DA88B", "#FFFFFF", "#17212B", "Inter, Arial, sans-serif", 14, 12, true, 360,
+            "bottom-right", "rounded", request.Title.Trim(), (request.Description ?? string.Empty).Trim(),
+            "Get started", "Powered by AskPearls", "custom");
+        var version = new AskpearlsPortalUserWebsiteWidgetVersionList
+        {
+            RowViewTokenId = Guid.NewGuid(),
+            RowDataTokenId = Guid.NewGuid().ToString("N"),
+            AccountType = widget.AccountType,
+            OwnerUserTokenId = widget.OwnerUserTokenId,
+            OwnerMobileNumberTokenId = widget.OwnerMobileNumberTokenId,
+            OrganizationTokenId = widget.OrganizationTokenId,
+            CompanyTokenId = widget.CompanyTokenId,
+            CompanyName = widget.CompanyName,
+            WidgetTokenId = widgetToken,
+            WebsiteTokenId = website.WebsiteTokenId,
+            WebsiteName = website.WebsiteName,
+            WidgetPublicKey = publicKey,
+            WidgetVersionTokenId = versionToken,
+            WidgetVersionNumber = "1",
+            WidgetConfigurationJson = JsonSerializer.Serialize(design),
+            WidgetStatusCode = "draft",
+            WidgetStatusText = "draft",
+            WidgetStatus = "draft",
+            ActiveStatus = "pending",
+            IsNew = true,
+            IsActive = true,
+            IsVisible = true,
+            CreatedAtUtc = now,
+            UpdatedAtUtc = now
+        };
+        _db.AskpearlsPortalUserWebsiteWidgetLists.Add(widget);
+        _db.AskpearlsPortalUserWebsiteWidgetVersionLists.Add(version);
+        await _db.SaveChangesAsync();
+        return Created($"/api/widgets/{publicKey}", new
+        {
+            success = true,
+            publicKey,
+            name = widget.WidgetName,
+            status = "draft",
+            versionNumber = version.WidgetVersionNumber,
+            websiteTokenId = website.WebsiteTokenId
+        });
     }
 
     // Local demo identity from the user's test data. These routes are disabled
@@ -333,7 +531,13 @@ public class WidgetController : ControllerBase
                                       x.IsActive == true && x.IsVisible == true);
 
         if (string.IsNullOrWhiteSpace(version?.WidgetConfigurationJson))
-            return Ok(new { success = true, status = draft is null ? "published" : "draft", configuration = (object?)null });
+            return Ok(new
+            {
+                success = true,
+                status = draft is null ? "published" : "draft",
+                versionNumber = version?.WidgetVersionNumber,
+                configuration = (object?)null
+            });
 
         try
         {
@@ -350,6 +554,647 @@ public class WidgetController : ControllerBase
         {
             return Conflict(new { success = false, message = "The saved widget design JSON is invalid." });
         }
+    }
+
+    [HttpGet("{publicKey}/draft/questions")]
+    public async Task<IActionResult> GetQuestionDraft(string publicKey)
+    {
+        if (!TryGetDemoOwner(out var error)) return error!;
+        var widget = await FindDemoWidget(publicKey);
+        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+
+        var draftVersion = await _db.AskpearlsPortalUserWebsiteWidgetVersionLists
+            .AsNoTracking()
+            .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey &&
+                        x.WidgetStatusCode == "draft" && x.IsActive == true && x.IsVisible == true)
+            .OrderByDescending(x => x.UpdatedAtUtc ?? x.CreatedAtUtc)
+            .FirstOrDefaultAsync();
+
+        if (draftVersion is null || string.IsNullOrWhiteSpace(draftVersion.WidgetVersionTokenId))
+        {
+            var publishedQuestions = await _questionService.GetPublishedQuestionsAsync(publicKey);
+            return Ok(new
+            {
+                success = true,
+                status = "published",
+                versionNumber = widget.WidgetPublishedVersion,
+                questions = publishedQuestions.Select((q, i) => new
+                {
+                    id = q.QuestionTokenId,
+                    text = q.Text,
+                    key = q.Key,
+                    helper = q.Description ?? string.Empty,
+                    required = true,
+                    options = q.Answers.Select(a => a.Text).ToArray(),
+                    sortOrder = i + 1
+                })
+            });
+        }
+
+        var rows = await _db.AskpearlsPortalUserWebsiteWidgetQuestionLists.AsNoTracking()
+            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WidgetTokenId == widget.WidgetTokenId &&
+                        x.WidgetPublicKey == publicKey && x.WidgetVersionTokenId == draftVersion.WidgetVersionTokenId &&
+                        x.IsActive == true && x.IsVisible == true)
+            .OrderBy(x => x.WidgetQuestionSortOrder).ToListAsync();
+        var ids = rows.Select(x => x.WidgetQuestionTokenId).Where(x => x != null).ToArray();
+        var answers = await _db.AskpearlsPortalUserWebsiteWidgetQuestionAnswerLists.AsNoTracking()
+            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WidgetPublicKey == publicKey &&
+                        x.WidgetVersionTokenId == draftVersion.WidgetVersionTokenId && ids.Contains(x.WidgetQuestionTokenId) &&
+                        x.IsActive == true && x.IsVisible == true)
+            .OrderBy(x => x.WidgetAnswerSortOrder).ToListAsync();
+
+        return Ok(new
+        {
+            success = true,
+            status = "draft",
+            versionNumber = draftVersion.WidgetVersionNumber,
+            questions = rows.Select((q, i) => new
+            {
+                id = q.WidgetQuestionTokenId,
+                text = q.WidgetQuestionText ?? q.WidgetQuestionTitle ?? string.Empty,
+                key = q.WidgetQuestionKey ?? string.Empty,
+                helper = q.WidgetQuestionDescription ?? string.Empty,
+                required = ReadRequired(q.WidgetConfigurationJson),
+                options = answers.Where(a => a.WidgetQuestionTokenId == q.WidgetQuestionTokenId)
+                                 .Select(a => a.WidgetAnswerText ?? a.WidgetAnswerTitle ?? string.Empty).ToArray(),
+                sortOrder = q.WidgetQuestionSortOrder ?? i + 1
+            })
+        });
+    }
+
+    [HttpPut("{publicKey}/draft/questions")]
+    public async Task<IActionResult> SaveQuestionDraft(string publicKey, [FromBody] WidgetQuestionsDraftRequest? request)
+    {
+        if (!TryGetDemoOwner(out var error)) return error!;
+        var widget = await FindDemoWidget(publicKey);
+        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+        if (!IsValidQuestionDraft(request))
+            return BadRequest(new { success = false, message = "Questions are invalid. Each question needs a unique key, text, and at least two distinct options." });
+
+        var versions = await _db.AskpearlsPortalUserWebsiteWidgetVersionLists
+            .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey && x.IsActive == true && x.IsVisible == true)
+            .ToListAsync();
+        var drafts = versions.Where(x => x.WidgetStatusCode == "draft").ToList();
+        if (drafts.Count > 1) return Conflict(new { success = false, message = "More than one active draft exists for this widget." });
+        var published = versions.Where(x => x.WidgetStatusCode == "published" && x.WidgetVersionNumber == widget.WidgetPublishedVersion).ToList();
+        if (published.Count > 1 || (published.Count == 0 && drafts.Count == 0))
+            return Conflict(new { success = false, message = "A valid widget draft or published version is required before saving questions." });
+
+        var draft = drafts.SingleOrDefault();
+        var now = DateTime.UtcNow;
+        if (draft is null)
+        {
+            var maxNumber = versions.Select(x => int.TryParse(x.WidgetVersionNumber, out var n) ? n : 0).DefaultIfEmpty(0).Max();
+            draft = new AskpearlsPortalUserWebsiteWidgetVersionList
+            {
+                AccountType = widget.AccountType,
+                OwnerUserTokenId = widget.OwnerUserTokenId,
+                OwnerMobileNumberTokenId = widget.OwnerMobileNumberTokenId,
+                OrganizationTokenId = widget.OrganizationTokenId,
+                CompanyTokenId = widget.CompanyTokenId,
+                CompanyName = widget.CompanyName,
+                WidgetTokenId = widget.WidgetTokenId,
+                WebsiteTokenId = widget.WebsiteTokenId,
+                WebsiteName = widget.WebsiteName,
+                WidgetPublicKey = widget.WidgetPublicKey,
+                WidgetVersionNumber = (maxNumber + 1).ToString(),
+                WidgetStatusCode = "draft",
+                WidgetStatusText = "draft",
+                WidgetStatus = "draft",
+                WidgetPublishedVersion = widget.WidgetPublishedVersion,
+                ActiveStatus = "pending",
+                IsNew = true,
+                IsActive = true,
+                IsVisible = true,
+                CreatedAtUtc = now,
+                UpdatedAtUtc = now
+            };
+            draft.WidgetVersionTokenId = published.Count == 1 && !string.IsNullOrWhiteSpace(published[0].WidgetVersionTokenId)
+                ? published[0].WidgetVersionTokenId
+                : Guid.NewGuid().ToString("N");
+            _db.AskpearlsPortalUserWebsiteWidgetVersionLists.Add(draft);
+        }
+        // Never share the published content token with editable question rows.
+        // Also detach a design-only draft token, if one was created earlier.
+        var publishedTokenId = published.SingleOrDefault()?.WidgetVersionTokenId;
+        if (!string.IsNullOrWhiteSpace(draft.WidgetVersionTokenId) &&
+            draft.WidgetVersionTokenId != publishedTokenId)
+        {
+            var oldQuestions = await _db.AskpearlsPortalUserWebsiteWidgetQuestionLists
+                .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WidgetPublicKey == publicKey &&
+                            x.WidgetVersionTokenId == draft.WidgetVersionTokenId && x.IsActive == true)
+                .ToListAsync();
+            var oldAnswers = await _db.AskpearlsPortalUserWebsiteWidgetQuestionAnswerLists
+                .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WidgetPublicKey == publicKey &&
+                            x.WidgetVersionTokenId == draft.WidgetVersionTokenId && x.IsActive == true)
+                .ToListAsync();
+            foreach (var row in oldQuestions) { row.IsActive = false; row.IsVisible = false; row.UpdatedAtUtc = now; }
+            foreach (var row in oldAnswers) { row.IsActive = false; row.IsVisible = false; row.UpdatedAtUtc = now; }
+        }
+        draft.WidgetVersionTokenId = Guid.NewGuid().ToString("N");
+        draft.UpdatedAtUtc = now;
+
+        var questionRows = request!.Questions.Select((q, index) => new AskpearlsPortalUserWebsiteWidgetQuestionList
+        {
+            RowViewTokenId = Guid.NewGuid(),
+            RowDataTokenId = Guid.NewGuid().ToString("N"),
+            AccountType = widget.AccountType,
+            OwnerUserTokenId = widget.OwnerUserTokenId,
+            OwnerMobileNumberTokenId = widget.OwnerMobileNumberTokenId,
+            OrganizationTokenId = widget.OrganizationTokenId,
+            CompanyTokenId = widget.CompanyTokenId,
+            CompanyName = widget.CompanyName,
+            WidgetTokenId = widget.WidgetTokenId,
+            WebsiteTokenId = widget.WebsiteTokenId,
+            WidgetQuestionTokenId = Guid.NewGuid().ToString("N"),
+            WidgetQuestionCode = q.Key,
+            WidgetQuestionType = "choice",
+            WidgetQuestionKey = q.Key,
+            WidgetQuestionTitle = q.Text,
+            WidgetQuestionName = q.Key,
+            WidgetQuestionText = q.Text,
+            WidgetQuestionDescription = q.Helper,
+            WidgetQuestionSortOrder = index + 1,
+            WebsiteName = widget.WebsiteName,
+            WidgetPublicKey = publicKey,
+            WidgetVersionTokenId = draft.WidgetVersionTokenId,
+            WidgetVersionNumber = draft.WidgetVersionNumber,
+            WidgetConfigurationJson = JsonSerializer.Serialize(new { required = q.Required }),
+            WidgetStatusCode = "draft",
+            WidgetStatusText = "draft",
+            WidgetStatus = "draft",
+            WidgetPublishedVersion = widget.WidgetPublishedVersion,
+            IsNew = true,
+            ActiveStatus = "pending",
+            IsActive = true,
+            IsVisible = true,
+            CreatedAtUtc = now,
+            UpdatedAtUtc = now
+        }).ToList();
+        _db.AskpearlsPortalUserWebsiteWidgetQuestionLists.AddRange(questionRows);
+
+        var answerRows = questionRows.SelectMany((question, index) => request.Questions[index].Options.Select((option, optionIndex) =>
+            new AskpearlsPortalUserWebsiteWidgetQuestionAnswerList
+            {
+                RowViewTokenId = Guid.NewGuid(),
+                RowDataTokenId = Guid.NewGuid().ToString("N"),
+                AccountType = widget.AccountType,
+                OwnerUserTokenId = widget.OwnerUserTokenId,
+                OwnerMobileNumberTokenId = widget.OwnerMobileNumberTokenId,
+                OrganizationTokenId = widget.OrganizationTokenId,
+                CompanyTokenId = widget.CompanyTokenId,
+                CompanyName = widget.CompanyName,
+                WidgetTokenId = widget.WidgetTokenId,
+                WidgetQuestionTokenId = question.WidgetQuestionTokenId,
+                WidgetQuestionCode = question.WidgetQuestionCode,
+                WidgetQuestionType = question.WidgetQuestionType,
+                WidgetQuestionKey = question.WidgetQuestionKey,
+                WidgetAnswerTokenId = Guid.NewGuid().ToString("N"),
+                WidgetAnswerCode = "option_" + (optionIndex + 1),
+                WidgetAnswerType = "option",
+                WidgetAnswerKey = "option_" + (optionIndex + 1),
+                WidgetAnswerTitle = option,
+                WidgetAnswerName = option,
+                WidgetAnswerText = option,
+                WidgetAnswerSortOrder = optionIndex + 1,
+                WebsiteTokenId = widget.WebsiteTokenId,
+                WebsiteName = widget.WebsiteName,
+                WidgetPublicKey = publicKey,
+                WidgetVersionTokenId = draft.WidgetVersionTokenId,
+                WidgetVersionNumber = draft.WidgetVersionNumber,
+                WidgetStatus = "draft",
+                WidgetPublishedVersion = widget.WidgetPublishedVersion,
+                IsNew = true,
+                ActiveStatus = "pending",
+                IsActive = true,
+                IsVisible = true,
+                CreatedAtUtc = now,
+                UpdatedAtUtc = now
+            })).ToList();
+        _db.AskpearlsPortalUserWebsiteWidgetQuestionAnswerLists.AddRange(answerRows);
+        await _db.SaveChangesAsync();
+        return Ok(new { success = true, status = "draft", versionNumber = draft.WidgetVersionNumber, questionCount = questionRows.Count });
+    }
+
+    [HttpGet("{publicKey}/draft/recommendations")]
+    public async Task<IActionResult> GetRecommendationDraft(string publicKey)
+    {
+        if (!TryGetDemoOwner(out var error)) return error!;
+        var widget = await FindDemoWidget(publicKey);
+        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+
+        var versions = await _db.AskpearlsPortalUserWebsiteWidgetVersionLists.AsNoTracking()
+            .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey &&
+                        x.IsActive == true && x.IsVisible == true)
+            .ToListAsync();
+        var version = versions.Where(x => x.WidgetStatusCode == "draft")
+            .OrderByDescending(x => x.UpdatedAtUtc ?? x.CreatedAtUtc).FirstOrDefault()
+            ?? versions.FirstOrDefault(x => x.WidgetStatusCode == "published" && x.WidgetVersionNumber == widget.WidgetPublishedVersion);
+        if (version is null) return Conflict(new { success = false, message = "A published or draft widget version is required." });
+
+        // Resolve recommendations using both version number and token. Existing
+        // portal records are not all populated consistently across these fields.
+        var widgetRows = await _db.AskpearlsPortalUserWebsiteWidgetRecommendationLists.AsNoTracking()
+            .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey && x.IsVisible == true)
+            .ToListAsync();
+        bool BelongsToVersion(AskpearlsPortalUserWebsiteWidgetRecommendationList row, AskpearlsPortalUserWebsiteWidgetVersionList target) =>
+            (!string.IsNullOrWhiteSpace(target.WidgetVersionTokenId) && row.WidgetVersionTokenId == target.WidgetVersionTokenId) ||
+            (!string.IsNullOrWhiteSpace(target.WidgetVersionNumber) && row.WidgetVersionNumber == target.WidgetVersionNumber);
+        var sourceVersion = version;
+        var rows = widgetRows.Where(row => BelongsToVersion(row, version)).ToList();
+        if (rows.Count == 0 && string.Equals(version.WidgetStatusCode, "draft", StringComparison.OrdinalIgnoreCase))
+        {
+            var liveVersion = versions.FirstOrDefault(x => x.WidgetStatusCode == "published" && x.WidgetVersionNumber == widget.WidgetPublishedVersion);
+            if (liveVersion is not null)
+            {
+                var liveRows = widgetRows.Where(row => BelongsToVersion(row, liveVersion)).ToList();
+                if (liveRows.Count > 0) { rows = liveRows; sourceVersion = liveVersion; }
+            }
+        }
+        if (rows.Count == 0)
+            rows = widgetRows.Where(row => string.IsNullOrWhiteSpace(row.WidgetVersionTokenId) &&
+                string.IsNullOrWhiteSpace(row.WidgetVersionNumber)).ToList();
+        rows = rows.OrderBy(x => x.RecommendationSortOrder).ThenBy(x => x.RecommendationName).ToList();
+
+        var usedRecommendationKeys = await _db.AskpearlsPortalUserWebsiteWidgetDecisionRuleLists.AsNoTracking()
+            .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey &&
+                        x.IsVisible == true && x.RecommendationKey != null)
+            .Select(x => x.RecommendationKey!).Distinct().ToListAsync();
+        var usedRecommendationKeySet = usedRecommendationKeys.ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var servedCount = await _db.AskpearlsPortalUserWebsiteWidgetEventLists.AsNoTracking()
+            .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.IsVisible == true && x.IsActive == true &&
+                        (x.RecommendationKey != null || x.RecommendationTokenId != null))
+            .CountAsync();
+        return Ok(new
+        {
+            success = true,
+            status = sourceVersion.WidgetStatusCode,
+            versionNumber = sourceVersion.WidgetVersionNumber,
+            selectedVersionNumber = version.WidgetVersionNumber,
+            usedLiveFallback = sourceVersion != version,
+            usedInRulesCount = rows.Count(item => usedRecommendationKeySet.Contains(item.RecommendationKey ?? item.RecommendationCode ?? "")),
+            recommendationsServedCount = servedCount,
+            items = rows.Select((x, i) => new {
+                id = x.RecommendationTokenId ?? x.RowViewTokenId.ToString("N"),
+                name = x.RecommendationName ?? x.RecommendationTitle ?? "",
+                key = x.RecommendationKey ?? x.RecommendationCode ?? "",
+                description = x.RecommendationDescription ?? x.RecommendationShortDescription ?? "",
+                imageUrl = x.RecommendationImageUrl ?? x.ImageServerUrl,
+                url = x.RecommendationUrl,
+                ctaText = x.RecommendationCtatext ?? x.RecommendationCta,
+                active = x.IsActive ?? !string.Equals(x.ActiveStatus, "inactive", StringComparison.OrdinalIgnoreCase),
+                sortOrder = x.RecommendationSortOrder ?? i + 1
+            })
+        });
+    }
+
+    [HttpPut("{publicKey}/draft/recommendations")]
+    public async Task<IActionResult> SaveRecommendationDraft(string publicKey, [FromBody] RecommendationDraftRequest? request)
+    {
+        if (!TryGetDemoOwner(out var error)) return error!;
+        var widget = await FindDemoWidget(publicKey);
+        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+        if (request?.Items is null || request.Items.Count > 500 || request.Items.Any(x =>
+                string.IsNullOrWhiteSpace(x.Name) || x.Name.Trim().Length > 150 ||
+                string.IsNullOrWhiteSpace(x.Key) || !Regex.IsMatch(x.Key, "^[a-zA-Z][a-zA-Z0-9_-]{0,79}$") ||
+                x.Description?.Length > 1000 || x.ImageUrl?.Length > 2000 || x.Url?.Length > 2000 || x.CtaText?.Length > 100) ||
+            request.Items.Select(x => x.Key.Trim()).Distinct(StringComparer.OrdinalIgnoreCase).Count() != request.Items.Count)
+            return BadRequest(new { success = false, message = "Recommendation fields are invalid. Names and unique identifiers are required." });
+
+        var versions = await _db.AskpearlsPortalUserWebsiteWidgetVersionLists
+            .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey && x.IsActive == true && x.IsVisible == true)
+            .ToListAsync();
+        var drafts = versions.Where(x => x.WidgetStatusCode == "draft").ToList();
+        if (drafts.Count > 1) return Conflict(new { success = false, message = "More than one active draft exists for this widget." });
+        var draft = drafts.SingleOrDefault();
+        var published = versions.Where(x => x.WidgetStatusCode == "published" && x.WidgetVersionNumber == widget.WidgetPublishedVersion).ToList();
+        var now = DateTime.UtcNow;
+        if (draft is null)
+        {
+            if (published.Count != 1) return Conflict(new { success = false, message = "A published widget version is required before saving recommendations." });
+            var maxNumber = versions.Select(x => int.TryParse(x.WidgetVersionNumber, out var n) ? n : 0).DefaultIfEmpty(0).Max();
+            draft = new AskpearlsPortalUserWebsiteWidgetVersionList
+            {
+                AccountType = widget.AccountType,
+                OwnerUserTokenId = widget.OwnerUserTokenId,
+                OwnerMobileNumberTokenId = widget.OwnerMobileNumberTokenId,
+                OrganizationTokenId = widget.OrganizationTokenId,
+                CompanyTokenId = widget.CompanyTokenId,
+                CompanyName = widget.CompanyName,
+                WidgetTokenId = widget.WidgetTokenId,
+                WebsiteTokenId = widget.WebsiteTokenId,
+                WebsiteName = widget.WebsiteName,
+                WidgetPublicKey = publicKey,
+                WidgetVersionNumber = (maxNumber + 1).ToString(),
+                WidgetVersionTokenId = Guid.NewGuid().ToString("N"),
+                WidgetConfigurationJson = published[0].WidgetConfigurationJson,
+                WidgetStatusCode = "draft",
+                WidgetStatusText = "draft",
+                WidgetStatus = "draft",
+                WidgetPublishedVersion = widget.WidgetPublishedVersion,
+                ActiveStatus = "pending",
+                IsNew = true,
+                IsActive = true,
+                IsVisible = true,
+                CreatedAtUtc = now,
+                UpdatedAtUtc = now
+            };
+            _db.AskpearlsPortalUserWebsiteWidgetVersionLists.Add(draft);
+        }
+
+        var oldDraftRows = await _db.AskpearlsPortalUserWebsiteWidgetRecommendationLists
+            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WidgetTokenId == widget.WidgetTokenId &&
+                        x.WidgetPublicKey == publicKey && x.WidgetVersionNumber == draft.WidgetVersionNumber && x.IsActive == true)
+            .ToListAsync();
+        foreach (var row in oldDraftRows) { row.IsActive = false; row.IsVisible = false; row.UpdatedAtUtc = now; }
+        var newRows = request!.Items.Select((item, index) => new AskpearlsPortalUserWebsiteWidgetRecommendationList
+        {
+            RowViewTokenId = Guid.NewGuid(),
+            RowDataTokenId = Guid.NewGuid().ToString("N"),
+            AccountType = widget.AccountType,
+            OwnerUserTokenId = widget.OwnerUserTokenId,
+            OwnerMobileNumberTokenId = widget.OwnerMobileNumberTokenId,
+            OrganizationTokenId = widget.OrganizationTokenId,
+            CompanyTokenId = widget.CompanyTokenId,
+            CompanyName = widget.CompanyName,
+            WebsiteTokenId = widget.WebsiteTokenId,
+            WidgetTokenId = widget.WidgetTokenId,
+            WidgetPublicKey = publicKey,
+            WidgetVersionTokenId = draft.WidgetVersionTokenId,
+            WidgetVersionNumber = draft.WidgetVersionNumber,
+            RecommendationTokenId = Guid.NewGuid().ToString("N"),
+            RecommendationKey = item.Key.Trim(),
+            RecommendationCode = item.Key.Trim(),
+            RecommendationType = "outcome",
+            RecommendationName = item.Name.Trim(),
+            RecommendationTitle = item.Name.Trim(),
+            RecommendationDescription = item.Description?.Trim(),
+            RecommendationShortDescription = item.Description?.Trim(),
+            RecommendationImageUrl = item.ImageUrl?.Trim(),
+            RecommendationUrl = item.Url?.Trim(),
+            RecommendationCtatext = item.CtaText?.Trim(),
+            RecommendationSortOrder = index + 1,
+            IsNew = true,
+            ActiveStatus = item.Active ? "active" : "inactive",
+            IsActive = item.Active,
+            IsVisible = true,
+            CreatedAtUtc = now,
+            UpdatedAtUtc = now
+        }).ToList();
+        _db.AskpearlsPortalUserWebsiteWidgetRecommendationLists.AddRange(newRows);
+        draft.UpdatedAtUtc = now;
+        await _db.SaveChangesAsync();
+        var ruleKeys = await _db.AskpearlsPortalUserWebsiteWidgetDecisionRuleLists.AsNoTracking()
+            .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey &&
+                        x.IsVisible == true && x.RecommendationKey != null)
+            .Select(x => x.RecommendationKey!).Distinct().ToListAsync();
+        var eventCount = await _db.AskpearlsPortalUserWebsiteWidgetEventLists.AsNoTracking()
+            .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.IsVisible == true && x.IsActive == true &&
+                        (x.RecommendationKey != null || x.RecommendationTokenId != null))
+            .CountAsync();
+        var ruleKeySet = ruleKeys.ToHashSet(StringComparer.OrdinalIgnoreCase);
+        return Ok(new
+        {
+            success = true,
+            status = "draft",
+            versionNumber = draft.WidgetVersionNumber,
+            itemCount = newRows.Count,
+            usedInRulesCount = request.Items.Count(item => ruleKeySet.Contains(item.Key.Trim())),
+            recommendationsServedCount = eventCount
+        });
+    }
+
+    [HttpGet("{publicKey}/draft/rules")]
+    public async Task<IActionResult> GetDecisionRuleDraft(string publicKey)
+    {
+        if (!TryGetDemoOwner(out var error)) return error!;
+        var widget = await FindDemoWidget(publicKey);
+        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+        var versions = await _db.AskpearlsPortalUserWebsiteWidgetVersionLists.AsNoTracking()
+            .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey && x.IsActive == true && x.IsVisible == true)
+            .ToListAsync();
+        var version = versions.Where(x => x.WidgetStatusCode == "draft")
+            .OrderByDescending(x => x.UpdatedAtUtc ?? x.CreatedAtUtc).FirstOrDefault()
+            ?? versions.FirstOrDefault(x => x.WidgetStatusCode == "published" && x.WidgetVersionNumber == widget.WidgetPublishedVersion);
+        if (version is null) return Conflict(new { success = false, message = "A published or draft widget version is required." });
+
+        // Older rule records may be linked by version token (or one of the
+        // legacy token columns) without a populated version number. Load this
+        // widget's rows once, then resolve the selected draft/live version.
+        var widgetRows = await _db.AskpearlsPortalUserWebsiteWidgetDecisionRuleLists.AsNoTracking()
+            .Where(x => x.OwnerUserTokenId == widget.OwnerUserTokenId && x.WidgetTokenId == widget.WidgetTokenId &&
+                        x.WidgetPublicKey == publicKey && x.IsVisible == true)
+            .ToListAsync();
+        bool BelongsToVersion(AskpearlsPortalUserWebsiteWidgetDecisionRuleList row, AskpearlsPortalUserWebsiteWidgetVersionList target) =>
+            (!string.IsNullOrWhiteSpace(target.WidgetVersionTokenId) &&
+                (row.WidgetVersionTokenId == target.WidgetVersionTokenId || row.WidgetVersionTokenId1 == target.WidgetVersionTokenId ||
+                 row.WidgetVersionTokenId2 == target.WidgetVersionTokenId || row.WidgetVersionTokenId3 == target.WidgetVersionTokenId ||
+                 row.WidgetVersionTokenId4 == target.WidgetVersionTokenId)) ||
+            (!string.IsNullOrWhiteSpace(target.WidgetVersionNumber) && row.WidgetVersionNumber == target.WidgetVersionNumber);
+
+        var sourceVersion = version;
+        var rows = widgetRows.Where(row => BelongsToVersion(row, version)).ToList();
+        if (rows.Count == 0 && string.Equals(version.WidgetStatusCode, "draft", StringComparison.OrdinalIgnoreCase))
+        {
+            var liveVersion = versions.FirstOrDefault(x => x.WidgetStatusCode == "published" && x.WidgetVersionNumber == widget.WidgetPublishedVersion);
+            if (liveVersion is not null)
+            {
+                var liveRows = widgetRows.Where(row => BelongsToVersion(row, liveVersion)).ToList();
+                if (liveRows.Count > 0) { rows = liveRows; sourceVersion = liveVersion; }
+            }
+        }
+        // Very old rows may predate version tracking. They are safe to show
+        // only when they have no version identifiers at all.
+        if (rows.Count == 0)
+            rows = widgetRows.Where(row => string.IsNullOrWhiteSpace(row.WidgetVersionTokenId) &&
+                string.IsNullOrWhiteSpace(row.WidgetVersionTokenId1) && string.IsNullOrWhiteSpace(row.WidgetVersionTokenId2) &&
+                string.IsNullOrWhiteSpace(row.WidgetVersionTokenId3) && string.IsNullOrWhiteSpace(row.WidgetVersionTokenId4) &&
+                string.IsNullOrWhiteSpace(row.WidgetVersionNumber)).ToList();
+
+        var rules = rows.GroupBy(x => x.DecisionRuleTokenId ?? x.DecisionRuleCode ?? Guid.NewGuid().ToString("N"))
+            .Select(group =>
+            {
+                var first = group.First();
+                var priority = 1;
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(first.DecisionRuleValue))
+                    {
+                        using var metadata = JsonDocument.Parse(first.DecisionRuleValue);
+                        // Legacy rule rows can store a scalar number in this
+                        // column. Only inspect priority when the JSON is an object.
+                        if (metadata.RootElement.ValueKind == JsonValueKind.Object &&
+                            metadata.RootElement.TryGetProperty("priority", out var value) &&
+                            value.TryGetInt32(out var parsed)) priority = parsed;
+                    }
+                }
+                catch (JsonException) { }
+                return new
+                {
+                    id = first.DecisionRuleTokenId,
+                    key = first.DecisionRuleCode ?? string.Empty,
+                    name = first.DecisionRuleKey ?? first.DecisionRuleCode ?? "Untitled rule",
+                    description = first.DecisionRuleReason ?? string.Empty,
+                    recommendationKey = first.RecommendationKey ?? string.Empty,
+                    recommendationName = first.RecommendationValue ?? first.RecommendationKey ?? string.Empty,
+                    conditionLogic = string.Equals(first.DecisionRuleType, "any", StringComparison.OrdinalIgnoreCase) ? "any" : "all",
+                    priority,
+                    status = string.Equals(first.ActiveStatus, "draft", StringComparison.OrdinalIgnoreCase) ? "draft" : (first.IsActive == true ? "active" : "inactive"),
+                    conditions = group.Select(x => new {
+                        questionKey = x.WidgetQuestionKey ?? string.Empty,
+                        questionText = x.WidgetQuestionValue ?? x.WidgetQuestionKey ?? string.Empty,
+                        answerKey = x.WidgetAnswerKey ?? x.AnswerValue ?? string.Empty,
+                        answerText = x.WidgetAnswerValue ?? x.AnswerValue ?? x.WidgetAnswerKey ?? string.Empty
+                    }).ToArray()
+                };
+            }).OrderBy(x => x.priority).ToArray();
+        return Ok(new
+        {
+            success = true,
+            status = sourceVersion.WidgetStatusCode,
+            versionNumber = sourceVersion.WidgetVersionNumber,
+            selectedVersionNumber = version.WidgetVersionNumber,
+            usedLiveFallback = sourceVersion != version,
+            rules
+        });
+    }
+
+    [HttpPut("{publicKey}/draft/rules")]
+    public async Task<IActionResult> SaveDecisionRuleDraft(string publicKey, [FromBody] DecisionRulesDraftRequest? request)
+    {
+        if (!TryGetDemoOwner(out var error)) return error!;
+        var widget = await FindDemoWidget(publicKey);
+        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+        var valid = request?.Rules is not null && request.Rules.Count <= 300 &&
+            request.Rules.All(rule => !string.IsNullOrWhiteSpace(rule.Key) && Regex.IsMatch(rule.Key, "^[a-z][a-z0-9_]{0,79}$") &&
+                !string.IsNullOrWhiteSpace(rule.Name) && rule.Name.Trim().Length <= 100 && rule.Description?.Length <= 500 &&
+                !string.IsNullOrWhiteSpace(rule.RecommendationKey) && rule.RecommendationKey.Length <= 100 &&
+                rule.RecommendationName?.Length <= 150 && rule.ConditionLogic is "all" or "any" &&
+                rule.Priority is >= 1 and <= 999 && rule.Status is "active" or "draft" or "inactive" &&
+                rule.Conditions is { Count: > 0 and <= 50 } && rule.Conditions.All(c =>
+                    !string.IsNullOrWhiteSpace(c.QuestionKey) && c.QuestionKey.Length <= 100 && c.QuestionText?.Length <= 500 &&
+                    !string.IsNullOrWhiteSpace(c.AnswerKey) && c.AnswerKey.Length <= 150 && c.AnswerText?.Length <= 300)) &&
+            request.Rules.Select(x => x.Key.Trim()).Distinct(StringComparer.OrdinalIgnoreCase).Count() == request.Rules.Count;
+        if (!valid) return BadRequest(new { success = false, message = "Decision rule data is invalid. Provide unique rule identifiers and at least one complete question/answer condition for each rule." });
+
+        var versions = await _db.AskpearlsPortalUserWebsiteWidgetVersionLists
+            .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey && x.IsActive == true && x.IsVisible == true)
+            .ToListAsync();
+        var drafts = versions.Where(x => x.WidgetStatusCode == "draft").ToList();
+        if (drafts.Count > 1) return Conflict(new { success = false, message = "More than one active draft exists for this widget." });
+        var draft = drafts.SingleOrDefault();
+        var published = versions.Where(x => x.WidgetStatusCode == "published" && x.WidgetVersionNumber == widget.WidgetPublishedVersion).ToList();
+        var now = DateTime.UtcNow;
+        if (draft is null)
+        {
+            if (published.Count != 1) return Conflict(new { success = false, message = "A published widget version is required before saving decision rules." });
+            var maxNumber = versions.Select(x => int.TryParse(x.WidgetVersionNumber, out var n) ? n : 0).DefaultIfEmpty(0).Max();
+            draft = new AskpearlsPortalUserWebsiteWidgetVersionList
+            {
+                AccountType = widget.AccountType,
+                OwnerUserTokenId = widget.OwnerUserTokenId,
+                OwnerMobileNumberTokenId = widget.OwnerMobileNumberTokenId,
+                OrganizationTokenId = widget.OrganizationTokenId,
+                CompanyTokenId = widget.CompanyTokenId,
+                CompanyName = widget.CompanyName,
+                WidgetTokenId = widget.WidgetTokenId,
+                WebsiteTokenId = widget.WebsiteTokenId,
+                WebsiteName = widget.WebsiteName,
+                WidgetPublicKey = publicKey,
+                WidgetVersionNumber = (maxNumber + 1).ToString(),
+                WidgetVersionTokenId = Guid.NewGuid().ToString("N"),
+                WidgetConfigurationJson = published[0].WidgetConfigurationJson,
+                WidgetStatusCode = "draft",
+                WidgetStatusText = "draft",
+                WidgetStatus = "draft",
+                WidgetPublishedVersion = widget.WidgetPublishedVersion,
+                ActiveStatus = "pending",
+                IsNew = true,
+                IsActive = true,
+                IsVisible = true,
+                CreatedAtUtc = now,
+                UpdatedAtUtc = now
+            };
+            _db.AskpearlsPortalUserWebsiteWidgetVersionLists.Add(draft);
+        }
+        var oldRows = await _db.AskpearlsPortalUserWebsiteWidgetDecisionRuleLists
+            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WidgetTokenId == widget.WidgetTokenId &&
+                        x.WidgetPublicKey == publicKey && x.WidgetVersionNumber == draft.WidgetVersionNumber && x.IsVisible == true)
+            .ToListAsync();
+        foreach (var row in oldRows) { row.IsActive = false; row.IsVisible = false; row.UpdatedAtUtc = now; }
+        var rowsToSave = request!.Rules.SelectMany(rule => rule.Conditions.Select(condition => new AskpearlsPortalUserWebsiteWidgetDecisionRuleList
+        {
+            RowViewTokenId = Guid.NewGuid(),
+            RowDataTokenId = Guid.NewGuid().ToString("N"),
+            AccountType = widget.AccountType,
+            OwnerUserTokenId = widget.OwnerUserTokenId,
+            OwnerMobileNumberTokenId = widget.OwnerMobileNumberTokenId,
+            OrganizationTokenId = widget.OrganizationTokenId,
+            CompanyTokenId = widget.CompanyTokenId,
+            CompanyName = widget.CompanyName,
+            WebsiteTokenId = widget.WebsiteTokenId,
+            WebsiteName = widget.WebsiteName,
+            WidgetTokenId = widget.WidgetTokenId,
+            WidgetPublicKey = publicKey,
+            WidgetVersionTokenId = draft.WidgetVersionTokenId,
+            WidgetVersionNumber = draft.WidgetVersionNumber,
+            DecisionRuleTokenId = Guid.NewGuid().ToString("N"),
+            DecisionRuleCode = rule.Key.Trim(),
+            DecisionRuleKey = rule.Name.Trim(),
+            DecisionRuleType = rule.ConditionLogic,
+            DecisionRuleValue = JsonSerializer.Serialize(new { priority = rule.Priority }),
+            DecisionRuleReason = rule.Description?.Trim(),
+            WidgetQuestionKey = condition.QuestionKey.Trim(),
+            WidgetQuestionValue = condition.QuestionText?.Trim(),
+            WidgetAnswerKey = condition.AnswerKey.Trim(),
+            WidgetAnswerValue = condition.AnswerText?.Trim(),
+            AnswerValue = condition.AnswerKey.Trim(),
+            RecommendationKey = rule.RecommendationKey.Trim(),
+            RecommendationValue = rule.RecommendationName?.Trim(),
+            DecisionRuleScore = 1,
+            ActiveStatus = rule.Status,
+            IsActive = rule.Status == "active",
+            IsVisible = true,
+            IsNew = true,
+            CreatedAtUtc = now,
+            UpdatedAtUtc = now
+        })).ToList();
+        // Give every condition in a rule the same grouping token.
+        var index = 0;
+        foreach (var rule in request.Rules)
+        {
+            var ruleToken = Guid.NewGuid().ToString("N");
+            foreach (var _ in rule.Conditions) rowsToSave[index++].DecisionRuleTokenId = ruleToken;
+        }
+        _db.AskpearlsPortalUserWebsiteWidgetDecisionRuleLists.AddRange(rowsToSave);
+        draft.UpdatedAtUtc = now;
+        await _db.SaveChangesAsync();
+        return Ok(new { success = true, status = "draft", versionNumber = draft.WidgetVersionNumber, ruleCount = request.Rules.Count });
+    }
+
+    private async Task<AskpearlsPortalUserWebsiteWidgetList?> FindDemoWidget(string publicKey) =>
+        await _db.AskpearlsPortalUserWebsiteWidgetLists.FirstOrDefaultAsync(x => x.WidgetPublicKey == publicKey &&
+            x.OwnerUserTokenId == DemoOwnerUserTokenId && x.IsActive == true && x.IsVisible == true);
+
+    private static bool ReadRequired(string? json)
+    {
+        try { return JsonDocument.Parse(json ?? "{}").RootElement.TryGetProperty("required", out var value) && value.GetBoolean(); }
+        catch (JsonException) { return true; }
+    }
+
+    private static bool IsValidQuestionDraft(WidgetQuestionsDraftRequest? request)
+    {
+        if (request?.Questions is null || request.Questions.Count > 50) return false;
+        var keys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var q in request.Questions)
+        {
+            if (string.IsNullOrWhiteSpace(q.Text) || q.Text.Length > 500 || string.IsNullOrWhiteSpace(q.Key) ||
+                !Regex.IsMatch(q.Key ?? "", "^[a-zA-Z][a-zA-Z0-9_]{0,79}$") || !keys.Add(q.Key!) ||
+                q.Helper?.Length > 500 || q.Options is null || q.Options.Count is < 2 or > 30 ||
+                q.Options.Any(x => string.IsNullOrWhiteSpace(x) || x.Length > 150) ||
+                q.Options.Distinct(StringComparer.OrdinalIgnoreCase).Count() != q.Options.Count) return false;
+        }
+        return true;
     }
 
     private bool TryGetDemoOwner(out IActionResult? error)

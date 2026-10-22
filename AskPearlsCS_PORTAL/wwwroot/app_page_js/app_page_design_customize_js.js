@@ -230,11 +230,35 @@
         return data || {};
     }
 
+    async function loadWidgetVersion () {
+        const versionLabel = $("dcWidgetVersion");
+        const publicKey = currentPublicKey();
+        if (!versionLabel) return;
+        versionLabel.textContent = "—";
+        if (!publicKey) return;
+
+        try {
+            const [ draftResponse, liveResponse ] = await Promise.all([
+                fetch(apiBase + "/widgets/" + encodeURIComponent(publicKey) + "/draft/configuration", { method: "GET", headers: requestHeaders(false) }),
+                fetch(apiBase + "/widgets/" + encodeURIComponent(publicKey) + "/version", { method: "GET", headers: requestHeaders(false) }).catch(() => null)
+            ]);
+            const data = await readResponse(draftResponse);
+            const liveData = liveResponse ? await readResponse(liveResponse).catch(() => ({})) : {};
+            if (currentPublicKey() !== publicKey) return;
+            versionLabel.textContent = data.status === "draft"
+                ? "Draft v" + (data.versionNumber || "—") + (liveData.versionNumber ? " · Live v" + liveData.versionNumber : "")
+                : liveData.versionNumber ? "Live v" + liveData.versionNumber : "—";
+        } catch (error) {
+            console.warn("Could not load the current widget version.", error);
+        }
+    }
+
     async function loadSettings (showMessage) {
         const publicKey = currentPublicKey();
         if (!publicKey) {
             applySettings(defaults);
             savedSettings = currentSettings();
+            loadWidgetVersion();
             showToast("This widget has no API public key configured yet.");
             return;
         }
@@ -245,9 +269,13 @@
                 headers: requestHeaders(false)
             });
             const data = await readResponse(response);
+            if (currentPublicKey() !== publicKey) return;
             const configuration = data.configuration || defaults;
             applySettings(configuration);
             savedSettings = currentSettings();
+            const versionLabel = $("dcWidgetVersion");
+            if (versionLabel && data.versionNumber) versionLabel.textContent = (data.status === "draft" ? "Draft v" : "Live v") + data.versionNumber;
+            loadWidgetVersion();
             if (showMessage) showToast(data.status === "draft" ? "Draft settings loaded." : "Published settings loaded.");
         } catch (error) {
             console.error("Could not load widget design settings.", error);
@@ -273,6 +301,7 @@
             const data = await readResponse(response);
             savedSettings = currentSettings();
             updateDirtyState();
+            await loadWidgetVersion();
             showToast("Draft saved" + (data.versionNumber ? " as version " + data.versionNumber : "") + ". Publish it when ready.");
         } catch (error) {
             console.error("Could not save widget design draft.", error);
@@ -308,9 +337,13 @@
         applySettings(savedSettings);
         showToast("Restored the settings last loaded or saved from the server.");
     });
-    $("dcWidgetSelect").addEventListener("change", () => loadSettings(true));
+    $("dcWidgetSelect").addEventListener("change", () => {
+        loadWidgetVersion();
+        loadSettings(true);
+    });
 
     applySettings(defaults);
     savedSettings = currentSettings();
+    loadWidgetVersion();
     loadSettings(false);
 })();

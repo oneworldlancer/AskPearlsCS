@@ -253,18 +253,30 @@
         try {
             const results = await Promise.allSettled([
                 apiRequest("/widgets/" + encodedKey + "/draft/configuration"),
-                apiRequest("/widgets/" + encodedKey + "/version")
+                apiRequest("/widgets/" + encodedKey + "/version"),
+                apiRequest("/widgets")
             ]);
             const draftResponse = results[ 0 ].status === "fulfilled" ? results[ 0 ].value : null;
             const publishedResponse = results[ 1 ].status === "fulfilled" ? results[ 1 ].value : null;
+            const inventory = results[ 2 ].status === "fulfilled" ? results[ 2 ].value : null;
+            const metadata = Array.isArray(inventory && inventory.widgets)
+                ? inventory.widgets.find(item => String(item.publicKey ?? item.PublicKey ?? "") === widgetKey)
+                : null;
+            if (metadata) {
+                widget.draftVersionNumber = String(metadata.draftVersionNumber ?? metadata.DraftVersionNumber ?? "");
+                widget.publishedVersionNumber = String(metadata.publishedVersionNumber ?? metadata.PublishedVersionNumber ?? "");
+            }
             hasDraft = !!draftResponse && String(draftResponse.status || "").toLowerCase() === "draft";
             isPublished = !!publishedResponse;
 
             const currentVersion = hasDraft
-                ? draftResponse.versionNumber
+                ? (draftResponse.versionNumber || widget.draftVersionNumber || widget.versionNumber)
                 : publishedResponse && publishedResponse.versionNumber;
             widget.version = currentVersion ? String(currentVersion) : "—";
-            $("peVersion").textContent = currentVersion ? "v" + currentVersion : "—";
+            const liveVersion = publishedResponse && publishedResponse.versionNumber || widget.publishedVersionNumber;
+            $("peVersion").textContent = hasDraft
+                ? "Draft v" + (currentVersion || "—") + (isPublished && liveVersion ? " · Live v" + liveVersion : "")
+                : liveVersion ? "Live v" + liveVersion : "—";
             renderStatus();
 
             if (!draftResponse && !publishedResponse) {
@@ -281,6 +293,8 @@
             $("peStatusBadge").dataset.status = "error";
             $("peStatusBadge").classList.add("is-error");
             showToast(error.message || "Could not load widget publishing status.");
+        } finally {
+            root.dispatchEvent(new CustomEvent("pe:version-ready", { detail: { publicKey: widgetKey } }));
         }
     }
 
@@ -427,7 +441,10 @@
 
     const storageKey = () => {
         const widgetKey = widgetSelect?.value || "default";
-        return "askpearls.publish-checklist." + widgetKey;
+        const versionText = document.getElementById("peVersion")?.textContent || "";
+        const versionMatch = versionText.match(/(?:Draft|Live)\s+v([^\s·]+)/i);
+        const versionKey = versionMatch ? versionMatch[ 1 ] : "unknown-version";
+        return "askpearls.publish-checklist." + widgetKey + "." + versionKey;
     };
 
     function restoreChecklist () {
@@ -444,7 +461,7 @@
         updateChecklist();
     }
 
-    function updateChecklist () {
+    function updateChecklist (persist = true) {
         const completed = checkboxes.filter(
             checkbox => checkbox.checked
         ).length;
@@ -464,6 +481,7 @@
             completionPanel.hidden = completed !== total;
         }
 
+        if (!persist) return;
         try {
             const saved = Object.fromEntries(
                 checkboxes.map(checkbox => [ checkbox.id, checkbox.checked ])
@@ -478,13 +496,20 @@
         checkbox.addEventListener("change", updateChecklist);
     });
 
-    widgetSelect?.addEventListener("change", restoreChecklist);
+    widgetSelect?.addEventListener("change", () => {
+        checkboxes.forEach(checkbox => { checkbox.checked = false; });
+        updateChecklist(false);
+    });
+    root.addEventListener("pe:version-ready", event => {
+        if (event.detail?.publicKey === (widgetSelect?.value || "")) restoreChecklist();
+    });
     nextButton?.addEventListener("click", () => {
         pageHeader?.scrollIntoView({ behavior: "smooth", block: "start" });
         window.setTimeout(() => {
             document.getElementById("pePublishBtn")?.focus({ preventScroll: true });
         }, 350);
     });
-    restoreChecklist();
+    checkboxes.forEach(checkbox => { checkbox.checked = false; });
+    updateChecklist(false);
 })();
 

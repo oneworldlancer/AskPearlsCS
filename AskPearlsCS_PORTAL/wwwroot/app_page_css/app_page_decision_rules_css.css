@@ -1,528 +1,573 @@
 ﻿
 .decision-rules-page {
     color: var(--ap-text, #172033);
-    font-family: inherit;
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
 }
 
-.decision-rules-page * {
-    box-sizing: border-box;
-}
-
-.decision-rules-page .dr-muted {
-    color: var(--ap-muted, #64748b);
-}
-
-.decision-rules-page .dr-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 24px;
-}
-
-    .decision-rules-page .dr-header h2 {
-        font-size: 28px;
-        font-weight: 700;
-        margin: 0 0 8px;
-        color: var(--ap-text, #172033);
+    .decision-rules-page,
+    .decision-rules-page * {
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
     }
 
-    .decision-rules-page .dr-header p {
-        margin: 0;
-        font-size: 15px;
-        color: var(--ap-muted, #64748b);
-    }
-
-.decision-rules-page .dr-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border: 1px solid var(--ap-border, #dce3e8);
-    border-radius: 9px;
-    padding: 10px 14px;
-    min-height: 40px;
-    background: var(--ap-card-bg, #fff);
-    color: var(--ap-text, #172033);
-    cursor: pointer;
-    font: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: opacity .15s ease, background .15s ease;
-}
-
-    .decision-rules-page .dr-btn:hover {
-        opacity: .85;
-    }
-
-.decision-rules-page .dr-btn-primary {
-    background: #0ca88c;
-    border-color: #0ca88c;
-    color: #fff;
-}
-
-.decision-rules-page .dr-btn-danger {
-    color: #dc3545;
-}
-
-.decision-rules-page .dr-stats {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 18px;
-    margin-bottom: 24px;
-}
-
-.decision-rules-page .dr-stat {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    min-width: 0;
-    padding: 22px 20px;
-    border: 1px solid var(--ap-border, #dce3e8);
-    border-radius: 15px;
-    background: var(--ap-card-bg, #fff);
-}
-
-.decision-rules-page .dr-stat-icon {
-    width: 48px;
-    height: 48px;
-    flex: 0 0 48px;
-    display: grid;
-    place-items: center;
-    border-radius: 13px;
-    font-size: 22px;
-}
-
-.decision-rules-page .dr-purple {
-    background: #eee7ff;
-    color: #7552b8;
-}
-
-.decision-rules-page .dr-green {
-    background: #dcf7ed;
-    color: #138a68;
-}
-
-.decision-rules-page .dr-blue {
-    background: #e0edff;
-    color: #3679ca;
-}
-
-.decision-rules-page .dr-orange {
-    background: #fff0dc;
-    color: #c47c27;
-}
-
-.decision-rules-page .dr-stat-label {
-    color: var(--ap-muted, #64748b);
-    font-size: 12px;
-    margin-bottom: 4px;
-}
-
-.decision-rules-page .dr-stat-value {
-    font-size: 26px;
-    line-height: 1.2;
-    font-weight: 700;
-    color: var(--ap-text, #172033);
-}
-
-.decision-rules-page .dr-panel {
-    border: 1px solid var(--ap-border, #dce3e8);
-    border-radius: 15px;
-    background: var(--ap-card-bg, #fff);
-    overflow: hidden;
-}
-
-.decision-rules-page .dr-panel-header {
-    padding: 22px 24px;
-    border-bottom: 1px solid var(--ap-border, #dce3e8);
-}
-
-    .decision-rules-page .dr-panel-header h3 {
-        font-size: 19px;
-        font-weight: 700;
-        margin: 0 0 7px;
-        color: var(--ap-text, #172033);
-    }
-
-    .decision-rules-page .dr-panel-header p {
-        margin: 0;
-        font-size: 13px;
-        color: var(--ap-muted, #64748b);
-    }
-
-.decision-rules-page .dr-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 18px 24px;
-}
-
-.decision-rules-page .dr-search {
-    flex: 1;
-    min-width: 0;
-    position: relative;
-}
-
-    .decision-rules-page .dr-search span {
-        position: absolute;
-        left: 14px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--ap-muted, #64748b);
-        pointer-events: none;
-    }
-
-.decision-rules-page .dr-input,
-.decision-rules-page .dr-select,
-.decision-rules-page .dr-textarea {
-    width: 100%;
-    border: 1px solid var(--ap-border, #dce3e8);
-    border-radius: 9px;
-    padding: 11px 13px;
-    background: var(--ap-input-bg, var(--ap-card-bg, #fff));
-    color: var(--ap-text, #172033);
-    font: inherit;
-    font-size: 13px;
-}
-
-.decision-rules-page .dr-search .dr-input {
-    padding-left: 40px;
-}
-
-.decision-rules-page .dr-input:focus,
-.decision-rules-page .dr-select:focus,
-.decision-rules-page .dr-textarea:focus {
-    outline: 2px solid rgba(12,168,140,.18);
-    border-color: #0ca88c;
-}
-
-.decision-rules-page .dr-select {
-    width: 185px;
-    flex: 0 0 185px;
-}
-
-.decision-rules-page .dr-table-wrap {
-    overflow-x: auto;
-}
-
-.decision-rules-page .dr-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 850px;
-}
-
-    .decision-rules-page .dr-table th {
-        text-align: left;
-        padding: 15px 18px;
-        border-bottom: 1px solid var(--ap-border, #dce3e8);
-        background: var(--ap-table-head-bg, transparent);
-        color: var(--ap-muted, #64748b);
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: .045em;
-        white-space: nowrap;
-    }
-
-    .decision-rules-page .dr-table td {
-        padding: 17px 18px;
-        border-bottom: 1px solid var(--ap-border, #dce3e8);
-        color: var(--ap-text, #172033);
-        font-size: 13px;
-        vertical-align: middle;
-    }
-
-    .decision-rules-page .dr-table tbody tr:last-child td {
-        border-bottom: 0;
-    }
-
-.decision-rules-page .dr-rule-name {
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.decision-rules-page .dr-rule-id {
-    color: var(--ap-muted, #64748b);
-    font-size: 11px;
-    font-family: Consolas, monospace;
-}
-
-.decision-rules-page .dr-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    border-radius: 20px;
-    padding: 6px 10px;
-    font-size: 11px;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-    .decision-rules-page .dr-status::before {
-        content: "";
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: currentColor;
-    }
-
-.decision-rules-page .dr-status-active {
-    background: #dff4ec;
-    color: #138764;
-}
-
-.decision-rules-page .dr-status-draft {
-    background: #fff0d9;
-    color: #a96a16;
-}
-
-.decision-rules-page .dr-status-inactive {
-    background: #edf0f3;
-    color: #687585;
-}
-
-.decision-rules-page .dr-actions {
-    display: flex;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-    .decision-rules-page .dr-actions .dr-btn {
-        min-height: 32px;
-        padding: 6px 9px;
-        font-size: 11px;
-    }
-
-.decision-rules-page .dr-empty {
-    text-align: center;
-    padding: 42px 20px;
-    color: var(--ap-muted, #64748b);
-}
-
-    .decision-rules-page .dr-empty strong {
-        display: block;
-        margin-bottom: 7px;
-        color: var(--ap-text, #172033);
-        font-size: 16px;
-    }
-
-.decision-rules-page .dr-table-footer {
-    padding: 14px 24px;
-    border-top: 1px solid var(--ap-border, #dce3e8);
-    color: var(--ap-muted, #64748b);
-    font-size: 12px;
-}
-
-/* Modal */
-.decision-rules-page .dr-modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 10000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(10, 20, 28, .58);
-    backdrop-filter: blur(5px);
-}
-
-    .decision-rules-page .dr-modal-overlay.is-open {
-        display: flex;
-    }
-
-.decision-rules-page .dr-modal {
-    display: flex;
-    flex-direction: column;
-    width: min(680px, 100%);
-    max-height: min(88vh, 850px);
-    overflow: hidden;
-    background: var(--ap-modal-bg, var(--ap-card-bg, #fff));
-    border: 1px solid var(--ap-border, #dce3e8);
-    border-radius: 17px;
-    box-shadow: 0 24px 80px rgba(0,0,0,.25);
-}
-
-.decision-rules-page .dr-modal-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--ap-border, #dce3e8);
-}
-
-.decision-rules-page .dr-modal-icon {
-    display: grid;
-    place-items: center;
-    width: 46px;
-    height: 46px;
-    flex: 0 0 46px;
-    border-radius: 12px;
-    background: #dff5ee;
-    color: #0b997e;
-    font-size: 21px;
-}
-
-.decision-rules-page .dr-modal-header h3 {
-    margin: 0 0 5px;
-    font-size: 19px;
-    color: var(--ap-text, #172033);
-}
-
-.decision-rules-page .dr-modal-header p {
-    margin: 0;
-    color: var(--ap-muted, #64748b);
-    font-size: 12px;
-}
-
-.decision-rules-page .dr-modal-close {
-    margin-left: auto;
-    border: 0;
-    background: transparent;
-    color: var(--ap-muted, #64748b);
-    font-size: 25px;
-    cursor: pointer;
-    line-height: 1;
-}
-
-.decision-rules-page .dr-modal-body {
-    overflow-y: auto;
-    padding: 22px 24px;
-}
-
-.decision-rules-page .dr-field {
-    margin-bottom: 18px;
-}
-
-    .decision-rules-page .dr-field label {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--ap-text, #172033);
-        font-size: 12px;
-        font-weight: 700;
-    }
-
-.decision-rules-page .dr-required {
-    color: #dc3545;
-}
-
-.decision-rules-page .dr-help {
-    margin-top: 6px;
-    font-size: 11px;
-    color: var(--ap-muted, #64748b);
-}
-
-.decision-rules-page .dr-status-box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    padding: 15px;
-    border: 1px solid var(--ap-border, #dce3e8);
-    border-radius: 10px;
-    background: var(--ap-input-bg, transparent);
-}
-
-    .decision-rules-page .dr-status-box strong {
-        display: block;
-        margin-bottom: 5px;
-        font-size: 12px;
-        color: var(--ap-text, #172033);
-    }
-
-    .decision-rules-page .dr-status-box p {
-        margin: 0;
-        color: var(--ap-muted, #64748b);
-        font-size: 11px;
-    }
-
-.decision-rules-page .dr-toggle {
-    width: 42px;
-    height: 24px;
-    flex: 0 0 42px;
-    position: relative;
-}
-
-    .decision-rules-page .dr-toggle input {
-        position: absolute;
-        opacity: 0;
-        width: 1px;
-        height: 1px;
-    }
-
-    .decision-rules-page .dr-toggle span {
-        position: absolute;
-        inset: 0;
-        border-radius: 20px;
-        background: #aab3bd;
-        cursor: pointer;
-        transition: background .2s;
-    }
-
-        .decision-rules-page .dr-toggle span::after {
-            content: "";
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 18px;
-            height: 18px;
-            background: #fff;
-            border-radius: 50%;
-            transition: transform .2s;
+        .decision-rules-page i[class^="bi"],
+        .decision-rules-page i[class*=" bi"] {
+            font-family: "bootstrap-icons" !important;
         }
 
-    .decision-rules-page .dr-toggle input:checked + span {
-        background: #0ca88c;
-    }
-
-        .decision-rules-page .dr-toggle input:checked + span::after {
-            transform: translateX(18px);
+        .decision-rules-page .dr-widget-selector {
+            margin-bottom: 22px;
         }
 
-.decision-rules-page .dr-modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    padding: 15px 24px;
-    border-top: 1px solid var(--ap-border, #dce3e8);
-    background: var(--ap-modal-bg, var(--ap-card-bg, #fff));
-}
+        .decision-rules-page .dr-api-message {
+            margin: -4px 0 20px;
+            padding: 13px 16px;
+            border: 1px solid var(--ap-border, #29443b);
+            border-radius: 10px;
+            background: var(--ap-surface, #101f1a);
+            color: var(--ap-text, #e7edf3);
+        }
 
-.decision-rules-page .dr-validation {
-    display: none;
-    padding: 10px 12px;
-    margin-bottom: 16px;
-    border: 1px solid #f1b8be;
-    border-radius: 8px;
-    color: #b42332;
-    background: #fff0f1;
-    font-size: 12px;
-}
+            .decision-rules-page .dr-api-message[hidden] {
+                display: none;
+            }
 
-    .decision-rules-page .dr-validation.is-visible {
-        display: block;
-    }
+            .decision-rules-page .dr-api-message.is-error {
+                border-color: #a94343;
+                color: #ffb4b4;
+            }
 
-.decision-rules-page .dr-toast {
-    display: none;
-    position: fixed;
-    right: 24px;
-    bottom: 85px;
-    z-index: 11000;
-    max-width: min(400px, calc(100vw - 32px));
-    padding: 13px 17px;
-    border-radius: 10px;
-    background: #087f68;
-    color: #fff;
-    font-size: 13px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.2);
-}
+        .decision-rules-page * {
+            box-sizing: border-box;
+        }
 
-    .decision-rules-page .dr-toast.is-visible {
-        display: block;
-    }
+        .decision-rules-page .dr-muted {
+            color: var(--ap-muted, #64748b);
+        }
+
+        .decision-rules-page .dr-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+            .decision-rules-page .dr-header h2 {
+                font-size: 28px;
+                font-weight: 700;
+                margin: 0 0 8px;
+                color: var(--ap-text, #172033);
+            }
+
+            .decision-rules-page .dr-header p {
+                margin: 0;
+                font-size: 15px;
+                color: var(--ap-muted, #64748b);
+            }
+
+        .decision-rules-page .dr-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid var(--ap-border, #dce3e8);
+            border-radius: 9px;
+            padding: 10px 14px;
+            min-height: 40px;
+            background: var(--ap-card-bg, #fff);
+            color: var(--ap-text, #172033);
+            cursor: pointer;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: opacity .15s ease, background .15s ease;
+        }
+
+            .decision-rules-page .dr-btn:hover {
+                opacity: .85;
+            }
+
+        .decision-rules-page .dr-btn-primary {
+            background: #0ca88c;
+            border-color: #0ca88c;
+            color: #fff;
+        }
+
+        .decision-rules-page .dr-btn-danger {
+            color: #dc3545;
+        }
+
+        .decision-rules-page .dr-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .decision-rules-page .dr-stat {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-width: 0;
+            padding: 22px 20px;
+            border: 1px solid var(--ap-border, #dce3e8);
+            border-radius: 15px;
+            background: var(--ap-card-bg, #fff);
+        }
+
+        .decision-rules-page .dr-stat-icon {
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            font-size: 22px;
+        }
+
+        .decision-rules-page .dr-purple {
+            background: #eee7ff;
+            color: #7552b8;
+        }
+
+        .decision-rules-page .dr-green {
+            background: #dcf7ed;
+            color: #138a68;
+        }
+
+        .decision-rules-page .dr-blue {
+            background: #e0edff;
+            color: #3679ca;
+        }
+
+        .decision-rules-page .dr-orange {
+            background: #fff0dc;
+            color: #c47c27;
+        }
+
+        .decision-rules-page .dr-stat-label {
+            color: var(--ap-muted, #64748b);
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .decision-rules-page .dr-stat-value {
+            font-size: 26px;
+            line-height: 1.2;
+            font-weight: 700;
+            color: var(--ap-text, #172033);
+        }
+
+        .decision-rules-page .dr-panel {
+            border: 1px solid var(--ap-border, #dce3e8);
+            border-radius: 15px;
+            background: var(--ap-card-bg, #fff);
+            overflow: hidden;
+        }
+
+        .decision-rules-page .dr-panel-header {
+            padding: 22px 24px;
+            border-bottom: 1px solid var(--ap-border, #dce3e8);
+        }
+
+            .decision-rules-page .dr-panel-header h3 {
+                font-size: 19px;
+                font-weight: 700;
+                margin: 0 0 7px;
+                color: var(--ap-text, #172033);
+            }
+
+            .decision-rules-page .dr-panel-header p {
+                margin: 0;
+                font-size: 13px;
+                color: var(--ap-muted, #64748b);
+            }
+
+        .decision-rules-page .dr-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+        }
+
+        .decision-rules-page .dr-search {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+        }
+
+            .decision-rules-page .dr-search span {
+                position: absolute;
+                left: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--ap-muted, #64748b);
+                pointer-events: none;
+            }
+
+        .decision-rules-page .dr-input,
+        .decision-rules-page .dr-select,
+        .decision-rules-page .dr-textarea {
+            width: 100%;
+            border: 1px solid var(--ap-border, #dce3e8);
+            border-radius: 9px;
+            padding: 11px 13px;
+            background: var(--ap-input-bg, var(--ap-card-bg, #fff));
+            color: var(--ap-text, #172033);
+            font: inherit;
+            font-size: 13px;
+        }
+
+        .decision-rules-page .dr-search .dr-input {
+            padding-left: 40px;
+        }
+
+        .decision-rules-page .dr-input:focus,
+        .decision-rules-page .dr-select:focus,
+        .decision-rules-page .dr-textarea:focus {
+            outline: 2px solid rgba(12,168,140,.18);
+            border-color: #0ca88c;
+        }
+
+        .decision-rules-page .dr-select {
+            width: 185px;
+            flex: 0 0 185px;
+        }
+
+        /* Keep the inventory status chevron aligned inside the select on both themes. */
+        .decision-rules-page select.dr-select[data-dr-filter] {
+            -webkit-appearance: none;
+            appearance: none;
+            padding-right: 42px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='m3.5 5.25 3.5 3.5 3.5-3.5' stroke='%23b8c9c3' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 14px 14px;
+            cursor: pointer;
+        }
+
+        .decision-rules-page .dr-table-wrap {
+            overflow-x: auto;
+        }
+
+        .decision-rules-page .dr-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+            .decision-rules-page .dr-table th {
+                text-align: left;
+                padding: 15px 18px;
+                border-bottom: 1px solid var(--ap-border, #dce3e8);
+                background: var(--ap-table-head-bg, transparent);
+                color: var(--ap-muted, #64748b);
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: .045em;
+                white-space: nowrap;
+            }
+
+            .decision-rules-page .dr-table td {
+                padding: 17px 18px;
+                border-bottom: 1px solid var(--ap-border, #dce3e8);
+                color: var(--ap-text, #172033);
+                font-size: 13px;
+                vertical-align: middle;
+            }
+
+            .decision-rules-page .dr-table tbody tr:last-child td {
+                border-bottom: 0;
+            }
+
+        .decision-rules-page .dr-rule-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .decision-rules-page .dr-rule-id {
+            color: var(--ap-muted, #64748b);
+            font-size: 11px;
+            font-family: Consolas, monospace;
+        }
+
+        .decision-rules-page .dr-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 20px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+            .decision-rules-page .dr-status::before {
+                content: "";
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: currentColor;
+            }
+
+        .decision-rules-page .dr-status-active {
+            background: #dff4ec;
+            color: #138764;
+        }
+
+        .decision-rules-page .dr-status-draft {
+            background: #fff0d9;
+            color: #a96a16;
+        }
+
+        .decision-rules-page .dr-status-inactive {
+            background: #edf0f3;
+            color: #687585;
+        }
+
+        .decision-rules-page .dr-actions {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+            .decision-rules-page .dr-actions .dr-btn {
+                min-height: 32px;
+                padding: 6px 9px;
+                font-size: 11px;
+            }
+
+        .decision-rules-page .dr-empty {
+            text-align: center;
+            padding: 42px 20px;
+            color: var(--ap-muted, #64748b);
+        }
+
+            .decision-rules-page .dr-empty strong {
+                display: block;
+                margin-bottom: 7px;
+                color: var(--ap-text, #172033);
+                font-size: 16px;
+            }
+
+        .decision-rules-page .dr-table-footer {
+            padding: 14px 24px;
+            border-top: 1px solid var(--ap-border, #dce3e8);
+            color: var(--ap-muted, #64748b);
+            font-size: 12px;
+        }
+
+        /* Modal */
+        .decision-rules-page .dr-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(10, 20, 28, .58);
+            backdrop-filter: blur(5px);
+        }
+
+            .decision-rules-page .dr-modal-overlay.is-open {
+                display: flex;
+            }
+
+        .decision-rules-page .dr-modal {
+            display: flex;
+            flex-direction: column;
+            width: min(680px, 100%);
+            max-height: min(88vh, 850px);
+            overflow: hidden;
+            background: var(--ap-modal-bg, var(--ap-card-bg, #fff));
+            border: 1px solid var(--ap-border, #dce3e8);
+            border-radius: 17px;
+            box-shadow: 0 24px 80px rgba(0,0,0,.25);
+        }
+
+        .decision-rules-page .dr-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--ap-border, #dce3e8);
+        }
+
+        .decision-rules-page .dr-modal-icon {
+            display: grid;
+            place-items: center;
+            width: 46px;
+            height: 46px;
+            flex: 0 0 46px;
+            border-radius: 12px;
+            background: #dff5ee;
+            color: #0b997e;
+            font-size: 21px;
+        }
+
+        .decision-rules-page .dr-modal-header h3 {
+            margin: 0 0 5px;
+            font-size: 19px;
+            color: var(--ap-text, #172033);
+        }
+
+        .decision-rules-page .dr-modal-header p {
+            margin: 0;
+            color: var(--ap-muted, #64748b);
+            font-size: 12px;
+        }
+
+        .decision-rules-page .dr-modal-close {
+            margin-left: auto;
+            border: 0;
+            background: transparent;
+            color: var(--ap-muted, #64748b);
+            font-size: 25px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .decision-rules-page .dr-modal-body {
+            overflow-y: auto;
+            padding: 22px 24px;
+        }
+
+        .decision-rules-page .dr-field {
+            margin-bottom: 18px;
+        }
+
+            .decision-rules-page .dr-field label {
+                display: block;
+                margin-bottom: 8px;
+                color: var(--ap-text, #172033);
+                font-size: 12px;
+                font-weight: 700;
+            }
+
+        .decision-rules-page .dr-required {
+            color: #dc3545;
+        }
+
+        .decision-rules-page .dr-help {
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--ap-muted, #64748b);
+        }
+
+        .decision-rules-page .dr-status-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px;
+            border: 1px solid var(--ap-border, #dce3e8);
+            border-radius: 10px;
+            background: var(--ap-input-bg, transparent);
+        }
+
+            .decision-rules-page .dr-status-box strong {
+                display: block;
+                margin-bottom: 5px;
+                font-size: 12px;
+                color: var(--ap-text, #172033);
+            }
+
+            .decision-rules-page .dr-status-box p {
+                margin: 0;
+                color: var(--ap-muted, #64748b);
+                font-size: 11px;
+            }
+
+        .decision-rules-page .dr-toggle {
+            width: 42px;
+            height: 24px;
+            flex: 0 0 42px;
+            position: relative;
+        }
+
+            .decision-rules-page .dr-toggle input {
+                position: absolute;
+                opacity: 0;
+                width: 1px;
+                height: 1px;
+            }
+
+            .decision-rules-page .dr-toggle span {
+                position: absolute;
+                inset: 0;
+                border-radius: 20px;
+                background: #aab3bd;
+                cursor: pointer;
+                transition: background .2s;
+            }
+
+                .decision-rules-page .dr-toggle span::after {
+                    content: "";
+                    position: absolute;
+                    top: 3px;
+                    left: 3px;
+                    width: 18px;
+                    height: 18px;
+                    background: #fff;
+                    border-radius: 50%;
+                    transition: transform .2s;
+                }
+
+            .decision-rules-page .dr-toggle input:checked + span {
+                background: #0ca88c;
+            }
+
+                .decision-rules-page .dr-toggle input:checked + span::after {
+                    transform: translateX(18px);
+                }
+
+        .decision-rules-page .dr-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 15px 24px;
+            border-top: 1px solid var(--ap-border, #dce3e8);
+            background: var(--ap-modal-bg, var(--ap-card-bg, #fff));
+        }
+
+        .decision-rules-page .dr-validation {
+            display: none;
+            padding: 10px 12px;
+            margin-bottom: 16px;
+            border: 1px solid #f1b8be;
+            border-radius: 8px;
+            color: #b42332;
+            background: #fff0f1;
+            font-size: 12px;
+        }
+
+            .decision-rules-page .dr-validation.is-visible {
+                display: block;
+            }
+
+        .decision-rules-page .dr-toast {
+            display: none;
+            position: fixed;
+            right: 24px;
+            bottom: 85px;
+            z-index: 11000;
+            max-width: min(400px, calc(100vw - 32px));
+            padding: 13px 17px;
+            border-radius: 10px;
+            background: #087f68;
+            color: #fff;
+            font-size: 13px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.2);
+        }
+
+            .decision-rules-page .dr-toast.is-visible {
+                display: block;
+            }
 
 @@media (max-width: 1100px) {
     .decision-rules-page .dr-stats {
@@ -1476,7 +1521,7 @@ body[data-bs-theme="dark"] .decision-rules-page .dr-rule-summary {
     color: #e6edf5;
 }
 
-@@media (max-width: 600px) {
+@media (max-width: 600px) {
     .decision-rules-page .dr-test-grid {
         grid-template-columns: 1fr;
     }
@@ -1485,4 +1530,3 @@ body[data-bs-theme="dark"] .decision-rules-page .dr-rule-summary {
         flex-direction: column;
     }
 }
-

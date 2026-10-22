@@ -94,7 +94,7 @@
 
     function updateSelectedWidget () {
         const selected = availableWidgets.find(widget => widget.publicKey === widgetSelect.value);
-        widgetVersion.textContent = selected?.versionNumber ? "v" + selected.versionNumber : "—";
+        widgetVersion.textContent = selected ? (selected.hasDraft ? "Draft v" + (selected.draftVersionNumber || selected.versionNumber) + (selected.hasPublishedVersion ? " · Live v" + selected.publishedVersionNumber : "") : selected.hasPublishedVersion ? "Live v" + (selected.publishedVersionNumber || selected.versionNumber) : "—") : "—";
         widgetMessage.textContent = selected
             ? "Scoring preview for " + selected.name + "."
             : "Choose the widget you want to preview.";
@@ -118,7 +118,11 @@
             availableWidgets = records.map(item => ({
                 publicKey: String(read(item, "publicKey", "PublicKey") || ""),
                 name: String(read(item, "name", "Name") || "Untitled widget"),
-                versionNumber: String(read(item, "versionNumber", "VersionNumber") || "")
+                versionNumber: String(read(item, "versionNumber", "VersionNumber") || ""),
+                draftVersionNumber: String(read(item, "draftVersionNumber", "DraftVersionNumber") || ""),
+                publishedVersionNumber: String(read(item, "publishedVersionNumber", "PublishedVersionNumber") || ""),
+                hasDraft: Boolean(read(item, "hasDraft", "HasDraft") ?? String(read(item, "status", "Status") || "").toLowerCase() === "draft"),
+                hasPublishedVersion: Boolean(read(item, "hasPublishedVersion", "HasPublishedVersion") ?? String(read(item, "status", "Status") || "").toLowerCase() === "published")
             })).filter(widget => widget.publicKey);
 
             widgetSelect.innerHTML = availableWidgets.length

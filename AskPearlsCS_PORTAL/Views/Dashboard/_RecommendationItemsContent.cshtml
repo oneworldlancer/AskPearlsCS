@@ -1,248 +1,34 @@
-<!-- PAGE 4: RECOMMENDATION ITEMS -->
-<!-- PAGE: RECOMMENDATION ITEMS -->
-<div class="ap-page recommendation-page" data-ap-page="recommendation-items">
-
-    <!-- Shared AskPearls breadcrumb -->
-    <nav class="ap-breadcrumb" aria-label="Breadcrumb">
-        <a href="/Dashboard">AskPearls</a>
-        <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
-        <span class="ap-breadcrumb-current" aria-current="page">
-            Recommendation Items
-        </span>
-    </nav>
-
-    <!-- Shared page header -->
+<div class="ri-page ap-page" data-ap-page="recommendation-items" data-api-base="https://localhost:7014/api" data-demo-owner-user-token="1101">
+    <nav class="ap-breadcrumb" aria-label="Breadcrumb"><a href="/Dashboard">AskPearls</a><span>/</span><span aria-current="page">Recommendation Items</span></nav>
     <header class="ap-page-header">
-        <div class="ap-page-heading">
-            <h1 class="ap-page-title">Recommendation Items</h1>
-            <p class="ap-page-description">
-                Manage the products, services, or outcomes your DecisionOS widgets recommend.
-            </p>
-        </div>
-
-        <div class="ap-page-actions">
-            <button type="button" class="ri-btn-primary" id="riAddButton">
-                <i class="bi bi-plus-lg"></i>
-                Add Recommendation
-            </button>
-        </div>
+        <div class="ap-page-heading"><h1 class="ap-page-title">Recommendation Items</h1><p class="ap-page-description">Manage the products, services, or outcomes your DecisionOS widgets recommend.</p></div>
+        <div class="ap-page-actions"><button class="ri-button ri-button-primary" id="riAddButton" type="button"><i class="bi bi-plus-lg"></i> Add Recommendation</button></div>
     </header>
-    <!-- Summary Cards -->
-    <div class="row g-3 mb-4">
-        <div class="col-12 col-sm-6 col-xl-3">
-            <div class="ri-stat-card">
-                <div class="ri-stat-icon ri-icon-purple">
-                    <i class="bi bi-layers"></i>
-                </div>
-                <div>
-                    <div class="ri-stat-label">Total Items</div>
-                    <div class="ri-stat-value" id="riTotalCount">3</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-xl-3">
-            <div class="ri-stat-card">
-                <div class="ri-stat-icon ri-icon-green">
-                    <i class="bi bi-check-circle"></i>
-                </div>
-                <div>
-                    <div class="ri-stat-label">Active Items</div>
-                    <div class="ri-stat-value" id="riActiveCount">3</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-xl-3">
-            <div class="ri-stat-card">
-                <div class="ri-stat-icon ri-icon-blue">
-                    <i class="bi bi-diagram-3"></i>
-                </div>
-                <div>
-                    <div class="ri-stat-label">Used in Rules</div>
-                    <div class="ri-stat-value">—</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-xl-3">
-            <div class="ri-stat-card">
-                <div class="ri-stat-icon ri-icon-orange">
-                    <i class="bi bi-graph-up-arrow"></i>
-                </div>
-                <div>
-                    <div class="ri-stat-label">Recommendations Served</div>
-                    <div class="ri-stat-value">—</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Inventory -->
-    <div class="ri-panel">
-
-        <div class="ri-panel-header">
-            <div>
-                <h5 class="fw-bold mb-1">Recommendation Inventory</h5>
-                <p class="text-muted small mb-0">
-                    Create and maintain the outcomes available to your decision widgets.
-                </p>
-            </div>
-        </div>
-
-        <!-- Toolbar -->
-        <div class="ri-toolbar">
-            <div class="ri-search">
-                <i class="bi bi-search"></i>
-                <input type="search"
-                       id="riSearch"
-                       placeholder="Search by name or identifier..."
-                       aria-label="Search recommendation items">
-            </div>
-
-            <select id="riStatusFilter" aria-label="Filter by status">
-                <option value="all">All statuses</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-            </select>
-        </div>
-
-        <!-- Table -->
-        <div class="table-responsive">
-            <table class="table ri-table align-middle mb-0">
-                <thead>
-                    <tr>
-                        <th>Recommendation Item</th>
-                        <th>Identifier</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th class="text-end">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="riTableBody"></tbody>
-            </table>
-        </div>
-
-        <!-- Empty State -->
-        <div class="ri-empty-state d-none" id="riEmptyState">
-            <div class="ri-empty-icon">
-                <i class="bi bi-inboxes"></i>
-            </div>
-            <h5 class="fw-bold mt-3">No recommendation items found</h5>
-            <p class="text-muted mb-3">
-                Add your first recommendation or change your search filters.
-            </p>
-            <button type="button" class="ri-btn-primary" id="riEmptyAddButton">
-                <i class="bi bi-plus-lg"></i>
-                Add Recommendation
-            </button>
-        </div>
-
-        <div class="ri-panel-footer">
-            <span class="text-muted small" id="riResultsCount">Showing 3 items</span>
-        </div>
-    </div>
-</div>
-
-<!-- Add / Edit Modal -->
-<div class="ri-modal-backdrop" id="riModalBackdrop" aria-hidden="true">
-    <section class="ri-modal"
-             role="dialog"
-             aria-modal="true"
-             aria-labelledby="riModalTitle">
-
-        <header class="ri-modal-header">
-            <div class="d-flex align-items-center gap-3">
-                <div class="ri-modal-icon">
-                    <i class="bi bi-box-seam"></i>
-                </div>
-                <div>
-                    <h5 class="fw-bold mb-1" id="riModalTitle">Add Recommendation</h5>
-                    <p class="text-muted small mb-0">
-                        Configure the recommendation item details.
-                    </p>
-                </div>
-            </div>
-
-            <button type="button"
-                    class="ri-close-button"
-                    id="riModalClose"
-                    aria-label="Close dialog">
-                &times;
-            </button>
-        </header>
-
-        <form id="riForm">
-            <div class="ri-modal-body">
-
-                <div class="ri-form-field">
-                    <label for="riName">Recommendation name <span>*</span></label>
-                    <input type="text"
-                           id="riName"
-                           maxlength="150"
-                           required
-                           placeholder="e.g. Oslo Sofa">
-                </div>
-
-                <div class="ri-form-field">
-                    <label for="riKey">Unique identifier <span>*</span></label>
-                    <input type="text"
-                           id="riKey"
-                           maxlength="100"
-                           required
-                           pattern="[a-zA-Z][a-zA-Z0-9_]*"
-                           placeholder="e.g. oslo_sofa"
-                           autocomplete="off">
-                    <small>Use letters, numbers and underscores. Start with a letter.</small>
-                </div>
-
-                <div class="ri-form-field">
-                    <label for="riDescription">Description</label>
-                    <textarea id="riDescription"
-                              maxlength="500"
-                              rows="3"
-                              placeholder="Describe this recommendation and when it is suitable."></textarea>
-                </div>
-
-                <div class="ri-form-field">
-                    <label for="riImageUrl">Image URL <span class="text-muted">(optional)</span></label>
-                    <input type="url"
-                           id="riImageUrl"
-                           placeholder="https://example.com/image.jpg">
-                    <small>Image upload and media-library integration can be added later.</small>
-                </div>
-
-                <div class="ri-form-field">
-                    <label>Status</label>
-                    <label class="ri-status-setting">
-                        <span>
-                            <strong>Active recommendation</strong>
-                            <small>Allow this item to be used in decision rules.</small>
-                        </span>
-                        <span class="ri-switch">
-                            <input type="checkbox" id="riActive" checked>
-                            <span class="ri-switch-track"></span>
-                        </span>
-                    </label>
-                </div>
-
-                <div class="ri-form-error" id="riFormError" role="alert"></div>
-            </div>
-
-            <footer class="ri-modal-footer">
-                <button type="button" class="ri-btn-outline" id="riCancelButton">
-                    Cancel
-                </button>
-                <button type="submit" class="ri-btn-primary" id="riSaveButton">
-                    <i class="bi bi-check-lg"></i>
-                    Save Recommendation
-                </button>
-            </footer>
-        </form>
+    <section class="ap-widget-selector ri-widget-selector" aria-label="Widget selection">
+        <div class="ap-widget-selector-icon" aria-hidden="true"><i class="bi bi-grid-1x2"></i></div>
+        <div class="ap-widget-selector-info"><label for="riWidgetSelect">Select widget</label><select id="riWidgetSelect" class="ap-widget-selector-control" disabled><option>Loading widgets…</option></select><small class="ap-widget-selector-help">Choose the widget whose recommendations you want to manage.</small></div>
+        <div class="ap-widget-selector-version" aria-live="polite"><span>Draft / live</span><strong id="riWidgetVersion">—</strong></div>
     </section>
+    <div id="riMessage" class="ri-message" role="status" aria-live="polite" hidden></div>
+    <section class="ri-stats" aria-label="Recommendation summary">
+        <article class="ri-stat"><span class="ri-stat-icon purple"><i class="bi bi-layers"></i></span><div><small>Total Items</small><strong id="riTotalCount">—</strong></div></article>
+        <article class="ri-stat"><span class="ri-stat-icon teal"><i class="bi bi-check-circle"></i></span><div><small>Active Items</small><strong id="riActiveCount">—</strong></div></article>
+        <article class="ri-stat"><span class="ri-stat-icon blue"><i class="bi bi-diagram-3"></i></span><div><small>Used in Rules</small><strong id="riUsedCount">—</strong></div></article>
+        <article class="ri-stat"><span class="ri-stat-icon orange"><i class="bi bi-graph-up-arrow"></i></span><div><small>Recommendations Served</small><strong id="riServedCount">—</strong></div></article>
+    </section>
+    <section class="ri-inventory">
+        <div class="ri-inventory-heading"><h2>Recommendation Inventory</h2><p>Create and maintain the outcomes available to your decision widgets.</p></div>
+        <div class="ri-toolbar"><input id="riSearch" type="search" placeholder="Search by name or identifier…" aria-label="Search recommendations"><select id="riStatusFilter" aria-label="Filter by status"><option value="all">All statuses</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
+        <div class="ri-table-wrap"><table class="ri-table"><thead><tr><th>Recommendation item</th><th>Identifier</th><th>Description</th><th>Status</th><th>Actions</th></tr></thead><tbody id="riTableBody"><tr><td colspan="5" class="ri-empty">Loading recommendations…</td></tr></tbody></table></div>
+    </section>
+    <div class="ri-modal-backdrop" id="riModal" hidden>
+        <section class="ri-modal" role="dialog" aria-modal="true" aria-labelledby="riModalTitle">
+            <header><div><h2 id="riModalTitle">Add Recommendation</h2><p>Enter the outcome visitors may receive.</p></div><button type="button" id="riClose" aria-label="Close">×</button></header>
+            <form id="riForm"><div class="ri-modal-body"><label>Name <span>*</span><input id="riName" maxlength="150" required></label><label>Identifier <span>*</span><input id="riKey" maxlength="80" pattern="[a-zA-Z][a-zA-Z0-9_-]*" required><small>Start with a letter; use letters, numbers, underscores, or hyphens.</small></label><label>Description<textarea id="riDescription" maxlength="1000" rows="3"></textarea></label><label>Image URL<input id="riImageUrl" type="url" maxlength="2000"></label><label>Website URL<input id="riUrl" type="url" maxlength="2000"></label><label>Button text<input id="riCtaText" maxlength="100" placeholder="Learn more"></label><label class="ri-active"><input id="riActive" type="checkbox" checked> Active recommendation</label><div class="ri-form-error" id="riFormError" role="alert"></div></div><footer><button class="ri-button" type="button" id="riCancel">Cancel</button><button class="ri-button ri-button-primary" type="submit" id="riSave">Save Recommendation</button></footer></form>
+        </section>
+    </div>
 </div>
 
-                <link href="~/app_page_css/app_page_recommendation_items_css.css" rel="stylesheet" />
 
-  <script src="~/app_page_js/app_page_recommendation_items_js.js" />
-
+<link href="~/app_page_css/app_page_recommendation_items_css.css" rel="stylesheet" />
+<script src="~/app_page_js/app_page_recommendation_items_js.js"></script>

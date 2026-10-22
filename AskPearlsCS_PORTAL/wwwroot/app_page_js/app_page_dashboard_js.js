@@ -29,21 +29,22 @@
 
     function render (widgets) {
         counts.all.textContent = String(widgets.length);
-        counts.published.textContent = String(widgets.filter(widget => widget.status === "published").length);
-        counts.drafts.textContent = String(widgets.filter(widget => widget.status === "draft").length);
+        counts.published.textContent = String(widgets.filter(widget => widget.hasPublishedVersion).length);
+        counts.drafts.textContent = String(widgets.filter(widget => widget.hasDraft).length);
 
         list.innerHTML = widgets.slice(0, 5).map(widget => {
-            const statusClass = widget.status === "published" ? "is-published" : "is-draft";
-            const publishDisabled = widget.status === "published";
+            const statusClass = widget.hasDraft ? "is-draft" : "is-published";
+            const publishDisabled = !widget.hasDraft;
             const detail = widget.description || widget.publicKey;
-            const version = widget.versionNumber ? "Version " + escapeHtml(widget.versionNumber) : "";
+            const version = widget.hasDraft ? "Draft v" + escapeHtml(widget.draftVersionNumber || widget.versionNumber) + (widget.hasPublishedVersion ? " · Live v" + escapeHtml(widget.publishedVersionNumber) : "") : widget.hasPublishedVersion ? "Live v" + escapeHtml(widget.publishedVersionNumber) : "";
             return '<article class="dashboard-recent-row">' +
                 '<div class="dashboard-recent-main">' +
                 '<span class="dashboard-recent-icon" aria-hidden="true"><i class="bi bi-window-stack"></i></span>' +
                 '<div class="dashboard-recent-copy"><h3><a href="#" class="dashboard-widget-name" data-page="widget-builder" data-widget-open="' + escapeHtml(widget.publicKey) + '">' + escapeHtml(widget.name) + '</a></h3><p>' + escapeHtml(detail) + '</p></div>' +
                 '</div>' +
                 '<div class="dashboard-recent-actions">' +
-                '<span class="dashboard-recent-status ' + statusClass + '">' + escapeHtml(widget.status) + '</span>' +
+                '<span class="dashboard-recent-status ' + statusClass + '">' + (widget.hasDraft ? 'Draft' : 'Published') + '</span>' +
+                (widget.hasDraft && widget.hasPublishedVersion ? '<span class="dashboard-recent-status is-published">Published</span>' : '') +
                 (version ? '<span class="dashboard-recent-version">' + version + '</span>' : '') +
                 '<a href="#" class="btn btn-outline-success btn-sm" data-page="design-customize" data-widget-public-key="' + escapeHtml(widget.publicKey) + '">Design</a>' +
                 '<button type="button" class="btn btn-success btn-sm dashboard-publish-button" data-page="publish-embed" data-widget-public-key="' + escapeHtml(widget.publicKey) + '"' +
@@ -79,7 +80,11 @@
                 name: String(read(item, "name", "Name") || "Untitled widget"),
                 description: String(read(item, "description", "Description") || ""),
                 status: String(read(item, "status", "Status") || "draft").toLowerCase(),
-                versionNumber: String(read(item, "versionNumber", "VersionNumber") || "")
+                versionNumber: String(read(item, "versionNumber", "VersionNumber") || ""),
+                draftVersionNumber: String(read(item, "draftVersionNumber", "DraftVersionNumber") || ""),
+                publishedVersionNumber: String(read(item, "publishedVersionNumber", "PublishedVersionNumber") || ""),
+                hasDraft: Boolean(read(item, "hasDraft", "HasDraft") ?? String(read(item, "status", "Status") || "").toLowerCase() === "draft"),
+                hasPublishedVersion: Boolean(read(item, "hasPublishedVersion", "HasPublishedVersion") ?? String(read(item, "status", "Status") || "").toLowerCase() === "published")
             })).filter(widget => widget.publicKey);
 
             render(widgets);
