@@ -1,6 +1,5 @@
-
 <!-- PAGE: ACCOUNT & SETTINGS -->
-<div class="ap-page account-settings-page" data-ap-page="account-settings">
+<div class="ap-page account-settings-page" data-ap-page="account-settings" data-api-base="https://localhost:7014/api" data-demo-owner-user-token="1101">
     <!-- Shared AskPearls breadcrumb -->
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
@@ -77,7 +76,7 @@
                 <i class="bi bi-info-circle"></i>
                 <div>
                     <strong>Account settings</strong>
-                    <p>Changes are currently saved in this page's session only.</p>
+                    <p id="asNavBottomMessage">Loading your account settings.</p>
                 </div>
             </div>
         </aside>
@@ -145,10 +144,10 @@
                 </div>
 
                 <div class="as-panel-body">
-                  
+
                     <div class="as-info-banner">
                         <i class="bi bi-info-circle"></i>
-                        <span>Organization details are demonstration data. They are not connected to a saved organization record yet.</span>
+                        <span>Organization name and country are saved to your account. Branding, industry, team size, and website are saved as account preferences.</span>
                     </div>
 
                  
@@ -205,7 +204,7 @@
 
 
 
-<div class="as-form-grid">
+                    <div class="as-form-grid">
                         <div class="as-field as-field-full">
                             <label for="asCompanyName">Organization name <span>*</span></label>
                             <input type="text" id="asCompanyName" value="AskPearls Limited" maxlength="150" required>
@@ -253,322 +252,322 @@
             </section>
 
 
-<!-- SECURITY -->
-<section class="as-panel" data-as-panel="security" hidden>
-    <div class="as-panel-heading">
-        <div>
-            <h4>Security</h4>
-            <p>Review your account security preferences.</p>
-        </div>
-        <span class="as-heading-icon">
-            <i class="bi bi-shield-check"></i>
-        </span>
-    </div>
-
-    <div class="as-panel-body">
-
-        <!-- SECURITY STATUS -->
-        <div class="as-security-overview">
-            <div class="as-security-overview-icon">
-                <i class="bi bi-shield-lock"></i>
-            </div>
-            <div class="as-security-overview-copy">
-                <strong>Account security</strong>
-                <p id="asSecuritySummary">
-                    Review your password and sign-in security preferences.
-                </p>
-            </div>
-            <span class="as-security-status" id="asSecurityStatus">
-                <i class="bi bi-info-circle"></i>
-                Review settings
-            </span>
-        </div>
-
-        <!-- PASSWORD -->
-        <div class="as-security-card">
-            <div class="as-security-icon">
-                <i class="bi bi-key"></i>
-            </div>
-            <div class="as-security-copy">
-                <strong>Password</strong>
-                <p>Manage your account password.</p>
-                <span class="as-muted-note">
-                    Password changes are available as a UI prototype only.
-                </span>
-            </div>
-            <button type="button"
-                    class="as-btn as-btn-outline"
-                    id="asChangePassword">
-                Change password
-            </button>
-        </div>
-
-        <!-- TWO-FACTOR AUTHENTICATION -->
-        <div class="as-setting-row">
-            <div class="as-setting-copy">
-                <strong>Two-factor authentication</strong>
-                <p>Add an additional verification step when signing in.</p>
-                <span class="as-muted-note" id="asTwoFactorDescription">
-                    Currently disabled in this demo.
-                </span>
-            </div>
-
-            <label class="as-switch">
-                <input type="checkbox" id="asTwoFactor">
-                <span class="as-switch-track"></span>
-            </label>
-        </div>
-
-        <!-- ACTIVE SESSIONS -->
-        <div class="as-security-card">
-            <div class="as-security-icon as-icon-blue">
-                <i class="bi bi-laptop"></i>
-            </div>
-            <div class="as-security-copy">
-                <strong>Active sessions</strong>
-                <p>Review devices and browser sessions signed in to your account.</p>
-                <span class="as-muted-note">
-                    <i class="bi bi-display"></i>
-                    <span id="asSessionCount">3 demo sessions</span>
-                </span>
-            </div>
-            <button type="button"
-                    class="as-btn as-btn-outline"
-                    id="asViewSessions">
-                <i class="bi bi-eye"></i>
-                View sessions
-            </button>
-        </div>
-
-        <!-- SECURITY NOTICE -->
-        <div class="as-warning-banner">
-            <i class="bi bi-shield-exclamation"></i>
-            <span>
-                This is a UI prototype. Two-factor authentication and session
-                management are simulated and do not enforce real account security.
-            </span>
-        </div>
-    </div>
-
-    <!-- TWO-FACTOR CONFIRMATION MODAL -->
-    <div class="as-modal-backdrop" id="asTwoFactorModal" hidden>
-        <section class="as-modal as-security-modal"
-                 role="dialog"
-                 aria-modal="true"
-                 aria-labelledby="asTwoFactorTitle">
-
-            <div class="as-modal-header">
-                <div>
-                    <h4 id="asTwoFactorTitle">Two-factor authentication</h4>
-                    <p>Confirm your security preference.</p>
-                </div>
-                <button type="button"
-                        class="as-modal-close"
-                        id="asTwoFactorClose"
-                        aria-label="Close">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
-
-            <div class="as-modal-body">
-                <div class="as-security-modal-icon">
-                    <i class="bi bi-shield-check"></i>
-                </div>
-                <h5 id="asTwoFactorActionTitle">Enable two-factor authentication?</h5>
-                <p id="asTwoFactorActionText">
-                    This demo will update the displayed preference only.
-                </p>
-
-                <div class="as-security-modal-notice">
-                    <i class="bi bi-info-circle"></i>
-                    <span>
-                        No verification codes will be sent, and real sign-in
-                        security will not change.
+            <!-- SECURITY -->
+            <section class="as-panel" data-as-panel="security" hidden>
+                <div class="as-panel-heading">
+                    <div>
+                        <h4>Security</h4>
+                        <p>Review your account security preferences.</p>
+                    </div>
+                    <span class="as-heading-icon">
+                        <i class="bi bi-shield-check"></i>
                     </span>
                 </div>
-            </div>
 
-            <div class="as-modal-footer">
-                <button type="button"
-                        class="as-btn as-btn-outline"
-                        id="asTwoFactorCancel">
-                    Cancel
-                </button>
-                <button type="button"
-                        class="as-btn as-btn-primary"
-                        id="asTwoFactorConfirm">
-                    Confirm demo
-                </button>
-            </div>
-        </section>
-    </div>
+                <div class="as-panel-body">
 
-    <!-- ACTIVE SESSIONS MODAL -->
-    <div class="as-modal-backdrop" id="asSessionsModal" hidden>
-        <section class="as-modal as-security-modal as-sessions-modal"
-                 role="dialog"
-                 aria-modal="true"
-                 aria-labelledby="asSessionsTitle">
-
-            <div class="as-modal-header">
-                <div>
-                    <h4 id="asSessionsTitle">Active sessions</h4>
-                    <p>Review the devices associated with your account.</p>
-                </div>
-                <button type="button"
-                        class="as-modal-close"
-                        id="asSessionsClose"
-                        aria-label="Close sessions">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
-
-            <div class="as-modal-body">
-                <div class="as-sessions-summary">
-                    <div class="as-sessions-summary-icon">
-                        <i class="bi bi-pc-display"></i>
+                    <!-- SECURITY STATUS -->
+                    <div class="as-security-overview">
+                        <div class="as-security-overview-icon">
+                            <i class="bi bi-shield-lock"></i>
+                        </div>
+                        <div class="as-security-overview-copy">
+                            <strong>Account security</strong>
+                            <p id="asSecuritySummary">
+                                Review your password and sign-in security preferences.
+                            </p>
+                        </div>
+                        <span class="as-security-status" id="asSecurityStatus">
+                            <i class="bi bi-info-circle"></i>
+                            Review settings
+                        </span>
                     </div>
-                    <div>
-                        <strong id="asSessionsSummaryCount">3 demo sessions</strong>
-                        <p>Illustrative device information only</p>
+
+                    <!-- PASSWORD -->
+                    <div class="as-security-card">
+                        <div class="as-security-icon">
+                            <i class="bi bi-key"></i>
+                        </div>
+                        <div class="as-security-copy">
+                            <strong>Password</strong>
+                            <p>Manage your account password.</p>
+                            <span class="as-muted-note">
+                                Password changes are available as a UI prototype only.
+                            </span>
+                        </div>
+                        <button type="button"
+                                class="as-btn as-btn-outline"
+                                id="asChangePassword">
+                            Change password
+                        </button>
                     </div>
-                </div>
 
-                <div class="as-session-list" id="asSessionList">
+                    <!-- TWO-FACTOR AUTHENTICATION -->
+                    <div class="as-setting-row">
+                        <div class="as-setting-copy">
+                            <strong>Two-factor authentication</strong>
+                            <p>Add an additional verification step when signing in.</p>
+                            <span class="as-muted-note" id="asTwoFactorDescription">
+                                Currently disabled in this demo.
+                            </span>
+                        </div>
 
-                    <!-- Current demo session -->
-                    <article class="as-session-item" data-session-id="session-current">
-                        <div class="as-session-device">
+                        <label class="as-switch">
+                            <input type="checkbox" id="asTwoFactor" disabled>
+                            <span class="as-switch-track"></span>
+                        </label>
+                    </div>
+
+                    <!-- ACTIVE SESSIONS -->
+                    <div class="as-security-card">
+                        <div class="as-security-icon as-icon-blue">
                             <i class="bi bi-laptop"></i>
                         </div>
-                        <div class="as-session-details">
-                            <strong>Windows PC · Chrome</strong>
-                            <p>Desktop browser</p>
-                            <span>Active now · Current session</span>
-                        </div>
-                        <span class="as-session-current">This device</span>
-                    </article>
-
-                    <!-- Mock session -->
-                    <article class="as-session-item" data-session-id="session-mobile">
-                        <div class="as-session-device">
-                            <i class="bi bi-phone"></i>
-                        </div>
-                        <div class="as-session-details">
-                            <strong>Android · Chrome</strong>
-                            <p>Mobile browser</p>
-                            <span>Last active 2 hours ago · Demo data</span>
+                        <div class="as-security-copy">
+                            <strong>Active sessions</strong>
+                            <p>Review devices and browser sessions signed in to your account.</p>
+                            <span class="as-muted-note">
+                                <i class="bi bi-display"></i>
+                                <span id="asSessionCount">3 demo sessions</span>
+                            </span>
                         </div>
                         <button type="button"
-                                class="as-session-revoke"
-                                data-revoke-session="session-mobile">
-                            Revoke
+                                class="as-btn as-btn-outline"
+                                id="asViewSessions">
+                            <i class="bi bi-eye"></i>
+                            View sessions
                         </button>
-                    </article>
+                    </div>
 
-                    <!-- Mock session -->
-                    <article class="as-session-item" data-session-id="session-tablet">
-                        <div class="as-session-device">
-                            <i class="bi bi-tablet"></i>
+                    <!-- SECURITY NOTICE -->
+                    <div class="as-warning-banner">
+                        <i class="bi bi-shield-exclamation"></i>
+                        <span>
+                            This is a UI prototype. Two-factor authentication and session
+                            management are simulated and do not enforce real account security.
+                        </span>
+                    </div>
+                </div>
+
+                <!-- TWO-FACTOR CONFIRMATION MODAL -->
+                <div class="as-modal-backdrop" id="asTwoFactorModal" hidden>
+                    <section class="as-modal as-security-modal"
+                             role="dialog"
+                             aria-modal="true"
+                             aria-labelledby="asTwoFactorTitle">
+
+                        <div class="as-modal-header">
+                            <div>
+                                <h4 id="asTwoFactorTitle">Two-factor authentication</h4>
+                                <p>Confirm your security preference.</p>
+                            </div>
+                            <button type="button"
+                                    class="as-modal-close"
+                                    id="asTwoFactorClose"
+                                    aria-label="Close">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
                         </div>
-                        <div class="as-session-details">
-                            <strong>Windows tablet · Edge</strong>
-                            <p>Tablet browser</p>
-                            <span>Last active yesterday · Demo data</span>
+
+                        <div class="as-modal-body">
+                            <div class="as-security-modal-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <h5 id="asTwoFactorActionTitle">Enable two-factor authentication?</h5>
+                            <p id="asTwoFactorActionText">
+                                This demo will update the displayed preference only.
+                            </p>
+
+                            <div class="as-security-modal-notice">
+                                <i class="bi bi-info-circle"></i>
+                                <span>
+                                    No verification codes will be sent, and real sign-in
+                                    security will not change.
+                                </span>
+                            </div>
                         </div>
-                        <button type="button"
-                                class="as-session-revoke"
-                                data-revoke-session="session-tablet">
-                            Revoke
-                        </button>
-                    </article>
+
+                        <div class="as-modal-footer">
+                            <button type="button"
+                                    class="as-btn as-btn-outline"
+                                    id="asTwoFactorCancel">
+                                Cancel
+                            </button>
+                            <button type="button"
+                                    class="as-btn as-btn-primary"
+                                    id="asTwoFactorConfirm">
+                                Confirm demo
+                            </button>
+                        </div>
+                    </section>
                 </div>
 
-                <div class="as-session-feedback"
-                     id="asSessionFeedback"
-                     role="status"
-                     aria-live="polite"
-                     hidden></div>
+                <!-- ACTIVE SESSIONS MODAL -->
+                <div class="as-modal-backdrop" id="asSessionsModal" hidden>
+                    <section class="as-modal as-security-modal as-sessions-modal"
+                             role="dialog"
+                             aria-modal="true"
+                             aria-labelledby="asSessionsTitle">
 
-                <div class="as-sessions-warning">
-                    <i class="bi bi-info-circle"></i>
-                    <span>
-                        These are sample sessions, not actual devices connected
-                        to your account.
-                    </span>
+                        <div class="as-modal-header">
+                            <div>
+                                <h4 id="asSessionsTitle">Active sessions</h4>
+                                <p>Review the devices associated with your account.</p>
+                            </div>
+                            <button type="button"
+                                    class="as-modal-close"
+                                    id="asSessionsClose"
+                                    aria-label="Close sessions">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+
+                        <div class="as-modal-body">
+                            <div class="as-sessions-summary">
+                                <div class="as-sessions-summary-icon">
+                                    <i class="bi bi-pc-display"></i>
+                                </div>
+                                <div>
+                                    <strong id="asSessionsSummaryCount">3 demo sessions</strong>
+                                    <p>Illustrative device information only</p>
+                                </div>
+                            </div>
+
+                            <div class="as-session-list" id="asSessionList">
+
+                                <!-- Current demo session -->
+                                <article class="as-session-item" data-session-id="session-current">
+                                    <div class="as-session-device">
+                                        <i class="bi bi-laptop"></i>
+                                    </div>
+                                    <div class="as-session-details">
+                                        <strong>Windows PC · Chrome</strong>
+                                        <p>Desktop browser</p>
+                                        <span>Active now · Current session</span>
+                                    </div>
+                                    <span class="as-session-current">This device</span>
+                                </article>
+
+                                <!-- Mock session -->
+                                <article class="as-session-item" data-session-id="session-mobile">
+                                    <div class="as-session-device">
+                                        <i class="bi bi-phone"></i>
+                                    </div>
+                                    <div class="as-session-details">
+                                        <strong>Android · Chrome</strong>
+                                        <p>Mobile browser</p>
+                                        <span>Last active 2 hours ago · Demo data</span>
+                                    </div>
+                                    <button type="button"
+                                            class="as-session-revoke"
+                                            data-revoke-session="session-mobile">
+                                        Revoke
+                                    </button>
+                                </article>
+
+                                <!-- Mock session -->
+                                <article class="as-session-item" data-session-id="session-tablet">
+                                    <div class="as-session-device">
+                                        <i class="bi bi-tablet"></i>
+                                    </div>
+                                    <div class="as-session-details">
+                                        <strong>Windows tablet · Edge</strong>
+                                        <p>Tablet browser</p>
+                                        <span>Last active yesterday · Demo data</span>
+                                    </div>
+                                    <button type="button"
+                                            class="as-session-revoke"
+                                            data-revoke-session="session-tablet">
+                                        Revoke
+                                    </button>
+                                </article>
+                            </div>
+
+                            <div class="as-session-feedback"
+                                 id="asSessionFeedback"
+                                 role="status"
+                                 aria-live="polite"
+                                 hidden></div>
+
+                            <div class="as-sessions-warning">
+                                <i class="bi bi-info-circle"></i>
+                                <span>
+                                    These are sample sessions, not actual devices connected
+                                    to your account.
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="as-modal-footer as-sessions-footer">
+                            <button type="button"
+                                    class="as-btn as-btn-outline"
+                                    id="asSignOutOthers">
+                                <i class="bi bi-box-arrow-right"></i>
+                                Sign out other sessions
+                            </button>
+                            <button type="button"
+                                    class="as-btn as-btn-primary"
+                                    id="asSessionsDone">
+                                Done
+                            </button>
+                        </div>
+                    </section>
                 </div>
-            </div>
 
-            <div class="as-modal-footer as-sessions-footer">
-                <button type="button"
-                        class="as-btn as-btn-outline"
-                        id="asSignOutOthers">
-                    <i class="bi bi-box-arrow-right"></i>
-                    Sign out other sessions
-                </button>
-                <button type="button"
-                        class="as-btn as-btn-primary"
-                        id="asSessionsDone">
-                    Done
-                </button>
-            </div>
-        </section>
-    </div>
+                <!-- SIGN OUT OTHER SESSIONS CONFIRMATION -->
+                <div class="as-modal-backdrop" id="asSignOutModal" hidden>
+                    <section class="as-modal as-security-modal"
+                             role="dialog"
+                             aria-modal="true"
+                             aria-labelledby="asSignOutTitle">
 
-    <!-- SIGN OUT OTHER SESSIONS CONFIRMATION -->
-    <div class="as-modal-backdrop" id="asSignOutModal" hidden>
-        <section class="as-modal as-security-modal"
-                 role="dialog"
-                 aria-modal="true"
-                 aria-labelledby="asSignOutTitle">
+                        <div class="as-modal-header">
+                            <div>
+                                <h4 id="asSignOutTitle">Sign out other sessions?</h4>
+                                <p>Review this action before continuing.</p>
+                            </div>
+                            <button type="button"
+                                    class="as-modal-close"
+                                    id="asSignOutClose"
+                                    aria-label="Close">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
 
-            <div class="as-modal-header">
-                <div>
-                    <h4 id="asSignOutTitle">Sign out other sessions?</h4>
-                    <p>Review this action before continuing.</p>
+                        <div class="as-modal-body">
+                            <div class="as-security-modal-icon as-security-warning-icon">
+                                <i class="bi bi-box-arrow-right"></i>
+                            </div>
+                            <h5>End other demo sessions?</h5>
+                            <p>
+                                The prototype will mark the other sample sessions as signed
+                                out. Your current session will remain active.
+                            </p>
+                            <div class="as-security-modal-notice">
+                                <i class="bi bi-info-circle"></i>
+                                <span>
+                                    No real device will be signed out. This action only
+                                    changes the sample list displayed in this page.
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="as-modal-footer">
+                            <button type="button"
+                                    class="as-btn as-btn-outline"
+                                    id="asSignOutCancel">
+                                Cancel
+                            </button>
+                            <button type="button"
+                                    class="as-btn as-btn-primary"
+                                    id="asSignOutConfirm">
+                                Sign out demo sessions
+                            </button>
+                        </div>
+                    </section>
                 </div>
-                <button type="button"
-                        class="as-modal-close"
-                        id="asSignOutClose"
-                        aria-label="Close">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
 
-            <div class="as-modal-body">
-                <div class="as-security-modal-icon as-security-warning-icon">
-                    <i class="bi bi-box-arrow-right"></i>
-                </div>
-                <h5>End other demo sessions?</h5>
-                <p>
-                    The prototype will mark the other sample sessions as signed
-                    out. Your current session will remain active.
-                </p>
-                <div class="as-security-modal-notice">
-                    <i class="bi bi-info-circle"></i>
-                    <span>
-                        No real device will be signed out. This action only
-                        changes the sample list displayed in this page.
-                    </span>
-                </div>
-            </div>
-
-            <div class="as-modal-footer">
-                <button type="button"
-                        class="as-btn as-btn-outline"
-                        id="asSignOutCancel">
-                    Cancel
-                </button>
-                <button type="button"
-                        class="as-btn as-btn-primary"
-                        id="asSignOutConfirm">
-                    Sign out demo sessions
-                </button>
-            </div>
-        </section>
-    </div>
-
-</section>
+            </section>
 
 
             <!-- NOTIFICATIONS -->
@@ -584,25 +583,25 @@
                 <div class="as-panel-body">
 
                     
-<div class="as-setting-row as-notification-master">
-    <div class="as-setting-copy">
-        <strong>Non-essential notifications</strong>
-        <p>Control optional workspace updates and activity summaries.</p>
-        <span class="as-muted-note" id="asNotificationMasterStatus">
-            Optional notifications are enabled.
-        </span>
-    </div>
+                    <div class="as-setting-row as-notification-master">
+                        <div class="as-setting-copy">
+                            <strong>Non-essential notifications</strong>
+                            <p>Control optional workspace updates and activity summaries.</p>
+                            <span class="as-muted-note" id="asNotificationMasterStatus">
+                                Optional notifications are enabled.
+                            </span>
+                        </div>
 
-    <label class="as-switch">
-        <input type="checkbox"
-               id="asNonEssentialNotifications"
-               checked>
-        <span class="as-switch-track"></span>
-    </label>
-</div>
+                        <label class="as-switch">
+                            <input type="checkbox"
+                                   id="asNonEssentialNotifications"
+                                   checked>
+                            <span class="as-switch-track"></span>
+                        </label>
+                    </div>
 
 
-                    <div class="as-setting-row"  data-nonessential="true">
+                    <div class="as-setting-row" data-nonessential="true">
                         <div class="as-setting-copy">
                             <strong>Email notifications</strong>
                             <p>Receive important account and workspace updates by email.</p>
@@ -613,7 +612,7 @@
                         </label>
                     </div>
 
-                    <div class="as-setting-row"  data-nonessential="true">
+                    <div class="as-setting-row" data-nonessential="true">
                         <div class="as-setting-copy">
                             <strong>Widget activity reports</strong>
                             <p>Receive summaries about views, interactions, and completions.</p>
@@ -624,7 +623,7 @@
                         </label>
                     </div>
 
-                    <div class="as-setting-row"  data-nonessential="true">
+                    <div class="as-setting-row" data-nonessential="true">
                         <div class="as-setting-copy">
                             <strong>Product updates</strong>
                             <p>Hear about new AskPearls features and improvements.</p>
@@ -732,7 +731,7 @@
                     <div class="as-plan-icon"><i class="bi bi-stars"></i></div>
                     <div class="as-plan-title">
                         <span>YOUR SUBSCRIPTION</span>
-                        <h4>Free Plan <span class="as-plan-badge">Current</span></h4>
+                        <h4><span id="asCurrentPlanName">Free Plan</span> <span class="as-plan-badge" id="asCurrentPlanBadge">Current</span></h4>
                         <p>A preview of your plan and resource usage.</p>
                     </div>
                 </div>
@@ -740,14 +739,14 @@
                 <div class="as-plan-usage">
                     <div class="as-usage-heading">
                         <span>Widgets created</span>
-                        <strong>3 <small>/ 5</small></strong>
+                        <strong><span id="asWidgetsUsed">0</span> <small>/ <span id="asWidgetsLimit">5</span></small></strong>
                     </div>
                     <div class="as-usage-track">
-                        <div class="as-usage-fill" style="width:60%"></div>
+                        <div class="as-usage-fill" id="asUsageFill" style="width:0%"></div>
                     </div>
                     <div class="as-usage-foot">
-                        <span>60% of illustrative allowance used</span>
-                        <span>2 remaining</span>
+                        <span id="asUsageSummary">Usage from your account</span>
+                        <span id="asWidgetsRemaining">5 remaining</span>
                     </div>
                 </div>
 
@@ -757,7 +756,7 @@
                         Explore plans <i class="bi bi-arrow-right"></i>
                     </button>
                 </div>
-                <div class="as-plan-disclaimer">Plan limits and pricing are illustrative mock data, not an active subscription.</div>
+                <div class="as-plan-disclaimer" id="asSubscriptionNote">Subscription details are loaded from your account.</div>
             </section>
 
         </main>
@@ -859,172 +858,176 @@
     </div>
 
     
-<!-- SUBSCRIPTION PLANS MODAL -->
-<div class="as-modal-backdrop as-plans-backdrop" id="asPlansModal" hidden>
-    <section class="as-modal as-plans-modal"
-             role="dialog"
-             aria-modal="true"
-             aria-labelledby="asPlansModalTitle">
+    <!-- SUBSCRIPTION PLANS MODAL -->
+    <div class="as-modal-backdrop as-plans-backdrop" id="asPlansModal" hidden>
+        <section class="as-modal as-plans-modal"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="asPlansModalTitle">
 
-        <div class="as-modal-header">
-            <div>
-                <h4 id="asPlansModalTitle">Choose your AskPearls plan</h4>
-                <p>Find the right plan for your growing business.</p>
+            <div class="as-modal-header">
+                <div>
+                    <h4 id="asPlansModalTitle">Choose your AskPearls plan</h4>
+                    <p>Find the right plan for your growing business.</p>
+                </div>
+                <button type="button" class="as-modal-close"
+                        id="asPlansClose" aria-label="Close plans">
+                    <i class="bi bi-x-lg"></i>
+                </button>
             </div>
-            <button type="button" class="as-modal-close"
-                    id="asPlansClose" aria-label="Close plans">
-                <i class="bi bi-x-lg"></i>
-            </button>
-        </div>
 
-        <div class="as-plans-intro">
-            <span class="as-plans-kicker">
-                <i class="bi bi-stars"></i> SIMPLE, FLEXIBLE PRICING
-            </span>
-            <h3>Grow at your own pace</h3>
-            <p>Start free and explore more capabilities as you grow.</p>
-            <span class="as-plans-demo-note">
-                <i class="bi bi-info-circle"></i>
-                Demo pricing only — not live offers.
-            </span>
-        </div>
-
-        <div class="as-plans-grid">
-
-            <!-- FREE -->
-            <article class="as-plan-option" data-plan="Free">
-                <div class="as-plan-option-top">
-                    <span class="as-plan-name">Free</span>
-                    <span class="as-plan-current">Current plan</span>
-                </div>
-                <div class="as-plan-price">
-                    <strong>$0</strong><span>/ month</span>
-                </div>
-                <p class="as-plan-description">
-                    Explore the essentials and build your first widgets.
-                </p>
-                <button type="button"
-                        class="as-btn as-btn-outline as-plan-select"
-                        data-select-plan="Free"
-                        disabled>
-                    Your current plan
-                </button>
-                <div class="as-plan-divider"></div>
-                <ul class="as-plan-features">
-                    <li><i class="bi bi-check-circle-fill"></i> Up to 5 widgets</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Core widget features</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Basic customization</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Basic analytics</li>
-                    <li class="as-feature-muted"><i class="bi bi-dash-circle"></i> Priority support</li>
-                </ul>
-            </article>
-
-            <!-- STARTER -->
-            <article class="as-plan-option" data-plan="Starter">
-                <div class="as-plan-option-top">
-                    <span class="as-plan-name">Starter</span>
-                </div>
-                <div class="as-plan-price">
-                    <strong>$19</strong><span>/ month</span>
-                </div>
-                <p class="as-plan-description">
-                    A practical next step for a small, growing business.
-                </p>
-                <button type="button"
-                        class="as-btn as-btn-outline as-plan-select"
-                        data-select-plan="Starter">
-                    Choose Starter
-                </button>
-                <div class="as-plan-divider"></div>
-                <ul class="as-plan-features">
-                    <li><i class="bi bi-check-circle-fill"></i> Up to 10 widgets</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Core widget features</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Standard customization</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Basic analytics</li>
-                    <li class="as-feature-muted"><i class="bi bi-dash-circle"></i> Priority support</li>
-                </ul>
-            </article>
-
-            <!-- PROFESSIONAL -->
-            <article class="as-plan-option as-plan-featured" data-plan="Professional">
-                <span class="as-plan-popular">POPULAR</span>
-                <div class="as-plan-option-top">
-                    <span class="as-plan-name">Professional</span>
-                </div>
-                <div class="as-plan-price">
-                    <strong>$49</strong><span>/ month</span>
-                </div>
-                <p class="as-plan-description">
-                    More control and insights for established teams.
-                </p>
-                <button type="button"
-                        class="as-btn as-btn-primary as-plan-select"
-                        data-select-plan="Professional">
-                    Choose Professional
-                </button>
-                <div class="as-plan-divider"></div>
-                <ul class="as-plan-features">
-                    <li><i class="bi bi-check-circle-fill"></i> Up to 25 widgets</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Core widget features</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Advanced customization</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Advanced analytics</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Priority support</li>
-                </ul>
-            </article>
-
-            <!-- PREMIUM -->
-            <article class="as-plan-option" data-plan="Premium">
-                <div class="as-plan-option-top">
-                    <span class="as-plan-name">Premium</span>
-                </div>
-                <div class="as-plan-price">
-                    <strong>$99</strong><span>/ month</span>
-                </div>
-                <p class="as-plan-description">
-                    A comprehensive feature set for ambitious businesses.
-                </p>
-                <button type="button"
-                        class="as-btn as-btn-outline as-plan-select"
-                        data-select-plan="Premium">
-                    Choose Premium
-                </button>
-                <div class="as-plan-divider"></div>
-                <ul class="as-plan-features">
-                    <li><i class="bi bi-check-circle-fill"></i> Unlimited widgets</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Core widget features</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Full customization</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Advanced analytics</li>
-                    <li><i class="bi bi-check-circle-fill"></i> Priority support</li>
-                </ul>
-            </article>
-        </div>
-
-        <div class="as-plan-confirmation" id="asPlanConfirmation" hidden>
-            <div class="as-plan-confirmation-icon">
-                <i class="bi bi-check2-circle"></i>
+            <div class="as-plans-intro">
+                <span class="as-plans-kicker">
+                    <i class="bi bi-stars"></i> SIMPLE, FLEXIBLE PRICING
+                </span>
+                <h3>Grow at your own pace</h3>
+                <p>Start free and explore more capabilities as you grow.</p>
+                <span class="as-plans-demo-note">
+                    <i class="bi bi-info-circle"></i>
+                    Demo pricing only — not live offers.
+                </span>
             </div>
-            <div class="as-plan-confirmation-copy">
-                <strong id="asPlanConfirmationTitle">Confirm plan selection</strong>
-                <p id="asPlanConfirmationText"></p>
-            </div>
-            <button type="button" class="as-btn as-btn-primary"
-                    id="asPlanConfirm">
-                Confirm demo
-            </button>
-            <button type="button" class="as-btn as-btn-outline"
-                    id="asPlanCancel">
-                Cancel
-            </button>
-        </div>
 
-        <div class="as-plans-footer">
-            <span><i class="bi bi-shield-check"></i>
-                No payment will be collected in this prototype.</span>
-            <button type="button" class="as-btn as-btn-outline"
-                    id="asPlansDone">Close</button>
-        </div>
-    </section>
-</div>
+            <div class="as-plans-grid">
+
+                <!-- FREE -->
+                <article class="as-plan-option" data-plan="Free">
+                    <div class="as-plan-option-top">
+                        <span class="as-plan-name">Free</span>
+                        <span class="as-plan-current">Current plan</span>
+                    </div>
+                    <div class="as-plan-price">
+                        <strong>$0</strong><span>/ month</span>
+                    </div>
+                    <p class="as-plan-description">
+                        Explore the essentials and build your first widgets.
+                    </p>
+                    <button type="button"
+                            class="as-btn as-btn-outline as-plan-select"
+                            data-select-plan="Free"
+                            disabled>
+                        Your current plan
+                    </button>
+                    <div class="as-plan-divider"></div>
+                    <ul class="as-plan-features">
+                        <li><i class="bi bi-check-circle-fill"></i> Up to 5 widgets</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Core widget features</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Basic customization</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Basic analytics</li>
+                        <li class="as-feature-muted"><i class="bi bi-dash-circle"></i> Priority support</li>
+                    </ul>
+                </article>
+
+                <!-- STARTER -->
+                <article class="as-plan-option" data-plan="Starter">
+                    <div class="as-plan-option-top">
+                        <span class="as-plan-name">Starter</span>
+                    </div>
+                    <div class="as-plan-price">
+                        <strong>$19</strong><span>/ month</span>
+                    </div>
+                    <p class="as-plan-description">
+                        A practical next step for a small, growing business.
+                    </p>
+                    <button type="button"
+                            class="as-btn as-btn-outline as-plan-select"
+                            data-select-plan="Starter">
+                        Choose Starter
+                    </button>
+                    <div class="as-plan-divider"></div>
+                    <ul class="as-plan-features">
+                        <li><i class="bi bi-check-circle-fill"></i> Up to 10 widgets</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Core widget features</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Standard customization</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Basic analytics</li>
+                        <li class="as-feature-muted"><i class="bi bi-dash-circle"></i> Priority support</li>
+                    </ul>
+                </article>
+
+                <!-- PROFESSIONAL -->
+                <article class="as-plan-option as-plan-featured" data-plan="Professional">
+                    <span class="as-plan-popular">POPULAR</span>
+                    <div class="as-plan-option-top">
+                        <span class="as-plan-name">Professional</span>
+                    </div>
+                    <div class="as-plan-price">
+                        <strong>$49</strong><span>/ month</span>
+                    </div>
+                    <p class="as-plan-description">
+                        More control and insights for established teams.
+                    </p>
+                    <button type="button"
+                            class="as-btn as-btn-primary as-plan-select"
+                            data-select-plan="Professional">
+                        Choose Professional
+                    </button>
+                    <div class="as-plan-divider"></div>
+                    <ul class="as-plan-features">
+                        <li><i class="bi bi-check-circle-fill"></i> Up to 25 widgets</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Core widget features</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Advanced customization</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Advanced analytics</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Priority support</li>
+                    </ul>
+                </article>
+
+                <!-- PREMIUM -->
+                <article class="as-plan-option" data-plan="Premium">
+                    <div class="as-plan-option-top">
+                        <span class="as-plan-name">Premium</span>
+                    </div>
+                    <div class="as-plan-price">
+                        <strong>$99</strong><span>/ month</span>
+                    </div>
+                    <p class="as-plan-description">
+                        A comprehensive feature set for ambitious businesses.
+                    </p>
+                    <button type="button"
+                            class="as-btn as-btn-outline as-plan-select"
+                            data-select-plan="Premium">
+                        Choose Premium
+                    </button>
+                    <div class="as-plan-divider"></div>
+                    <ul class="as-plan-features">
+                        <li><i class="bi bi-check-circle-fill"></i> Unlimited widgets</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Core widget features</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Full customization</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Advanced analytics</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Priority support</li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="as-plan-confirmation" id="asPlanConfirmation" hidden>
+                <div class="as-plan-confirmation-icon">
+                    <i class="bi bi-check2-circle"></i>
+                </div>
+                <div class="as-plan-confirmation-copy">
+                    <strong id="asPlanConfirmationTitle">Confirm plan selection</strong>
+                    <p id="asPlanConfirmationText"></p>
+                </div>
+                <button type="button" class="as-btn as-btn-primary"
+                        id="asPlanConfirm">
+                    Confirm demo
+                </button>
+                <button type="button" class="as-btn as-btn-outline"
+                        id="asPlanCancel">
+                    Cancel
+                </button>
+            </div>
+
+            <div class="as-plans-footer">
+                <span>
+                    <i class="bi bi-shield-check"></i>
+                    No payment will be collected in this prototype.
+                </span>
+                <button type="button" class="as-btn as-btn-outline"
+                        id="asPlansDone">
+                    Close
+                </button>
+            </div>
+        </section>
+    </div>
 
 
 
@@ -1033,7 +1036,5 @@
 
     <div class="as-toast" id="asToast" role="status" aria-live="polite"></div>
 </div>
-<link href="~/app_page_css/app_page_account_settings_css.css" rel="stylesheet" />
-
-  <script src="~/app_page_js/app_page_account_settings_js.js" />
-
+<link href="~/app_page_css/app_page_account_settings_css.css?v=20261022-1" rel="stylesheet" />
+<script src="~/app_page_js/app_page_account_settings_js.js?v=20261022-1"></script>

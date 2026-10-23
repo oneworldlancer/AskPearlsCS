@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AskPearls | Workspace Launchpad</title>
+    <link rel="stylesheet" href="~/app_page_css/app_page_index_4_css.css" />
+    <link rel="stylesheet" href="~/app_css/app_page_signin_info_modal_css.css" />
+    <script src="~/app_page_js/app_page_index_js.js" defer></script>
+</head>
+<body>
+    <div class="launch-page">
+        <header class="launch-header">
+            <a class="launch-brand" href="/" aria-label="AskPearls home"><img src="/app_img/img_logo_color.png" alt="" /><span><strong>AskPearls</strong><small>Capture. Engage. Convert.</small></span></a>
+            <nav class="launch-actions" aria-label="Page options">
+                <button class="help-link" type="button" data-info-open="help"><span aria-hidden="true">ⓘ</span> Help</button>
+                <button class="theme-toggle" id="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch theme"><svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42 1.42"></path></svg><svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"></path></svg></button>
+            </nav>
+        </header>
+        <main class="launch-main">
+            <section class="launch-story" aria-labelledby="launch-title">
+                <p class="launch-eyebrow">THE ASKPEARLS WORKSPACE</p>
+                <h1 id="launch-title">Your workspace,<br /><span>ready when you are.</span></h1>
+                <p class="launch-intro">Bring your data, intelligence and expertise together in one place — so you can make faster, smarter decisions.</p>
+                <div class="launch-orbit" aria-hidden="true">
+                    <span class="orbit-core">AP</span><i class="orbit-link link-one"></i><i class="orbit-link link-two"></i><i class="orbit-link link-three"></i>
+                    <article class="launch-tile tile-one"><span class="tile-symbol">▥</span><span><strong>DecisionOS</strong><small>Plan, explore and decide with confidence.</small></span></article>
+                    <article class="launch-tile tile-two"><span class="tile-symbol">◇</span><span><strong>Recommendations</strong><small>Turn complexity into clear next steps.</small></span></article>
+                    <article class="launch-tile tile-three"><span class="tile-symbol">✦</span><span><strong>Insights</strong><small>Uncover what matters and see what’s next.</small></span></article>
+                </div>
+            </section>
+            <section class="launch-auth" aria-labelledby="auth-title">
+                <div class="launch-card" id="google-auth-card" data-google-auth-url="https://localhost:7014/api/auth/google/start">
+                    <img class="launch-card-logo" src="/app_img/img_logo_color.png" alt="AskPearls" />
+                    <p class="launch-card-kicker">YOUR PORTAL STARTS HERE</p>
+                    <h2 id="auth-title">Continue to AskPearls</h2>
+                    <p class="launch-card-copy">Sign in or create your workspace with Google.</p>
+                    <button class="google-button" id="google-signin" type="button" data-google-signin><span class="google-g" aria-hidden="true">G</span><span>Continue with Google</span></button>
+                    <p class="auth-message" id="auth-message" data-auth-message role="status" aria-live="polite"></p>
+                    <p class="launch-auto"><span aria-hidden="true">✓</span> New users are set up automatically.</p>
+                    <div class="launch-secure"><span aria-hidden="true">♢</span><p><strong>Your account stays secure.</strong><br />We use your basic Google profile to create your account.</p></div>
+                    <p class="launch-legal">By continuing, you agree to our<br /><button class="legal-trigger" type="button" data-info-open="terms">Terms of Service</button> and <button class="legal-trigger" type="button" data-info-open="privacy">Privacy Policy</button>.</p>
+                </div>
+                <p class="launch-help">Need help? <button class="legal-trigger" type="button" data-info-open="contact">Contact support</button></p>
+            </section>
+        </main>
+        <partial name="_SignInInfoModal" />
+        <footer class="launch-footer"><a href="/">AskPearls Limited</a><nav aria-label="Help and legal"><button class="legal-trigger" type="button" data-info-open="help">Help</button><button class="legal-trigger" type="button" data-info-open="contact">Contact support</button><button class="legal-trigger" type="button" data-info-open="terms">Terms</button><button class="legal-trigger" type="button" data-info-open="privacy">Privacy</button></nav><span>Patent Pending. © <span id="footer-year" data-year></span> All Rights Reserved.</span></footer>
+    </div>
+</body>
+</html>

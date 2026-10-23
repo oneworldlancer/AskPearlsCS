@@ -1,0 +1,1242 @@
+﻿:root {
+    color-scheme: light;
+    --page: #f5fbf8;
+    --surface: #fffefa;
+    --surface-soft: #edf8f2;
+    --text: #102f27;
+    --muted: #60766d;
+    --line: #dceae2;
+    --accent: #078850;
+    --accent-bright: #16b87b;
+    --mint: #bcebd8;
+    --shadow: 0 20px 52px rgba(15, 77, 52, .13);
+}
+
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #04150f;
+    --surface: #081d16;
+    --surface-soft: #102b20;
+    --text: #f5faf6;
+    --muted: #b8cbc0;
+    --line: #224338;
+    --accent: #29d99a;
+    --accent-bright: #59edbd;
+    --mint: #15543a;
+    --shadow: 0 20px 56px rgba(0, 0, 0, .37);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    min-width: 320px;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    color: var(--text);
+    background: var(--page);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+button {
+    font: inherit;
+}
+
+.idea-page {
+    height: 100dvh;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 35% 68%, color-mix(in srgb, var(--mint) 27%, transparent), transparent 57%), var(--page);
+}
+
+.idea-header {
+    z-index: 5;
+    height: 66px;
+    flex: 0 0 66px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(22px, 4.5vw, 68px);
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+}
+
+.idea-brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--text);
+    text-decoration: none;
+}
+
+    .idea-brand img {
+        width: 43px;
+        height: 43px;
+        object-fit: contain;
+    }
+
+    .idea-brand span {
+        display: grid;
+        gap: 2px;
+    }
+
+    .idea-brand strong {
+        font-size: 18px;
+        letter-spacing: -.45px;
+    }
+
+    .idea-brand small {
+        color: var(--muted);
+        font-size: 8px;
+    }
+
+.idea-actions {
+    display: flex;
+    align-items: center;
+    gap: 19px;
+}
+
+.idea-help {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0;
+    color: var(--text);
+    background: transparent;
+    border: 0;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.help-circle {
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    border: 1px solid var(--muted);
+    border-radius: 50%;
+    font-size: 12px;
+}
+
+.idea-theme {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    color: var(--text);
+    background: var(--surface-soft);
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    cursor: pointer;
+}
+
+    .idea-theme svg {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.7;
+    }
+
+.icon-moon {
+    display: none;
+}
+
+html[data-theme="dark"] .icon-sun {
+    display: none;
+}
+
+html[data-theme="dark"] .icon-moon {
+    display: block;
+}
+
+.idea-main {
+    position: relative;
+    width: min(1520px, 100%);
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: auto;
+    padding: clamp(20px, 3vh, 38px) clamp(26px, 4.5vw, 68px);
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(320px, .68fr);
+    gap: clamp(26px, 4vw, 60px);
+    align-items: center;
+}
+
+.idea-story {
+    min-width: 0;
+}
+
+.idea-copy {
+    position: relative;
+    z-index: 4;
+}
+
+.idea-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 15px;
+    color: var(--accent);
+    font-size: 9px;
+    font-weight: 850;
+    letter-spacing: 2px;
+}
+
+.eyebrow-spark {
+    font-size: 15px;
+}
+
+.idea-story h1 {
+    margin: 0;
+    font-size: clamp(36px, 4.25vw, 60px);
+    line-height: 1.02;
+    letter-spacing: -2.9px;
+}
+
+    .idea-story h1 em {
+        color: var(--accent);
+        font-style: normal;
+    }
+
+.idea-intro {
+    max-width: 510px;
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: clamp(13px, 1.14vw, 16px);
+    line-height: 1.55;
+}
+
+.journey-art {
+    position: relative;
+    height: clamp(270px, 43vh, 420px);
+    margin-top: 6px;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.journey-landscape {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.hill-a {
+    fill: url(#hill-back);
+}
+
+.hill-b {
+    fill: url(#hill-front);
+}
+
+.flight-ribbon {
+    fill: url(#path-fill);
+}
+
+.flight-stroke {
+    fill: none;
+    stroke: color-mix(in srgb, var(--accent-bright) 68%, transparent);
+    stroke-width: 2;
+    stroke-dasharray: 6 8;
+}
+
+.sky-orb {
+    position: absolute;
+    z-index: -1;
+    width: 9px;
+    height: 9px;
+    background: var(--accent-bright);
+    border: 3px solid var(--surface);
+    border-radius: 50%;
+    box-shadow: 0 0 18px color-mix(in srgb, var(--accent-bright) 75%, transparent);
+}
+
+.orb-one {
+    top: 20%;
+    left: 31%;
+}
+
+.orb-two {
+    top: 33%;
+    right: 12%;
+    width: 7px;
+    height: 7px;
+}
+
+.orb-three {
+    bottom: 25%;
+    left: 12%;
+    width: 6px;
+    height: 6px;
+}
+
+.question-note, .product-card {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 12px;
+    color: var(--text);
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    box-shadow: var(--shadow);
+}
+
+.question-note {
+    min-width: 156px;
+}
+
+    .question-note span:last-child {
+        display: grid;
+        gap: 6px;
+    }
+
+    .question-note b, .product-card b {
+        font-size: 9px;
+    }
+
+    .question-note i {
+        width: 68px;
+        height: 3px;
+        background: color-mix(in srgb, var(--accent) 24%, var(--line));
+        border-radius: 9px;
+    }
+
+        .question-note i:last-child {
+            width: 46px;
+        }
+
+.note-icon, .product-icon {
+    width: 29px;
+    height: 29px;
+    flex: 0 0 29px;
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--mint) 57%, transparent);
+    border-radius: 9px;
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.note-chat {
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.note-one {
+    top: 5%;
+    left: 1%;
+}
+
+.note-two {
+    top: 17%;
+    right: 3%;
+}
+
+.product-card {
+    display: block;
+    min-width: 127px;
+    padding: 9px 10px;
+}
+
+    .product-card .product-icon {
+        float: left;
+        margin: 0 8px 11px 0;
+    }
+
+    .product-card b, .product-card small {
+        display: block;
+    }
+
+    .product-card small {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 8px;
+    }
+
+.product-decision {
+    top: 31%;
+    left: 25%;
+}
+
+.product-insights {
+    top: 28%;
+    right: 1%;
+}
+
+.product-conversation {
+    top: 49%;
+    left: 2%;
+    min-width: 135px;
+}
+
+.tiny-tree {
+    clear: both;
+    display: block;
+    padding-top: 5px;
+    color: var(--accent);
+    font-size: 9px;
+}
+
+    .tiny-tree i {
+        display: inline-block;
+        width: 24px;
+        border-top: 1px solid var(--accent);
+        vertical-align: middle;
+    }
+
+.tiny-chart {
+    clear: both;
+    height: 19px;
+    display: flex;
+    align-items: end;
+    gap: 4px;
+    padding-top: 5px;
+}
+
+    .tiny-chart i {
+        width: 5px;
+        background: var(--accent);
+        border-radius: 3px 3px 1px 1px;
+    }
+
+        .tiny-chart i:nth-child(1) {
+            height: 6px;
+        }
+
+        .tiny-chart i:nth-child(2) {
+            height: 10px;
+        }
+
+        .tiny-chart i:nth-child(3) {
+            height: 14px;
+        }
+
+        .tiny-chart i:nth-child(4) {
+            height: 18px;
+        }
+
+.paper-plane {
+    position: absolute;
+    z-index: 3;
+    top: 31%;
+    left: 8%;
+    width: min(56%, 405px);
+    height: 58%;
+    overflow: visible;
+    filter: drop-shadow(0 15px 12px color-mix(in srgb, var(--accent) 22%, transparent));
+    transform: rotate(-4deg);
+}
+
+.plane-shadow {
+    fill: color-mix(in srgb, var(--accent) 19%, transparent);
+    transform: translate(3px, 10px);
+}
+
+.plane-wing {
+    fill: url(#plane-top);
+    stroke: color-mix(in srgb, var(--accent) 47%, #fff);
+    stroke-width: 2;
+}
+
+.plane-fold {
+    fill: url(#plane-side);
+    stroke: color-mix(in srgb, var(--accent) 48%, transparent);
+    stroke-width: 1.5;
+}
+
+.plane-lower {
+    fill: color-mix(in srgb, var(--accent-bright) 66%, #fff);
+}
+
+.plane-crease {
+    fill: none;
+    stroke: color-mix(in srgb, var(--accent) 48%, #fff);
+    stroke-width: 2;
+}
+
+.sparkle {
+    position: absolute;
+    color: var(--accent);
+    text-shadow: 0 0 14px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.sparkle-one {
+    top: 17%;
+    left: 53%;
+    font-size: 18px;
+}
+
+.sparkle-two {
+    top: 42%;
+    right: 13%;
+    font-size: 24px;
+}
+
+.sparkle-three {
+    bottom: 26%;
+    left: 38%;
+    font-size: 14px;
+}
+
+.journey-caption {
+    position: absolute;
+    z-index: 4;
+    right: 8px;
+    bottom: 3px;
+    left: 8px;
+    margin: 0;
+    color: var(--muted);
+    text-align: center;
+    font-size: 9px;
+}
+
+    .journey-caption span {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        margin-right: 6px;
+        background: var(--accent);
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+    }
+
+.idea-auth {
+    width: 100%;
+    max-width: 420px;
+    justify-self: end;
+}
+
+.idea-card {
+    padding: clamp(25px, 3vw, 40px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 23px;
+    box-shadow: var(--shadow);
+}
+
+.card-mark {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 22px;
+    background: color-mix(in srgb, var(--mint) 45%, transparent);
+    border-radius: 17px;
+}
+
+    .card-mark img {
+        width: 36px;
+        height: 36px;
+        object-fit: contain;
+    }
+
+.card-eyebrow {
+    margin: 0 0 12px;
+    color: var(--accent);
+    font-size: 8px;
+    font-weight: 850;
+    letter-spacing: 1.7px;
+}
+
+.idea-card h2 {
+    margin: 0;
+    font-size: clamp(27px, 2.7vw, 35px);
+    line-height: 1.08;
+    letter-spacing: -1.1px;
+}
+
+.card-copy {
+    margin: 14px 0 22px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.google-button {
+    width: 100%;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    padding: 12px 18px;
+    color: #122a22;
+    background: #fff;
+    border: 1px solid #d8e4dc;
+    border-radius: 11px;
+    box-shadow: 0 4px 13px rgba(19, 54, 38, .08);
+    font-size: 13px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+    .google-button:hover {
+        border-color: #9acfb3;
+        box-shadow: 0 7px 18px rgba(20, 100, 65, .13);
+    }
+
+    .google-button:focus-visible, .idea-theme:focus-visible, .idea-help:focus-visible, .text-link:focus-visible {
+        outline: 3px solid color-mix(in srgb, var(--accent) 55%, transparent);
+        outline-offset: 3px;
+    }
+
+    .google-button svg {
+        width: 23px;
+        height: 23px;
+        flex: 0 0 23px;
+    }
+
+    .google-button[disabled] {
+        opacity: .72;
+        cursor: wait;
+    }
+
+.auth-message:empty {
+    display: none;
+}
+
+.auth-message:not(:empty) {
+    margin: 11px 0 0;
+    padding: 9px 11px;
+    color: #9b342b;
+    background: #fff0ed;
+    border: 1px solid #efc5bd;
+    border-radius: 9px;
+    font-size: 11px;
+}
+
+.idea-secure {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    margin-top: 19px;
+    padding: 16px 0 0;
+    border-top: 1px solid var(--line);
+}
+
+.secure-shield {
+    width: 23px;
+    height: 23px;
+    flex: 0 0 23px;
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    font-size: 14px;
+}
+
+.idea-secure p {
+    margin: 1px 0 0;
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.55;
+}
+
+.idea-legal {
+    margin: 17px 0 0;
+    color: var(--muted);
+    text-align: center;
+    font-size: 10px;
+    line-height: 1.8;
+}
+
+.text-link {
+    padding: 0;
+    color: var(--accent);
+    background: transparent;
+    border: 0;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.new-user-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 9px;
+}
+
+    .new-user-note span {
+        color: var(--accent);
+    }
+
+.idea-footer {
+    min-height: 52px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px 20px;
+    padding: 7px clamp(20px, 4.5vw, 68px);
+    color: var(--muted);
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    font-size: 8px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+    .footer-brand img {
+        width: 23px;
+        height: 23px;
+        object-fit: contain;
+    }
+
+    .footer-brand strong {
+        font-size: 10px;
+    }
+
+.footer-tagline {
+    flex: 1 1 auto;
+}
+
+.footer-copy {
+    white-space: nowrap;
+}
+
+.idea-footer nav {
+    display: flex;
+    gap: 12px;
+}
+
+    .idea-footer nav button {
+        padding: 0;
+        color: var(--muted);
+        background: none;
+        border: 0;
+        font: inherit;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+
+        .idea-footer nav button:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+html[data-theme="dark"] .google-button {
+    color: #10251e;
+    background: #fff;
+    border-color: #fff;
+}
+
+@media (max-width: 900px) {
+    .idea-main {
+        grid-template-columns: minmax(0, 1fr) minmax(290px, .77fr);
+        gap: 23px;
+        padding-inline: 25px;
+    }
+
+    .idea-story h1 {
+        font-size: clamp(34px, 5.4vw, 49px);
+        letter-spacing: -2.2px;
+    }
+
+    .idea-intro {
+        font-size: 12px;
+    }
+
+    .journey-art {
+        height: clamp(240px, 37vh, 330px);
+    }
+
+    .question-note {
+        min-width: 132px;
+        padding: 8px;
+    }
+
+        .question-note b {
+            font-size: 8px;
+        }
+
+    .note-icon, .product-icon {
+        width: 25px;
+        height: 25px;
+        flex-basis: 25px;
+    }
+
+    .product-card {
+        min-width: 112px;
+        padding: 8px;
+    }
+
+    .idea-card {
+        padding: 24px;
+    }
+
+    .idea-footer {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 4px 14px;
+    }
+}
+
+@media (max-width: 660px) {
+    .idea-page {
+        min-height: 480px;
+    }
+
+    .idea-header {
+        height: 56px;
+        flex-basis: 56px;
+        padding-inline: 14px;
+    }
+
+    .idea-brand {
+        gap: 6px;
+    }
+
+        .idea-brand img {
+            width: 37px;
+            height: 37px;
+        }
+
+        .idea-brand strong {
+            font-size: 16px;
+        }
+
+        .idea-brand small {
+            font-size: 7px;
+        }
+
+    .idea-actions {
+        gap: 13px;
+    }
+
+    .idea-help {
+        gap: 5px;
+        font-size: 11px;
+    }
+
+    .idea-theme {
+        width: 34px;
+        height: 34px;
+    }
+
+    .idea-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        padding: 7px 13px;
+    }
+
+    .idea-story {
+        width: 100%;
+        text-align: center;
+    }
+
+    .idea-eyebrow {
+        justify-content: center;
+        margin-bottom: 5px;
+        font-size: 7px;
+        letter-spacing: 1.3px;
+    }
+
+    .eyebrow-spark {
+        font-size: 11px;
+    }
+
+    .idea-story h1 {
+        font-size: clamp(24px, 6.7vw, 32px);
+        line-height: 1;
+        letter-spacing: -1.25px;
+    }
+
+    .idea-intro {
+        max-width: 390px;
+        margin: 5px auto 0;
+        font-size: 9px;
+        line-height: 1.32;
+    }
+
+    .journey-art {
+        width: 100%;
+        height: clamp(116px, 19vh, 154px);
+        margin-top: 0;
+    }
+
+    .question-note {
+        min-width: 96px;
+        gap: 5px;
+        padding: 5px 6px;
+        border-radius: 8px;
+    }
+
+        .question-note span:last-child {
+            gap: 3px;
+        }
+
+        .question-note b {
+            font-size: 6px;
+        }
+
+        .question-note i {
+            width: 43px;
+            height: 2px;
+        }
+
+            .question-note i:last-child {
+                width: 30px;
+            }
+
+    .note-icon, .product-icon {
+        width: 18px;
+        height: 18px;
+        flex-basis: 18px;
+        border-radius: 6px;
+        font-size: 10px;
+    }
+
+    .note-chat {
+        font-size: 7px;
+    }
+
+    .note-one {
+        top: 1%;
+        left: 0;
+    }
+
+    .note-two {
+        top: 8%;
+        right: 0;
+    }
+
+    .product-card {
+        min-width: 84px;
+        padding: 5px;
+        border-radius: 8px;
+    }
+
+        .product-card b {
+            font-size: 6px;
+        }
+
+        .product-card small {
+            margin-top: 2px;
+            font-size: 5px;
+        }
+
+    .product-decision {
+        top: 30%;
+        left: 18%;
+    }
+
+    .product-insights {
+        top: 31%;
+        right: 1%;
+    }
+
+    .product-conversation {
+        top: 48%;
+        left: 0;
+        min-width: 94px;
+    }
+
+    .tiny-tree {
+        padding-top: 2px;
+        font-size: 6px;
+    }
+
+        .tiny-tree i {
+            width: 13px;
+        }
+
+    .tiny-chart {
+        height: 12px;
+        gap: 2px;
+        padding-top: 2px;
+    }
+
+        .tiny-chart i {
+            width: 3px;
+        }
+
+            .tiny-chart i:nth-child(1) {
+                height: 4px;
+            }
+
+            .tiny-chart i:nth-child(2) {
+                height: 6px;
+            }
+
+            .tiny-chart i:nth-child(3) {
+                height: 9px;
+            }
+
+            .tiny-chart i:nth-child(4) {
+                height: 11px;
+            }
+
+    .paper-plane {
+        top: 31%;
+        left: 10%;
+        width: 44%;
+        height: 55%;
+    }
+
+    .sparkle-one {
+        top: 16%;
+        left: 54%;
+        font-size: 12px;
+    }
+
+    .sparkle-two {
+        top: 40%;
+        right: 12%;
+        font-size: 15px;
+    }
+
+    .sparkle-three {
+        bottom: 23%;
+        left: 39%;
+        font-size: 10px;
+    }
+
+    .journey-caption {
+        bottom: 1px;
+        font-size: 6px;
+    }
+
+    .idea-auth {
+        max-width: 410px;
+        align-self: center;
+    }
+
+    .idea-card {
+        padding: 10px 15px;
+        border-radius: 15px;
+    }
+
+    .card-mark {
+        display: none;
+    }
+
+    .card-eyebrow {
+        margin-bottom: 4px;
+        font-size: 6px;
+        letter-spacing: 1.1px;
+    }
+
+    .idea-card h2 {
+        font-size: 18px;
+        line-height: 1.05;
+    }
+
+    .card-copy {
+        margin: 4px 0 7px;
+        font-size: 8px;
+        line-height: 1.3;
+    }
+
+    .google-button {
+        min-height: 38px;
+        gap: 8px;
+        padding: 7px 12px;
+        border-radius: 8px;
+        font-size: 10px;
+    }
+
+        .google-button svg {
+            width: 18px;
+            height: 18px;
+            flex-basis: 18px;
+        }
+
+    .idea-secure {
+        gap: 7px;
+        margin-top: 7px;
+        padding-top: 7px;
+    }
+
+    .secure-shield {
+        width: 17px;
+        height: 17px;
+        flex-basis: 17px;
+        font-size: 10px;
+    }
+
+    .idea-secure p {
+        font-size: 7px;
+        line-height: 1.3;
+    }
+
+    .idea-legal {
+        margin-top: 5px;
+        font-size: 7px;
+        line-height: 1.4;
+    }
+
+    .new-user-note {
+        margin-top: 4px;
+        font-size: 7px;
+    }
+
+    .idea-footer {
+        min-height: 39px;
+        justify-content: center;
+        gap: 2px 8px;
+        padding: 4px 7px;
+        font-size: 6px;
+    }
+
+    .footer-brand img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .footer-brand strong {
+        font-size: 7px;
+    }
+
+    .footer-tagline {
+        display: none;
+    }
+
+    .idea-footer nav {
+        gap: 7px;
+    }
+}
+
+@media (max-width: 660px) and (max-height: 620px) {
+    .idea-main {
+        gap: 2px;
+        padding-block: 3px;
+    }
+
+    .journey-art {
+        height: 98px;
+    }
+
+    .idea-story h1 {
+        font-size: 23px;
+    }
+
+    .idea-intro {
+        font-size: 8px;
+    }
+
+    .idea-card {
+        padding-block: 7px;
+    }
+
+    .card-copy {
+        margin-block: 3px 5px;
+    }
+
+    .idea-secure {
+        margin-top: 4px;
+        padding-top: 4px;
+    }
+
+    .new-user-note {
+        display: none;
+    }
+}
+
+@media (max-width: 360px) {
+    .idea-main {
+        padding-inline: 9px;
+    }
+
+    .idea-story h1 {
+        font-size: 23px;
+    }
+
+    .question-note {
+        min-width: 86px;
+    }
+
+    .product-card {
+        min-width: 76px;
+    }
+
+    .idea-card {
+        padding-inline: 11px;
+    }
+
+    .idea-footer nav {
+        gap: 5px;
+    }
+}
+
+@media (max-height: 640px) and (min-width: 661px) {
+    .idea-header {
+        height: 54px;
+        flex-basis: 54px;
+    }
+
+    .idea-main {
+        padding-block: 8px;
+        gap: 24px;
+    }
+
+    .idea-story h1 {
+        font-size: 43px;
+    }
+
+    .idea-intro {
+        margin-top: 8px;
+        font-size: 12px;
+    }
+
+    .journey-art {
+        height: 210px;
+    }
+
+    .idea-card {
+        padding: 17px 23px;
+    }
+
+    .card-mark {
+        width: 39px;
+        height: 39px;
+        margin-bottom: 8px;
+    }
+
+        .card-mark img {
+            width: 27px;
+            height: 27px;
+        }
+
+    .card-copy {
+        margin: 8px 0 12px;
+    }
+
+    .idea-secure {
+        margin-top: 11px;
+        padding-top: 10px;
+    }
+
+    .idea-footer {
+        min-height: 42px;
+    }
+}

@@ -1,0 +1,97 @@
+﻿@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5fbf8" />
+    <title>AskPearls | Turn good questions into great outcomes</title>
+    <link rel="stylesheet" href="~/app_page_css/app_page_index_6_css.css" />
+    <link rel="stylesheet" href="~/app_css/app_page_signin_info_modal_css.css" />
+    <script src="~/app_page_js/app_page_index_js.js" defer></script>
+</head>
+<body>
+    <div class="idea-page">
+        <header class="idea-header">
+            <a class="idea-brand" href="/" aria-label="AskPearls home">
+                <img src="/app_img/img_logo_color.png" alt="" />
+                <span><strong>AskPearls</strong><small>Capture. Engage. Convert.</small></span>
+            </a>
+            <nav class="idea-actions" aria-label="Page options">
+                <button class="idea-help" type="button" data-info-open="help"><span class="help-circle" aria-hidden="true">?</span>Help</button>
+                <button class="idea-theme" id="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch theme">
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42 1.42"></path></svg>
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"></path></svg>
+                </button>
+            </nav>
+        </header>
+
+        <main class="idea-main">
+            <section class="idea-story" aria-labelledby="idea-title">
+                <div class="idea-copy">
+                    <p class="idea-eyebrow"><span class="eyebrow-spark" aria-hidden="true">✦</span> ASKPEARLS · YOUR IDEAS IN MOTION</p>
+                    <h1 id="idea-title">Turn good questions<br />into <em>great outcomes.</em></h1>
+                    <p class="idea-intro">Bring your questions, ideas, and context together with AI that helps you think deeper, decide clearer, and move forward faster.</p>
+                </div>
+
+                <div class="journey-art" role="img" aria-label="A paper plane carries questions through AskPearls decision, conversation, and insight tools toward a brighter future">
+                    <svg class="journey-landscape" viewBox="0 0 1000 440" preserveAspectRatio="none" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="hill-back" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b7e9d3" stop-opacity=".24" /><stop offset="1" stop-color="#78cfa6" stop-opacity=".04" /></linearGradient>
+                            <linearGradient id="hill-front" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#55bf83" stop-opacity=".22" /><stop offset="1" stop-color="#0d8353" stop-opacity=".06" /></linearGradient>
+                            <linearGradient id="path-fill" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#16a66b" stop-opacity=".08" /><stop offset=".52" stop-color="#51d1a0" stop-opacity=".28" /><stop offset="1" stop-color="#0b8853" stop-opacity=".08" /></linearGradient>
+                        </defs>
+                        <path class="hill hill-a" d="M0 315 Q90 267 178 304T360 294Q467 225 565 280T744 276Q872 212 1000 284V440H0Z" />
+                        <path class="hill hill-b" d="M0 350Q116 289 242 343T475 326Q602 252 720 324T1000 315V440H0Z" />
+                        <path class="flight-ribbon" d="M-20 352 C155 343 160 269 297 260 S493 319 625 239 S805 198 1020 166 L1020 246 C833 279 778 266 643 306 S444 369 300 309 S139 408 -20 406Z" />
+                        <path class="flight-stroke" d="M-15 380 C145 367 174 298 301 284 S494 337 633 273 S823 228 1000 198" />
+                    </svg>
+                    <div class="sky-orb orb-one" aria-hidden="true"></div><div class="sky-orb orb-two" aria-hidden="true"></div><div class="sky-orb orb-three" aria-hidden="true"></div>
+                    <div class="question-note note-one" aria-hidden="true"><span class="note-icon">?</span><span><b>What do customers need?</b><i></i><i></i></span></div>
+                    <div class="question-note note-two" aria-hidden="true"><span class="note-icon note-chat">•••</span><span><b>Understand the context</b><i></i><i></i></span></div>
+                    <div class="product-card product-decision" aria-hidden="true"><span class="product-icon tree-icon">◇</span><b>DecisionOS</b><small>Explore clear next steps</small><span class="tiny-tree">●<i></i>●　●</span></div>
+                    <div class="product-card product-insights" aria-hidden="true"><span class="product-icon bars-icon">▥</span><b>Insights</b><small>See what matters</small><span class="tiny-chart"><i></i><i></i><i></i><i></i></span></div>
+                    <div class="product-card product-conversation" aria-hidden="true"><span class="product-icon bubble-icon">•••</span><b>Conversations</b><small>Listen and engage</small></div>
+                    <svg class="paper-plane" viewBox="0 0 400 240" aria-hidden="true">
+                        <defs><linearGradient id="plane-top" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#effff8" /><stop offset=".55" stop-color="#b8f1dc" /><stop offset="1" stop-color="#69d7ad" /></linearGradient><linearGradient id="plane-side" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#69d5aa" /><stop offset="1" stop-color="#21a975" /></linearGradient></defs>
+                        <path class="plane-shadow" d="M26 156 347 27 270 207 189 146Z" />
+                        <path class="plane-wing" d="M17 153 354 24 189 151Z" />
+                        <path class="plane-fold" d="m189 151 165-127-79 183-42-93Z" />
+                        <path class="plane-lower" d="m189 151 109 56-41-91Z" />
+                        <path class="plane-crease" d="m189 151 66-35M189 151l-12 55" />
+                    </svg>
+                    <div class="sparkle sparkle-one" aria-hidden="true">✦</div><div class="sparkle sparkle-two" aria-hidden="true">✧</div><div class="sparkle sparkle-three" aria-hidden="true">✦</div>
+                    <p class="journey-caption"><span></span> Questions become shared understanding — and better decisions.</p>
+                </div>
+            </section>
+
+            <section class="idea-auth" aria-labelledby="auth-title">
+                <div class="idea-card" id="google-auth-card" data-google-auth-url="https://localhost:7014/api/auth/google/start">
+                    <div class="card-mark" aria-hidden="true"><img src="/app_img/img_logo_color.png" alt="" /></div>
+                    <p class="card-eyebrow">ASKPEARLS DEVELOPMENT PORTAL</p>
+                    <h2 id="auth-title">Your workspace<br />awaits.</h2>
+                    <p class="card-copy">New users are set up automatically when you continue with Google.</p>
+                    <button class="google-button" id="google-signin" type="button" data-google-signin>
+                        <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11a9.4 9.4 0 0 1-4.1 6.2v5.2h6.7c3.9-3.6 6-8.9 6-15.4Z" /><path fill="#FF3D00" d="M24 44c5.5 0 10.1-1.8 13.5-4.9l-6.7-5.2c-1.8 1.2-4.1 2-6.8 2-5.2 0-9.7-3.5-11.3-8.2H5.8v5.4A20 20 0 0 0 24 44Z" /><path fill="#4CAF50" d="M12.7 27.7a12 12 0 0 1 0-7.4v-5.4H5.8a20 20 0 0 0 0 18.2l6.9-5.4Z" /><path fill="#1976D2" d="M24 12.1c3 0 5.6 1 7.7 3.1l5.8-5.8C34 6.1 29.4 4 24 4A20 20 0 0 0 5.8 14.9l6.9 5.4c1.6-4.7 6.1-8.2 11.3-8.2Z" /></svg>
+                        <span>Continue with Google</span>
+                    </button>
+                    <p class="auth-message" id="auth-message" data-auth-message role="status" aria-live="polite"></p>
+                    <div class="idea-secure"><span class="secure-shield" aria-hidden="true">⌑</span><p>We only access your name, email, and profile picture to set up your workspace.</p></div>
+                    <p class="idea-legal">By continuing, you agree to our<br /><button class="text-link" type="button" data-info-open="terms">Terms of Service</button><span> and </span><button class="text-link" type="button" data-info-open="privacy">Privacy Policy</button>.</p>
+                </div>
+                <p class="new-user-note"><span aria-hidden="true">✦</span> One secure sign-in connects your AskPearls tools.</p>
+            </section>
+        </main>
+
+        <partial name="_SignInInfoModal" />
+        <footer class="idea-footer">
+            <a class="footer-brand" href="/" aria-label="AskPearls home"><img src="/app_img/img_logo_color.png" alt="" /><strong>AskPearls</strong></a>
+            <span class="footer-tagline">The AI workspace for deeper thinking and better decisions.</span>
+            <span class="footer-copy">Patent Pending. © <span id="footer-year" data-year></span> AskPearls Limited. All Rights Reserved.</span>
+            <nav aria-label="Help and legal"><button type="button" data-info-open="help">Help</button><button type="button" data-info-open="contact">Contact support</button><button type="button" data-info-open="terms">Terms</button><button type="button" data-info-open="privacy">Privacy</button></nav>
+        </footer>
+    </div>
+</body>
+</html>

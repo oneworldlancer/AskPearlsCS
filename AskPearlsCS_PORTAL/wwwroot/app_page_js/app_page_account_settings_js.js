@@ -6,9 +6,12 @@
     root.dataset.asInitialized = "true";
 
     const $ = id => root.querySelector("#" + id);
+    const apiBase = (root.dataset.apiBase || window.AskPearlsCS_API_URL || "https://localhost:7014/api").replace(/\/+$/, "");
+    // const apiBase = (root.dataset.apiBase || window.AskPearlsCS_API_URL || (window.location.origin + "/api")).replace(/\/+$/, "");
+    const ownerToken = (root.dataset.demoOwnerUserToken || "").trim();
 
     const defaults = {
-nonEssentialNotifications: true,
+        nonEssentialNotifications: true,
         firstName: "John",
         lastName: "Doe",
         email: "john.doe@example.com",
@@ -32,7 +35,7 @@ nonEssentialNotifications: true,
     };
 
     const fieldIds = {
-nonEssentialNotifications: "asNonEssentialNotifications",
+        nonEssentialNotifications: "asNonEssentialNotifications",
         firstName: "asFirstName",
         lastName: "asLastName",
         email: "asEmail",
@@ -57,34 +60,35 @@ nonEssentialNotifications: "asNonEssentialNotifications",
 
     let savedSettings = { ...defaults };
     let toastTimer = null;
+    let settingsLoaded = false;
 
-    function currentSettings() {
+    function currentSettings () {
         const result = {};
-        Object.entries(fieldIds).forEach(([key, id]) => {
+        Object.entries(fieldIds).forEach(([ key, id ]) => {
             const element = $(id);
-            result[key] = element.type === "checkbox" ? element.checked : element.value;
+            result[ key ] = element.type === "checkbox" ? element.checked : element.value;
         });
         return result;
     }
 
-    function setSettings(settings) {
-        Object.entries(fieldIds).forEach(([key, id]) => {
+    function setSettings (settings) {
+        Object.entries(fieldIds).forEach(([ key, id ]) => {
             const element = $(id);
             if (element.type === "checkbox") {
-                element.checked = Boolean(settings[key]);
+                element.checked = Boolean(settings[ key ]);
             } else {
-                element.value = settings[key];
+                element.value = settings[ key ];
             }
         });
         updateProfileDisplay();
         updateDirtyState();
     }
 
-    function updateProfileDisplay() {
+    function updateProfileDisplay () {
         const first = $("asFirstName").value.trim();
         const last = $("asLastName").value.trim();
-        const fullName = [first, last].filter(Boolean).join(" ") || "Your name";
-        const initials = ((first[0] || "") + (last[0] || "")).toUpperCase() || "?";
+        const fullName = [ first, last ].filter(Boolean).join(" ") || "Your name";
+        const initials = ((first[ 0 ] || "") + (last[ 0 ] || "")).toUpperCase() || "?";
 
         $("asSidebarName").textContent = fullName;
         $("asAvatar").textContent = initials;
@@ -93,7 +97,7 @@ nonEssentialNotifications: "asNonEssentialNotifications",
 
 
 
-    
+
     // Organization branding — local preview only
     const orgLogoInput = $("asOrgLogoInput");
     const orgLogoImage = $("asOrgLogoImage");
@@ -105,17 +109,17 @@ nonEssentialNotifications: "asNonEssentialNotifications",
 
     let orgLogoObjectUrl = null;
 
-    function getOrganizationInitials(name) {
+    function getOrganizationInitials (name) {
         const words = name.trim().split(/\s+/).filter(Boolean);
 
         if (!words.length) return "O";
 
         return words.length === 1
-            ? words[0].slice(0, 2).toUpperCase()
-            : (words[0][0] + words[words.length - 1][0]).toUpperCase();
+            ? words[ 0 ].slice(0, 2).toUpperCase()
+            : (words[ 0 ][ 0 ] + words[ words.length - 1 ][ 0 ]).toUpperCase();
     }
 
-    function updateOrganizationPreview() {
+    function updateOrganizationPreview () {
         const companyName = $("asCompanyName").value.trim()
             || "Your organization";
 
@@ -129,7 +133,7 @@ nonEssentialNotifications: "asNonEssentialNotifications",
         }
     }
 
-    function removeOrganizationLogo() {
+    function removeOrganizationLogo () {
         if (orgLogoObjectUrl) {
             URL.revokeObjectURL(orgLogoObjectUrl);
             orgLogoObjectUrl = null;
@@ -150,7 +154,7 @@ nonEssentialNotifications: "asNonEssentialNotifications",
     }
 
     orgLogoInput.addEventListener("change", () => {
-        const file = orgLogoInput.files && orgLogoInput.files[0];
+        const file = orgLogoInput.files && orgLogoInput.files[ 0 ];
 
         orgLogoMessage.textContent = "";
 
@@ -220,7 +224,7 @@ nonEssentialNotifications: "asNonEssentialNotifications",
 
 
 
-    function updateDirtyState() {
+    function updateDirtyState () {
         const changed = JSON.stringify(currentSettings()) !== JSON.stringify(savedSettings);
         const status = $("asSaveStatus");
         status.innerHTML = changed
@@ -229,7 +233,7 @@ nonEssentialNotifications: "asNonEssentialNotifications",
         status.style.color = changed ? "" : "#0d9278";
     }
 
-    function showToast(message) {
+    function showToast (message) {
         const toast = $("asToast");
         toast.textContent = message;
         toast.classList.add("is-visible");
@@ -237,43 +241,99 @@ nonEssentialNotifications: "asNonEssentialNotifications",
         toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2800);
     }
 
-    function updateNonEssentialNotifications() {
-    const master = $("asNonEssentialNotifications");
-    const enabled = master.checked;
+    function apiHeaders (json) {
+        const result = { Accept: "application/json" };
+        if (json) result[ "Content-Type" ] = "application/json";
+        if (ownerToken) result[ "X-Demo-Owner-User-Token" ] = ownerToken;
+        return result;
+    }
 
-    root.querySelectorAll("[data-nonessential='true']").forEach(row => {
-        const input = row.querySelector('input[type="checkbox"]');
-
-        if (!input) return;
-
-        input.disabled = !enabled;
-        row.classList.toggle("as-notification-disabled", !enabled);
-
-        if (!enabled) {
-            input.checked = false;
+    async function apiRequest (url, options) {
+        const response = await fetch(url, options);
+        const body = await response.json().catch(() => ({}));
+        if (!response.ok || body.success === false) {
+            throw new Error(body.message || "Account settings could not be saved.");
         }
+        return body;
+    }
+
+    function applySubscription (subscription) {
+        if (!subscription) return;
+        const plan = subscription.plan || "Free";
+        const limit = subscription.widgetLimit;
+        const used = Number(subscription.widgetsCreated || 0);
+        const remaining = limit == null ? null : Math.max(0, Number(subscription.widgetsRemaining ?? limit - used));
+        const percent = limit == null || !Number(limit) ? 0 : Math.min(100, Math.round((used / Number(limit)) * 100));
+        $("asCurrentPlanName").textContent = plan + " Plan";
+        $("asWidgetsUsed").textContent = String(used);
+        $("asWidgetsLimit").textContent = limit == null ? "No limit" : String(limit);
+        $("asUsageFill").style.width = percent + "%";
+        $("asUsageSummary").textContent = subscription.isIllustrative
+            ? "No active paid plan is recorded. Showing the Free plan allowance."
+            : percent + "% of your plan allowance used";
+        $("asWidgetsRemaining").textContent = remaining == null ? "Unlimited remaining" : remaining + " remaining";
+        $("asSubscriptionNote").textContent = subscription.isIllustrative
+            ? "No paid subscription is recorded for this account. Plan changes require billing integration."
+            : "Plan and widget usage loaded from your account records. Billing changes are not available here.";
+    }
+
+    async function loadSettings () {
+        const saveButton = $("asSave");
+        saveButton.disabled = true;
+        $("asSaveStatus").textContent = "Loading account settings";
+        try {
+            const data = await apiRequest(apiBase + "/account/settings", { headers: apiHeaders(false) });
+            const settings = { ...defaults, ...(data.settings || {}) };
+            setSettings(settings);
+            savedSettings = currentSettings();
+            settingsLoaded = true;
+            applySubscription(data.subscription);
+            updateNonEssentialNotifications();
+            updateDirtyState();
+            $("asNavBottomMessage").textContent = "Changes are saved to your account.";
+        } catch (error) {
+            settingsLoaded = false;
+            saveButton.disabled = true;
+            $("asSaveStatus").textContent = "Could not load account settings";
+            showToast(error.message || "Could not load your account settings.");
+            console.error("Account settings API load failed.", error);
+        } finally {
+            saveButton.disabled = !settingsLoaded;
+        }
+    }
+
+    function updateNonEssentialNotifications () {
+        const master = $("asNonEssentialNotifications");
+        const enabled = master.checked;
+
+        root.querySelectorAll("[data-nonessential='true']").forEach(row => {
+            const input = row.querySelector('input[type="checkbox"]');
+
+            if (!input) return;
+
+            input.disabled = !enabled;
+            row.classList.toggle("as-notification-disabled", !enabled);
+
+            if (!enabled) {
+                input.checked = false;
+            }
+        });
+
+        $("asNotificationMasterStatus").textContent = enabled
+            ? "Optional notifications are enabled."
+            : "Optional notifications are disabled.";
+
+        updateDirtyState();
+    }
+
+    $("asNonEssentialNotifications").addEventListener("change", () => {
+        updateNonEssentialNotifications();
+        showToast("Notification preference updated. Save changes to keep it.");
     });
 
-    $("asNotificationMasterStatus").textContent = enabled
-        ? "Optional notifications are enabled."
-        : "Optional notifications are disabled.";
-
-    updateDirtyState();
-}
-
-$("asNonEssentialNotifications").addEventListener("change", () => {
+    // Apply the correct initial state.
     updateNonEssentialNotifications();
 
-    showToast(
-        $("asNonEssentialNotifications").checked
-            ? "Optional notifications enabled in this demo."
-            : "Optional notifications disabled in this demo."
-    );
-});
-
-// Apply the correct initial state.
-updateNonEssentialNotifications();
-     
     // Security interactions — frontend demo only
     const twoFactor = $("asTwoFactor");
     const twoFactorModal = $("asTwoFactorModal");
@@ -284,7 +344,7 @@ updateNonEssentialNotifications();
     let lastSecurityTrigger = null;
     let lastSessionTrigger = null;
 
-    function openSecurityModal(modal, trigger) {
+    function openSecurityModal (modal, trigger) {
         lastSecurityTrigger = trigger || document.activeElement;
         modal.hidden = false;
         document.body.style.overflow = "hidden";
@@ -296,7 +356,7 @@ updateNonEssentialNotifications();
         if (firstButton) firstButton.focus();
     }
 
-    function closeSecurityModal(modal, trigger) {
+    function closeSecurityModal (modal, trigger) {
         modal.hidden = true;
 
         if (sessionsModal.hidden &&
@@ -311,7 +371,7 @@ updateNonEssentialNotifications();
         }
     }
 
-    function updateSecuritySummary() {
+    function updateSecuritySummary () {
         const enabled = twoFactor.checked;
 
         $("asTwoFactorDescription").textContent = enabled
@@ -350,7 +410,7 @@ updateNonEssentialNotifications();
         openSecurityModal(twoFactorModal, twoFactor);
     });
 
-    function cancelTwoFactor() {
+    function cancelTwoFactor () {
         closeSecurityModal(twoFactorModal, twoFactor);
     }
 
@@ -369,13 +429,13 @@ updateNonEssentialNotifications();
     });
 
     // Active sessions
-    function getVisibleDemoSessions() {
+    function getVisibleDemoSessions () {
         return Array.from(
             root.querySelectorAll(".as-session-item")
         ).filter(item => !item.classList.contains("is-revoked"));
     }
 
-    function updateSessionCount() {
+    function updateSessionCount () {
         const count = getVisibleDemoSessions().length;
         const label = count + (count === 1 ? " demo session" : " demo sessions");
 
@@ -383,7 +443,7 @@ updateNonEssentialNotifications();
         $("asSessionsSummaryCount").textContent = label;
     }
 
-    function showSessionFeedback(message) {
+    function showSessionFeedback (message) {
         const feedback = $("asSessionFeedback");
         feedback.textContent = message;
         feedback.hidden = false;
@@ -396,7 +456,7 @@ updateNonEssentialNotifications();
         updateSessionCount();
     });
 
-    function closeSessionsModal() {
+    function closeSessionsModal () {
         closeSecurityModal(sessionsModal, lastSessionTrigger);
     }
 
@@ -431,7 +491,7 @@ updateNonEssentialNotifications();
         openSecurityModal(signOutModal, $("asSignOutOthers"));
     });
 
-    function closeSignOutModal() {
+    function closeSignOutModal () {
         closeSecurityModal(signOutModal, $("asSignOutOthers"));
     }
 
@@ -463,7 +523,7 @@ updateNonEssentialNotifications();
     });
 
     // Close security dialogs by clicking outside
-    [twoFactorModal, sessionsModal, signOutModal].forEach(modal => {
+    [ twoFactorModal, sessionsModal, signOutModal ].forEach(modal => {
         modal.addEventListener("click", event => {
             if (event.target !== modal) return;
 
@@ -487,7 +547,7 @@ updateNonEssentialNotifications();
 
 
 
-    function showSection(section) {
+    function showSection (section) {
         root.querySelectorAll("[data-as-section]").forEach(button => {
             button.classList.toggle("active", button.dataset.asSection === section);
         });
@@ -515,7 +575,7 @@ updateNonEssentialNotifications();
         });
     });
 
-    $("asSave").addEventListener("click", () => {
+    $("asSave").addEventListener("click", async () => {
         const firstName = $("asFirstName").value.trim();
         const lastName = $("asLastName").value.trim();
         const email = $("asEmail").value.trim();
@@ -525,8 +585,8 @@ updateNonEssentialNotifications();
             showToast("Please complete all required fields.");
             const firstInvalid = !firstName ? $("asFirstName")
                 : !lastName ? $("asLastName")
-                : !email ? $("asEmail")
-                : $("asCompanyName");
+                    : !email ? $("asEmail")
+                        : $("asCompanyName");
             firstInvalid.focus();
             return;
         }
@@ -543,9 +603,25 @@ updateNonEssentialNotifications();
             return;
         }
 
-        savedSettings = currentSettings();
-        updateDirtyState();
-        showToast("Changes saved in this page session only. Backend saving is not connected.");
+        const button = $("asSave");
+        button.disabled = true;
+        try {
+            const data = await apiRequest(apiBase + "/account/settings", {
+                method: "PUT",
+                headers: apiHeaders(true),
+                body: JSON.stringify(currentSettings())
+            });
+            setSettings({ ...defaults, ...(data.settings || currentSettings()) });
+            savedSettings = currentSettings();
+            settingsLoaded = true;
+            updateDirtyState();
+            showToast(data.message || "Account settings saved.");
+        } catch (error) {
+            showToast(error.message || "Account settings could not be saved.");
+            console.error("Account settings API save failed.", error);
+        } finally {
+            button.disabled = !settingsLoaded;
+        }
     });
 
     $("asReset").addEventListener("click", () => {
@@ -557,265 +633,263 @@ updateNonEssentialNotifications();
     //     showToast("Password changes will be enabled when authentication integration is implemented.");
     // });
 
-    
-        const passwordModal = $("asPasswordModal");
-        const passwordForm = $("asPasswordForm");
-        const passwordIds = [
-            "asCurrentPassword",
-            "asNewPassword",
-            "asConfirmPassword"
-        ];
 
-        function clearPasswordErrors() {
-            root.querySelectorAll(".as-password-error").forEach(el => {
-                el.textContent = "";
-            });
+    const passwordModal = $("asPasswordModal");
+    const passwordForm = $("asPasswordForm");
+    const passwordIds = [
+        "asCurrentPassword",
+        "asNewPassword",
+        "asConfirmPassword"
+    ];
 
-            $("asPasswordFormMessage").textContent = "";
-        }
-
-        function resetPasswordForm() {
-            passwordForm.reset();
-            clearPasswordErrors();
-            updatePasswordStrength();
-            root.querySelectorAll("[data-password-toggle]").forEach(button => {
-                const input = $(button.dataset.passwordToggle);
-                input.type = "password";
-                button.innerHTML = '<i class="bi bi-eye"></i>';
-                button.setAttribute("aria-label", "Show password");
-            });
-        }
-
-        function openPasswordModal() {
-            resetPasswordForm();
-            passwordModal.hidden = false;
-            document.body.style.overflow = "hidden";
-            $("asCurrentPassword").focus();
-        }
-
-        function closePasswordModal() {
-            passwordModal.hidden = true;
-            document.body.style.overflow = "";
-            $("asChangePassword").focus();
-        }
-
-        function updatePasswordStrength() {
-            const password = $("asNewPassword").value;
-            const checks = {
-                length: password.length >= 8,
-                upper: /[A-Z]/.test(password),
-                lower: /[a-z]/.test(password),
-                number: /\d/.test(password)
-            };
-
-            Object.entries(checks).forEach(([rule, passed]) => {
-                const item = root.querySelector('[data-rule="' + rule + '"]');
-                item.classList.toggle("met", passed);
-            });
-
-            const score = Object.values(checks).filter(Boolean).length;
-            const bar = $("asPasswordStrengthBar");
-            const label = $("asPasswordStrengthText");
-
-            bar.style.width = (score * 25) + "%";
-            bar.style.background = score <= 1 ? "#d94d58"
-                : score <= 2 ? "#e0a23c"
-                    : score === 3 ? "#4c91d9" : "#0da88b";
-
-            label.textContent = !password ? "Enter a new password"
-                : score <= 1 ? "Weak"
-                    : score === 2 ? "Fair"
-                        : score === 3 ? "Good" : "Meets demo requirements";
-        }
-
-        $("asChangePassword").addEventListener("click", openPasswordModal);
-        $("asPasswordClose").addEventListener("click", closePasswordModal);
-        $("asPasswordCancel").addEventListener("click", closePasswordModal);
-        $("asPasswordReset").addEventListener("click", resetPasswordForm);
-
-        $("asNewPassword").addEventListener("input", () => {
-            updatePasswordStrength();
-            $("asPasswordFormMessage").textContent = "";
+    function clearPasswordErrors () {
+        root.querySelectorAll(".as-password-error").forEach(el => {
+            el.textContent = "";
         });
 
+        $("asPasswordFormMessage").textContent = "";
+    }
+
+    function resetPasswordForm () {
+        passwordForm.reset();
+        clearPasswordErrors();
+        updatePasswordStrength();
         root.querySelectorAll("[data-password-toggle]").forEach(button => {
-            button.addEventListener("click", () => {
-                const input = $(button.dataset.passwordToggle);
-                const showing = input.type === "password";
+            const input = $(button.dataset.passwordToggle);
+            input.type = "password";
+            button.innerHTML = '<i class="bi bi-eye"></i>';
+            button.setAttribute("aria-label", "Show password");
+        });
+    }
 
-                input.type = showing ? "text" : "password";
-                button.innerHTML = showing
-                    ? '<i class="bi bi-eye-slash"></i>'
-                    : '<i class="bi bi-eye"></i>';
+    function openPasswordModal () {
+        resetPasswordForm();
+        passwordModal.hidden = false;
+        document.body.style.overflow = "hidden";
+        $("asCurrentPassword").focus();
+    }
 
-                button.setAttribute(
-                    "aria-label",
-                    showing ? "Hide password" : "Show password"
-                );
-            });
+    function closePasswordModal () {
+        passwordModal.hidden = true;
+        document.body.style.overflow = "";
+        $("asChangePassword").focus();
+    }
+
+    function updatePasswordStrength () {
+        const password = $("asNewPassword").value;
+        const checks = {
+            length: password.length >= 8,
+            upper: /[A-Z]/.test(password),
+            lower: /[a-z]/.test(password),
+            number: /\d/.test(password)
+        };
+
+        Object.entries(checks).forEach(([ rule, passed ]) => {
+            const item = root.querySelector('[data-rule="' + rule + '"]');
+            item.classList.toggle("met", passed);
         });
 
-        passwordModal.addEventListener("click", event => {
-            if (event.target === passwordModal) closePasswordModal();
+        const score = Object.values(checks).filter(Boolean).length;
+        const bar = $("asPasswordStrengthBar");
+        const label = $("asPasswordStrengthText");
+
+        bar.style.width = (score * 25) + "%";
+        bar.style.background = score <= 1 ? "#d94d58"
+            : score <= 2 ? "#e0a23c"
+                : score === 3 ? "#4c91d9" : "#0da88b";
+
+        label.textContent = !password ? "Enter a new password"
+            : score <= 1 ? "Weak"
+                : score === 2 ? "Fair"
+                    : score === 3 ? "Good" : "Meets demo requirements";
+    }
+
+    $("asChangePassword").addEventListener("click", openPasswordModal);
+    $("asPasswordClose").addEventListener("click", closePasswordModal);
+    $("asPasswordCancel").addEventListener("click", closePasswordModal);
+    $("asPasswordReset").addEventListener("click", resetPasswordForm);
+
+    $("asNewPassword").addEventListener("input", () => {
+        updatePasswordStrength();
+        $("asPasswordFormMessage").textContent = "";
+    });
+
+    root.querySelectorAll("[data-password-toggle]").forEach(button => {
+        button.addEventListener("click", () => {
+            const input = $(button.dataset.passwordToggle);
+            const showing = input.type === "password";
+
+            input.type = showing ? "text" : "password";
+            button.innerHTML = showing
+                ? '<i class="bi bi-eye-slash"></i>'
+                : '<i class="bi bi-eye"></i>';
+
+            button.setAttribute(
+                "aria-label",
+                showing ? "Hide password" : "Show password"
+            );
         });
+    });
 
-        document.addEventListener("keydown", event => {
-            if (event.key === "Escape" && !passwordModal.hidden) {
-                closePasswordModal();
-            }
-        });
+    passwordModal.addEventListener("click", event => {
+        if (event.target === passwordModal) closePasswordModal();
+    });
 
-        passwordForm.addEventListener("submit", event => {
-            event.preventDefault();
-            clearPasswordErrors();
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && !passwordModal.hidden) {
+            closePasswordModal();
+        }
+    });
 
-            const current = $("asCurrentPassword").value;
-            const password = $("asNewPassword").value;
-            const confirm = $("asConfirmPassword").value;
-            let firstInvalid = null;
+    passwordForm.addEventListener("submit", event => {
+        event.preventDefault();
+        clearPasswordErrors();
 
-            function error(id, message) {
-                const target = root.querySelector('[data-error-for="' + id + '"]');
-                target.textContent = message;
-                if (!firstInvalid) firstInvalid = $(id);
-            }
+        const current = $("asCurrentPassword").value;
+        const password = $("asNewPassword").value;
+        const confirm = $("asConfirmPassword").value;
+        let firstInvalid = null;
 
-            if (!current) {
-                error("asCurrentPassword", "Enter a current password for this demo.");
-            }
+        function error (id, message) {
+            const target = root.querySelector('[data-error-for="' + id + '"]');
+            target.textContent = message;
+            if (!firstInvalid) firstInvalid = $(id);
+        }
 
-            if (password.length < 8 ||
-                !/[A-Z]/.test(password) ||
-                !/[a-z]/.test(password) ||
-                !/\d/.test(password)) {
-                error("asNewPassword",
-                    "Use at least 8 characters with uppercase, lowercase, and a number.");
-            }
+        if (!current) {
+            error("asCurrentPassword", "Enter a current password for this demo.");
+        }
 
-            if (!confirm) {
-                error("asConfirmPassword", "Confirm your new password.");
-            } else if (password !== confirm) {
-                error("asConfirmPassword", "The passwords do not match.");
-            }
+        if (password.length < 8 ||
+            !/[A-Z]/.test(password) ||
+            !/[a-z]/.test(password) ||
+            !/\d/.test(password)) {
+            error("asNewPassword",
+                "Use at least 8 characters with uppercase, lowercase, and a number.");
+        }
 
-            if (firstInvalid) {
-                firstInvalid.focus();
-                return;
-            }
+        if (!confirm) {
+            error("asConfirmPassword", "Confirm your new password.");
+        } else if (password !== confirm) {
+            error("asConfirmPassword", "The passwords do not match.");
+        }
 
-            $("asPasswordFormMessage").style.color = "#0d9278";
-            $("asPasswordFormMessage").textContent =
-                "Demo validation passed. No password was changed or stored.";
+        if (firstInvalid) {
+            firstInvalid.focus();
+            return;
+        }
 
-            showToast("Demo validation passed. No real password changes were made.");
-        });
+        $("asPasswordFormMessage").style.color = "#0d9278";
+        $("asPasswordFormMessage").textContent =
+            "Demo validation passed. No password was changed or stored.";
+
+        showToast("Demo validation passed. No real password changes were made.");
+    });
 
 
     // $("asUpgradePlan").addEventListener("click", () => {
     //     showToast("Plan selection will be available when subscription management is implemented.");
     // });
 
-    
-        // Subscription plans modal — UI prototype only
-        const plansModal = $("asPlansModal");
-        const plansConfirmation = $("asPlanConfirmation");
-        let selectedPlan = null;
 
-        function resetPlanSelection() {
-            selectedPlan = null;
-            plansConfirmation.hidden = true;
+    // Subscription plans modal — UI prototype only
+    const plansModal = $("asPlansModal");
+    const plansConfirmation = $("asPlanConfirmation");
+    let selectedPlan = null;
+
+    function resetPlanSelection () {
+        selectedPlan = null;
+        plansConfirmation.hidden = true;
+
+        root.querySelectorAll(".as-plan-option").forEach(card => {
+            card.classList.remove("as-plan-selected");
+        });
+
+        $("asPlanConfirmationTitle").textContent =
+            "Confirm plan selection";
+        $("asPlanConfirmationText").textContent = "";
+    }
+
+    function openPlansModal () {
+        resetPlanSelection();
+        plansModal.hidden = false;
+        document.body.style.overflow = "hidden";
+        $("asPlansClose").focus();
+    }
+
+    function closePlansModal () {
+        plansModal.hidden = true;
+        document.body.style.overflow = "";
+        $("asUpgradePlan").focus();
+    }
+
+    $("asUpgradePlan").addEventListener("click", openPlansModal);
+    $("asPlansClose").addEventListener("click", closePlansModal);
+    $("asPlansDone").addEventListener("click", closePlansModal);
+
+    $("asPlanCancel").addEventListener("click", resetPlanSelection);
+
+    root.querySelectorAll("[data-select-plan]").forEach(button => {
+        button.addEventListener("click", () => {
+            selectedPlan = button.dataset.selectPlan;
 
             root.querySelectorAll(".as-plan-option").forEach(card => {
-                card.classList.remove("as-plan-selected");
+                card.classList.toggle(
+                    "as-plan-selected",
+                    card.dataset.plan === selectedPlan
+                );
             });
 
             $("asPlanConfirmationTitle").textContent =
-                "Confirm plan selection";
-            $("asPlanConfirmationText").textContent = "";
-        }
+                "Confirm " + selectedPlan + " plan";
 
-        function openPlansModal() {
-            resetPlanSelection();
-            plansModal.hidden = false;
-            document.body.style.overflow = "hidden";
-            $("asPlansClose").focus();
-        }
+            $("asPlanConfirmationText").textContent =
+                selectedPlan === "Free"
+                    ? "You are already using the Free plan."
+                    : "You selected the " + selectedPlan +
+                    " plan. This demo will not charge you or change your subscription.";
 
-        function closePlansModal() {
-            plansModal.hidden = true;
-            document.body.style.overflow = "";
-            $("asUpgradePlan").focus();
-        }
+            plansConfirmation.hidden = false;
 
-        $("asUpgradePlan").addEventListener("click", openPlansModal);
-        $("asPlansClose").addEventListener("click", closePlansModal);
-        $("asPlansDone").addEventListener("click", closePlansModal);
-
-        $("asPlanCancel").addEventListener("click", resetPlanSelection);
-
-        root.querySelectorAll("[data-select-plan]").forEach(button => {
-            button.addEventListener("click", () => {
-                selectedPlan = button.dataset.selectPlan;
-
-                root.querySelectorAll(".as-plan-option").forEach(card => {
-                    card.classList.toggle(
-                        "as-plan-selected",
-                        card.dataset.plan === selectedPlan
-                    );
-                });
-
-                $("asPlanConfirmationTitle").textContent =
-                    "Confirm " + selectedPlan + " plan";
-
-                $("asPlanConfirmationText").textContent =
-                    selectedPlan === "Free"
-                        ? "You are already using the Free plan."
-                        : "You selected the " + selectedPlan +
-                        " plan. This demo will not charge you or change your subscription.";
-
-                plansConfirmation.hidden = false;
-
-                plansConfirmation.scrollIntoView({
-                    behavior: "smooth",
-                    block: "nearest"
-                });
+            plansConfirmation.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
             });
         });
+    });
 
-        $("asPlanConfirm").addEventListener("click", () => {
-            if (!selectedPlan) {
-                showToast("Please select a plan first.");
-                return;
-            }
+    $("asPlanConfirm").addEventListener("click", () => {
+        if (!selectedPlan) {
+            showToast("Please select a plan first.");
+            return;
+        }
 
-            if (selectedPlan === "Free") {
-                showToast("The Free plan is already your current plan.");
-            } else {
-                showToast(
-                    selectedPlan +
-                    " selected successfully in the demo. No subscription was changed."
-                );
-            }
+        if (selectedPlan === "Free") {
+            showToast("The Free plan is already your current plan.");
+        } else {
+            showToast(
+                selectedPlan +
+                " selected successfully in the demo. No subscription was changed."
+            );
+        }
 
+        closePlansModal();
+    });
+
+    plansModal.addEventListener("click", event => {
+        if (event.target === plansModal) {
             closePlansModal();
-        });
+        }
+    });
 
-        plansModal.addEventListener("click", event => {
-            if (event.target === plansModal) {
-                closePlansModal();
-            }
-        });
-
-        document.addEventListener("keydown", event => {
-            if (event.key === "Escape" && !plansModal.hidden) {
-                closePlansModal();
-            }
-        });
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && !plansModal.hidden) {
+            closePlansModal();
+        }
+    });
 
 
-    setSettings(defaults);
-    savedSettings = currentSettings();
-    updateDirtyState();
     showSection("profile");
+    loadSettings();
 })();
 

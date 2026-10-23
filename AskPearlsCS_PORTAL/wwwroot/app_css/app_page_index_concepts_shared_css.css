@@ -1,0 +1,1310 @@
+﻿:root {
+    color-scheme: light;
+    --page: #f5faf7;
+    --surface: #fff;
+    --surface2: #edf7f1;
+    --text: #122e26;
+    --muted: #62766e;
+    --line: #dbe9e1;
+    --accent: #078650;
+    --accent2: #20ba83;
+    --glow: #b9ecd6;
+    --shadow: 0 18px 46px rgba(15,67,47,.12)
+}
+
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #04140f;
+    --surface: #091e17;
+    --surface2: #10291f;
+    --text: #f1f8f3;
+    --muted: #b4c7bc;
+    --line: #244237;
+    --accent: #31d99c;
+    --accent2: #67e8ba;
+    --glow: #145039;
+    --shadow: 0 18px 46px rgba(0,0,0,.34)
+}
+
+* {
+    box-sizing: border-box
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    min-width: 320px;
+    margin: 0;
+    overflow: hidden
+}
+
+body {
+    color: var(--text);
+    background: var(--page);
+    font-family: Inter,"Segoe UI",Arial,sans-serif
+}
+
+button {
+    font: inherit
+}
+
+.concept-page {
+    height: 100dvh;
+    min-height: 510px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 32% 64%,color-mix(in srgb,var(--glow) 31%,transparent),transparent 58%),var(--page)
+}
+
+.concept-header {
+    height: 64px;
+    flex: 0 0 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(18px,4.4vw,68px);
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    z-index: 4
+}
+
+.concept-brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--text);
+    text-decoration: none
+}
+
+    .concept-brand img {
+        width: 42px;
+        height: 42px;
+        object-fit: contain
+    }
+
+    .concept-brand span {
+        display: grid;
+        gap: 1px
+    }
+
+    .concept-brand strong {
+        font-size: 18px;
+        letter-spacing: -.4px
+    }
+
+    .concept-brand small {
+        color: var(--muted);
+        font-size: 8px
+    }
+
+    .concept-brand em {
+        margin-left: 14px;
+        color: var(--muted);
+        font-family: Georgia,serif;
+        font-size: 10px;
+        font-weight: 400
+    }
+
+.concept-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px
+}
+
+.concept-help {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0;
+    color: var(--muted);
+    background: none;
+    border: 0;
+    font-size: 12px;
+    cursor: pointer
+}
+
+.help-ring {
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-size: 11px
+}
+
+.concept-theme {
+    width: 38px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    color: var(--text);
+    background: var(--surface2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    cursor: pointer
+}
+
+    .concept-theme svg {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.7
+    }
+
+.icon-moon {
+    display: none
+}
+
+html[data-theme="dark"] .icon-sun {
+    display: none
+}
+
+html[data-theme="dark"] .icon-moon {
+    display: block
+}
+
+.concept-main {
+    width: min(1480px,100%);
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: auto;
+    padding: clamp(18px,3vh,36px) clamp(22px,4.5vw,70px);
+    display: grid;
+    grid-template-columns: minmax(0,1.12fr) minmax(310px,.68fr);
+    gap: clamp(24px,4vw,62px);
+    align-items: center
+}
+
+.concept-story {
+    min-width: 0
+}
+
+.concept-copy {
+    position: relative;
+    z-index: 2
+}
+
+.concept-kicker {
+    margin: 0 0 12px;
+    color: var(--accent);
+    font-size: 8px;
+    font-weight: 850;
+    letter-spacing: 2px
+}
+
+.concept-story h1 {
+    margin: 0;
+    font-family: Georgia,"Times New Roman",serif;
+    font-size: clamp(36px,4.35vw,61px);
+    font-weight: 500;
+    line-height: 1.01;
+    letter-spacing: -1.9px
+}
+
+    .concept-story h1 em {
+        color: var(--accent);
+        font-style: normal
+    }
+
+.concept-description {
+    max-width: 550px;
+    margin: 13px 0 0;
+    color: var(--muted);
+    font-family: Georgia,"Times New Roman",serif;
+    font-size: clamp(13px,1.18vw,16px);
+    line-height: 1.48
+}
+
+.concept-art {
+    position: relative;
+    height: clamp(260px,43vh,410px);
+    margin-top: 8px;
+    overflow: hidden;
+    isolation: isolate
+}
+
+    .concept-art:before {
+        position: absolute;
+        z-index: -2;
+        inset: 30% 2% 0;
+        content: "";
+        background: radial-gradient(ellipse at 50% 75%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%)
+    }
+
+.concept-auth {
+    width: 100%;
+    max-width: 420px;
+    justify-self: end
+}
+
+.concept-auth-card {
+    padding: clamp(23px,3vw,38px);
+    background: color-mix(in srgb,var(--surface) 96%,transparent);
+    border: 1px solid var(--line);
+    border-radius: 21px;
+    box-shadow: var(--shadow)
+}
+
+.concept-auth-mark {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 17px;
+    color: var(--accent);
+    background: color-mix(in srgb,var(--glow) 58%,transparent);
+    border-radius: 15px
+}
+
+    .concept-auth-mark img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain
+    }
+
+.concept-auth-kicker {
+    margin: 0 0 10px;
+    color: var(--accent);
+    font-size: 8px;
+    font-weight: 850;
+    letter-spacing: 1.7px
+}
+
+.concept-auth-card h2 {
+    margin: 0;
+    font-family: Georgia,"Times New Roman",serif;
+    font-size: clamp(25px,2.5vw,33px);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -.5px
+}
+
+.concept-auth-copy {
+    margin: 12px 0 19px;
+    color: var(--muted);
+    font-family: Georgia,"Times New Roman",serif;
+    font-size: 13px;
+    line-height: 1.5
+}
+
+.google-button {
+    width: 100%;
+    min-height: 49px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 14px;
+    color: #132a21;
+    background: #fff;
+    border: 1px solid #dae4dc;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(20,60,42,.08);
+    font-size: 12px;
+    font-weight: 750;
+    cursor: pointer
+}
+
+    .google-button:hover {
+        border-color: #91c9ab;
+        box-shadow: 0 7px 18px rgba(20,90,53,.14)
+    }
+
+    .google-button:focus-visible, .concept-theme:focus-visible, .concept-help:focus-visible, .concept-legal button:focus-visible {
+        outline: 3px solid color-mix(in srgb,var(--accent) 54%,transparent);
+        outline-offset: 3px
+    }
+
+    .google-button svg {
+        width: 21px;
+        height: 21px;
+        flex: 0 0 21px
+    }
+
+    .google-button[disabled] {
+        opacity: .72;
+        cursor: wait
+    }
+
+.auth-message:empty {
+    display: none
+}
+
+.auth-message:not(:empty) {
+    margin: 10px 0 0;
+    padding: 9px 10px;
+    color: #9d342b;
+    background: #fff0ed;
+    border: 1px solid #efc5bd;
+    border-radius: 8px;
+    font-size: 11px
+}
+
+.concept-trust {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.5
+}
+
+.trust-check {
+    width: 21px;
+    height: 21px;
+    flex: 0 0 21px;
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    background: color-mix(in srgb,var(--glow) 72%,transparent);
+    border-radius: 50%;
+    font-weight: 900
+}
+
+.concept-legal {
+    margin: 15px 0 0;
+    color: var(--muted);
+    text-align: center;
+    font-size: 9px;
+    line-height: 1.75
+}
+
+    .concept-legal button {
+        padding: 0;
+        color: var(--accent);
+        background: none;
+        border: 0;
+        font: inherit;
+        font-weight: 700;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        cursor: pointer
+    }
+
+.concept-footer {
+    min-height: 44px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 18px;
+    padding: 6px clamp(18px,4.5vw,70px);
+    color: var(--muted);
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    font-size: 8px
+}
+
+.concept-footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap
+}
+
+    .concept-footer-brand img {
+        width: 22px;
+        height: 22px;
+        object-fit: contain
+    }
+
+    .concept-footer-brand strong {
+        font-size: 10px
+    }
+
+.concept-footer nav {
+    display: flex;
+    gap: 13px
+}
+
+    .concept-footer nav button {
+        padding: 0;
+        color: var(--muted);
+        background: none;
+        border: 0;
+        font-size: inherit;
+        white-space: nowrap;
+        cursor: pointer
+    }
+
+        .concept-footer nav button:hover {
+            color: var(--accent);
+            text-decoration: underline
+        }
+
+html[data-theme="dark"] .google-button {
+    color: #12251e;
+    background: #fff;
+    border-color: #fff
+}
+
+@media(max-width:900px) {
+    .concept-main {
+        grid-template-columns: minmax(0,1fr) minmax(285px,.72fr);
+        gap: 22px;
+        padding-inline: 24px
+    }
+
+    .concept-story h1 {
+        font-size: clamp(34px,5.4vw,49px)
+    }
+
+    .concept-art {
+        height: clamp(230px,36vh,330px)
+    }
+
+    .concept-auth-card {
+        padding: 22px
+    }
+
+    .concept-footer {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 4px 14px
+    }
+}
+
+@media(max-width:660px) {
+    .concept-page {
+        min-height: 470px
+    }
+
+    .concept-header {
+        height: 54px;
+        flex-basis: 54px;
+        padding-inline: 13px
+    }
+
+    .concept-brand {
+        gap: 6px
+    }
+
+        .concept-brand img {
+            width: 36px;
+            height: 36px
+        }
+
+        .concept-brand strong {
+            font-size: 15px
+        }
+
+        .concept-brand small, .concept-brand em {
+            display: none
+        }
+
+    .concept-actions {
+        gap: 12px
+    }
+
+    .concept-help {
+        font-size: 10px
+    }
+
+    .concept-theme {
+        width: 33px;
+        height: 32px
+    }
+
+    .concept-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        padding: 7px 12px;
+        overflow-y: auto;
+        scrollbar-width: none
+    }
+
+        .concept-main::-webkit-scrollbar {
+            display: none
+        }
+
+    .concept-story {
+        width: 100%;
+        flex: 0 0 auto;
+        text-align: center
+    }
+
+    .concept-kicker {
+        margin-bottom: 5px;
+        font-size: 6px;
+        letter-spacing: 1.2px
+    }
+
+    .concept-story h1 {
+        font-size: clamp(24px,6.5vw,32px);
+        line-height: 1;
+        letter-spacing: -.7px
+    }
+
+    .concept-description {
+        max-width: 410px;
+        margin: 5px auto 0;
+        font-size: 9px;
+        line-height: 1.3
+    }
+
+    .concept-art {
+        width: 100%;
+        height: clamp(115px,19vh,155px);
+        margin: 0 auto
+    }
+
+    .concept-auth {
+        max-width: 430px;
+        align-self: center;
+        flex: 0 0 auto
+    }
+
+    .concept-auth-card {
+        padding: 10px 15px;
+        border-radius: 14px
+    }
+
+    .concept-auth-mark {
+        display: none
+    }
+
+    .concept-auth-kicker {
+        margin-bottom: 4px;
+        font-size: 6px;
+        letter-spacing: 1px
+    }
+
+    .concept-auth-card h2 {
+        font-size: 18px
+    }
+
+    .concept-auth-copy {
+        margin: 4px 0 7px;
+        font-size: 9px;
+        line-height: 1.32
+    }
+
+    .google-button {
+        min-height: 38px;
+        padding: 7px 10px;
+        font-size: 10px
+    }
+
+        .google-button svg {
+            width: 18px;
+            height: 18px;
+            flex-basis: 18px
+        }
+
+    .concept-trust {
+        gap: 7px;
+        margin-top: 7px;
+        padding-top: 7px;
+        font-size: 8px;
+        line-height: 1.3
+    }
+
+    .trust-check {
+        width: 17px;
+        height: 17px;
+        flex-basis: 17px;
+        font-size: 9px
+    }
+
+    .concept-legal {
+        margin-top: 5px;
+        font-size: 7px;
+        line-height: 1.4
+    }
+
+    .concept-footer {
+        min-height: 36px;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 2px 8px;
+        padding: 4px 6px;
+        font-size: 6px
+    }
+
+    .concept-footer-brand img {
+        width: 16px;
+        height: 16px
+    }
+
+    .concept-footer-brand strong {
+        font-size: 7px
+    }
+
+    .concept-footer nav {
+        gap: 7px
+    }
+}
+
+@media(max-width:660px) and (max-height:620px) {
+    .concept-main {
+        gap: 2px;
+        padding-block: 3px
+    }
+
+    .concept-story h1 {
+        font-size: 22px
+    }
+
+    .concept-description {
+        font-size: 8px
+    }
+
+    .concept-art {
+        height: 96px
+    }
+
+    .concept-auth-card {
+        padding-block: 6px
+    }
+
+    .concept-auth-copy {
+        margin-block: 3px 4px
+    }
+
+    .concept-trust {
+        margin-top: 4px;
+        padding-top: 4px
+    }
+}
+
+@media(max-width:360px) {
+    .concept-main {
+        padding-inline: 8px
+    }
+
+    .concept-story h1 {
+        font-size: 22px
+    }
+
+    .concept-auth-card {
+        padding-inline: 11px
+    }
+
+    .concept-footer nav {
+        gap: 5px
+    }
+}
+
+@media(max-height:640px) and (min-width:661px) {
+    .concept-header {
+        height: 52px;
+        flex-basis: 52px
+    }
+
+    .concept-main {
+        padding-block: 8px;
+        gap: 20px
+    }
+
+    .concept-story h1 {
+        font-size: 41px
+    }
+
+    .concept-description {
+        margin-top: 7px;
+        font-size: 11px
+    }
+
+    .concept-art {
+        height: 210px
+    }
+
+    .concept-auth-card {
+        padding: 17px 22px
+    }
+
+    .concept-auth-mark {
+        width: 37px;
+        height: 37px;
+        margin-bottom: 8px
+    }
+
+    .concept-auth-copy {
+        margin: 8px 0 12px
+    }
+
+    .concept-trust {
+        margin-top: 11px;
+        padding-top: 9px
+    }
+
+    .concept-footer {
+        min-height: 38px
+    }
+}
+/* Shared illustration caption */
+.concept-art .art-caption {
+    position: absolute;
+    z-index: 6;
+    right: 5px;
+    bottom: 0;
+    left: 5px;
+    margin: 0;
+    color: var(--muted);
+    text-align: center;
+    font-size: 8px
+}
+/* Concept 8: desk illustration fallback. Keeping these rules in the shared
+   bundle also protects the page if its individual stylesheet is cached/missed. */
+.concept-8 .concept-story h1 {
+    font-family: Inter,"Segoe UI",sans-serif;
+    font-weight: 800;
+    letter-spacing: -2.6px
+}
+
+    .concept-8 .concept-story h1 em {
+        color: var(--accent)
+    }
+
+.desk-art {
+    background: radial-gradient(ellipse at 53% 78%,color-mix(in srgb,var(--accent) 17%,transparent),transparent 58%)
+}
+
+.desk-glow {
+    position: absolute;
+    inset: 17% 13% 2%;
+    background: radial-gradient(ellipse at 58% 68%,color-mix(in srgb,var(--glow) 64%,transparent),transparent 63%);
+    border-radius: 50%;
+    filter: blur(9px)
+}
+
+.desk-surface {
+    position: absolute;
+    z-index: 3;
+    right: 5%;
+    bottom: 15%;
+    left: 5%;
+    height: 8px;
+    background: linear-gradient(90deg,transparent,#b58e63,#e3c89a,#b58e63,transparent);
+    border-radius: 50%;
+    box-shadow: 0 7px 13px color-mix(in srgb,var(--text) 18%,transparent)
+}
+
+.desk-laptop {
+    position: absolute;
+    z-index: 5;
+    bottom: 16%;
+    left: 48%;
+    width: 146px;
+    height: 91px;
+    display: grid;
+    place-items: center;
+    transform: translateX(-50%);
+    color: var(--accent2);
+    background: linear-gradient(140deg,#f7fffb,#c8e8da);
+    border: 4px solid #526b60;
+    border-bottom-width: 9px;
+    border-radius: 9px 9px 4px 4px;
+    box-shadow: 0 4px 0 #53685e;
+    font-size: 22px
+}
+
+    .desk-laptop:after {
+        position: absolute;
+        right: -15px;
+        bottom: -13px;
+        left: -15px;
+        height: 6px;
+        content: "";
+        background: #80938a;
+        border-radius: 0 0 10px 10px
+    }
+
+.desk-cup {
+    position: absolute;
+    z-index: 4;
+    right: 10%;
+    bottom: 17%;
+    width: 27px;
+    height: 33px;
+    background: linear-gradient(90deg,#6fa783,#d9ead9);
+    border-radius: 3px 3px 8px 8px
+}
+
+    .desk-cup:after {
+        position: absolute;
+        top: 7px;
+        right: -9px;
+        width: 10px;
+        height: 13px;
+        content: "";
+        border: 3px solid #79a58a;
+        border-left: 0;
+        border-radius: 0 9px 9px 0
+    }
+
+.desk-person {
+    position: absolute;
+    z-index: 2;
+    bottom: 15%;
+    left: 25%;
+    width: 180px;
+    height: 220px
+}
+
+.person-hair {
+    position: absolute;
+    z-index: 2;
+    top: 9px;
+    left: 57px;
+    width: 104px;
+    height: 117px;
+    background: linear-gradient(120deg,#30221f,#5a3729 62%,#211d1a);
+    border-radius: 57% 47% 48% 38%;
+    transform: rotate(5deg)
+}
+
+.person-face {
+    position: absolute;
+    z-index: 3;
+    top: 30px;
+    left: 73px;
+    width: 69px;
+    height: 82px;
+    background: linear-gradient(135deg,#f3d1ac,#cb8c67);
+    border-radius: 48% 46% 49% 47%;
+    transform: rotate(-4deg)
+}
+
+    .person-face:before {
+        position: absolute;
+        top: 39px;
+        left: 15px;
+        width: 7px;
+        height: 4px;
+        content: "";
+        background: #263a32;
+        border-radius: 50%;
+        box-shadow: 27px -1px #263a32
+    }
+
+    .person-face:after {
+        position: absolute;
+        top: 58px;
+        left: 27px;
+        width: 17px;
+        height: 7px;
+        content: "";
+        border-bottom: 2px solid #9f4e42;
+        border-radius: 50%
+    }
+
+.person-neck {
+    position: absolute;
+    z-index: 1;
+    top: 99px;
+    left: 93px;
+    width: 30px;
+    height: 30px;
+    background: #d9a17c
+}
+
+.person-body {
+    position: absolute;
+    bottom: 0;
+    left: 25px;
+    width: 145px;
+    height: 121px;
+    background: linear-gradient(135deg,#198455,#0b523e);
+    border-radius: 66px 68px 8px 8px
+}
+
+.person-arm {
+    position: absolute;
+    z-index: 4;
+    bottom: 36px;
+    left: 2px;
+    width: 105px;
+    height: 28px;
+    background: linear-gradient(90deg,#e2b38b,#f0caa6);
+    border-radius: 20px;
+    transform: rotate(-15deg)
+}
+
+.leaf-cluster {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    bottom: 15%;
+    width: 80px;
+    height: 130px
+}
+
+    .leaf-cluster i {
+        position: absolute;
+        bottom: 7px;
+        left: 38px;
+        width: 22px;
+        height: 65px;
+        background: linear-gradient(100deg,#178451,#8bcf85);
+        border-radius: 100% 0 100% 0;
+        transform: rotate(-33deg);
+        transform-origin: bottom
+    }
+
+        .leaf-cluster i:nth-child(2) {
+            transform: rotate(32deg)
+        }
+
+        .leaf-cluster i:nth-child(3) {
+            left: 22px;
+            height: 48px;
+            transform: rotate(-59deg)
+        }
+
+        .leaf-cluster i:nth-child(4) {
+            left: 51px;
+            height: 49px;
+            transform: rotate(58deg)
+        }
+
+.idea-card-float {
+    position: absolute;
+    z-index: 5;
+    width: 105px;
+    min-height: 63px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px;
+    color: var(--text);
+    background: color-mix(in srgb,var(--surface) 93%,transparent);
+    border: 1px solid color-mix(in srgb,var(--accent) 25%,var(--line));
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    transform: rotate(-5deg)
+}
+
+    .idea-card-float b {
+        width: 22px;
+        height: 22px;
+        display: grid;
+        place-items: center;
+        color: var(--accent);
+        background: var(--surface2);
+        border-radius: 6px;
+        font-size: 14px
+    }
+
+    .idea-card-float span {
+        font-size: 9px;
+        font-weight: 700
+    }
+
+    .idea-card-float i {
+        display: block;
+        width: 48px;
+        height: 3px;
+        margin-top: 4px;
+        background: color-mix(in srgb,var(--accent) 24%,var(--line));
+        border-radius: 5px
+    }
+
+.idea-note {
+    top: 5%;
+    left: 42%
+}
+
+.plan-note {
+    top: 8%;
+    right: 3%;
+    transform: rotate(5deg)
+}
+
+.research-note {
+    top: 38%;
+    left: 5%;
+    transform: rotate(-7deg)
+}
+
+.create-note {
+    top: 44%;
+    right: 0;
+    transform: rotate(7deg)
+}
+
+.desk-art .art-caption {
+    bottom: 2%;
+    font-size: 8px
+}
+
+@media(max-width:900px) {
+    .desk-person {
+        left: 24%;
+        transform: scale(.83);
+        transform-origin: bottom left
+    }
+
+    .desk-laptop {
+        width: 120px;
+        height: 76px
+    }
+
+    .idea-card-float {
+        width: 92px;
+        padding: 6px
+    }
+
+        .idea-card-float span {
+            font-size: 8px
+        }
+
+        .idea-card-float i {
+            width: 38px
+        }
+}
+
+@media(max-width:660px) {
+    .concept-8 .concept-art {
+        height: clamp(130px,20vh,165px)
+    }
+
+    .concept-8 .concept-story h1 {
+        letter-spacing: -1px
+    }
+
+    .desk-person {
+        left: 26%;
+        transform: scale(.48);
+        transform-origin: bottom left
+    }
+
+    .desk-laptop {
+        bottom: 15%;
+        left: 51%;
+        width: 83px;
+        height: 54px;
+        border-width: 3px;
+        border-bottom-width: 6px;
+        font-size: 14px
+    }
+
+        .desk-laptop:after {
+            bottom: -9px;
+            height: 4px
+        }
+
+    .desk-surface {
+        bottom: 14%;
+        height: 5px
+    }
+
+    .desk-cup {
+        right: 7%;
+        bottom: 16%;
+        transform: scale(.65);
+        transform-origin: bottom
+    }
+
+    .leaf-cluster {
+        right: 2%;
+        bottom: 13%;
+        transform: scale(.63);
+        transform-origin: bottom
+    }
+
+    .idea-card-float {
+        width: 74px;
+        min-height: 43px;
+        gap: 4px;
+        padding: 4px;
+        border-radius: 7px
+    }
+
+        .idea-card-float b {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            font-size: 10px
+        }
+
+        .idea-card-float span {
+            font-size: 6px
+        }
+
+        .idea-card-float i {
+            width: 30px;
+            height: 2px;
+            margin-top: 3px
+        }
+
+    .idea-note {
+        left: 39%
+    }
+
+    .plan-note {
+        right: 1%
+    }
+
+    .research-note {
+        top: 39%;
+        left: 0
+    }
+
+    .create-note {
+        top: 46%;
+        right: 0
+    }
+
+    .desk-art .art-caption {
+        font-size: 6px
+    }
+}
+
+/* Index 8 portrait overlay */
+.concept-8 .desk-portrait {
+    position: absolute;
+    z-index: 4;
+    bottom: 8%;
+    left: 15%;
+    width: 54%;
+    height: 94%;
+    object-fit: contain;
+    object-position: center bottom;
+    filter: drop-shadow(0 14px 20px color-mix(in srgb,var(--text) 13%,transparent))
+}
+
+@media(max-width:900px) {
+    .concept-8 .desk-portrait {
+        left: 14%;
+        width: 57%;
+        height: 91%
+    }
+}
+
+@media(max-width:660px) {
+    .concept-8 .desk-portrait {
+        left: 14%;
+        bottom: 6%;
+        width: 59%;
+        height: 93%
+    }
+}
+
+/* Keep the Ideas card clear of the portrait's face. */
+.concept-8 .idea-note {
+    top: 5%;
+    left: 5%
+}
+
+@media(max-width:660px) {
+    .concept-8 .idea-note {
+        top: 4%;
+        left: 4%
+    }
+}
+/* Mobile spacing: give the sign-in panel room to breathe. */
+@media(max-width:660px) {
+    .concept-8 .concept-main {
+        gap: 10px;
+        padding: 13px 16px
+    }
+
+    .concept-8 .concept-kicker {
+        margin-bottom: 8px;
+        font-size: 7px;
+        letter-spacing: 1.35px
+    }
+
+    .concept-8 .concept-description {
+        margin-top: 8px;
+        font-size: 10px;
+        line-height: 1.42
+    }
+
+    .concept-8 .concept-art {
+        height: clamp(128px,18vh,150px);
+        margin-top: 2px
+    }
+
+    .concept-8 .concept-auth-card {
+        padding: 17px 19px;
+        border-radius: 16px
+    }
+
+    .concept-8 .concept-auth-kicker {
+        margin-bottom: 8px;
+        font-size: 7px;
+        letter-spacing: 1.2px
+    }
+
+    .concept-8 .concept-auth-card h2 {
+        font-size: 20px;
+        line-height: 1.16
+    }
+
+    .concept-8 .concept-auth-copy {
+        margin: 8px 0 13px;
+        font-size: 10px;
+        line-height: 1.45
+    }
+
+    .concept-8 .google-button {
+        min-height: 44px;
+        padding: 9px 12px;
+        font-size: 11px
+    }
+
+    .concept-8 .concept-trust {
+        gap: 9px;
+        margin-top: 11px;
+        padding-top: 10px;
+        font-size: 9px;
+        line-height: 1.42
+    }
+
+    .concept-8 .trust-check {
+        width: 19px;
+        height: 19px;
+        flex-basis: 19px
+    }
+
+    .concept-8 .concept-legal {
+        margin-top: 10px;
+        font-size: 8px;
+        line-height: 1.55
+    }
+
+    .concept-8 .idea-note {
+        top: 4%;
+        left: 4%
+    }
+}
+
+@media(max-width:660px) and (max-height:620px) {
+    .concept-8 .concept-main {
+        gap: 5px;
+        padding-block: 5px
+    }
+
+    .concept-8 .concept-art {
+        height: 98px
+    }
+
+    .concept-8 .concept-auth-card {
+        padding: 12px 16px
+    }
+
+    .concept-8 .concept-auth-copy {
+        margin: 6px 0 9px
+    }
+
+    .concept-8 .concept-trust {
+        margin-top: 8px;
+        padding-top: 7px
+    }
+
+    .concept-8 .concept-legal {
+        margin-top: 7px
+    }
+}

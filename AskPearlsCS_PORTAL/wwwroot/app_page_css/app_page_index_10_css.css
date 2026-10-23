@@ -1,0 +1,372 @@
+﻿.concept-10 .concept-main {
+    grid-template-columns: minmax(0,1.08fr) minmax(310px,.68fr)
+}
+
+.portal-scene {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: linear-gradient(180deg,transparent 35%,color-mix(in srgb,var(--accent) 9%,transparent))
+}
+
+.portal-sky {
+    position: absolute;
+    top: 3%;
+    left: 50%;
+    width: min(54%,300px);
+    aspect-ratio: 1;
+    border: 1px solid color-mix(in srgb,var(--accent) 31%,transparent);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 45px color-mix(in srgb,var(--accent) 15%,transparent),inset 0 0 45px color-mix(in srgb,var(--accent) 10%,transparent)
+}
+
+.portal-ring {
+    position: absolute;
+    top: 11%;
+    left: 50%;
+    width: 31%;
+    height: 74%;
+    transform: translateX(-50%);
+    border: 8px solid color-mix(in srgb,var(--accent2) 68%,transparent);
+    border-bottom: 0;
+    border-radius: 48% 48% 0 0;
+    box-shadow: 0 0 24px color-mix(in srgb,var(--accent) 48%,transparent),inset 0 0 18px color-mix(in srgb,var(--accent) 25%,transparent)
+}
+
+.portal-view {
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    width: 27%;
+    height: 61%;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg,#dcf8ed,#91d9c0 52%,#65ae86);
+    clip-path: polygon(50% 0,100% 100%,0 100%);
+    opacity: .86
+}
+
+.portal-sun {
+    position: absolute;
+    top: 31%;
+    left: 50%;
+    width: 13px;
+    height: 13px;
+    transform: translateX(-50%);
+    background: #fff5bc;
+    border-radius: 50%;
+    box-shadow: 0 0 24px #fff2ae
+}
+
+.portal-hills {
+    position: absolute;
+    right: 0;
+    bottom: 7%;
+    left: 0;
+    height: 44%;
+    background: linear-gradient(160deg,transparent 30%,color-mix(in srgb,var(--accent) 28%,transparent) 31% 54%,transparent 55%),linear-gradient(20deg,transparent 30%,color-mix(in srgb,var(--accent) 20%,transparent) 31% 57%,transparent 58%)
+}
+
+.portal-steps {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    width: 44%;
+    height: 15%;
+    transform: translateX(-50%);
+    background: repeating-linear-gradient(180deg,color-mix(in srgb,var(--surface) 90%,transparent) 0 8px,color-mix(in srgb,var(--gold,#d3b96f) 48%,var(--line)) 9px 11px);
+    clip-path: polygon(50% 0,100% 100%,0 100%)
+}
+
+.portal-caption {
+    position: absolute;
+    right: 5%;
+    bottom: 2%;
+    left: 5%;
+    color: var(--muted);
+    text-align: center;
+    font-size: 8px
+}
+
+.portal-spark {
+    position: absolute;
+    color: var(--accent2);
+    text-shadow: 0 0 13px var(--accent)
+}
+
+.ps1 {
+    top: 21%;
+    left: 15%
+}
+
+.ps2 {
+    top: 42%;
+    right: 12%
+}
+
+.ps3 {
+    top: 5%;
+    right: 26%
+}
+
+.concept-10 .concept-story h1 {
+    font-family: Georgia,serif;
+    font-weight: 500
+}
+
+@media(max-width:660px) {
+    .concept-10 .concept-art {
+        height: clamp(135px,21vh,170px)
+    }
+
+    .portal-ring {
+        border-width: 5px
+    }
+
+    .portal-sky {
+        width: 40%;
+        top: 0
+    }
+
+    .portal-view {
+        top: 16%;
+        height: 63%
+    }
+
+    .portal-hills {
+        height: 39%
+    }
+
+    .portal-steps {
+        height: 14%;
+        bottom: 8%
+    }
+
+    .portal-caption {
+        font-size: 6px
+    }
+}
+
+/* Keep the doorway artwork inside the story column instead of overlaying the page. */
+.concept-10 .portal-scene {
+    position: relative;
+    inset: auto;
+    display: block;
+    width: 100%;
+    height: clamp(270px,42vh,400px);
+    margin: 12px 0 0;
+    overflow: hidden;
+    isolation: isolate
+}
+
+.concept-10 .portal-caption {
+    margin: 0
+}
+
+@media(max-width:900px) {
+    .concept-10 .portal-scene {
+        height: clamp(225px,34vh,310px);
+        margin-top: 8px
+    }
+}
+
+@media(max-width:660px) {
+    .concept-10 .concept-main {
+        gap: 9px;
+        padding: 12px 14px
+    }
+
+    .concept-10 .concept-story {
+        flex: 0 0 auto
+    }
+
+    .concept-10 .concept-kicker {
+        margin-bottom: 6px
+    }
+
+    .concept-10 .concept-description {
+        margin-top: 7px
+    }
+
+    .concept-10 .portal-scene {
+        height: clamp(138px,18vh,158px);
+        margin: 0 auto;
+        flex: 0 0 auto
+    }
+
+    .concept-10 .concept-auth {
+        flex: 0 0 auto
+    }
+
+    .concept-10 .concept-auth-card {
+        padding: 13px 16px;
+        border-radius: 15px
+    }
+
+    .concept-10 .concept-auth-mark {
+        display: none
+    }
+
+    .concept-10 .concept-auth-kicker {
+        margin-bottom: 6px
+    }
+
+    .concept-10 .concept-auth-card h2 {
+        font-size: 19px;
+        line-height: 1.12
+    }
+
+    .concept-10 .concept-auth-copy {
+        margin: 6px 0 10px;
+        font-size: 9px;
+        line-height: 1.38
+    }
+
+    .concept-10 .google-button {
+        min-height: 41px
+    }
+
+    .concept-10 .concept-trust {
+        margin-top: 9px;
+        padding-top: 8px
+    }
+
+    .concept-10 .concept-legal {
+        margin-top: 8px
+    }
+}
+
+@media(max-width:660px) and (max-height:620px) {
+    .concept-10 .concept-main {
+        gap: 5px;
+        padding-block: 5px
+    }
+
+    .concept-10 .portal-scene {
+        height: 102px
+    }
+
+    .concept-10 .concept-auth-card {
+        padding: 10px 14px
+    }
+
+    .concept-10 .concept-auth-copy {
+        margin: 4px 0 7px
+    }
+
+    .concept-10 .concept-trust {
+        margin-top: 6px;
+        padding-top: 6px
+    }
+
+    .concept-10 .concept-legal {
+        margin-top: 5px
+    }
+}
+
+/* Clearer mobile rhythm between the headline, doorway, and sign-in card. */
+@media(max-width:660px) {
+    .concept-10 .concept-main {
+        gap: 16px;
+        padding: 18px 17px
+    }
+
+    .concept-10 .concept-kicker {
+        margin-bottom: 9px;
+        font-size: 7px;
+        letter-spacing: 1.35px
+    }
+
+    .concept-10 .concept-story h1 {
+        font-size: clamp(27px,7vw,33px);
+        line-height: 1.08
+    }
+
+    .concept-10 .concept-description {
+        margin-top: 10px;
+        font-size: 10px;
+        line-height: 1.45
+    }
+
+    .concept-10 .portal-scene {
+        height: clamp(160px,22vh,185px);
+        margin-top: 10px
+    }
+
+    .concept-10 .concept-auth-card {
+        padding: 19px 20px;
+        border-radius: 16px
+    }
+
+    .concept-10 .concept-auth-kicker {
+        margin-bottom: 9px;
+        font-size: 7px;
+        letter-spacing: 1.2px
+    }
+
+    .concept-10 .concept-auth-card h2 {
+        font-size: 21px;
+        line-height: 1.16
+    }
+
+    .concept-10 .concept-auth-copy {
+        margin: 9px 0 14px;
+        font-size: 10px;
+        line-height: 1.45
+    }
+
+    .concept-10 .google-button {
+        min-height: 46px;
+        padding: 10px 12px;
+        font-size: 11px
+    }
+
+    .concept-10 .concept-trust {
+        gap: 9px;
+        margin-top: 12px;
+        padding-top: 11px;
+        font-size: 9px;
+        line-height: 1.45
+    }
+
+    .concept-10 .trust-check {
+        width: 19px;
+        height: 19px;
+        flex-basis: 19px
+    }
+
+    .concept-10 .concept-legal {
+        margin-top: 11px;
+        font-size: 8px;
+        line-height: 1.6
+    }
+}
+
+@media(max-width:660px) and (max-height:620px) {
+    .concept-10 .concept-main {
+        gap: 6px;
+        padding: 5px 12px
+    }
+
+    .concept-10 .portal-scene {
+        height: 100px;
+        margin-top: 4px
+    }
+
+    .concept-10 .concept-auth-card {
+        padding: 11px 15px
+    }
+
+    .concept-10 .concept-auth-copy {
+        margin: 4px 0 7px
+    }
+
+    .concept-10 .concept-trust {
+        margin-top: 6px;
+        padding-top: 6px
+    }
+
+    .concept-10 .concept-legal {
+        margin-top: 5px
+    }
+}

@@ -1,0 +1,711 @@
+﻿.concept-8 .concept-art {
+    height: clamp(275px,44vh,420px)
+}
+
+.idea-orbits {
+    position: absolute;
+    inset: 4% 12% 7%;
+    border: 1px solid color-mix(in srgb,var(--accent) 24%,transparent);
+    border-radius: 50%;
+    transform: rotate(-13deg)
+}
+
+    .idea-orbits:before, .idea-orbits:after {
+        position: absolute;
+        inset: 17% -10%;
+        content: "";
+        border: 1px dashed color-mix(in srgb,var(--accent) 32%,transparent);
+        border-radius: 50%;
+        transform: rotate(28deg)
+    }
+
+    .idea-orbits:after {
+        inset: 31% -3%;
+        transform: rotate(-30deg)
+    }
+
+.idea-pearl {
+    position: absolute;
+    z-index: 3;
+    top: 38%;
+    left: 49%;
+    width: 73px;
+    height: 73px;
+    display: grid;
+    place-items: center;
+    transform: translate(-50%,-50%);
+    color: #fff7da;
+    background: radial-gradient(circle at 32% 25%,#fff 0,#e4fff4 17%,#71e4b4 48%,#08774f 100%);
+    border: 4px solid color-mix(in srgb,var(--surface) 83%,transparent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 9px color-mix(in srgb,var(--accent) 12%,transparent),0 0 38px color-mix(in srgb,var(--accent) 55%,transparent)
+}
+
+.orbit-tile {
+    position: absolute;
+    z-index: 4;
+    width: 128px;
+    padding: 10px;
+    background: color-mix(in srgb,var(--surface) 93%,transparent);
+    border: 1px solid color-mix(in srgb,var(--accent) 25%,var(--line));
+    border-radius: 12px;
+    box-shadow: var(--shadow)
+}
+
+    .orbit-tile b, .orbit-tile small {
+        display: block
+    }
+
+    .orbit-tile b {
+        font-size: 10px
+    }
+
+    .orbit-tile small {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 8px
+    }
+
+    .orbit-tile span {
+        display: inline-grid;
+        width: 24px;
+        height: 24px;
+        float: left;
+        place-items: center;
+        margin-right: 7px;
+        color: var(--accent);
+        background: var(--surface2);
+        border-radius: 7px
+    }
+
+.ot-research {
+    top: 2%;
+    left: 35%
+}
+
+.ot-ask {
+    top: 32%;
+    left: 0
+}
+
+.ot-plan {
+    top: 17%;
+    right: 0
+}
+
+.ot-create {
+    bottom: 4%;
+    left: 20%
+}
+
+.ot-explore {
+    right: 11%;
+    bottom: 1%
+}
+
+.concept-8 .concept-story h1 {
+    font-family: Inter,"Segoe UI",sans-serif;
+    font-weight: 800;
+    letter-spacing: -2.6px
+}
+
+    .concept-8 .concept-story h1 em {
+        color: var(--accent)
+    }
+
+@media(max-width:660px) {
+    .concept-8 .concept-art {
+        height: clamp(130px,20vh,165px)
+    }
+
+    .idea-pearl {
+        top: 47%;
+        width: 43px;
+        height: 43px
+    }
+
+    .orbit-tile {
+        width: 89px;
+        padding: 6px;
+        border-radius: 8px
+    }
+
+        .orbit-tile b {
+            font-size: 7px
+        }
+
+        .orbit-tile small {
+            font-size: 6px
+        }
+
+        .orbit-tile span {
+            width: 17px;
+            height: 17px;
+            margin-right: 4px;
+            font-size: 9px
+        }
+
+    .ot-research {
+        top: 0;
+        left: 37%
+    }
+
+    .ot-ask {
+        top: 35%;
+        left: 0
+    }
+
+    .ot-plan {
+        top: 17%;
+        right: 0
+    }
+
+    .ot-create {
+        bottom: 2%;
+        left: 17%
+    }
+
+    .ot-explore {
+        right: 8%;
+        bottom: 0
+    }
+
+    .concept-8 .concept-story h1 {
+        letter-spacing: -1px
+    }
+}
+/* Idea desk illustration */
+.desk-art {
+    background: radial-gradient(ellipse at 53% 78%,color-mix(in srgb,var(--accent) 17%,transparent),transparent 58%)
+}
+
+.desk-glow {
+    position: absolute;
+    inset: 17% 13% 2%;
+    background: radial-gradient(ellipse at 58% 68%,color-mix(in srgb,var(--glow) 64%,transparent),transparent 63%);
+    border-radius: 50%;
+    filter: blur(9px)
+}
+
+.desk-surface {
+    position: absolute;
+    z-index: 3;
+    right: 5%;
+    bottom: 15%;
+    left: 5%;
+    height: 8px;
+    background: linear-gradient(90deg,transparent,#b58e63,#e3c89a,#b58e63,transparent);
+    border-radius: 50%;
+    box-shadow: 0 7px 13px color-mix(in srgb,var(--text) 18%,transparent)
+}
+
+.desk-laptop {
+    position: absolute;
+    z-index: 5;
+    bottom: 16%;
+    left: 48%;
+    width: 146px;
+    height: 91px;
+    display: grid;
+    place-items: center;
+    transform: translateX(-50%);
+    color: var(--accent2);
+    background: linear-gradient(140deg,#f7fffb,#c8e8da);
+    border: 4px solid #526b60;
+    border-bottom-width: 9px;
+    border-radius: 9px 9px 4px 4px;
+    box-shadow: 0 4px 0 #53685e;
+    font-size: 22px
+}
+
+    .desk-laptop:after {
+        position: absolute;
+        right: -15px;
+        bottom: -13px;
+        left: -15px;
+        height: 6px;
+        content: "";
+        background: #80938a;
+        border-radius: 0 0 10px 10px
+    }
+
+.desk-cup {
+    position: absolute;
+    z-index: 4;
+    right: 10%;
+    bottom: 17%;
+    width: 27px;
+    height: 33px;
+    background: linear-gradient(90deg,#6fa783,#d9ead9);
+    border-radius: 3px 3px 8px 8px
+}
+
+    .desk-cup:after {
+        position: absolute;
+        top: 7px;
+        right: -9px;
+        width: 10px;
+        height: 13px;
+        content: "";
+        border: 3px solid #79a58a;
+        border-left: 0;
+        border-radius: 0 9px 9px 0
+    }
+
+.desk-person {
+    position: absolute;
+    z-index: 2;
+    bottom: 15%;
+    left: 25%;
+    width: 180px;
+    height: 220px
+}
+
+.person-hair {
+    position: absolute;
+    z-index: 2;
+    top: 9px;
+    left: 57px;
+    width: 104px;
+    height: 117px;
+    background: linear-gradient(120deg,#30221f,#5a3729 62%,#211d1a);
+    border-radius: 57% 47% 48% 38%;
+    transform: rotate(5deg)
+}
+
+.person-face {
+    position: absolute;
+    z-index: 3;
+    top: 30px;
+    left: 73px;
+    width: 69px;
+    height: 82px;
+    background: linear-gradient(135deg,#f3d1ac,#cb8c67);
+    border-radius: 48% 46% 49% 47%;
+    transform: rotate(-4deg)
+}
+
+    .person-face:before {
+        position: absolute;
+        top: 39px;
+        left: 15px;
+        width: 7px;
+        height: 4px;
+        content: "";
+        background: #263a32;
+        border-radius: 50%;
+        box-shadow: 27px -1px #263a32
+    }
+
+    .person-face:after {
+        position: absolute;
+        top: 58px;
+        left: 27px;
+        width: 17px;
+        height: 7px;
+        content: "";
+        border-bottom: 2px solid #9f4e42;
+        border-radius: 50%
+    }
+
+.person-neck {
+    position: absolute;
+    z-index: 1;
+    top: 99px;
+    left: 93px;
+    width: 30px;
+    height: 30px;
+    background: #d9a17c
+}
+
+.person-body {
+    position: absolute;
+    bottom: 0;
+    left: 25px;
+    width: 145px;
+    height: 121px;
+    background: linear-gradient(135deg,#198455,#0b523e);
+    border-radius: 66px 68px 8px 8px
+}
+
+.person-arm {
+    position: absolute;
+    z-index: 4;
+    bottom: 36px;
+    left: 2px;
+    width: 105px;
+    height: 28px;
+    background: linear-gradient(90deg,#e2b38b,#f0caa6);
+    border-radius: 20px;
+    transform: rotate(-15deg)
+}
+
+.leaf-cluster {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    bottom: 15%;
+    width: 80px;
+    height: 130px
+}
+
+    .leaf-cluster i {
+        position: absolute;
+        bottom: 7px;
+        left: 38px;
+        width: 22px;
+        height: 65px;
+        background: linear-gradient(100deg,#178451,#8bcf85);
+        border-radius: 100% 0 100% 0;
+        transform: rotate(-33deg);
+        transform-origin: bottom
+    }
+
+        .leaf-cluster i:nth-child(2) {
+            transform: rotate(32deg)
+        }
+
+        .leaf-cluster i:nth-child(3) {
+            left: 22px;
+            height: 48px;
+            transform: rotate(-59deg)
+        }
+
+        .leaf-cluster i:nth-child(4) {
+            left: 51px;
+            height: 49px;
+            transform: rotate(58deg)
+        }
+
+.idea-card-float {
+    position: absolute;
+    z-index: 5;
+    width: 105px;
+    min-height: 63px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px;
+    color: var(--text);
+    background: color-mix(in srgb,var(--surface) 93%,transparent);
+    border: 1px solid color-mix(in srgb,var(--accent) 25%,var(--line));
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    transform: rotate(-5deg)
+}
+
+    .idea-card-float b {
+        width: 22px;
+        height: 22px;
+        display: grid;
+        place-items: center;
+        color: var(--accent);
+        background: var(--surface2);
+        border-radius: 6px;
+        font-size: 14px
+    }
+
+    .idea-card-float span {
+        font-size: 9px;
+        font-weight: 700
+    }
+
+    .idea-card-float i {
+        display: block;
+        width: 48px;
+        height: 3px;
+        margin-top: 4px;
+        background: color-mix(in srgb,var(--accent) 24%,var(--line));
+        border-radius: 5px
+    }
+
+.idea-note {
+    top: 5%;
+    left: 42%
+}
+
+.plan-note {
+    top: 8%;
+    right: 3%;
+    transform: rotate(5deg)
+}
+
+.research-note {
+    top: 38%;
+    left: 5%;
+    transform: rotate(-7deg)
+}
+
+.create-note {
+    top: 44%;
+    right: 0;
+    transform: rotate(7deg)
+}
+
+.desk-art .art-caption {
+    bottom: 2%;
+    font-size: 8px
+}
+
+@media(max-width:900px) {
+    .desk-person {
+        left: 24%;
+        transform: scale(.83);
+        transform-origin: bottom left
+    }
+
+    .desk-laptop {
+        width: 120px;
+        height: 76px
+    }
+
+    .idea-card-float {
+        width: 92px;
+        padding: 6px
+    }
+
+        .idea-card-float span {
+            font-size: 8px
+        }
+
+        .idea-card-float i {
+            width: 38px
+        }
+}
+
+@media(max-width:660px) {
+    .desk-person {
+        left: 26%;
+        transform: scale(.48);
+        transform-origin: bottom left
+    }
+
+    .desk-laptop {
+        bottom: 15%;
+        left: 51%;
+        width: 83px;
+        height: 54px;
+        border-width: 3px;
+        border-bottom-width: 6px;
+        font-size: 14px
+    }
+
+        .desk-laptop:after {
+            bottom: -9px;
+            height: 4px
+        }
+
+    .desk-surface {
+        bottom: 14%;
+        height: 5px
+    }
+
+    .desk-cup {
+        right: 7%;
+        bottom: 16%;
+        transform: scale(.65);
+        transform-origin: bottom
+    }
+
+    .leaf-cluster {
+        right: 2%;
+        bottom: 13%;
+        transform: scale(.63);
+        transform-origin: bottom
+    }
+
+    .idea-card-float {
+        width: 74px;
+        min-height: 43px;
+        gap: 4px;
+        padding: 4px;
+        border-radius: 7px
+    }
+
+        .idea-card-float b {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            font-size: 10px
+        }
+
+        .idea-card-float span {
+            font-size: 6px
+        }
+
+        .idea-card-float i {
+            width: 30px;
+            height: 2px;
+            margin-top: 3px
+        }
+
+    .idea-note {
+        left: 39%
+    }
+
+    .plan-note {
+        right: 1%
+    }
+
+    .research-note {
+        top: 39%;
+        left: 0
+    }
+
+    .create-note {
+        top: 46%;
+        right: 0
+    }
+
+    .desk-art .art-caption {
+        font-size: 6px
+    }
+}
+
+/* User-reference illustration */
+.desk-portrait {
+    position: absolute;
+    z-index: 4;
+    bottom: 8%;
+    left: 15%;
+    width: 54%;
+    height: 94%;
+    object-fit: contain;
+    object-position: center bottom;
+    filter: drop-shadow(0 14px 20px color-mix(in srgb,var(--text) 13%,transparent))
+}
+
+@media(max-width:900px) {
+    .desk-portrait {
+        left: 14%;
+        width: 57%;
+        height: 91%
+    }
+}
+
+@media(max-width:660px) {
+    .desk-portrait {
+        left: 14%;
+        bottom: 6%;
+        width: 59%;
+        height: 93%
+    }
+}
+
+/* Keep the Ideas card clear of the portrait's face. */
+.concept-8 .idea-note {
+    top: 5%;
+    left: 5%
+}
+
+@media(max-width:660px) {
+    .concept-8 .idea-note {
+        top: 4%;
+        left: 4%
+    }
+}
+/* Mobile spacing: give the sign-in panel room to breathe. */
+@media(max-width:660px) {
+    .concept-8 .concept-main {
+        gap: 10px;
+        padding: 13px 16px
+    }
+
+    .concept-8 .concept-kicker {
+        margin-bottom: 8px;
+        font-size: 7px;
+        letter-spacing: 1.35px
+    }
+
+    .concept-8 .concept-description {
+        margin-top: 8px;
+        font-size: 10px;
+        line-height: 1.42
+    }
+
+    .concept-8 .concept-art {
+        height: clamp(128px,18vh,150px);
+        margin-top: 2px
+    }
+
+    .concept-8 .concept-auth-card {
+        padding: 17px 19px;
+        border-radius: 16px
+    }
+
+    .concept-8 .concept-auth-kicker {
+        margin-bottom: 8px;
+        font-size: 7px;
+        letter-spacing: 1.2px
+    }
+
+    .concept-8 .concept-auth-card h2 {
+        font-size: 20px;
+        line-height: 1.16
+    }
+
+    .concept-8 .concept-auth-copy {
+        margin: 8px 0 13px;
+        font-size: 10px;
+        line-height: 1.45
+    }
+
+    .concept-8 .google-button {
+        min-height: 44px;
+        padding: 9px 12px;
+        font-size: 11px
+    }
+
+    .concept-8 .concept-trust {
+        gap: 9px;
+        margin-top: 11px;
+        padding-top: 10px;
+        font-size: 9px;
+        line-height: 1.42
+    }
+
+    .concept-8 .trust-check {
+        width: 19px;
+        height: 19px;
+        flex-basis: 19px
+    }
+
+    .concept-8 .concept-legal {
+        margin-top: 10px;
+        font-size: 8px;
+        line-height: 1.55
+    }
+
+    .concept-8 .idea-note {
+        top: 4%;
+        left: 4%
+    }
+}
+
+@media(max-width:660px) and (max-height:620px) {
+    .concept-8 .concept-main {
+        gap: 5px;
+        padding-block: 5px
+    }
+
+    .concept-8 .concept-art {
+        height: 98px
+    }
+
+    .concept-8 .concept-auth-card {
+        padding: 12px 16px
+    }
+
+    .concept-8 .concept-auth-copy {
+        margin: 6px 0 9px
+    }
+
+    .concept-8 .concept-trust {
+        margin-top: 8px;
+        padding-top: 7px
+    }
+
+    .concept-8 .concept-legal {
+        margin-top: 7px
+    }
+}

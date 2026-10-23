@@ -1,0 +1,1319 @@
+﻿:root {
+    color-scheme: light;
+    --page: #f8f8f0;
+    --surface: #fffefa;
+    --surface-raised: #f1f6ed;
+    --text: #12352c;
+    --muted: #63766d;
+    --line: #dce8dc;
+    --accent: #078850;
+    --mint: #bcebd8;
+    --shadow: 0 18px 55px rgba(21, 70, 49, .12);
+}
+
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #071712;
+    --surface: #0c211a;
+    --surface-raised: #102b21;
+    --text: #f3f8f2;
+    --muted: #bdc9bf;
+    --line: #254238;
+    --accent: #25d596;
+    --mint: #154b36;
+    --shadow: 0 18px 55px rgba(0, 0, 0, .35);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    min-width: 320px;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    color: var(--text);
+    background: var(--page);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+button {
+    font: inherit;
+}
+
+.atelier-page {
+    height: 100dvh;
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 27% 54%, color-mix(in srgb, var(--mint) 28%, transparent), transparent 52%), var(--page);
+}
+
+.atelier-header {
+    z-index: 2;
+    height: 72px;
+    flex: 0 0 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(22px, 5vw, 76px);
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+}
+
+.atelier-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    text-decoration: none;
+}
+
+    .atelier-brand img {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+    }
+
+    .atelier-brand span {
+        display: grid;
+        gap: 2px;
+    }
+
+    .atelier-brand strong {
+        font-size: 19px;
+        letter-spacing: -.5px;
+    }
+
+    .atelier-brand small {
+        color: var(--muted);
+        font-size: 9px;
+    }
+
+.atelier-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.atelier-help {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    color: var(--muted);
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.help-mark {
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-size: 13px;
+}
+
+.action-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--line);
+}
+
+.atelier-theme {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    color: var(--text);
+    background: var(--surface-raised);
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    cursor: pointer;
+}
+
+    .atelier-theme svg {
+        width: 19px;
+        height: 19px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.7;
+    }
+
+.icon-moon {
+    display: none;
+}
+
+html[data-theme="dark"] .icon-sun {
+    display: none;
+}
+
+html[data-theme="dark"] .icon-moon {
+    display: block;
+}
+
+.atelier-main {
+    width: min(1460px, 100%);
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0 auto;
+    padding: clamp(20px, 3.2vh, 42px) clamp(26px, 5vw, 76px);
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(330px, .72fr);
+    gap: clamp(28px, 5vw, 78px);
+    align-items: center;
+}
+
+.atelier-story {
+    min-width: 0;
+}
+
+.atelier-eyebrow, .card-eyebrow {
+    margin: 0 0 13px;
+    color: var(--accent);
+    font-size: 9px;
+    font-weight: 850;
+    letter-spacing: 2px;
+}
+
+.atelier-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+    .atelier-eyebrow span {
+        width: 7px;
+        height: 7px;
+        background: var(--accent);
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 13%, transparent);
+    }
+
+.atelier-story h1 {
+    margin: 0;
+    font-size: clamp(38px, 4.7vw, 66px);
+    line-height: .99;
+    letter-spacing: -3.4px;
+}
+
+    .atelier-story h1 em {
+        color: var(--accent);
+        font-style: normal;
+    }
+
+.atelier-intro {
+    max-width: 570px;
+    margin: 16px 0 0;
+    color: var(--muted);
+    font-size: clamp(14px, 1.25vw, 17px);
+    line-height: 1.55;
+}
+
+.studio-art {
+    position: relative;
+    height: clamp(260px, 37vh, 350px);
+    max-width: 760px;
+    margin-top: 12px;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+    .studio-art::before {
+        position: absolute;
+        z-index: -2;
+        inset: 20% 4% 0;
+        content: "";
+        background: radial-gradient(ellipse at 50% 86%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 66%);
+    }
+
+    .studio-art::after {
+        position: absolute;
+        z-index: -1;
+        right: 7%;
+        bottom: 18px;
+        left: 7%;
+        height: 24px;
+        content: "";
+        background: color-mix(in srgb, var(--accent) 12%, transparent);
+        filter: blur(13px);
+        border-radius: 50%;
+    }
+
+.idea-lines {
+    position: absolute;
+    z-index: 0;
+    inset: 0 0 37px;
+    width: 100%;
+    height: calc(100% - 37px);
+    overflow: visible;
+}
+
+    .idea-lines path {
+        fill: none;
+        stroke: color-mix(in srgb, var(--accent) 57%, transparent);
+        stroke-width: 2;
+        stroke-dasharray: 5 6;
+    }
+
+    .idea-lines circle {
+        fill: var(--accent);
+        stroke: var(--surface);
+        stroke-width: 4;
+    }
+
+.float-card {
+    position: absolute;
+    z-index: 2;
+    min-width: 155px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 12px;
+    color: var(--text);
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    box-shadow: var(--shadow);
+}
+
+    .float-card strong, .float-card small {
+        display: block;
+    }
+
+    .float-card strong {
+        font-size: 10px;
+        line-height: 1.25;
+    }
+
+    .float-card small {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 9px;
+    }
+
+.mini-icon {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--mint) 52%, transparent);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 850;
+}
+
+.conversation-card {
+    top: 10px;
+    left: 3%;
+}
+
+.decision-card {
+    top: 5px;
+    right: 3%;
+}
+
+.analytics-card {
+    top: 42%;
+    right: 1%;
+}
+
+.conversation-card small i {
+    display: inline-block;
+    width: 29px;
+    height: 3px;
+    margin-right: 4px;
+    background: color-mix(in srgb, var(--accent) 35%, var(--line));
+    border-radius: 5px;
+}
+
+.tree-lines {
+    color: var(--accent) !important;
+    letter-spacing: 1px;
+}
+
+.mini-bars {
+    height: 13px;
+    display: flex !important;
+    align-items: end;
+    gap: 3px;
+}
+
+    .mini-bars i {
+        width: 4px;
+        background: var(--accent);
+        border-radius: 3px 3px 1px 1px;
+    }
+
+        .mini-bars i:nth-child(1) {
+            height: 5px;
+        }
+
+        .mini-bars i:nth-child(2) {
+            height: 9px;
+        }
+
+        .mini-bars i:nth-child(3) {
+            height: 7px;
+        }
+
+        .mini-bars i:nth-child(4) {
+            height: 13px;
+        }
+
+.atelier-pearl {
+    position: absolute;
+    z-index: 3;
+    top: 31%;
+    left: 50%;
+    width: 82px;
+    height: 82px;
+    display: grid;
+    place-items: center;
+    transform: translateX(-50%);
+    color: #fff4cf;
+    background: radial-gradient(circle at 34% 30%, #ffffff 0, #f9f0d2 18%, #bcebd8 38%, color-mix(in srgb, var(--accent) 85%, #073e2e) 72%);
+    border: 4px solid color-mix(in srgb, var(--surface) 80%, transparent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 13%, transparent), 0 0 34px color-mix(in srgb, var(--accent) 42%, transparent);
+    font-size: 25px;
+}
+
+.team-scene {
+    position: absolute;
+    right: 9%;
+    bottom: 28px;
+    left: 9%;
+    height: 43%;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+
+.desk {
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 14px;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 30%, #896f51), #c9a878, color-mix(in srgb, var(--accent) 24%, #85694c), transparent);
+    border-radius: 50%;
+    box-shadow: 0 6px 12px color-mix(in srgb, var(--text) 18%, transparent);
+}
+
+.laptop {
+    position: absolute;
+    z-index: 4;
+    bottom: 10px;
+    left: 50%;
+    width: 76px;
+    height: 54px;
+    display: grid;
+    place-items: center;
+    transform: translateX(-50%);
+    color: var(--accent);
+    background: linear-gradient(140deg, var(--surface), color-mix(in srgb, var(--mint) 54%, var(--surface)));
+    border: 3px solid color-mix(in srgb, var(--text) 25%, var(--surface));
+    border-bottom-width: 8px;
+    border-radius: 6px 6px 3px 3px;
+    box-shadow: 0 4px 0 color-mix(in srgb, var(--text) 35%, transparent);
+    font-size: 15px;
+    font-weight: 900;
+}
+
+    .laptop::after {
+        position: absolute;
+        right: -12px;
+        bottom: -11px;
+        left: -12px;
+        height: 5px;
+        content: "";
+        background: color-mix(in srgb, var(--text) 22%, var(--surface));
+        border-radius: 0 0 9px 9px;
+    }
+
+.pearl-glow {
+    position: absolute;
+    z-index: 1;
+    bottom: 23px;
+    left: 50%;
+    width: 35px;
+    height: 35px;
+    transform: translateX(-50%);
+    background: #fff2cf;
+    border-radius: 50%;
+    filter: blur(16px);
+}
+
+.person {
+    position: relative;
+    z-index: 3;
+    width: 94px;
+    height: 119px;
+    margin: 0 -7px;
+}
+
+    .person .face {
+        position: absolute;
+        z-index: 2;
+        top: 17px;
+        left: 31px;
+        width: 34px;
+        height: 42px;
+        background: linear-gradient(135deg, #eac4a0, #bd805a);
+        border-radius: 46% 46% 48% 48%;
+    }
+
+    .person .hair {
+        position: absolute;
+        z-index: 3;
+        top: 10px;
+        left: 27px;
+        width: 41px;
+        height: 35px;
+        background: #25362e;
+        border-radius: 54% 52% 34% 36%;
+    }
+
+    .person .body {
+        position: absolute;
+        bottom: 2px;
+        left: 10px;
+        width: 79px;
+        height: 67px;
+        background: linear-gradient(140deg, #176744, #0c3e30);
+        border-radius: 44px 44px 7px 7px;
+    }
+
+.person-one {
+    transform: rotate(-8deg) scale(.89);
+}
+
+    .person-one .body {
+        background: linear-gradient(130deg,#365b4a,#203d34);
+    }
+
+.person-two {
+    transform: rotate(5deg) scale(.95);
+}
+
+    .person-two .hair {
+        background: #332c27;
+    }
+
+.person-three {
+    transform: rotate(-3deg);
+}
+
+    .person-three .hair {
+        background: #2c211d;
+    }
+
+.person-four {
+    transform: rotate(8deg) scale(.88);
+}
+
+    .person-four .body {
+        background: linear-gradient(130deg,#1b6148,#114234);
+    }
+
+.plant {
+    position: absolute;
+    z-index: 4;
+    bottom: 10px;
+    width: 42px;
+    height: 65px;
+}
+
+.plant-one {
+    left: 0;
+}
+
+.plant-two {
+    right: 1%;
+    transform: scale(.9);
+}
+
+.plant b {
+    position: absolute;
+    bottom: 0;
+    left: 9px;
+    width: 27px;
+    height: 21px;
+    background: linear-gradient(120deg,#d2b07f,#9d7850);
+    border-radius: 3px 3px 9px 9px;
+}
+
+.plant i {
+    position: absolute;
+    z-index: 1;
+    bottom: 18px;
+    left: 20px;
+    width: 11px;
+    height: 31px;
+    background: linear-gradient(90deg,#16834e,#6acb82);
+    border-radius: 100% 0 100% 0;
+    transform: rotate(-24deg);
+    transform-origin: bottom;
+}
+
+    .plant i:nth-child(2) {
+        transform: rotate(25deg) scale(.9);
+    }
+
+    .plant i:nth-child(3) {
+        bottom: 25px;
+        transform: rotate(3deg) scale(.82);
+    }
+
+.art-caption {
+    position: absolute;
+    z-index: 5;
+    bottom: 0;
+    left: 50%;
+    margin: 0;
+    transform: translateX(-50%);
+    color: var(--muted);
+    white-space: nowrap;
+    font-size: 10px;
+}
+
+    .art-caption span {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        margin: 0 6px 1px 0;
+        background: var(--accent);
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 13%, transparent);
+    }
+
+.atelier-auth {
+    width: 100%;
+    max-width: 460px;
+    justify-self: end;
+}
+
+.atelier-card {
+    padding: clamp(24px, 3vw, 40px);
+    text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 25px;
+    box-shadow: var(--shadow);
+}
+
+.card-emblem {
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 17px;
+    background: color-mix(in srgb, var(--mint) 42%, transparent);
+    border-radius: 19px;
+}
+
+    .card-emblem img {
+        width: 38px;
+        height: 38px;
+        object-fit: contain;
+    }
+
+.card-eyebrow {
+    margin-bottom: 10px;
+    font-size: 8px;
+    letter-spacing: 1.7px;
+}
+
+.atelier-card h2 {
+    margin: 0;
+    font-size: clamp(24px, 2.3vw, 31px);
+    line-height: 1.15;
+    letter-spacing: -.9px;
+}
+
+.card-copy {
+    max-width: 320px;
+    margin: 12px auto 24px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.google-button {
+    position: relative;
+    width: 100%;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 44px;
+    color: #17231d;
+    background: #fff;
+    border: 1px solid #d8e2da;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(25, 55, 39, .08);
+    font-weight: 750;
+    cursor: pointer;
+}
+
+    .google-button:hover {
+        border-color: #9fceb5;
+        box-shadow: 0 7px 18px rgba(25, 95, 60, .14);
+    }
+
+    .google-button:focus-visible, .atelier-theme:focus-visible, .atelier-help:focus-visible, .text-link:focus-visible {
+        outline: 3px solid color-mix(in srgb, var(--accent) 55%, transparent);
+        outline-offset: 3px;
+    }
+
+    .google-button svg {
+        width: 23px;
+        height: 23px;
+        flex: 0 0 23px;
+    }
+
+.button-arrow {
+    position: absolute;
+    right: 18px;
+    color: #71857c;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.google-button[disabled] {
+    opacity: .72;
+    cursor: wait;
+}
+
+.auth-message:empty {
+    display: none;
+}
+
+.auth-message:not(:empty) {
+    margin: 12px 0 0;
+    padding: 9px 11px;
+    color: #9d352c;
+    background: #fff0ed;
+    border: 1px solid #f0c6be;
+    border-radius: 9px;
+    font-size: 12px;
+}
+
+.secure-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    margin-top: 22px;
+    padding: 15px 0;
+    text-align: left;
+    border-top: 1px solid var(--line);
+}
+
+.lock-icon {
+    width: 25px;
+    height: 25px;
+    flex: 0 0 25px;
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    font-size: 16px;
+}
+
+.secure-note p {
+    margin: 1px 0 0;
+    color: var(--text);
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+.secure-note small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.legal-copy {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.8;
+}
+
+.text-link {
+    display: inline;
+    padding: 0;
+    color: var(--accent);
+    background: none;
+    border: 0;
+    font-size: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.auth-footnote {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 13px 0 0;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.footnote-check {
+    width: 19px;
+    height: 19px;
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--mint) 58%, transparent);
+    border-radius: 50%;
+    font-weight: 900;
+}
+
+.atelier-footer {
+    min-height: 54px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 22px;
+    padding: 8px clamp(18px, 5vw, 76px);
+    color: var(--muted);
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    font-size: 9px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--text);
+    text-decoration: none;
+}
+
+    .footer-brand img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+    }
+
+    .footer-brand strong {
+        font-size: 11px;
+    }
+
+.atelier-footer nav {
+    display: flex;
+    gap: 14px;
+}
+
+    .atelier-footer nav button {
+        padding: 0;
+        color: var(--muted);
+        background: none;
+        border: 0;
+        font-size: inherit;
+        cursor: pointer;
+    }
+
+        .atelier-footer nav button:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+html[data-theme="dark"] .google-button {
+    color: #10251e;
+    background: #fff;
+    border-color: #fff;
+}
+
+@media (max-width: 900px) {
+    .atelier-main {
+        grid-template-columns: minmax(0, 1fr) minmax(300px, .82fr);
+        gap: 24px;
+        padding-inline: 28px;
+    }
+
+    .atelier-story h1 {
+        font-size: clamp(36px, 5.8vw, 52px);
+        letter-spacing: -2.5px;
+    }
+
+    .atelier-intro {
+        margin-top: 11px;
+        font-size: 13px;
+    }
+
+    .studio-art {
+        height: clamp(220px, 32vh, 290px);
+    }
+
+    .float-card {
+        min-width: 133px;
+        padding: 8px;
+    }
+
+        .float-card strong {
+            font-size: 9px;
+        }
+
+    .mini-icon {
+        width: 27px;
+        height: 27px;
+        flex-basis: 27px;
+    }
+
+    .person {
+        transform: scale(.83);
+        margin-inline: -14px;
+    }
+
+    .person-one {
+        transform: rotate(-8deg) scale(.75);
+    }
+
+    .person-two {
+        transform: rotate(5deg) scale(.81);
+    }
+
+    .person-four {
+        transform: rotate(8deg) scale(.74);
+    }
+
+    .atelier-card {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 680px) {
+    .atelier-page {
+        min-height: 480px;
+    }
+
+    .atelier-header {
+        height: 58px;
+        flex-basis: 58px;
+        padding-inline: 15px;
+    }
+
+    .atelier-brand {
+        gap: 7px;
+    }
+
+        .atelier-brand img {
+            width: 39px;
+            height: 39px;
+        }
+
+        .atelier-brand strong {
+            font-size: 16px;
+        }
+
+        .atelier-brand small {
+            font-size: 8px;
+        }
+
+    .atelier-actions {
+        gap: 12px;
+    }
+
+    .atelier-help {
+        gap: 6px;
+        font-size: 12px;
+    }
+
+    .help-mark {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+    }
+
+    .atelier-theme {
+        width: 35px;
+        height: 35px;
+    }
+
+    .atelier-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px 14px;
+    }
+
+    .atelier-story {
+        width: 100%;
+        text-align: center;
+    }
+
+    .atelier-eyebrow {
+        justify-content: center;
+        margin-bottom: 6px;
+        font-size: 7px;
+        letter-spacing: 1.4px;
+    }
+
+    .atelier-story h1 {
+        font-size: clamp(26px, 7vw, 36px);
+        line-height: 1.01;
+        letter-spacing: -1.5px;
+    }
+
+    .atelier-intro {
+        max-width: 410px;
+        margin: 6px auto 0;
+        font-size: 10px;
+        line-height: 1.35;
+    }
+
+    .studio-art {
+        width: 100%;
+        height: clamp(122px, 21vh, 175px);
+        margin: 2px auto 0;
+    }
+
+    .atelier-pearl {
+        top: 28%;
+        width: 51px;
+        height: 51px;
+        border-width: 3px;
+        font-size: 17px;
+    }
+
+    .float-card {
+        min-width: 111px;
+        gap: 6px;
+        padding: 6px 7px;
+        border-radius: 9px;
+    }
+
+        .float-card strong {
+            font-size: 7px;
+        }
+
+        .float-card small {
+            margin-top: 3px;
+            font-size: 7px;
+        }
+
+    .mini-icon {
+        width: 21px;
+        height: 21px;
+        flex-basis: 21px;
+        border-radius: 7px;
+        font-size: 10px;
+    }
+
+    .conversation-card {
+        top: 3px;
+        left: 0;
+    }
+
+    .decision-card {
+        top: 1px;
+        right: 0;
+    }
+
+    .analytics-card {
+        top: 43%;
+        right: -1px;
+    }
+
+    .team-scene {
+        right: 12%;
+        bottom: 19px;
+        left: 12%;
+        height: 42%;
+    }
+
+    .person {
+        width: 65px;
+        height: 87px;
+        margin-inline: -12px;
+    }
+
+        .person .face {
+            top: 14px;
+            left: 22px;
+            width: 26px;
+            height: 31px;
+        }
+
+        .person .hair {
+            top: 8px;
+            left: 19px;
+            width: 32px;
+            height: 28px;
+        }
+
+        .person .body {
+            left: 6px;
+            width: 56px;
+            height: 48px;
+        }
+
+    .laptop {
+        width: 57px;
+        height: 39px;
+        font-size: 11px;
+    }
+
+    .plant {
+        transform: scale(.7);
+        transform-origin: bottom;
+    }
+
+    .plant-two {
+        transform: scale(.65);
+    }
+
+    .art-caption {
+        font-size: 7px;
+    }
+
+    .atelier-auth {
+        max-width: 430px;
+        align-self: center;
+    }
+
+    .atelier-card {
+        padding: 13px 17px;
+        border-radius: 17px;
+    }
+
+    .card-emblem {
+        width: 37px;
+        height: 37px;
+        margin-bottom: 5px;
+        border-radius: 12px;
+    }
+
+        .card-emblem img {
+            width: 25px;
+            height: 25px;
+        }
+
+    .card-eyebrow {
+        margin-bottom: 4px;
+        font-size: 6px;
+        letter-spacing: 1.2px;
+    }
+
+    .atelier-card h2 {
+        font-size: 19px;
+        line-height: 1.08;
+    }
+
+    .card-copy {
+        margin: 5px auto 9px;
+        font-size: 9px;
+        line-height: 1.35;
+    }
+
+    .google-button {
+        min-height: 40px;
+        padding: 8px 36px;
+        gap: 8px;
+        font-size: 11px;
+        border-radius: 9px;
+    }
+
+        .google-button svg {
+            width: 19px;
+            height: 19px;
+            flex-basis: 19px;
+        }
+
+    .button-arrow {
+        right: 11px;
+        font-size: 15px;
+    }
+
+    .secure-note {
+        gap: 7px;
+        margin-top: 8px;
+        padding: 7px 0 0;
+    }
+
+    .lock-icon {
+        width: 19px;
+        height: 19px;
+        flex-basis: 19px;
+        font-size: 12px;
+    }
+
+    .secure-note p {
+        font-size: 8px;
+        line-height: 1.35;
+    }
+
+    .secure-note small {
+        font-size: 7px;
+    }
+
+    .legal-copy {
+        margin-top: 5px;
+        font-size: 8px;
+        line-height: 1.4;
+    }
+
+    .auth-footnote {
+        margin-top: 4px;
+        font-size: 8px;
+    }
+
+    .footnote-check {
+        width: 15px;
+        height: 15px;
+    }
+
+    .atelier-footer {
+        min-height: 42px;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 2px 9px;
+        padding: 4px 8px;
+        font-size: 7px;
+    }
+
+    .footer-brand img {
+        width: 17px;
+        height: 17px;
+    }
+
+    .footer-brand strong {
+        font-size: 8px;
+    }
+
+    .atelier-footer nav {
+        gap: 9px;
+    }
+}
+
+@media (max-width: 680px) and (max-height: 640px) {
+    .atelier-main {
+        gap: 5px;
+        padding-block: 5px;
+    }
+
+    .studio-art {
+        height: 112px;
+    }
+
+    .atelier-story h1 {
+        font-size: 25px;
+    }
+
+    .atelier-intro {
+        font-size: 9px;
+    }
+
+    .atelier-card {
+        padding: 9px 14px;
+    }
+
+    .card-emblem {
+        display: none;
+    }
+
+    .card-copy {
+        margin: 4px auto 6px;
+    }
+
+    .secure-note {
+        margin-top: 5px;
+        padding-top: 5px;
+    }
+
+    .auth-footnote {
+        display: none;
+    }
+}
+
+@media (max-width: 370px) {
+    .atelier-main {
+        padding-inline: 10px;
+    }
+
+    .atelier-story h1 {
+        font-size: 25px;
+    }
+
+    .float-card {
+        min-width: 98px;
+    }
+
+    .atelier-card {
+        padding-inline: 12px;
+    }
+
+    .atelier-footer nav {
+        gap: 6px;
+    }
+}
+
+@media (max-height: 650px) and (min-width: 681px) {
+    .atelier-header {
+        height: 56px;
+        flex-basis: 56px;
+    }
+
+    .atelier-main {
+        padding-block: 10px;
+        gap: 25px;
+    }
+
+    .atelier-story h1 {
+        font-size: 43px;
+    }
+
+    .atelier-intro {
+        margin-top: 8px;
+        font-size: 13px;
+    }
+
+    .studio-art {
+        height: 210px;
+    }
+
+    .atelier-card {
+        padding: 17px 24px;
+    }
+
+    .card-emblem {
+        width: 42px;
+        height: 42px;
+        margin-bottom: 8px;
+    }
+
+    .card-copy {
+        margin: 7px auto 13px;
+    }
+
+    .secure-note {
+        margin-top: 12px;
+        padding: 10px 0;
+    }
+
+    .atelier-footer {
+        min-height: 44px;
+    }
+}

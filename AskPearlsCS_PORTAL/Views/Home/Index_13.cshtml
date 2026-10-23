@@ -1,0 +1,97 @@
+﻿
+@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f8f0" />
+    <title>AskPearls | A shared view for better work</title>
+    <link rel="stylesheet" href="~/app_page_css/app_page_index_5_css.css" />
+    <link rel="stylesheet" href="~/app_page_css/app_page_signin_info_modal_css.css" />
+    <script src="~/app_page_js/app_page_index_js.js" defer></script>
+</head>
+<body>
+    <div class="atelier-page">
+        <header class="atelier-header">
+            <a class="atelier-brand" href="/" aria-label="AskPearls home">
+                <img src="/app_img/img_logo_color.png" alt="" />
+                <span><strong>AskPearls</strong><small>Capture. Engage. Convert.</small></span>
+            </a>
+            <nav class="atelier-actions" aria-label="Page options">
+                <button class="atelier-help" type="button" data-info-open="help"><span class="help-mark" aria-hidden="true">?</span><span>Help</span></button>
+                <span class="action-divider" aria-hidden="true"></span>
+                <button class="atelier-theme" id="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch theme">
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42 1.42"></path></svg>
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"></path></svg>
+                </button>
+            </nav>
+        </header>
+
+        <main class="atelier-main">
+            <section class="atelier-story" aria-labelledby="atelier-title">
+                <div class="story-copy">
+                    <p class="atelier-eyebrow"><span></span> ASKPEARLS · ONE SHARED WORKSPACE</p>
+                    <h1 id="atelier-title">Better work begins<br />with a <em>shared view.</em></h1>
+                    <p class="atelier-intro">Bring customer conversations, ideas and data together so your team can make clearer decisions, faster.</p>
+                </div>
+
+                <div class="studio-art" aria-label="A team connects customer conversations, decision paths and analytics around a shared idea">
+                    <div class="studio-window window-left" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span><span class="window-line"></span><span class="window-line short"></span><span class="window-person"></span></div>
+                    <div class="studio-window window-right" aria-hidden="true"><span class="chart-bars"><i></i><i></i><i></i><i></i></span><span class="window-line"></span><span class="window-line short"></span></div>
+                    <svg class="idea-lines" viewBox="0 0 760 310" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M380 165 C285 120 245 79 161 87" />
+                        <path d="M380 165 C465 110 518 71 610 88" />
+                        <path d="M380 165 C309 210 270 246 199 254" />
+                        <path d="M380 165 C463 220 519 246 576 250" />
+                        <circle cx="161" cy="87" r="5" />
+                        <circle cx="610" cy="88" r="5" />
+                        <circle cx="199" cy="254" r="5" />
+                        <circle cx="576" cy="250" r="5" />
+                    </svg>
+                    <div class="float-card conversation-card" aria-hidden="true"><span class="mini-icon chat-icon">•••</span><span><strong>Customer conversations</strong><small><i></i><i></i></small></span></div>
+                    <div class="float-card decision-card" aria-hidden="true"><span class="mini-icon decision-icon">◇</span><span><strong>Decision paths</strong><small class="tree-lines">● ─ ● ─ ●</small></span></div>
+                    <div class="float-card analytics-card" aria-hidden="true"><span class="mini-icon chart-icon">▥</span><span><strong>Analytics</strong><small class="mini-bars"><i></i><i></i><i></i><i></i></small></span></div>
+                    <div class="atelier-pearl" aria-hidden="true"><span>✦</span></div>
+                    <div class="team-scene" aria-hidden="true">
+                        <div class="plant plant-one"><i></i><i></i><i></i><b></b></div>
+                        <div class="person person-one"><span class="hair"></span><span class="face"></span><span class="body"></span></div>
+                        <div class="person person-two"><span class="hair"></span><span class="face"></span><span class="body"></span></div>
+                        <div class="person person-three"><span class="hair"></span><span class="face"></span><span class="body"></span></div>
+                        <div class="person person-four"><span class="hair"></span><span class="face"></span><span class="body"></span></div>
+                        <div class="desk"></div><div class="laptop"><span>AP</span></div><div class="pearl-glow"></div>
+                        <div class="plant plant-two"><i></i><i></i><i></i><b></b></div>
+                    </div>
+                    <p class="art-caption"><span></span> Customer context, shared across your team</p>
+                </div>
+            </section>
+
+            <section class="atelier-auth" aria-labelledby="auth-title">
+                <div class="atelier-card" id="google-auth-card" data-google-auth-url="https://localhost:7014/api/auth/google/start">
+                    <div class="card-emblem" aria-hidden="true"><img src="/app_img/img_logo_color.png" alt="" /></div>
+                    <p class="card-eyebrow">ASKPEARLS DEVELOPMENT PORTAL</p>
+                    <h2 id="auth-title">Welcome to your<br />workspace</h2>
+                    <p class="card-copy">New users are set up automatically when they continue with Google.</p>
+                    <button class="google-button" id="google-signin" type="button" data-google-signin>
+                        <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11a9.4 9.4 0 0 1-4.1 6.2v5.2h6.7c3.9-3.6 6-8.9 6-15.4Z" /><path fill="#FF3D00" d="M24 44c5.5 0 10.1-1.8 13.5-4.9l-6.7-5.2c-1.8 1.2-4.1 2-6.8 2-5.2 0-9.7-3.5-11.3-8.2H5.8v5.4A20 20 0 0 0 24 44Z" /><path fill="#4CAF50" d="M12.7 27.7a12 12 0 0 1 0-7.4v-5.4H5.8a20 20 0 0 0 0 18.2l6.9-5.4Z" /><path fill="#1976D2" d="M24 12.1c3 0 5.6 1 7.7 3.1l5.8-5.8C34 6.1 29.4 4 24 4A20 20 0 0 0 5.8 14.9l6.9 5.4c1.6-4.7 6.1-8.2 11.3-8.2Z" /></svg>
+                        <span>Continue with Google</span><span class="button-arrow" aria-hidden="true">→</span>
+                    </button>
+                    <p class="auth-message" id="auth-message" data-auth-message role="status" aria-live="polite"></p>
+                    <div class="secure-note"><span class="lock-icon" aria-hidden="true">⌑</span><p>We keep your data private and secure.<br /><small>AskPearls only receives your basic Google profile details.</small></p></div>
+                    <p class="legal-copy">By continuing, you agree to our<br /><button type="button" class="text-link" data-info-open="terms">Terms of Service</button><span> and </span><button type="button" class="text-link" data-info-open="privacy">Privacy Policy</button>.</p>
+                </div>
+                <p class="auth-footnote"><span class="footnote-check">✓</span> One sign-in for every AskPearls workspace.</p>
+            </section>
+        </main>
+
+        <partial name="_SignInInfoModal" />
+        <footer class="atelier-footer">
+            <a class="footer-brand" href="/" aria-label="AskPearls home"><img src="/app_img/img_logo_color.png" alt="" /><strong>AskPearls</strong></a>
+            <span>Patent Pending. © <span id="footer-year" data-year></span> AskPearls Limited. All Rights Reserved.</span>
+            <nav aria-label="Help and legal"><button type="button" data-info-open="help">Help</button><button type="button" data-info-open="contact">Contact support</button><button type="button" data-info-open="terms">Terms</button><button type="button" data-info-open="privacy">Privacy</button></nav>
+        </footer>
+    </div>
+</body>
+</html>
