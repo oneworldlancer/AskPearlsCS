@@ -22110,8 +22110,8 @@ public partial class DBContextModel : DbContext
             entity.HasKey(e => new { e.UserId, e.MailId }).HasName("PK__UserLogi__54C6CB550CBAE877");
 
             entity.ToTable("UserLogin");
-
             entity.Property(e => e.UserId).HasColumnName("userID");
+
             entity.Property(e => e.MailId)
                 .HasMaxLength(45)
                 .IsUnicode(false)
