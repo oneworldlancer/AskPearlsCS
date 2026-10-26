@@ -69,7 +69,7 @@
             </section>
 
             <section class="atelier-auth" aria-labelledby="auth-title">
-                <div class="atelier-card" id="google-auth-card" data-google-auth-url="https://localhost:7014/api/auth/google/start">
+                <div class="atelier-card" id="google-auth-card" data-google-auth-url="/Home/GoogleLogin">
                     <div class="card-emblem" aria-hidden="true"><img src="/app_img/img_logo_color.png" alt="" /></div>
                     <p class="card-eyebrow">ASKPEARLS DEVELOPMENT PORTAL</p>
                     <h2 id="auth-title">Welcome to your<br />workspace</h2>
@@ -87,11 +87,7 @@
         </main>
 
         <partial name="_SignInInfoModal" />
-        <footer class="atelier-footer">
-            <a class="footer-brand" href="/" aria-label="AskPearls home"><img src="/app_img/img_logo_color.png" alt="" /><strong>AskPearls</strong></a>
-            <span>Patent Pending. © <span id="footer-year" data-year></span> AskPearls Limited. All Rights Reserved.</span>
-            <nav aria-label="Help and legal"><button type="button" data-info-open="help">Help</button><button type="button" data-info-open="contact">Contact support</button><button type="button" data-info-open="terms">Terms</button><button type="button" data-info-open="privacy">Privacy</button></nav>
-        </footer>
+        <partial name="_IndexFooterModel" />
     </div>
 </body>
 </html>

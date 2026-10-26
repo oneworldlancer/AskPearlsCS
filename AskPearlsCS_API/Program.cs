@@ -54,10 +54,11 @@ builder.Services.AddScoped<IRecommendationItem_Service, RecommendationItem_Servi
 
 
 builder.Services.AddScoped<ICurrentUser_Repository, CurrentUser_Repository>();
-builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<ICurrentUser_Service, CurrentUser_Service>();
 
 
-
+builder.Services.AddScoped<IGoogleAuth_Repository, GoogleAuth_Repository>();
+builder.Services.AddScoped<IGoogleAuth_Service, GoogleAuth_Service>();
 
 
 
@@ -268,7 +269,7 @@ app.MapGet("/api/auth/google/complete", async (
 
 app.MapGet("/api/auth/me", async (
     ClaimsPrincipal user,
-    ICurrentUserService currentUserService,
+    ICurrentUser_Service currentUserService,
     CancellationToken cancellationToken) =>
 {
     var googleId =

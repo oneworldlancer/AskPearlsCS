@@ -565,19 +565,29 @@ text-decoration:none;
                        AskPearls Footer — Option 1: Minimal
                        ========================================= */
 
-.ap-footer--minimal {
-    width: 100%;
+footer.ap-footer.ap-footer--minimal {
     box-sizing: border-box;
-    padding: 10px 16px;
-    text-align: center;
-    border-top: 1px solid #E4ECE8;
-    background: #F0F9F4;
-    color: #374151;
+    width: 100%;
+    height: 65px;
+    min-height: 65px;
+    max-height: 65px;
+    flex: 0 0 65px;
+    margin: 0;
+    padding: 8px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.2;
     font-size: 12px;
-    line-height: 1.5;
-    transition: background-color .2s ease, color .2s ease;
 }
 
+.ap-footer--minimal > * {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
     .ap-footer--minimal .ap-footer__company {
         display: inline-block;
         color: #168443;
@@ -619,8 +629,8 @@ body[data-theme="dark"]  .ap-footer--minimal .ap-footer__copyright {
 }
 
 @media (max-width: 576px) {
-    footer .ap-footer--minimal {
-        padding: 10px 12px;
+    footer.ap-footer.ap-footer--minimal {
+        padding: 8px 12px;
         font-size: 11px;
     }
 }

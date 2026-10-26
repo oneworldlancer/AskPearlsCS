@@ -62,7 +62,7 @@
                 </section>
 
                 <section class="garden-auth" aria-labelledby="auth-title">
-                    <div class="garden-card" id="google-auth-card" data-google-auth-url="https://localhost:7014/api/auth/google/start">
+                    <div class="garden-card" id="google-auth-card" data-google-auth-url="/Home/GoogleLogin">
                         <p class="auth-eyebrow">ASKPEARLS DEVELOPMENT PORTAL</p>
                         <h2 id="auth-title">Your AskPearls<br />workspace</h2>
                         <p class="auth-intro">Sign in to save your conversations, see personalized recommendations, and pick up where you left off.</p>
@@ -88,11 +88,7 @@
         </main>
 
         <partial name="_SignInInfoModal" />
-        <footer class="garden-footer">
-            <a class="footer-brand" href="/" aria-label="AskPearls home"><img src="/app_img/img_logo_color.png" alt="" /><strong>AskPearls</strong></a>
-            <nav aria-label="Help and legal"><button type="button" data-info-open="help">Help</button><button type="button" data-info-open="contact">Contact support</button><button type="button" data-info-open="terms">Terms of Service</button><button type="button" data-info-open="privacy">Privacy Policy</button></nav>
-            <span>© <span id="footer-year" data-year></span> AskPearls Limited. All Rights Reserved.</span>
-        </footer>
+        <partial name="_IndexFooterModel" />
     </div>
 </body>
 </html>

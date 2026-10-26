@@ -10,7 +10,8 @@
         const year = document.getElementById("footer-year") || document.querySelector("[data-year]");
         const modal = document.getElementById("signin-info-modal");
         const dialog = modal && modal.querySelector("[role=dialog]");
-        const themeStorageKey = "askpearls-home-theme";
+        const themeStorageKey = "askpearls-theme";
+        //const themeStorageKey = "askpearls-home-theme";
         let returnFocus = null;
 
         if (year) year.textContent = String(new Date().getFullYear());
@@ -48,10 +49,19 @@
             let destination;
             try { destination = new URL(configuredUrl, window.location.origin); }
             catch (_) { showMessage("The Google sign-in URL is invalid. Check the portal OAuth configuration."); return; }
-            if (destination.protocol !== "https:" || !destination.pathname.endsWith("/api/auth/google/start")) {
-                showMessage("The Google sign-in URL must be an HTTPS AskPearls API authentication route.");
+
+            const isPortalGoogleLogin =
+                destination.origin === window.location.origin &&
+                destination.pathname.replace(/\/+$/, "").toLowerCase() ===
+                "/home/googlelogin";
+
+            if (destination.protocol !== "https:" || !isPortalGoogleLogin) {
+                showMessage(
+                    "The Google sign-in URL must be the HTTPS Portal /Home/GoogleLogin route."
+                );
                 return;
             }
+
             if (signInButton) {
                 signInButton.disabled = true;
                 signInButton.setAttribute("aria-busy", "true");

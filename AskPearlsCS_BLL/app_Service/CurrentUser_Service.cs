@@ -7,11 +7,11 @@ using System.Text;
 namespace AskPearlsCS_BLL.app_Service
 {
 
-    public sealed class CurrentUserService : ICurrentUserService
+    public sealed class CurrentUser_Service : ICurrentUser_Service
     {
         private readonly ICurrentUser_Repository _repository;
 
-        public CurrentUserService(ICurrentUser_Repository repository)
+        public CurrentUser_Service(ICurrentUser_Repository repository)
         {
             _repository = repository;
         }

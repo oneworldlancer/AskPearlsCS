@@ -5,7 +5,7 @@ using System.Text;
 namespace AskPearlsCS_BLL.app_Service
 {
 
-    public interface ICurrentUserService
+    public interface ICurrentUser_Service
     {
         Task<CurrentUserDto?> GetCurrentUserAsync(
             string? googleId,

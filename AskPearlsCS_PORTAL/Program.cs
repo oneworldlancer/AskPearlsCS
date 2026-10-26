@@ -1,10 +1,87 @@
+using AskPearlsCS_DOMAIN.app_Identity;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+
+
+
+#region Identity
+
+builder.Services.AddDbContext<AppCore_DBContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("ASKPEARLSDB")));
+
+builder.Services
+    .AddIdentity<AppCore_IdentityUser, AppCore_IdentityRole>(options =>
+    {
+        options.User.RequireUniqueEmail = true;
+    })
+    .AddEntityFrameworkStores<AppCore_DBContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = ".AskPearls.Portal.Auth";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(600);
+    options.SlidingExpiration = true;
+});
+
+
+#endregion
+
+
+
+
+
+builder.Services
+    .AddAuthentication()
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["GoogleOAuth:ClientId"]!;
+    options.ClientSecret = builder.Configuration["GoogleOAuth:ClientSecret"]!;
+    options.SignInScheme = IdentityConstants.ExternalScheme;
+    options.SaveTokens = true;
+
+    options.Events.OnCreatingTicket = context =>
+    {
+        var response = context.TokenResponse.Response;
+
+        if (response is not null &&
+            response.RootElement.TryGetProperty("id_token", out var tokenElement))
+        {
+            var idToken = tokenElement.GetString();
+
+            if (!string.IsNullOrWhiteSpace(idToken))
+            {
+                var tokens = context.Properties.GetTokens().ToList();
+                tokens.RemoveAll(token => token.Name == "id_token");
+                tokens.Add(new AuthenticationToken
+                {
+                    Name = "id_token",
+                    Value = idToken
+                });
+
+                context.Properties.StoreTokens(tokens);
+            }
+        }
+
+        return Task.CompletedTask;
+    };
+});
+
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Home/Index";
+});
+
 
 // HTTP client for communicating with the AskPearls API.
 builder.Services.AddHttpClient();
@@ -41,14 +118,14 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
 app.UseRouting();
-
-
-// Session must be available before controllers and ViewComponents use it.
 app.UseSession();
-
-
+app.UseAuthentication();
 app.UseAuthorization();
+
+
 
 app.MapStaticAssets();
 

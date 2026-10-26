@@ -13,7 +13,8 @@
 (function() {
   'use strict';
 
-  const THEME_KEY = 'theme';
+    const THEME_KEY = 'askpearls-theme';
+  //const THEME_KEY = 'theme';
   const DARK_THEME = 'dark';
   const LIGHT_THEME = 'light';
   const mql = window.matchMedia('(prefers-color-scheme: dark)');
@@ -37,7 +38,22 @@
     }
   }
 
-  function setTheme(theme) {
+
+    function setTheme (theme) {
+        const isDark = theme === DARK_THEME;
+        const root = document.documentElement;
+
+        root.classList.toggle('dark-theme', isDark);
+
+        if (isDark) {
+            root.setAttribute('data-theme', DARK_THEME);
+        } else {
+            root.removeAttribute('data-theme');
+        }
+    }
+
+
+  function setTheme_X1(theme) {
     if (theme === DARK_THEME) {
       document.documentElement.setAttribute('data-theme', DARK_THEME);
     } else {

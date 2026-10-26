@@ -65,6 +65,51 @@
 
     <link href="~/app_css/app_menu_sidebar_css.css" rel="stylesheet" />
     <style>
+
+            .user-menu-logout {
+                font: inherit;
+                cursor: pointer;
+            }
+
+        .user-trigger {
+    display: flex;
+    align-items: center;
+}
+
+.user-brief {
+    width: 190px;
+    min-width: 190px;
+    overflow: hidden;
+    text-align: left;
+}
+
+.user-name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-menu-email {
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-menu-footer form {
+    margin: 0;
+}
+
+.user-menu-logout {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+}
+
+
             .form-control {
                 background-color: #ffffcc !important;
                 border: 1px solid #3c8116;
@@ -364,49 +409,74 @@
                     <i class="ph-light ph-sun theme-icon-light"></i>
                 </button>
 
-                <div class="header-action-wrap dropdown user-dropdown">
-                    <button class="dropdown-toggle user-trigger" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="../MemberView/assets/img/profile-img.webp" alt="User" class="user-avatar">
-                        <div class="user-brief">
-                            <span class="user-name">John Doe</span>
-                            <span class="user-role">Product Admin</span>
-                        </div>
-                    </button>
+             
 
-                    <div class="dropdown-menu dropdown-menu-end user-menu">
-                        <div class="user-menu-header">
-                            <img src="../MemberView/assets/img/profile-img.webp" alt="User" class="user-menu-avatar">
-                            <div class="user-menu-info">
-                                <div class="user-menu-name">John Doe</div>
-                                <div class="user-menu-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b8d2d7d0d696dcd7ddf8ddc0d9d5c8d4dd96dbd7d5">[email&#160;protected]</a></div>
-                            </div>
-                        </div>
-                        <div class="user-menu-body">
-                            <a class="user-menu-item" href="profile.html">
-                                <i class="bi bi-person"></i>
-                                <span>My Profile</span>
-                            </a>
-                            <a class="user-menu-item" href="settings.html">
-                                <i class="bi bi-sliders"></i>
-                                <span>Preferences</span>
-                            </a>
-                            <a class="user-menu-item" href="activity.html">
-                                <i class="bi bi-activity"></i>
-                                <span>Activity Log</span>
-                            </a>
-                            <a class="user-menu-item" href="invoice-list.html">
-                                <i class="bi bi-credit-card"></i>
-                                <span>Billing</span>
-                            </a>
-                        </div>
-                        <div class="user-menu-footer">
-                            <a class="user-menu-logout" href="auth-login.html">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <span>Sign Out</span>
-                            </a>
-                        </div>
-                    </div>
+                @{
+    var email = User.FindFirst("AskPearlsEmail")?.Value
+                ?? User.Identity?.Name
+                ?? "";
+}
+
+<div class="header-action-wrap dropdown user-dropdown">
+    <button class="dropdown-toggle user-trigger"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+        <img src="../MemberView/assets/img/profile-img.webp"
+             alt="User"
+             class="user-avatar">
+
+        <div class="user-brief">
+            <span class="user-name" title="@email">@email</span>
+            <span class="user-role">
+                @(User.IsInRole("Admin") ? "Product Admin" : "AskPearls member")
+            </span>
+        </div>
+    </button>
+
+    <div class="dropdown-menu dropdown-menu-end user-menu">
+        <div class="user-menu-header d-none">
+            <img src="../MemberView/assets/img/profile-img.webp"
+                 alt="User"
+                 class="user-menu-avatar">
+
+            <div class="user-menu-info">
+                <div class="user-menu-name">
+                    @(User.FindFirst("AskPearlsName")?.Value ?? email)
                 </div>
+                <div class="user-menu-email" title="@email">@email</div>
+            </div>
+        </div>
+
+        <div class="user-menu-body">
+            <a class="user-menu-item" href="profile.html">
+                <i class="bi bi-person"></i><span>My Profile</span>
+            </a>
+            <a class="user-menu-item" href="settings.html">
+                <i class="bi bi-sliders"></i><span>Preferences</span>
+            </a>
+            <a class="user-menu-item" href="activity.html">
+                <i class="bi bi-activity"></i><span>Activity Log</span>
+            </a>
+            <a class="user-menu-item" href="invoice-list.html">
+                <i class="bi bi-credit-card"></i><span>Billing</span>
+            </a>
+        </div>
+
+        <div class="user-menu-footer">
+                            <form asp-controller="Home" asp-action="Logout" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="user-menu-logout">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span>Sign Out</span>
+                                </button>
+                            </form>
+        </div>
+    </div>
+</div>
+
+         
+            
             </div>
 
             <div class="header-actions-mobile">
@@ -502,7 +572,7 @@
             }
     </style>
 
-    <aside id="askPearlsSidebar" class="sidebar ap-sidebar" style="margin-bottom:60px;-ms-overflow-style: none;scrollbar-width: none;border-bottom-right-radius:10px;border-top-right-radius:10px;">
+    <aside id="askPearlsSidebar" class="sidebar ap-sidebar" style="margin-bottom:66px;-ms-overflow-style: none;scrollbar-width: none;border-bottom-right-radius:10px;border-top-right-radius:10px;">
 
         <!-- Scrollable sidebar content -->
         <div class="ap-sidebar-scroll">
@@ -721,14 +791,14 @@
 
         <!-- AskPearls DecisionOS Dashboard -->
         @* <main id="apMainContent" class="main vh-100"> *@
-            <main id="apMainContent" class="main ap-portal-main" style="margin-bottom:20px !important;padding-bottom:15px !important;-ms-overflow-style: none;scrollbar-width: none;">
+            <main id="apMainContent" class="main ap-portal-main" style="margin-bottom:15px !important;padding-bottom:15px !important;-ms-overflow-style: none;scrollbar-width: none;">
             @RenderBody()
 
         </main>
 
         @* background-color:#152365; *@
-        
-<footer class="ap-footer ap-footer--minimal">
+        <partial name="_IndexFooterModel" />
+        <footer class="ap-footer ap-footer--minimal" style="display:none;flex-direction:column;">
             <a class="ap-footer__company" href="https://AskPearls.com" target="_blank">
         AskPearls Limited
     </a>
@@ -746,67 +816,8 @@
             . All Rights Reserved.
     </div>
 </footer>
-      <style>
+ 
 
-      </style>
-
-        <footer id="footer" class="footer text-center mt-auto d-none" style="padding:5px;height:50px;
-            font-size:small;">
-
-       
-            @* class="d-block d-lg-none" *@
-            <div>
-
-                <div class="row">
-
-                    <div class="d-none col-3" style="padding-left:10px;padding-top:15px;padding-right:10px;">
-
-                        <div class="flex-row">
-                            <img src="~/app_img/img_x2.png" style="width:20px;height:20px;margin:5px;" />
-                            <span>
-                                For further information please <a href="https://AskPearls.com" target="_blank" style="text-decoration:underline;">click here</a> to visit our website.
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-12 text-center" style="padding-top:0px;">
-                        <div>
-                            @* color:white; style="color:white;"*@
-                            <strong><span><a href="https://AskPearls.com" target="_blank" style="text-decoration:underline;">AskPearls Limited</a></span></strong>
-                        </div>
-                        @* class="copyright" *@
-                        <div>
-
-                            @* style="color:white;" *@   <span>
-                            Patent Pending. &copy; Copyright @{
-
-                            @_iYear.ToString()
-                            ;
-
-                        }
-                        . All Rights reserved.
-                    </span>
-                </div>
-
-            </div>
-
-    
-            <div class="d-none col-3" style="padding-left:10px;padding-top:15px;padding-right:10px;">
-
-                <div class="flex-row">
-                    <img src="~/app_img/img_x1.png" style="width:20px;height:20px;margin:5px;" />
-                    <span>4289 Express Lane - Suite EG6026, Sarasota, FL 34249, United States.</span>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-
-</footer>
 </div>
 
 
@@ -1617,6 +1628,18 @@
 
 
 
+</script>
+
+
+
+<script>
+        const theme = localStorage.getItem("askpearls-theme");
+
+        if (theme === "dark") {
+            document.documentElement.classList.add("dark-theme");
+        } else {
+            document.documentElement.classList.remove("dark-theme");
+        }
 </script>
 
 
