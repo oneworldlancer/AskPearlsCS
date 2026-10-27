@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 
+using AskPearlsCS_PORTAL.app_Utility;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +38,13 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 #endregion
 
+
+builder.Services.AddScoped<ApiAccessTokenService>();
+
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "RequestVerificationToken";
+});
 
 
 

@@ -395,7 +395,8 @@ footer.ap-footer.ap-footer--minimal {
 /* Dark theme */
 html[data-theme="dark"] .ap-footer--minimal,
 body[data-theme="dark"] .ap-footer--minimal {
-    background: #0B1F1A !important;
+    background: #0C211A !important;
+    /*background: #0B1F1A !important;*/
     color: #E5E7EB;
     border-top-color: #24433A;
 }

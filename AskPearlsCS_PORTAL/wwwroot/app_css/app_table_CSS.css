@@ -1,0 +1,19 @@
+
+/* ==========================================
+               Light Theme Row Hover
+               ========================================== */
+/* Targets standard table rows inside the table body */
+table tbody tr:hover {
+    background-color: #f4f6f7 !important; /* Soft light gray tint */
+    transition: background-color 0.2s ease; /* Smooth hover transition */
+    cursor: pointer; /* Optional: indicates rows are interactive */
+}
+
+/* ==========================================
+               Dark Theme Row Hover
+               (Adjust the selector .dark or [data-theme="dark"] to match your setup)
+               ========================================== */
+.dark table tbody tr:hover,
+[data-theme="dark"] table tbody tr:hover {
+    background-color: #162421 !important; /* Slightly lighter muted dark-green/slate */
+}

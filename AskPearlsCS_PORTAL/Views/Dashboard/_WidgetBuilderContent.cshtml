@@ -1,6 +1,23 @@
+@inject IConfiguration Configuration
 
+@{
+    var apiHost = Configuration["AskPearlsApi:BaseUrl"]?.TrimEnd('/');
+    var apiBase = string.IsNullOrWhiteSpace(apiHost)
+        ? ""
+        : apiHost.EndsWith("/api", StringComparison.OrdinalIgnoreCase)
+            ? apiHost
+            : $"{apiHost}/api";
 
-<div class="ap-page page-widget-builder" data-ap-page="widget-builder" data-api-base="https://localhost:7014/api" data-demo-owner-user-token="1101">
+    var userId = User.FindFirst("AskPearlsUserId")?.Value;
+}
+
+<div class="ap-page page-widget-builder"
+     data-ap-page="widget-builder"
+     data-api-base="@apiBase"
+     data-owner-user-id="@userId">
+
+    @Html.AntiForgeryToken()
+
     <!-- Shared AskPearls breadcrumb -->
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
@@ -111,11 +128,11 @@
                                 Internal widget name
                                 <span class="text-danger">*</span>
                             </label>
-
+@* value="Sofa Finder" *@
                             <input id="wbWidgetName"
                                    type="text"
                                    class="form-control"
-                                   value="Sofa Finder"
+                                   
                                    maxlength="100"
                                    placeholder="e.g. Sofa Finder">
 

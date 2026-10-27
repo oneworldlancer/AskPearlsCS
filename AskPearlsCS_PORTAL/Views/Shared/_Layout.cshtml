@@ -62,9 +62,18 @@
 
     <!-- Template Main CSS File -->
     <link href="MemberView/assets/css/main.css" rel="stylesheet">
-
+<link href="~/app_css/app_table_css.css" rel="stylesheet" />
     <link href="~/app_css/app_menu_sidebar_css.css" rel="stylesheet" />
-    <style>
+   
+
+
+ <style>
+
+
+
+
+
+
 
             .user-menu-logout {
                 font: inherit;
@@ -626,7 +635,7 @@
                                     <i class="bi bi-grid"></i>
                                     <span>My Widgets</span>
                                 </a>
-
+@*                                 data-widget-builder-create *@
                                 <a href="#" class="ap-nav-link" data-page="widget-builder">
                                     <i class="bi bi-sliders"></i>
                                     <span>Widget Builder</span>
@@ -1458,11 +1467,27 @@
             loadPortalSection($(this).attr("data-page"));
         });
 
+
         // Buttons and links inside the loaded page
-        $(document).on("click", "#apMainContent [data-page]", function (e) {
+        $(document).on("click", "#apMainContent [data-page]", function(e) {
             e.preventDefault();
-            loadPortalSection($(this).attr("data-page"));
+
+            const section = $(this).attr("data-page");
+
+            if (section === "widget-builder" &&
+                $(this).is("[data-widget-builder-create]")) {
+                localStorage.setItem("askpearls.widgetBuilderMode", "create");
+                localStorage.removeItem("askpearls.activeWidgetPublicKey");
+            }
+
+            loadPortalSection(section);
         });
+
+        // // // // // // Buttons and links inside the loaded page
+        // // // // // $(document).on("click", "#apMainContent [data-page]", function (e) {
+        // // // // //     e.preventDefault();
+        // // // // //     loadPortalSection($(this).attr("data-page"));
+        // // // // // });
 
 
         // // // // // $(document).on("click", "#askPearlsSidebar .ap-nav-link", function(e) {

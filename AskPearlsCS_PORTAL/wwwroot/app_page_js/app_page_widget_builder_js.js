@@ -3,11 +3,23 @@
 
     const root = document.querySelector(".page-widget-builder[data-ap-page='widget-builder']");
     if (!root || root.dataset.wbInitialized === "true") return;
-    root.dataset.wbInitialized = "true";
 
     const $ = id => root.querySelector("#" + id);
     const apiBase = (root.dataset.apiBase || window.AskPearlsCS_API_URL || (window.location.origin + "/api")).replace(/\/+$/, "");
-    const ownerToken = (root.dataset.demoOwnerUserToken || "").trim();
+    const ownerToken = (root.dataset.ownerUserId || "").trim();
+
+
+
+    if (!ownerToken) {
+        console.error("Widget Builder: logged-in user ID is missing.");
+        return;
+    }
+
+
+    root.dataset.wbInitialized = "true";
+
+
+
     const steps = [ "basics", "appearance", "behavior" ];
     let currentStep = 0;
     let widgets = [];
@@ -159,7 +171,13 @@
         const select = $("wbWidgetSelect");
         select.disabled = true;
         try {
-            const data = await readResponse(await fetch(apiBase + "/widgets", { headers: headers(false) }));
+
+            const data = await readResponse(await fetch("/Widget/MyWidgets", {
+                method: "GET",
+                credentials: "same-origin",
+                headers: { Accept: "application/json" }
+            }));
+
             widgets = (Array.isArray(data.widgets) ? data.widgets : []).map(item => ({
                 publicKey: String(item.publicKey ?? item.PublicKey ?? ""),
                 name: String(item.name ?? item.Name ?? "Untitled widget"),
@@ -213,62 +231,141 @@
         }
     }
 
+
+
+    async function createWidget () {
+        const token = document.querySelector(
+            'input[name="__RequestVerificationToken"]'
+        )?.value;
+
+        const payload = {
+            name: $("widgetName")?.value?.trim(),
+            type: $("widgetType")?.value,
+            websiteTokenId: $("websiteTokenId")?.value?.trim(),
+            websiteName: $("websiteName")?.value?.trim(),
+            websiteAddress: $("websiteAddress")?.value?.trim(),
+            title: $("widgetTitle")?.value?.trim(),
+            description: $("widgetDescription")?.value?.trim()
+        };
+
+        const response = await fetch("/Widget/Create", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "RequestVerificationToken": token
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json().catch(() => null);
+
+        if (!response.ok) {
+            throw new Error(result?.message || "Could not create the widget.");
+        }
+
+        return result;
+    }
+
+
+
     async function saveDraft () {
-        if (creating) {
-            const websiteAddress = $("wbWebsite").value.trim();
-            if (!/^https?:\/\//i.test(websiteAddress)) return showMessage("Enter a website address beginning with http:// or https://.", "warning");
-            const button = $("wbSaveButton");
-            button.disabled = true;
-            try {
-                const config = currentSettings();
-                const data = await readResponse(await fetch(apiBase + "/widgets", {
-                    method: "POST", headers: headers(true),
-                    body: JSON.stringify({
-                        name: $("wbWidgetName").value.trim(), type: $("wbWidgetType").value,
-                        websiteTokenId: "", websiteName: new URL(websiteAddress).hostname,
-                        websiteAddress, title: config.heading, description: config.description
-                    })
-                }));
-                window.localStorage.setItem("askpearls.widgetBuilderMode", "edit");
-                window.localStorage.setItem("askpearls.activeWidgetPublicKey", data.publicKey);
-                creating = false;
-                showMessage("Widget created as a draft. You can now add its questions and recommendations.", "success");
-                widgets = [];
-                await loadWidgets();
-                const select = $("wbWidgetSelect");
-                select.value = data.publicKey;
-                await loadConfiguration();
-            } catch (error) {
-                button.disabled = false;
-                showMessage(error.message || "Could not create this widget.", "error");
-            }
+        if (!creating) {
+            showMessage("Saving an existing widget needs a Portal save endpoint.");
             return;
         }
-        const widget = selectedWidget();
-        if (!widget) return showMessage("Select an existing widget before saving its design draft.", "warning");
-        const button = $("wbSaveButton");
-        button.disabled = true;
+
+        const name = $("wbWidgetName")?.value.trim();
+        const type = $("wbWidgetType")?.value;
+        const websiteAddress = $("wbWebsite")?.value.trim();
+        const title = $("wbWidgetTitle")?.value.trim();
+        const description = $("wbWidgetDescription")?.value.trim();
+
+        if (!name || !type || !websiteAddress || !title || !description) {
+            showMessage("Complete the required widget fields before saving.");
+            return;
+        }
+
+        let websiteUrl;
         try {
-            const url = apiBase + "/widgets/" + encodeURIComponent(widget.publicKey) + "/draft/configuration";
-            const data = await readResponse(await fetch(url, {
-                method: "PUT", headers: headers(true), body: JSON.stringify(currentSettings())
-            }));
-            savedSettings = currentSettings();
-            setDraftState(false);
-            if (data.versionNumber) $("wbWidgetVersion").textContent = "Draft v" + data.versionNumber + (widget.hasPublishedVersion && widget.publishedVersionNumber ? " · Live v" + widget.publishedVersionNumber : "");
-            const selected = selectedWidget();
-            if (selected && data.versionNumber) {
-                selected.versionNumber = String(data.versionNumber);
-                selected.draftVersionNumber = String(data.versionNumber);
-                selected.hasDraft = true;
+            websiteUrl = new URL(websiteAddress);
+            if (![ "https:", "http:" ].includes(websiteUrl.protocol)) {
+                throw new Error();
             }
-            showMessage("Design draft saved for " + widget.name + (data.versionNumber ? " as version " + data.versionNumber : "") + ".", "success");
+        } catch {
+            showMessage("Enter a valid website address, including https://.");
+            return;
+        }
+
+        const antiforgeryToken =
+            root.querySelector('input[name="__RequestVerificationToken"]')?.value
+            || document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+        if (!antiforgeryToken) {
+            showMessage("The security token is missing. Reload the page and try again.");
+            return;
+        }
+
+        const button = $("wbSaveButton");
+        const originalButtonText = button?.textContent;
+
+        if (button) {
+            button.disabled = true;
+            button.textContent = "Saving…";
+        }
+
+        const payload = {
+            name,
+            type,
+            websiteTokenId: "", // Generate this on the server if the API requires it.
+            websiteName: websiteUrl.hostname,
+            websiteAddress: websiteUrl.href,
+            title,
+            description
+        };
+
+        try {
+            const response = await fetch("/Widget/Create", {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": antiforgeryToken
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const responseText = await response.text();
+            let result = {};
+
+            try {
+                result = responseText ? JSON.parse(responseText) : {};
+            } catch {
+                result = { message: responseText };
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    result.message || result.title || "The Portal could not save the widget."
+                );
+            }
+
+            showMessage("Widget draft created successfully.");
+
+            if (button) {
+                button.textContent = "Draft created";
+            }
         } catch (error) {
-            button.disabled = false;
-            showMessage(error.message || "Could not save the design draft.", "error");
-            console.error("Widget Builder could not save the design draft.", error);
+            showMessage(error.message || "Could not save the widget.");
+            if (button) {
+                button.disabled = false;
+                button.textContent = originalButtonText || "Save Draft";
+            }
         }
     }
+
+
 
     function showStep (index) {
         currentStep = Math.max(0, Math.min(index, steps.length - 1));

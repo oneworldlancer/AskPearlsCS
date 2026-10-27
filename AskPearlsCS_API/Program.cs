@@ -13,6 +13,9 @@ using AskPearlsCS_DAL.DBModels;
 
 using AskPearlsCS_DAL.app_Repository;
 using AskPearlsCS_DAL.DBContext;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -88,6 +91,39 @@ builder.Services
 
         options.CallbackPath = "/signin-google";
     });
+
+#region JWT-TOKEN
+
+
+var jwt = builder.Configuration.GetSection("ApiJwt");
+var signingKey = jwt["SigningKey"]
+    ?? throw new InvalidOperationException("ApiJwt:SigningKey is missing.");
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = jwt["Issuer"],
+
+            ValidateAudience = true,
+            ValidAudience = jwt["Audience"],
+
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(signingKey)),
+
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromSeconds(30)
+        };
+    });
+
+
+#endregion
+
+
 
 
 
