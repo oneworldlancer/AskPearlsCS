@@ -1,107 +1,201 @@
 ﻿(function () {
     "use strict";
 
-    const root = document.querySelector('.page-dashboard[data-ap-page="dashboard"]');
-    if (!root || root.dataset.dashboardInitialized === "true") return;
+    const root = document.querySelector(
+        '.page-dashboard[data-ap-page="dashboard"]'
+    );
+
+    if (!root || root.dataset.dashboardInitialized === "true") {
+        return;
+    }
+
     root.dataset.dashboardInitialized = "true";
 
-    const apiBase = (root.dataset.apiBase || "").replace(/\/+$/, "");
-    const ownerToken = (root.dataset.demoOwnerUserToken || "").trim();
-    const loading = root.querySelector("#dashboardRecentLoading");
-    const error = root.querySelector("#dashboardRecentError");
-    const list = root.querySelector("#dashboardRecentList");
-    const empty = root.querySelector("#dashboardRecentEmpty");
-    const counts = {
-        all: root.querySelector("#dashboardWidgetCountAll"),
-        published: root.querySelector("#dashboardWidgetCountPublished"),
-        drafts: root.querySelector("#dashboardWidgetCountDrafts")
-    };
+    const widgetList = root.querySelector("[data-dashboard-widgets]");
+    const widgetCount = root.querySelector("[data-dashboard-widget-count]");
+    const publishedCount = root.querySelector("[data-dashboard-published-count]");
+    const draftCount = root.querySelector("[data-dashboard-draft-count]");
+    const statusMessage = root.querySelector("[data-dashboard-message]");
+    const retryButton = root.querySelector("[data-dashboard-retry]");
 
-    function escapeHtml (value) {
-        return String(value ?? "").replace(/[&<>"']/g, character => ({
-            "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-        })[ character ]);
+    const widgetsUrl = "/Widget/Api/widgets";
+
+    function showMessage (message, isError) {
+        if (!statusMessage) return;
+
+        statusMessage.textContent = message || "";
+        statusMessage.hidden = !message;
+        statusMessage.classList.toggle("is-error", Boolean(isError));
     }
 
-    function read (item, camel, pascal) {
-        return item[ camel ] ?? item[ pascal ];
-    }
-
-    function render (widgets) {
-        counts.all.textContent = String(widgets.length);
-        counts.published.textContent = String(widgets.filter(widget => widget.hasPublishedVersion).length);
-        counts.drafts.textContent = String(widgets.filter(widget => widget.hasDraft).length);
-
-        list.innerHTML = widgets.slice(0, 5).map(widget => {
-            const statusClass = widget.hasDraft ? "is-draft" : "is-published";
-            const publishDisabled = !widget.hasDraft;
-            const detail = widget.description || widget.publicKey;
-            const version = widget.hasDraft ? "Draft v" + escapeHtml(widget.draftVersionNumber || widget.versionNumber) + (widget.hasPublishedVersion ? " · Live v" + escapeHtml(widget.publishedVersionNumber) : "") : widget.hasPublishedVersion ? "Live v" + escapeHtml(widget.publishedVersionNumber) : "";
-            return '<article class="dashboard-recent-row">' +
-                '<div class="dashboard-recent-main">' +
-                '<span class="dashboard-recent-icon" aria-hidden="true"><i class="bi bi-window-stack"></i></span>' +
-                '<div class="dashboard-recent-copy"><h3><a href="#" class="dashboard-widget-name" data-page="widget-builder" data-widget-open="' + escapeHtml(widget.publicKey) + '">' + escapeHtml(widget.name) + '</a></h3><p>' + escapeHtml(detail) + '</p></div>' +
-                '</div>' +
-                '<div class="dashboard-recent-actions">' +
-                '<span class="dashboard-recent-status ' + statusClass + '">' + (widget.hasDraft ? 'Draft' : 'Published') + '</span>' +
-                (widget.hasDraft && widget.hasPublishedVersion ? '<span class="dashboard-recent-status is-published">Published</span>' : '') +
-                (version ? '<span class="dashboard-recent-version">' + version + '</span>' : '') +
-                '<a href="#" class="btn btn-outline-success btn-sm" data-page="design-customize" data-widget-public-key="' + escapeHtml(widget.publicKey) + '">Design</a>' +
-                '<button type="button" class="btn btn-success btn-sm dashboard-publish-button" data-page="publish-embed" data-widget-public-key="' + escapeHtml(widget.publicKey) + '"' +
-                (publishDisabled ? ' disabled aria-disabled="true" title="This widget is already published"' : '') +
-                '>Publish</button>' +
-                '</div>' +
-                '</article>';
-        }).join("");
-
-        loading.hidden = true;
-        error.hidden = true;
-        list.hidden = widgets.length === 0;
-        empty.hidden = widgets.length !== 0;
-    }
-
-    async function loadWidgets () {
-        loading.hidden = false;
-        error.hidden = true;
-        list.hidden = true;
-        empty.hidden = true;
-
-        try {
-            if (!apiBase) throw new Error("The widgets API address is not configured.");
-            const headers = { Accept: "application/json" };
-            if (ownerToken) headers[ "X-Demo-Owner-User-Token" ] = ownerToken;
-            const response = await fetch(apiBase + "/widgets", { headers });
-            const body = await response.json().catch(() => ({}));
-            if (!response.ok) throw new Error(body.message || "Your widgets could not be loaded.");
-
-            const records = Array.isArray(body.widgets) ? body.widgets : [];
-            const widgets = records.map(item => ({
-                publicKey: String(read(item, "publicKey", "PublicKey") || ""),
-                name: String(read(item, "name", "Name") || "Untitled widget"),
-                description: String(read(item, "description", "Description") || ""),
-                status: String(read(item, "status", "Status") || "draft").toLowerCase(),
-                versionNumber: String(read(item, "versionNumber", "VersionNumber") || ""),
-                draftVersionNumber: String(read(item, "draftVersionNumber", "DraftVersionNumber") || ""),
-                publishedVersionNumber: String(read(item, "publishedVersionNumber", "PublishedVersionNumber") || ""),
-                hasDraft: Boolean(read(item, "hasDraft", "HasDraft") ?? String(read(item, "status", "Status") || "").toLowerCase() === "draft"),
-                hasPublishedVersion: Boolean(read(item, "hasPublishedVersion", "HasPublishedVersion") ?? String(read(item, "status", "Status") || "").toLowerCase() === "published")
-            })).filter(widget => widget.publicKey);
-
-            render(widgets);
-        } catch (exception) {
-            loading.hidden = true;
-            error.hidden = false;
-            const message = error.querySelector("p");
-            if (message) message.textContent = exception.message || "We couldn't load your widgets.";
+    function setText (element, value) {
+        if (element) {
+            element.textContent = value;
         }
     }
 
-    list.addEventListener("click", event => {
-        const openLink = event.target.closest("[data-widget-open]");
-        if (!openLink) return;
-        window.localStorage.setItem("askpearls.activeWidgetPublicKey", openLink.dataset.widgetOpen);
+    function getWidgetName (widget) {
+        return widget.name
+            || widget.widgetName
+            || widget.title
+            || "Untitled widget";
+    }
+
+    function getWidgetStatus (widget) {
+        return (
+            widget.status
+            || widget.widgetStatus
+            || widget.widgetStatusCode
+            || "Draft"
+        );
+    }
+
+    function isPublished (widget) {
+        const status = String(getWidgetStatus(widget)).toLowerCase();
+
+        return status === "published"
+            || status === "live"
+            || status === "active";
+    }
+
+    function renderWidgets (widgets) {
+        if (!widgetList) return;
+
+        widgetList.replaceChildren();
+
+        if (!widgets.length) {
+            const empty = document.createElement("p");
+            empty.className = "dashboard-empty";
+            empty.textContent = "You haven’t created a widget yet.";
+            widgetList.appendChild(empty);
+            return;
+        }
+
+        widgets.slice(0, 5).forEach(function (widget) {
+            const item = document.createElement("article");
+            item.className = "dashboard-widget-item";
+
+            const name = document.createElement("h3");
+            name.textContent = getWidgetName(widget);
+
+            const status = document.createElement("span");
+            status.className = "dashboard-widget-status";
+            status.textContent = getWidgetStatus(widget);
+
+            item.append(name, status);
+            widgetList.appendChild(item);
+        });
+    }
+
+    async function readResponse (response) {
+        const text = await response.text();
+
+        if (!text) return null;
+
+        try {
+            return JSON.parse(text);
+        } catch {
+            return { message: text };
+        }
+    }
+
+    async function loadWidgets () {
+        showMessage("", false);
+
+        if (retryButton) {
+            retryButton.disabled = true;
+        }
+
+        if (widgetList) {
+            widgetList.setAttribute("aria-busy", "true");
+        }
+
+        try {
+            const response = await fetch(widgetsUrl, {
+                method: "GET",
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json"
+                }
+            });
+
+            const result = await readResponse(response);
+
+            if (!response.ok) {
+                const message =
+                    result?.detail
+                    || result?.message
+                    || `Could not load widgets (HTTP ${ response.status }).`;
+
+                throw new Error(message);
+            }
+
+            // Accept either a plain JSON array or a wrapped API response.
+            const widgets = Array.isArray(result)
+                ? result
+                : Array.isArray(result?.widgets)
+                    ? result.widgets
+                    : Array.isArray(result?.data)
+                        ? result.data
+                        : Array.isArray(result?.items)
+                            ? result.items
+                            : null;
+
+            if (!widgets) {
+                throw new Error("The Portal returned an unexpected widget response.");
+            }
+
+            const published = widgets.filter(isPublished).length;
+            const drafts = widgets.length - published;
+
+            setText(widgetCount, String(widgets.length));
+            setText(publishedCount, String(published));
+            setText(draftCount, String(drafts));
+
+            renderWidgets(widgets);
+        } catch (error) {
+            console.error("Dashboard widget loading failed:", error);
+
+            setText(widgetCount, "—");
+            setText(publishedCount, "—");
+            setText(draftCount, "—");
+
+            if (widgetList) {
+                widgetList.replaceChildren();
+            }
+
+            showMessage(
+                error instanceof Error
+                    ? error.message
+                    : "Could not load your widgets. Please try again.",
+                true
+            );
+        } finally {
+            if (retryButton) {
+                retryButton.disabled = false;
+            }
+
+            if (widgetList) {
+                widgetList.removeAttribute("aria-busy");
+            }
+        }
+    }
+
+    if (retryButton) {
+        retryButton.addEventListener("click", loadWidgets);
+    }
+
+    // Keep the existing dashboard action behavior.
+    root.querySelectorAll("[data-dashboard-create-widget]").forEach(function (button) {
+        button.addEventListener("click", function () {
+            try {
+                localStorage.setItem("askpearls.widgetBuilderMode", "create");
+                localStorage.removeItem("askpearls.activeWidgetPublicKey");
+            } catch (error) {
+                console.warn("Could not save the Widget Builder mode:", error);
+            }
+        });
     });
 
-    root.querySelector("#dashboardRecentRetry")?.addEventListener("click", loadWidgets);
     loadWidgets();
 })();

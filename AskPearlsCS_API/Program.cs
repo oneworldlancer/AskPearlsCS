@@ -1,83 +1,95 @@
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
-
 
 using AskPearlsCS_BLL.DecisionOSManager;
 using AskPearlsCS_BLL.WidgetDecision;
 using AskPearlsCS_BLL.app_Service;
 
-using Microsoft.EntityFrameworkCore;
-using AskPearlsCS_DAL.DBModels;
-
 using AskPearlsCS_DAL.app_Repository;
 using AskPearlsCS_DAL.DBContext;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using AskPearlsCS_DAL.DBModels;
 
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// DecisionOS services and repositories
 builder.Services.AddScoped<IDecisionEngine, DecisionEngine>();
 
 builder.Services.AddScoped<IWidgetDecisionService, WidgetDecisionService>();
-
 builder.Services.AddScoped<IWidget_Repository, Widget_Repository>();
-
 builder.Services.AddScoped<IWidget_Service, Widget_Service>();
 
 builder.Services.AddScoped<IAnswer_Repository, Answer_Repository>();
-
 builder.Services.AddScoped<IAnswer_Service, Answer_Service>();
 
 builder.Services.AddScoped<IWidgetVersion_Repository, WidgetVersion_Repository>();
-
 builder.Services.AddScoped<IWidgetVersion_Service, WidgetVersion_Service>();
 
-
 builder.Services.AddScoped<IQuestion_Repository, Question_Repository>();
-
 builder.Services.AddScoped<IQuestion_Service, Question_Service>();
 
 builder.Services.AddScoped<IDecisionRule_Repository, DecisionRule_Repository>();
-
 builder.Services.AddScoped<IDecisionRule_Service, DecisionRule_Service>();
 
-
-
-// Recommendation layer
 builder.Services.AddScoped<IRecommendationItem_Repository, RecommendationItem_Repository>();
-
 builder.Services.AddScoped<IRecommendationItem_Service, RecommendationItem_Service>();
-
-
 
 builder.Services.AddScoped<ICurrentUser_Repository, CurrentUser_Repository>();
 builder.Services.AddScoped<ICurrentUser_Service, CurrentUser_Service>();
 
-
 builder.Services.AddScoped<IGoogleAuth_Repository, GoogleAuth_Repository>();
 builder.Services.AddScoped<IGoogleAuth_Service, GoogleAuth_Service>();
 
-
-
+// Application database
 builder.Services.AddDbContext<DBContextModel>(options =>
 {
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString(
-            "ASKPEARLSDB"));
+        builder.Configuration.GetConnectionString("ASKPEARLSDB"));
 });
 
+// Google authentication uses the API's cookie flow.
+// ApiJwt remains a named scheme for Portal-to-API requests.
+var jwt = builder.Configuration.GetSection("ApiJwt");
 
+var jwtIssuer = jwt["Issuer"]
+    ?? throw new InvalidOperationException("ApiJwt:Issuer is missing.");
+
+var jwtAudience = jwt["Audience"]
+    ?? throw new InvalidOperationException("ApiJwt:Audience is missing.");
+
+var SigningKey = jwt["SigningKey"]
+    ?? throw new InvalidOperationException("ApiJwt:SigningKey is missing.");
+
+byte[] signingKeyBytes;
+
+try
+{
+    signingKeyBytes = Convert.FromBase64String(SigningKey);
+}
+catch (FormatException exception)
+{
+    throw new InvalidOperationException(
+        "ApiJwt:SigningKey must contain a valid Base64 key.",
+        exception);
+}
+
+if (signingKeyBytes.Length < 32)
+{
+    throw new InvalidOperationException(
+        "ApiJwt:SigningKey must decode to at least 32 bytes.");
+}
 
 builder.Services
     .AddAuthentication(options =>
     {
         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
     })
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -90,42 +102,28 @@ builder.Services
             ?? throw new InvalidOperationException("GoogleOAuth:ClientSecret is missing.");
 
         options.CallbackPath = "/signin-google";
-    });
-
-#region JWT-TOKEN
-
-
-var jwt = builder.Configuration.GetSection("ApiJwt");
-var signingKey = jwt["SigningKey"]
-    ?? throw new InvalidOperationException("ApiJwt:SigningKey is missing.");
-
-builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+    })
+    .AddJwtBearer("ApiJwt", options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = jwt["Issuer"],
+            ValidIssuer = jwtIssuer,
 
             ValidateAudience = true,
-            ValidAudience = jwt["Audience"],
+            ValidAudience = jwtAudience,
 
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(signingKey)),
+            IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes),
 
             ValidateLifetime = true,
-            ClockSkew = TimeSpan.FromSeconds(30)
+            ClockSkew = TimeSpan.FromSeconds(30),
+
+            NameClaimType = ClaimTypes.NameIdentifier
         };
     });
 
-
-#endregion
-
-
-
-
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
@@ -138,10 +136,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-
 builder.Services.AddControllers();
-
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
@@ -152,13 +147,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseRouting();
-
 app.UseCors("Widget");
-
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();
@@ -175,7 +166,6 @@ app.MapGet("/api/auth/google/start", () =>
         new[] { GoogleDefaults.AuthenticationScheme });
 });
 
-
 app.MapGet("/api/auth/google/complete", async (
     HttpContext context,
     DBContextModel db) =>
@@ -189,8 +179,6 @@ app.MapGet("/api/auth/google/complete", async (
     var googleId =
         context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
         ?? context.User.FindFirst("sub")?.Value;
-    
-    //var name = context.User.Identity.Name ?? email;
 
     if (string.IsNullOrWhiteSpace(email) ||
         string.IsNullOrWhiteSpace(googleId))
@@ -211,20 +199,11 @@ app.MapGet("/api/auth/google/complete", async (
             "The Google account ID is longer than the database allows.");
     }
 
-    var name = context.User.Identity?.Name ?? email ?? "AskPearls User";
-
     var existingLogin = await db.UserLogins
-        .FirstOrDefaultAsync(u => u.SocialUserId == googleId);
+        .FirstOrDefaultAsync(user => user.SocialUserId == googleId);
 
     if (existingLogin is not null)
     {
-        //return Results.Ok(new
-        //{
-        //    message = "Google sign-in succeeded.",
-        //    userId = existingLogin.UserId,
-        //    email = existingLogin.MailId
-        //});
-
         return Results.Redirect("https://localhost:7022/dashboard");
     }
 
@@ -234,8 +213,8 @@ app.MapGet("/api/auth/google/complete", async (
     try
     {
         var now = DateTime.Now;
+        var name = context.User.Identity?.Name ?? email;
 
-        // UserId is generated by the database identity column.
         var portalUser = new AskpearlsPortalUserList
         {
             RowViewTokenId = Guid.NewGuid(),
@@ -248,8 +227,6 @@ app.MapGet("/api/auth/google/complete", async (
         db.AskpearlsPortalUserLists.Add(portalUser);
         await db.SaveChangesAsync();
 
-        // UserLogin.UserId is not an identity column, so use the
-        // UserId generated for AskpearlsPortalUserList.
         var login = new UserLogin
         {
             UserId = checked((int)portalUser.UserId),
@@ -265,7 +242,6 @@ app.MapGet("/api/auth/google/complete", async (
 
         db.UserLogins.Add(login);
 
-        // UaccountId is generated by its database identity column.
         var account = new AskpearlsPortalUserAccountList
         {
             RowViewTokenId = Guid.NewGuid(),
@@ -284,24 +260,16 @@ app.MapGet("/api/auth/google/complete", async (
         await db.SaveChangesAsync();
         await transaction.CommitAsync();
 
-        ////////return Results.Ok(new
-        ////////{
-        ////////    message = "Google signup succeeded.",
-        ////////    userId = portalUser.UserId,
-        ////////    email
-        ////////});
-        ///
         return Results.Redirect("https://localhost:7022/dashboard");
     }
     catch
     {
         await transaction.RollbackAsync();
+
         return Results.Problem(
             "Google sign-in could not save the account.");
     }
 });
-
-
 
 app.MapGet("/api/auth/me", async (
     ClaimsPrincipal user,
@@ -315,13 +283,14 @@ app.MapGet("/api/auth/me", async (
     var email = user.FindFirst(ClaimTypes.Email)?.Value;
 
     var profile = await currentUserService.GetCurrentUserAsync(
-        googleId, email, cancellationToken);
+        googleId,
+        email,
+        cancellationToken);
 
     return profile is null
         ? Results.Unauthorized()
         : Results.Ok(profile);
 })
 .RequireAuthorization();
-
 
 app.Run();

@@ -1,401 +1,652 @@
 ﻿(function () {
     "use strict";
 
-    const root = document.querySelector(".page-widget-builder[data-ap-page='widget-builder']");
+    const root = document.querySelector(
+        ".page-widget-builder[data-ap-page='widget-builder']"
+    );
+
     if (!root || root.dataset.wbInitialized === "true") return;
-
-    const $ = id => root.querySelector("#" + id);
-    const apiBase = (root.dataset.apiBase || window.AskPearlsCS_API_URL || (window.location.origin + "/api")).replace(/\/+$/, "");
-    const ownerToken = (root.dataset.ownerUserId || "").trim();
-
-
-
-    if (!ownerToken) {
-        console.error("Widget Builder: logged-in user ID is missing.");
-        return;
-    }
-
-
     root.dataset.wbInitialized = "true";
 
+    const $ = (id) => root.querySelector("#" + id);
 
+    const elements = {
+        message: $("wbApiMessage"),
+        draftIndicator: $("wbDraftIndicator"),
+        saveButton: $("wbSaveButton"),
+        widgetName: $("wbWidgetName"),
+        widgetType: $("wbWidgetType"),
+        website: $("wbWebsite"),
+        title: $("wbWidgetTitle"),
+        description: $("wbWidgetDescription"),
+        buttonText: $("wbButtonText"),
+        position: $("wbWidgetPosition"),
+        cornerStyle: $("wbCornerStyle"),
+        primaryColor: $("wbPrimaryColor"),
+        colorValue: $("wbColorValue"),
+        previewTitle: $("wbPreviewTitle"),
+        previewDescription: $("wbPreviewDescription"),
+        previewPrimary: $("wbPreviewPrimary"),
+        previewWidget: $("wbPreviewWidget"),
+        widgetSelect: $("wbWidgetSelect"),
+        widgetVersion: $("wbWidgetVersion"),
+        apiNote: $("wbApiNote"),
+        pageTitle: $("wbPageTitle"),
+        pageDescription: $("wbPageDescription"),
+        previousButton: $("wbPreviousButton"),
+        nextButton: $("wbNextButton"),
+        previewButton: $("wbPreviewButton"),
+        previewStage: $("wbPreviewStage")
+    };
+
+    const storage = {
+        mode: "askpearls.widgetBuilderMode",
+        activeWidget: "askpearls.activeWidgetPublicKey"
+    };
 
     const steps = [ "basics", "appearance", "behavior" ];
     let currentStep = 0;
     let widgets = [];
-    let savedSettings = null;
-    let toastTimer;
-    let creating = window.localStorage.getItem("askpearls.widgetBuilderMode") === "create";
+    let activeWidgetPublicKey = "";
+    let creating = false;
+    let toastTimer = null;
 
-    const defaults = {
-        primary: "#16a085", background: "#FFFFFF", text: "#17212B", theme: "custom",
-        font: "Inter, Arial, sans-serif", fontSize: 14, radius: 12, shadow: true,
-        width: 360, position: "bottom-right", buttonShape: "rounded",
-        heading: "Find Your Perfect Sofa", description: "Answer a few simple questions and discover the sofa that suits your needs.",
-        buttonText: "Find My Sofa", footer: "Powered by DecisionOS"
-    };
-
-    function showMessage (message, kind) {
-        const box = $("wbApiMessage");
-        box.textContent = message;
-        box.className = "wb-api-message" + (kind ? " is-" + kind : "");
-        box.hidden = false;
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => { box.hidden = true; }, 5500);
+    function getAntiForgeryToken () {
+        const tokenInput = document.querySelector(
+            'input[name="__RequestVerificationToken"]'
+        );
+        return tokenInput ? tokenInput.value : "";
     }
 
-    function headers (json) {
-        const result = { Accept: "application/json" };
-        if (json) result[ "Content-Type" ] = "application/json";
-        if (ownerToken) result[ "X-Demo-Owner-User-Token" ] = ownerToken;
-        return result;
+    function showMessage (message, isError) {
+        if (!elements.message) return;
+
+        elements.message.textContent = message || "";
+        elements.message.hidden = !message;
+        elements.message.classList.toggle("is-error", Boolean(isError));
+        elements.message.classList.toggle("is-success", Boolean(message) && !isError);
     }
 
-    async function readResponse (response) {
-        const text = await response.text();
-        let data = {};
-        if (text) {
-            try { data = JSON.parse(text); }
-            catch { throw new Error("The API returned an unreadable response."); }
+    function setDraftIndicator (message, isSaved) {
+        if (elements.draftIndicator) {
+            elements.draftIndicator.textContent = message;
+            elements.draftIndicator.classList.toggle("is-saved", Boolean(isSaved));
         }
-        if (!response.ok) throw new Error(data.message || "API request failed (HTTP " + response.status + ").");
+
+        if (elements.saveButton) {
+            elements.saveButton.disabled = false;
+        }
+    }
+
+    function setSaving (isSaving) {
+        if (!elements.saveButton) return;
+
+        elements.saveButton.disabled = isSaving;
+        elements.saveButton.setAttribute("aria-busy", String(isSaving));
+
+        const label = elements.saveButton.querySelector("[data-save-label]");
+        if (label) {
+            label.textContent = isSaving ? "Saving…" : "Save Draft";
+        }
+    }
+
+    function getValue (element, fallback) {
+        return element && typeof element.value === "string"
+            ? element.value.trim()
+            : (fallback || "");
+    }
+
+    function getApiError (data, fallback) {
+        if (!data) return fallback;
+
+        if (typeof data === "string" && data.trim()) {
+            return data;
+        }
+
+        return data.detail ||
+            data.message ||
+            data.title ||
+            data.error ||
+            fallback;
+    }
+
+    async function portalRequest (path, options) {
+        const requestOptions = options || {};
+        const headers = new Headers(requestOptions.headers || {});
+
+        headers.set("Accept", "application/json");
+        headers.set("X-Requested-With", "XMLHttpRequest");
+
+        const csrfToken = getAntiForgeryToken();
+        if (csrfToken) {
+            headers.set("RequestVerificationToken", csrfToken);
+        }
+
+        if (requestOptions.body !== undefined) {
+            headers.set("Content-Type", "application/json");
+        }
+
+        const response = await fetch("/Widget/Api/" + path.replace(/^\/+/, ""), {
+            method: requestOptions.method || "GET",
+            credentials: "same-origin",
+            headers: headers,
+            body: requestOptions.body === undefined
+                ? undefined
+                : JSON.stringify(requestOptions.body)
+        });
+
+        const text = await response.text();
+        let data = null;
+
+        if (text) {
+            try {
+                data = JSON.parse(text);
+            } catch (_) {
+                data = text;
+            }
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                getApiError(data, "Request failed (" + response.status + ").")
+            );
+        }
+
         return data;
     }
 
-    function selectedWidget () {
-        return widgets.find(widget => widget.publicKey === $("wbWidgetSelect").value) || null;
+    function setCreateMode () {
+        creating = true;
+        activeWidgetPublicKey = "";
+
+        try {
+            localStorage.setItem(storage.mode, "create");
+            localStorage.removeItem(storage.activeWidget);
+        } catch (_) {
+            // Browser storage can be unavailable; this page still works.
+        }
+
+        if (elements.pageTitle) {
+            elements.pageTitle.textContent = "Create a new widget";
+        }
+
+        if (elements.pageDescription) {
+            elements.pageDescription.textContent =
+                "Set up your widget details, appearance, and behavior.";
+        }
+
+        if (elements.widgetSelect) {
+            elements.widgetSelect.innerHTML =
+                '<option value="">New widget</option>';
+            elements.widgetSelect.value = "";
+        }
+
+        if (elements.widgetName) elements.widgetName.value = "";
+        if (elements.widgetType) elements.widgetType.value = "decision";
+        if (elements.website) elements.website.value = "";
+        if (elements.title) elements.title.value = "";
+        if (elements.description) elements.description.value = "";
+        if (elements.buttonText) elements.buttonText.value = "";
+
+        setDraftIndicator("Unsaved draft", false);
+        updatePreview();
     }
 
-    function setDraftState (isDirty) {
-        const indicator = $("wbDraftIndicator");
-        indicator.innerHTML = isDirty
-            ? '<i class="bi bi-circle-fill me-1" style="font-size:7px"></i> Unsaved changes'
-            : '<i class="bi bi-check-circle-fill me-1"></i> Saved settings loaded';
-        if (creating) {
-            const website = $("wbWebsite").value.trim();
-            $("wbSaveButton").disabled = !$("wbWidgetName").value.trim() ||
-                !$("wbWidgetTitle").value.trim() || !/^https?:\/\//i.test(website);
-        } else {
-            $("wbSaveButton").disabled = !selectedWidget() || !isDirty;
+    function isCreateModeRequested () {
+        try {
+            return localStorage.getItem(storage.mode) === "create";
+        } catch (_) {
+            return false;
+        }
+    }
+
+    function getStoredActiveWidgetKey () {
+        try {
+            return localStorage.getItem(storage.activeWidget) || "";
+        } catch (_) {
+            return "";
         }
     }
 
     function currentSettings () {
-        const theme = root.querySelector('input[name="wbTheme"]:checked');
-        const corner = $("wbCornerStyle").value;
-        return {
-            primary: $("wbPrimaryColor").value,
-            background: theme && theme.value === "dark" ? "#15231E" : "#FFFFFF",
-            text: theme && theme.value === "dark" ? "#E7F0EC" : "#17212B",
-            theme: theme ? theme.value : "light",
-            font: "Inter, Arial, sans-serif",
-            fontSize: 14,
-            radius: corner === "soft" ? 24 : corner === "square" ? 0 : 12,
-            shadow: true,
-            width: 360,
-            position: $("wbWidgetPosition").value,
-            buttonShape: corner === "square" ? "square" : "rounded",
-            heading: $("wbWidgetTitle").value.trim(),
-            description: $("wbWidgetDescription").value.trim(),
-            buttonText: $("wbButtonText").value.trim(),
-            footer: "Powered by DecisionOS"
-        };
-    }
+        const color = getValue(elements.primaryColor, "#16a96b");
 
-    function syncDirtyState () {
-        if (savedSettings) setDraftState(JSON.stringify(currentSettings()) !== JSON.stringify(savedSettings));
+        return {
+            primary: color,
+            background: "#ffffff",
+            text: "#16352b",
+            font: "system",
+            fontSize: 16,
+            radius: 16,
+            shadow: true,
+            width: 420,
+            position: getValue(elements.position, "right"),
+            buttonShape: getValue(elements.cornerStyle, "rounded"),
+            heading: getValue(elements.title, ""),
+            description: getValue(elements.description, ""),
+            buttonText: getValue(elements.buttonText, ""),
+            footer: "",
+            theme: "light"
+        };
     }
 
     function updatePreview () {
-        const title = $("wbWidgetTitle").value.trim();
-        const description = $("wbWidgetDescription").value.trim();
-        const buttonText = $("wbButtonText").value.trim();
-        const theme = root.querySelector('input[name="wbTheme"]:checked')?.value || "light";
-        const corners = $("wbCornerStyle").value;
-        const color = $("wbPrimaryColor").value;
-        $("wbPreviewTitle").textContent = title || "Your Widget Title";
-        $("wbPreviewTitle").hidden = !$("wbShowTitle").checked;
-        $("wbPreviewDescription").textContent = description || "Your widget description.";
-        $("wbPreviewDescription").hidden = !$("wbShowDescription").checked;
-        $("wbPreviewPrimary").textContent = buttonText || "Find My Sofa";
-        $("wbPreviewWidget").dataset.theme = theme;
-        $("wbPreviewWidget").dataset.corners = corners;
-        root.style.setProperty("--wb-primary", color);
-        $("wbColorValue").textContent = color;
-        syncDirtyState();
-    }
+        const title = getValue(elements.title, "Your widget title");
+        const description = getValue(elements.description, "Your description");
+        const buttonText = getValue(elements.buttonText, "Get started");
+        const color = getValue(elements.primaryColor, "#16a96b");
 
-    function applySettings (config) {
-        const value = { ...defaults, ...(config || {}) };
-        const color = /^#[0-9a-f]{6}$/i.test(value.primary) ? value.primary : defaults.primary;
-        $("wbPrimaryColor").value = color;
-        $("wbWidgetTitle").value = value.heading || defaults.heading;
-        $("wbWidgetDescription").value = value.description || defaults.description;
-        $("wbButtonText").value = value.buttonText || defaults.buttonText;
-        $("wbWidgetPosition").value = [ "bottom-right", "bottom-left", "center" ].includes(value.position) ? value.position : defaults.position;
-        $("wbCornerStyle").value = value.buttonShape === "square" ? "square" : Number(value.radius) >= 20 ? "soft" : "rounded";
-        const theme = [ "light", "dark" ].includes(value.theme) ? value.theme : "light";
-        const themeInput = root.querySelector('input[name="wbTheme"][value="' + theme + '"]');
-        if (themeInput) themeInput.checked = true;
-        updatePreview();
-        savedSettings = currentSettings();
-        setDraftState(false);
-    }
-
-    async function loadConfiguration () {
-        const widget = selectedWidget();
-        const version = $("wbWidgetVersion");
-        const save = $("wbSaveButton");
-        save.disabled = true;
-        version.textContent = widget ? (widget.hasDraft ? "Draft v" + (widget.draftVersionNumber || widget.versionNumber) : widget.hasPublishedVersion ? "Live v" + (widget.publishedVersionNumber || widget.versionNumber) : "—") : "—";
-        if (!widget) return;
-
-        try {
-            const url = apiBase + "/widgets/" + encodeURIComponent(widget.publicKey) + "/draft/configuration";
-            const data = await readResponse(await fetch(url, { headers: headers(false) }));
-            if (selectedWidget()?.publicKey !== widget.publicKey) return;
-            version.textContent = data.versionNumber ? (data.status === "draft" ? "Draft v" : "Live v") + data.versionNumber + (widget.hasPublishedVersion && widget.publishedVersionNumber ? " · Live v" + widget.publishedVersionNumber : "") : version.textContent;
-            $("wbWidgetName").value = widget.name || "";
-            $("wbWidgetType").value = widget.type || "decision";
-            $("wbWebsite").value = widget.websiteAddress || "";
-            applySettings(data.configuration || defaults);
-            showMessage(data.status === "draft" ? "Saved draft settings loaded for " + widget.name + "." : "Current settings loaded for " + widget.name + ".", "success");
-        } catch (error) {
-            console.error("Widget Builder could not load the selected widget configuration.", error);
-            applySettings(defaults);
-            showMessage(error.message || "Could not load widget settings.", "error");
+        if (elements.previewTitle) {
+            elements.previewTitle.textContent = title || "Your widget title";
         }
+
+        if (elements.previewDescription) {
+            elements.previewDescription.textContent =
+                description || "Your description";
+        }
+
+        if (elements.previewPrimary) {
+            elements.previewPrimary.textContent = buttonText || "Get started";
+            elements.previewPrimary.style.backgroundColor = color;
+        }
+
+        if (elements.colorValue) {
+            elements.colorValue.textContent = color;
+        }
+
+        if (elements.previewWidget) {
+            elements.previewWidget.style.setProperty("--wb-primary", color);
+        }
+    }
+
+    function markUnsaved () {
+        setDraftIndicator("Unsaved draft", false);
+        updatePreview();
+    }
+
+    function setStep (index) {
+        currentStep = Math.max(0, Math.min(index, steps.length - 1));
+
+        root.querySelectorAll("[data-wb-step]").forEach(function (button, i) {
+            const selected = i === currentStep;
+            button.classList.toggle("is-active", selected);
+            button.setAttribute("aria-current", selected ? "step" : "false");
+        });
+
+        root.querySelectorAll("[data-wb-panel]").forEach(function (panel) {
+            panel.hidden = panel.dataset.wbPanel !== steps[ currentStep ];
+        });
+
+        if (elements.previousButton) {
+            elements.previousButton.disabled = currentStep === 0;
+        }
+
+        if (elements.nextButton) {
+            elements.nextButton.hidden = currentStep === steps.length - 1;
+        }
+    }
+
+    function readField (object, lowerName, upperName) {
+        if (!object) return undefined;
+        return object[ lowerName ] !== undefined
+            ? object[ lowerName ]
+            : object[ upperName ];
+    }
+
+    function applySettings (configuration) {
+        if (!configuration) return;
+
+        const fields = [
+            [ "primaryColor", "primary", "Primary" ],
+            [ "title", "heading", "Heading" ],
+            [ "description", "description", "Description" ],
+            [ "buttonText", "buttonText", "ButtonText" ],
+            [ "position", "position", "Position" ],
+            [ "cornerStyle", "buttonShape", "ButtonShape" ]
+        ];
+
+        fields.forEach(function (field) {
+            const element = elements[ field[ 0 ] ];
+            const value = readField(configuration, field[ 1 ], field[ 2 ]);
+            if (element && value !== undefined && value !== null) {
+                element.value = value;
+            }
+        });
+
+        updatePreview();
+    }
+
+    function widgetPublicKey (widget) {
+        return readField(widget, "publicKey", "PublicKey") ||
+            readField(widget, "widgetPublicKey", "WidgetPublicKey") ||
+            "";
+    }
+
+    function widgetName (widget) {
+        return readField(widget, "name", "Name") ||
+            readField(widget, "widgetName", "WidgetName") ||
+            "Widget";
     }
 
     async function loadWidgets () {
-        const select = $("wbWidgetSelect");
-        select.disabled = true;
+        if (creating) return;
+
         try {
+            const result = await portalRequest("widgets");
+            const list = Array.isArray(result)
+                ? result
+                : (result && (result.widgets || result.data)) || [];
 
-            const data = await readResponse(await fetch("/Widget/MyWidgets", {
-                method: "GET",
-                credentials: "same-origin",
-                headers: { Accept: "application/json" }
-            }));
+            widgets = Array.isArray(list) ? list : [];
 
-            widgets = (Array.isArray(data.widgets) ? data.widgets : []).map(item => ({
-                publicKey: String(item.publicKey ?? item.PublicKey ?? ""),
-                name: String(item.name ?? item.Name ?? "Untitled widget"),
-                description: String(item.description ?? item.Description ?? ""),
-                versionNumber: String(item.versionNumber ?? item.VersionNumber ?? ""),
-                draftVersionNumber: String(item.draftVersionNumber ?? item.DraftVersionNumber ?? ""),
-                publishedVersionNumber: String(item.publishedVersionNumber ?? item.PublishedVersionNumber ?? ""),
-                hasDraft: Boolean(item.hasDraft ?? item.HasDraft ?? String(item.status ?? item.Status ?? "").toLowerCase() === "draft"),
-                hasPublishedVersion: Boolean(item.hasPublishedVersion ?? item.HasPublishedVersion ?? String(item.status ?? item.Status ?? "").toLowerCase() === "published"),
-                websiteTokenId: String(item.websiteTokenId ?? item.WebsiteTokenId ?? ""),
-                websiteAddress: String(item.websiteAddress ?? item.WebsiteAddress ?? ""),
-                websiteName: String(item.websiteName ?? item.WebsiteName ?? ""),
-                type: String(item.type ?? item.Type ?? "decision")
-            })).filter(item => item.publicKey);
-            select.replaceChildren();
-            if (creating) {
-                select.add(new Option("New widget", ""));
-                select.disabled = true;
-                $("wbPageTitle").textContent = "Create New Widget";
-                $("wbPageDescription").textContent = "Set up a new DecisionOS experience for your website.";
-                $("wbApiNote").textContent = "Complete the required fields, then create the widget as a draft. You can add questions, recommendations, and scoring after creation.";
-                $("wbSaveButton").innerHTML = '<i class="bi bi-plus-lg me-1"></i> Create Widget';
-                $("wbWidgetName").value = "";
-                $("wbWidgetType").value = "decision";
-                $("wbWebsite").value = "";
-                $("wbWidgetTitle").value = "";
-                $("wbWidgetDescription").value = "";
-                $("wbButtonText").value = "Get started";
-                $("wbWidgetVersion").textContent = "—";
-                updatePreview();
-                setDraftState(true);
-                return;
+            if (elements.widgetSelect) {
+                elements.widgetSelect.innerHTML = "";
+
+                if (widgets.length === 0) {
+                    elements.widgetSelect.add(
+                        new Option("No widgets yet — create a new widget", "")
+                    );
+                    activeWidgetPublicKey = "";
+                    setDraftIndicator("No saved widgets", false);
+                    return;
+                }
+
+                widgets.forEach(function (widget) {
+                    const key = widgetPublicKey(widget);
+                    if (!key) return;
+
+                    elements.widgetSelect.add(
+                        new Option(widgetName(widget), key)
+                    );
+                });
             }
-            $("wbPageTitle").textContent = "Widget Builder";
-            $("wbPageDescription").textContent = "Create and customize your DecisionOS experience.";
-            $("wbApiNote").textContent = "Choose an existing widget to edit, or open this page from “Create new widget” to start a new widget.";
-            $("wbSaveButton").innerHTML = '<i class="bi bi-save me-1"></i> Save Draft';
-            if (!widgets.length) {
-                select.add(new Option("No widgets available", ""));
-                $("wbWidgetVersion").textContent = "—";
-                showMessage("There are no existing widgets. Use Create new widget to start one.", "warning");
-                return;
+
+            const storedKey = getStoredActiveWidgetKey();
+            const selectedWidget = widgets.find(function (widget) {
+                return widgetPublicKey(widget) === storedKey;
+            }) || widgets[ 0 ];
+
+            if (selectedWidget) {
+                activeWidgetPublicKey = widgetPublicKey(selectedWidget);
+
+                if (elements.widgetSelect) {
+                    elements.widgetSelect.value = activeWidgetPublicKey;
+                }
+
+                await loadConfiguration(activeWidgetPublicKey);
             }
-            widgets.forEach(widget => select.add(new Option(widget.name, widget.publicKey)));
-            select.disabled = false;
-            await loadConfiguration();
         } catch (error) {
-            select.replaceChildren(new Option("Could not load widgets", ""));
-            showMessage(error.message || "Could not load widgets from the API.", "error");
-            console.error("Widget Builder could not load widgets.", error);
+            widgets = [];
+            if (elements.widgetSelect) {
+                elements.widgetSelect.innerHTML =
+                    '<option value="">Could not load widgets</option>';
+            }
+            showMessage(error.message || "Could not load your widgets.", true);
         }
     }
 
+    async function loadConfiguration (publicKey) {
+        if (!publicKey) return;
 
+        try {
+            const result = await portalRequest(
+                "widgets/" + encodeURIComponent(publicKey) +
+                "/draft/configuration"
+            );
 
-    async function createWidget () {
-        const token = document.querySelector(
-            'input[name="__RequestVerificationToken"]'
-        )?.value;
+            const configuration =
+                result.configuration ||
+                result.design ||
+                result.data ||
+                result;
 
-        const payload = {
-            name: $("widgetName")?.value?.trim(),
-            type: $("widgetType")?.value,
-            websiteTokenId: $("websiteTokenId")?.value?.trim(),
-            websiteName: $("websiteName")?.value?.trim(),
-            websiteAddress: $("websiteAddress")?.value?.trim(),
-            title: $("widgetTitle")?.value?.trim(),
-            description: $("widgetDescription")?.value?.trim()
-        };
+            applySettings(configuration);
 
-        const response = await fetch("/Widget/Create", {
-            method: "POST",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-                "RequestVerificationToken": token
-            },
-            body: JSON.stringify(payload)
-        });
+            const version = readField(result, "versionNumber", "VersionNumber");
+            if (elements.widgetVersion && version !== undefined) {
+                elements.widgetVersion.textContent = "Draft v" + version;
+            }
 
-        const result = await response.json().catch(() => null);
-
-        if (!response.ok) {
-            throw new Error(result?.message || "Could not create the widget.");
+            setDraftIndicator("Saved settings loaded", true);
+            showMessage("", false);
+        } catch (error) {
+            showMessage(
+                error.message || "Could not load this widget's saved settings.",
+                true
+            );
         }
-
-        return result;
     }
 
+    function validateForm () {
+        const name = getValue(elements.widgetName);
+        const type = getValue(elements.widgetType, "decision");
+        const website = getValue(elements.website);
+        const title = getValue(elements.title);
+        const description = getValue(elements.description);
 
-
-    async function saveDraft () {
-        if (!creating) {
-            showMessage("Saving an existing widget needs a Portal save endpoint.");
-            return;
+        if (!name) return "Enter an internal widget name.";
+        if (name.length > 100) return "Widget name must be 100 characters or fewer.";
+        if (type.toLowerCase() !== "decision") {
+            return "Widget type must be Decision.";
         }
-
-        const name = $("wbWidgetName")?.value.trim();
-        const type = $("wbWidgetType")?.value;
-        const websiteAddress = $("wbWebsite")?.value.trim();
-        const title = $("wbWidgetTitle")?.value.trim();
-        const description = $("wbWidgetDescription")?.value.trim();
-
-        if (!name || !type || !websiteAddress || !title || !description) {
-            showMessage("Complete the required widget fields before saving.");
-            return;
-        }
+        if (!website) return "Enter the website address for this widget.";
 
         let websiteUrl;
         try {
-            websiteUrl = new URL(websiteAddress);
-            if (![ "https:", "http:" ].includes(websiteUrl.protocol)) {
-                throw new Error();
-            }
-        } catch {
-            showMessage("Enter a valid website address, including https://.");
-            return;
+            websiteUrl = new URL(
+                /^https?:\/\//i.test(website) ? website : "https://" + website
+            );
+        } catch (_) {
+            return "Enter a valid website address.";
         }
 
-        const antiforgeryToken =
-            root.querySelector('input[name="__RequestVerificationToken"]')?.value
-            || document.querySelector('input[name="__RequestVerificationToken"]')?.value;
-
-        if (!antiforgeryToken) {
-            showMessage("The security token is missing. Reload the page and try again.");
-            return;
+        if (![ "http:", "https:" ].includes(websiteUrl.protocol)) {
+            return "Website address must use HTTP or HTTPS.";
         }
 
-        const button = $("wbSaveButton");
-        const originalButtonText = button?.textContent;
-
-        if (button) {
-            button.disabled = true;
-            button.textContent = "Saving…";
+        if (!title) return "Enter the title visitors will see.";
+        if (title.length > 120) return "Widget title must be 120 characters or fewer.";
+        if (description.length > 500) {
+            return "Description must be 500 characters or fewer.";
         }
 
-        const payload = {
-            name,
-            type,
-            websiteTokenId: "", // Generate this on the server if the API requires it.
-            websiteName: websiteUrl.hostname,
-            websiteAddress: websiteUrl.href,
-            title,
-            description
+        return "";
+    }
+
+    function buildCreateRequest () {
+        const websiteInput = getValue(elements.website);
+        const websiteAddress = /^https?:\/\//i.test(websiteInput)
+            ? websiteInput
+            : "https://" + websiteInput;
+
+        let hostname = websiteAddress;
+        try {
+            hostname = new URL(websiteAddress).hostname;
+        } catch (_) {
+            // Validation reports an invalid address before this is called.
+        }
+
+        return {
+            name: getValue(elements.widgetName),
+            type: getValue(elements.widgetType, "decision"),
+            websiteTokenId: "",
+            websiteName: hostname,
+            websiteAddress: websiteAddress,
+            title: getValue(elements.title),
+            description: getValue(elements.description)
         };
+    }
+
+    async function saveDesign (publicKey) {
+        return portalRequest(
+            "widgets/" + encodeURIComponent(publicKey) +
+            "/draft/configuration",
+            {
+                method: "PUT",
+                body: currentSettings()
+            }
+        );
+    }
+
+    async function saveDraft () {
+        const validationMessage = validateForm();
+
+        if (validationMessage) {
+            showMessage(validationMessage, true);
+            return;
+        }
+
+        setSaving(true);
+        showMessage("", false);
 
         try {
-            const response = await fetch("/Widget/Create", {
-                method: "POST",
-                credentials: "same-origin",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "RequestVerificationToken": antiforgeryToken
-                },
-                body: JSON.stringify(payload)
-            });
+            if (creating) {
+                const created = await portalRequest("widgets", {
+                    method: "POST",
+                    body: buildCreateRequest()
+                });
 
-            const responseText = await response.text();
-            let result = {};
+                const createdKey = widgetPublicKey(created);
+                if (!createdKey) {
+                    throw new Error(
+                        "The API created no widget key in its response. Check the Portal proxy response."
+                    );
+                }
 
-            try {
-                result = responseText ? JSON.parse(responseText) : {};
-            } catch {
-                result = { message: responseText };
+                activeWidgetPublicKey = createdKey;
+                creating = false;
+
+                try {
+                    localStorage.removeItem(storage.mode);
+                    localStorage.setItem(storage.activeWidget, createdKey);
+                } catch (_) {
+                    // The server has created the widget; storage is optional.
+                }
+
+                await saveDesign(createdKey);
+                await loadWidgets();
+
+                if (elements.widgetSelect) {
+                    elements.widgetSelect.value = createdKey;
+                }
+
+                setDraftIndicator("Draft saved", true);
+                showMessage("Widget created and draft saved.", false);
+                return;
             }
 
-            if (!response.ok) {
+            if (!activeWidgetPublicKey) {
                 throw new Error(
-                    result.message || result.title || "The Portal could not save the widget."
+                    "Select a widget to save, or open Widget Builder using Create New Widget."
                 );
             }
 
-            showMessage("Widget draft created successfully.");
-
-            if (button) {
-                button.textContent = "Draft created";
-            }
+            await saveDesign(activeWidgetPublicKey);
+            setDraftIndicator("Draft saved", true);
+            showMessage("Draft saved.", false);
         } catch (error) {
-            showMessage(error.message || "Could not save the widget.");
-            if (button) {
-                button.disabled = false;
-                button.textContent = originalButtonText || "Save Draft";
-            }
+            showMessage(error.message || "Could not save the widget draft.", true);
+            setDraftIndicator("Unsaved draft", false);
+        } finally {
+            setSaving(false);
         }
     }
 
+    function bindEvents () {
+        root.querySelectorAll("[data-wb-step]").forEach(function (button, index) {
+            button.addEventListener("click", function () {
+                setStep(index);
+            });
+        });
 
+        if (elements.previousButton) {
+            elements.previousButton.addEventListener("click", function () {
+                setStep(currentStep - 1);
+            });
+        }
 
-    function showStep (index) {
-        currentStep = Math.max(0, Math.min(index, steps.length - 1));
-        root.querySelectorAll(".wb-step").forEach(button => button.classList.toggle("active", button.dataset.wbTab === steps[ currentStep ]));
-        root.querySelectorAll(".wb-panel").forEach(panel => panel.classList.toggle("active", panel.dataset.wbPanel === steps[ currentStep ]));
-        $("wbPreviousButton").disabled = currentStep === 0;
-        $("wbNextButton").innerHTML = currentStep === steps.length - 1
-            ? 'Finish <i class="bi bi-check2 ms-1"></i>'
-            : 'Next <i class="bi bi-arrow-right ms-1"></i>';
+        if (elements.nextButton) {
+            elements.nextButton.addEventListener("click", function () {
+                setStep(currentStep + 1);
+            });
+        }
+
+        if (elements.saveButton) {
+            elements.saveButton.addEventListener("click", saveDraft);
+        }
+
+        if (elements.widgetSelect) {
+            elements.widgetSelect.addEventListener("change", async function () {
+                const selectedKey = elements.widgetSelect.value;
+                if (!selectedKey) return;
+
+                creating = false;
+                activeWidgetPublicKey = selectedKey;
+
+                try {
+                    localStorage.removeItem(storage.mode);
+                    localStorage.setItem(storage.activeWidget, selectedKey);
+                } catch (_) {
+                    // Storage is optional.
+                }
+
+                await loadConfiguration(selectedKey);
+            });
+        }
+
+        [
+            elements.widgetName,
+            elements.widgetType,
+            elements.website,
+            elements.title,
+            elements.description,
+            elements.buttonText,
+            elements.position,
+            elements.cornerStyle,
+            elements.primaryColor
+        ].forEach(function (element) {
+            if (element) {
+                element.addEventListener("input", markUnsaved);
+                element.addEventListener("change", markUnsaved);
+            }
+        });
+
+        if (elements.previewButton) {
+            elements.previewButton.addEventListener("click", function () {
+                if (elements.previewStage) {
+                    elements.previewStage.scrollIntoView({
+                        behavior: "smooth",
+                        block: "nearest"
+                    });
+                }
+            });
+        }
+
+        root.querySelectorAll("[data-wb-preview-close]").forEach(function (button) {
+            button.addEventListener("click", function () {
+                if (elements.previewStage) {
+                    elements.previewStage.hidden = true;
+                }
+            });
+        });
     }
 
-    root.querySelectorAll(".wb-step").forEach(button => button.addEventListener("click", () => showStep(steps.indexOf(button.dataset.wbTab))));
-    $("wbPreviousButton").addEventListener("click", () => showStep(currentStep - 1));
-    $("wbNextButton").addEventListener("click", () => currentStep < steps.length - 1
-        ? showStep(currentStep + 1)
-        : showMessage("Builder review is ready. Save the supported design settings for the selected widget.", "warning"));
-    $("wbWidgetSelect").addEventListener("change", loadConfiguration);
-    $("wbSaveButton").addEventListener("click", saveDraft);
-    $("wbPreviewButton").addEventListener("click", () => $("wbPreviewStage").scrollIntoView({ behavior: "smooth", block: "center" }));
-    root.querySelectorAll("input, textarea, select").forEach(control => {
-        control.addEventListener("input", updatePreview);
-        control.addEventListener("change", updatePreview);
-    });
-    [ "wbWidgetName", "wbWidgetType", "wbWebsite" ].forEach(id => {
-        $(id).addEventListener("input", updatePreview);
-        $(id).addEventListener("change", updatePreview);
-    });
-    $("wbPreviewPrimary").addEventListener("click", () => showMessage("Visitor question flows are managed in the Questions & Answers workspace.", "warning"));
+    async function initialize () {
+        bindEvents();
+        setStep(0);
+        updatePreview();
 
-    showStep(0);
-    updatePreview();
-    loadWidgets();
+        if (isCreateModeRequested()) {
+            setCreateMode();
+            return;
+        }
+
+        await loadWidgets();
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initialize, { once: true });
+    } else {
+        initialize();
+    }
 })();

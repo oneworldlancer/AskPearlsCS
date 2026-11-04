@@ -10,6 +10,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
+using Microsoft.AspNetCore.Authorization;
+using System.Globalization;
+
 namespace AskPearlsCS_API.Controllers;
 
 public sealed record WidgetDesignDraftRequest(
@@ -81,6 +84,7 @@ public sealed record CreateWidgetRequest(
     [property: JsonPropertyName("description")] string Description);
 
 [ApiController]
+[Authorize]
 [Route("api/widgets")]
 public class WidgetController : ControllerBase
 //public class WidgetController(DBContextModel db) : ControllerBase
@@ -90,30 +94,28 @@ public class WidgetController : ControllerBase
     private readonly IWidgetVersion_Service _widgetVersionService;
     private readonly IQuestion_Service _questionService;
     private readonly DBContextModel _db;
-    private readonly IWebHostEnvironment _environment;
 
     public WidgetController(
        IWidget_Service widgetService,
        IWidgetVersion_Service widgetVersionService,
        IQuestion_Service questionService,
-       DBContextModel db,
-       IWebHostEnvironment environment)
+       DBContextModel db)
     {
         _widgetService = widgetService;
         _widgetVersionService = widgetVersionService;
         _questionService = questionService;
         _db = db;
-        _environment = environment;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetMyWidgets()
     {
-        if (!TryGetDemoOwner(out var error)) return error!;
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
+            return error!;
 
         var widgets = await _db.AskpearlsPortalUserWebsiteWidgetLists
             .AsNoTracking()
-            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+            .Where(x => x.OwnerUserTokenId == ownerUserTokenId &&
                         x.IsActive == true && x.IsVisible == true)
             .OrderBy(x => x.WidgetName)
             .Select(x => new
@@ -140,7 +142,7 @@ public class WidgetController : ControllerBase
             ? new List<AskpearlsPortalUserWebsiteWidgetVersionList>()
             : await _db.AskpearlsPortalUserWebsiteWidgetVersionLists
                 .AsNoTracking()
-                .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+                .Where(x => x.OwnerUserTokenId == ownerUserTokenId &&
                             widgetKeys.Contains(x.WidgetPublicKey!) &&
                             x.IsActive == true && x.IsVisible == true)
                 .Select(x => new AskpearlsPortalUserWebsiteWidgetVersionList
@@ -155,7 +157,7 @@ public class WidgetController : ControllerBase
 
         var questions = await _db.AskpearlsPortalUserWebsiteWidgetQuestionLists
             .AsNoTracking()
-            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+            .Where(x => x.OwnerUserTokenId == ownerUserTokenId &&
                         widgetKeys.Contains(x.WidgetPublicKey!) &&
                         x.IsActive == true && x.IsVisible == true)
             .Select(x => new { x.WidgetPublicKey, x.WidgetVersionNumber })
@@ -163,7 +165,7 @@ public class WidgetController : ControllerBase
 
         var recommendations = await _db.AskpearlsPortalUserWebsiteWidgetRecommendationLists
             .AsNoTracking()
-            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+            .Where(x => x.OwnerUserTokenId == ownerUserTokenId &&
                         widgetKeys.Contains(x.WidgetPublicKey!) &&
                         x.IsActive == true && x.IsVisible == true)
             .Select(x => new { x.WidgetPublicKey, x.WidgetVersionNumber })
@@ -224,9 +226,10 @@ public class WidgetController : ControllerBase
     [HttpGet("websites")]
     public async Task<IActionResult> GetMyWebsites()
     {
-        if (!TryGetDemoOwner(out var error)) return error!;
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
+            return error!;
         var websites = await _db.AskpearlsPortalUserWebsiteLists.AsNoTracking()
-            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.IsActive == true && x.IsVisible == true)
+            .Where(x => x.OwnerUserTokenId == ownerUserTokenId && x.IsActive == true && x.IsVisible == true)
             .OrderBy(x => x.WebsiteName)
             .Select(x => new { websiteTokenId = x.WebsiteTokenId, name = x.WebsiteName, address = x.WebsiteAddress })
             .ToListAsync();
@@ -236,7 +239,8 @@ public class WidgetController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateWidget([FromBody] CreateWidgetRequest? request)
     {
-        if (!TryGetDemoOwner(out var error)) return error!;
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
+            return error!;
         if (request is null || string.IsNullOrWhiteSpace(request.Name) || request.Name.Trim().Length > 100 ||
             request.Type != "decision" || string.IsNullOrWhiteSpace(request.WebsiteTokenId) ||
             string.IsNullOrWhiteSpace(request.Title) || request.Title.Trim().Length > 120 ||
@@ -247,7 +251,7 @@ public class WidgetController : ControllerBase
         if (!string.IsNullOrWhiteSpace(request.WebsiteTokenId))
         {
             website = await _db.AskpearlsPortalUserWebsiteLists.FirstOrDefaultAsync(x =>
-                x.WebsiteTokenId == request.WebsiteTokenId && x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+                x.WebsiteTokenId == request.WebsiteTokenId && x.OwnerUserTokenId == ownerUserTokenId &&
                 x.IsActive == true && x.IsVisible == true);
             if (website is null)
                 return BadRequest(new { success = false, message = "Choose a website belonging to the current portal account." });
@@ -259,7 +263,7 @@ public class WidgetController : ControllerBase
                 siteUri.Scheme is not ("http" or "https") || string.IsNullOrWhiteSpace(siteUri.Host))
                 return BadRequest(new { success = false, message = "Enter a valid website address beginning with http:// or https://." });
             website = await _db.AskpearlsPortalUserWebsiteLists.FirstOrDefaultAsync(x =>
-                x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WebsiteAddress == request.WebsiteAddress &&
+                x.OwnerUserTokenId == ownerUserTokenId && x.WebsiteAddress == request.WebsiteAddress &&
                 x.IsActive == true && x.IsVisible == true);
             if (website is null)
             {
@@ -268,7 +272,7 @@ public class WidgetController : ControllerBase
                     RowViewTokenId = Guid.NewGuid(),
                     RowDataTokenId = Guid.NewGuid().ToString("N"),
                     AccountType = "portal",
-                    OwnerUserTokenId = DemoOwnerUserTokenId,
+                    OwnerUserTokenId = ownerUserTokenId,
                     WebsiteTokenId = Guid.NewGuid().ToString("N"),
                     WebsiteName = string.IsNullOrWhiteSpace(request.WebsiteName) ? siteUri.Host : request.WebsiteName.Trim(),
                     WebsiteAddress = request.WebsiteAddress.Trim(),
@@ -292,7 +296,7 @@ public class WidgetController : ControllerBase
             RowViewTokenId = Guid.NewGuid(),
             RowDataTokenId = Guid.NewGuid().ToString("N"),
             AccountType = website.AccountType,
-            OwnerUserTokenId = DemoOwnerUserTokenId,
+            OwnerUserTokenId = ownerUserTokenId,
             OwnerMobileNumberTokenId = website.OwnerMobileNumberTokenId,
             OrganizationTokenId = website.OrganizationTokenId,
             CompanyTokenId = website.CompanyTokenId,
@@ -361,25 +365,22 @@ public class WidgetController : ControllerBase
         });
     }
 
-    // Local demo identity from the user's test data. These routes are disabled
-    // outside Development and must be replaced by the portal's Google login model.
-    private const string DemoOwnerUserTokenId = "1101";
-
     [HttpPut("{publicKey}/draft/configuration")]
     public async Task<IActionResult> SaveDesignDraft(
         string publicKey,
         [FromBody] WidgetDesignDraftRequest? request)
     {
-        if (!TryGetDemoOwner(out var error)) return error!;
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
+            return error!;
         if (string.IsNullOrWhiteSpace(publicKey) || !IsValidDesign(request))
             return BadRequest(new { success = false, message = "Widget key or design settings are invalid." });
 
         var widget = await _db.AskpearlsPortalUserWebsiteWidgetLists
             .FirstOrDefaultAsync(x => x.WidgetPublicKey == publicKey &&
-                                      x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+                                      x.OwnerUserTokenId == ownerUserTokenId &&
                                       x.IsActive == true && x.IsVisible == true);
         if (widget is null)
-            return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+            return NotFound(new { success = false, message = "Widget was not found for this user." });
 
         var versions = await _db.AskpearlsPortalUserWebsiteWidgetVersionLists
             .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey)
@@ -445,14 +446,15 @@ public class WidgetController : ControllerBase
     [HttpPost("{publicKey}/publish")]
     public async Task<IActionResult> PublishDesignDraft(string publicKey)
     {
-        if (!TryGetDemoOwner(out var error)) return error!;
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
+            return error!;
 
         var widget = await _db.AskpearlsPortalUserWebsiteWidgetLists
             .FirstOrDefaultAsync(x => x.WidgetPublicKey == publicKey &&
-                                      x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+                                      x.OwnerUserTokenId == ownerUserTokenId &&
                                       x.IsActive == true && x.IsVisible == true);
         if (widget is null)
-            return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+            return NotFound(new { success = false, message = "Widget was not found for this user." });
 
         var drafts = await _db.AskpearlsPortalUserWebsiteWidgetVersionLists
             .Where(x => x.WidgetTokenId == widget.WidgetTokenId &&
@@ -504,15 +506,16 @@ public class WidgetController : ControllerBase
     [HttpGet("{publicKey}/draft/configuration")]
     public async Task<IActionResult> GetDesignDraft(string publicKey)
     {
-        if (!TryGetDemoOwner(out var error)) return error!;
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
+            return error!;
 
         var widget = await _db.AskpearlsPortalUserWebsiteWidgetLists
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.WidgetPublicKey == publicKey &&
-                                      x.OwnerUserTokenId == DemoOwnerUserTokenId &&
+                                      x.OwnerUserTokenId == ownerUserTokenId &&
                                       x.IsActive == true && x.IsVisible == true);
         if (widget is null)
-            return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+            return NotFound(new { success = false, message = "Widget was not found for this user." });
 
         var draft = await _db.AskpearlsPortalUserWebsiteWidgetVersionLists
             .AsNoTracking()
@@ -559,9 +562,10 @@ public class WidgetController : ControllerBase
     [HttpGet("{publicKey}/draft/questions")]
     public async Task<IActionResult> GetQuestionDraft(string publicKey)
     {
-        if (!TryGetDemoOwner(out var error)) return error!;
-        var widget = await FindDemoWidget(publicKey);
-        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
+            return error!;
+        var widget = await FindOwnedWidget(publicKey, ownerUserTokenId);
+        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for this user." });
 
         var draftVersion = await _db.AskpearlsPortalUserWebsiteWidgetVersionLists
             .AsNoTracking()
@@ -592,13 +596,13 @@ public class WidgetController : ControllerBase
         }
 
         var rows = await _db.AskpearlsPortalUserWebsiteWidgetQuestionLists.AsNoTracking()
-            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WidgetTokenId == widget.WidgetTokenId &&
+            .Where(x => x.OwnerUserTokenId == ownerUserTokenId && x.WidgetTokenId == widget.WidgetTokenId &&
                         x.WidgetPublicKey == publicKey && x.WidgetVersionTokenId == draftVersion.WidgetVersionTokenId &&
                         x.IsActive == true && x.IsVisible == true)
             .OrderBy(x => x.WidgetQuestionSortOrder).ToListAsync();
         var ids = rows.Select(x => x.WidgetQuestionTokenId).Where(x => x != null).ToArray();
         var answers = await _db.AskpearlsPortalUserWebsiteWidgetQuestionAnswerLists.AsNoTracking()
-            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WidgetPublicKey == publicKey &&
+            .Where(x => x.OwnerUserTokenId == ownerUserTokenId && x.WidgetPublicKey == publicKey &&
                         x.WidgetVersionTokenId == draftVersion.WidgetVersionTokenId && ids.Contains(x.WidgetQuestionTokenId) &&
                         x.IsActive == true && x.IsVisible == true)
             .OrderBy(x => x.WidgetAnswerSortOrder).ToListAsync();
@@ -625,9 +629,10 @@ public class WidgetController : ControllerBase
     [HttpPut("{publicKey}/draft/questions")]
     public async Task<IActionResult> SaveQuestionDraft(string publicKey, [FromBody] WidgetQuestionsDraftRequest? request)
     {
-        if (!TryGetDemoOwner(out var error)) return error!;
-        var widget = await FindDemoWidget(publicKey);
-        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
+            return error!;
+        var widget = await FindOwnedWidget(publicKey, ownerUserTokenId);
+        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for this user." });
         if (!IsValidQuestionDraft(request))
             return BadRequest(new { success = false, message = "Questions are invalid. Each question needs a unique key, text, and at least two distinct options." });
 
@@ -681,11 +686,11 @@ public class WidgetController : ControllerBase
             draft.WidgetVersionTokenId != publishedTokenId)
         {
             var oldQuestions = await _db.AskpearlsPortalUserWebsiteWidgetQuestionLists
-                .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WidgetPublicKey == publicKey &&
+                .Where(x => x.OwnerUserTokenId == ownerUserTokenId && x.WidgetPublicKey == publicKey &&
                             x.WidgetVersionTokenId == draft.WidgetVersionTokenId && x.IsActive == true)
                 .ToListAsync();
             var oldAnswers = await _db.AskpearlsPortalUserWebsiteWidgetQuestionAnswerLists
-                .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WidgetPublicKey == publicKey &&
+                .Where(x => x.OwnerUserTokenId == ownerUserTokenId && x.WidgetPublicKey == publicKey &&
                             x.WidgetVersionTokenId == draft.WidgetVersionTokenId && x.IsActive == true)
                 .ToListAsync();
             foreach (var row in oldQuestions) { row.IsActive = false; row.IsVisible = false; row.UpdatedAtUtc = now; }
@@ -779,9 +784,10 @@ public class WidgetController : ControllerBase
     [HttpGet("{publicKey}/draft/recommendations")]
     public async Task<IActionResult> GetRecommendationDraft(string publicKey)
     {
-        if (!TryGetDemoOwner(out var error)) return error!;
-        var widget = await FindDemoWidget(publicKey);
-        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
+            return error!;
+        var widget = await FindOwnedWidget(publicKey, ownerUserTokenId);
+        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for this user." });
 
         var versions = await _db.AskpearlsPortalUserWebsiteWidgetVersionLists.AsNoTracking()
             .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey &&
@@ -851,9 +857,10 @@ public class WidgetController : ControllerBase
     [HttpPut("{publicKey}/draft/recommendations")]
     public async Task<IActionResult> SaveRecommendationDraft(string publicKey, [FromBody] RecommendationDraftRequest? request)
     {
-        if (!TryGetDemoOwner(out var error)) return error!;
-        var widget = await FindDemoWidget(publicKey);
-        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
+            return error!;
+        var widget = await FindOwnedWidget(publicKey, ownerUserTokenId);
+        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for this user." });
         if (request?.Items is null || request.Items.Count > 500 || request.Items.Any(x =>
                 string.IsNullOrWhiteSpace(x.Name) || x.Name.Trim().Length > 150 ||
                 string.IsNullOrWhiteSpace(x.Key) || !Regex.IsMatch(x.Key, "^[a-zA-Z][a-zA-Z0-9_-]{0,79}$") ||
@@ -903,7 +910,7 @@ public class WidgetController : ControllerBase
         }
 
         var oldDraftRows = await _db.AskpearlsPortalUserWebsiteWidgetRecommendationLists
-            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WidgetTokenId == widget.WidgetTokenId &&
+            .Where(x => x.OwnerUserTokenId == ownerUserTokenId && x.WidgetTokenId == widget.WidgetTokenId &&
                         x.WidgetPublicKey == publicKey && x.WidgetVersionNumber == draft.WidgetVersionNumber && x.IsActive == true)
             .ToListAsync();
         foreach (var row in oldDraftRows) { row.IsActive = false; row.IsVisible = false; row.UpdatedAtUtc = now; }
@@ -967,9 +974,10 @@ public class WidgetController : ControllerBase
     [HttpGet("{publicKey}/draft/rules")]
     public async Task<IActionResult> GetDecisionRuleDraft(string publicKey)
     {
-        if (!TryGetDemoOwner(out var error)) return error!;
-        var widget = await FindDemoWidget(publicKey);
-        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
+            return error!;
+        var widget = await FindOwnedWidget(publicKey, ownerUserTokenId);
+        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for this user." });
         var versions = await _db.AskpearlsPortalUserWebsiteWidgetVersionLists.AsNoTracking()
             .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey && x.IsActive == true && x.IsVisible == true)
             .ToListAsync();
@@ -1062,9 +1070,10 @@ public class WidgetController : ControllerBase
     [HttpPut("{publicKey}/draft/rules")]
     public async Task<IActionResult> SaveDecisionRuleDraft(string publicKey, [FromBody] DecisionRulesDraftRequest? request)
     {
-        if (!TryGetDemoOwner(out var error)) return error!;
-        var widget = await FindDemoWidget(publicKey);
-        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for the demo owner." });
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
+            return error!;
+        var widget = await FindOwnedWidget(publicKey, ownerUserTokenId);
+        if (widget is null) return NotFound(new { success = false, message = "Widget was not found for this user." });
         var valid = request?.Rules is not null && request.Rules.Count <= 300 &&
             request.Rules.All(rule => !string.IsNullOrWhiteSpace(rule.Key) && Regex.IsMatch(rule.Key, "^[a-z][a-z0-9_]{0,79}$") &&
                 !string.IsNullOrWhiteSpace(rule.Name) && rule.Name.Trim().Length <= 100 && rule.Description?.Length <= 500 &&
@@ -1118,7 +1127,7 @@ public class WidgetController : ControllerBase
             _db.AskpearlsPortalUserWebsiteWidgetVersionLists.Add(draft);
         }
         var oldRows = await _db.AskpearlsPortalUserWebsiteWidgetDecisionRuleLists
-            .Where(x => x.OwnerUserTokenId == DemoOwnerUserTokenId && x.WidgetTokenId == widget.WidgetTokenId &&
+            .Where(x => x.OwnerUserTokenId == ownerUserTokenId && x.WidgetTokenId == widget.WidgetTokenId &&
                         x.WidgetPublicKey == publicKey && x.WidgetVersionNumber == draft.WidgetVersionNumber && x.IsVisible == true)
             .ToListAsync();
         foreach (var row in oldRows) { row.IsActive = false; row.IsVisible = false; row.UpdatedAtUtc = now; }
@@ -1172,9 +1181,9 @@ public class WidgetController : ControllerBase
         return Ok(new { success = true, status = "draft", versionNumber = draft.WidgetVersionNumber, ruleCount = request.Rules.Count });
     }
 
-    private async Task<AskpearlsPortalUserWebsiteWidgetList?> FindDemoWidget(string publicKey) =>
+    private async Task<AskpearlsPortalUserWebsiteWidgetList?> FindOwnedWidget(string publicKey, string ownerUserTokenId) =>
         await _db.AskpearlsPortalUserWebsiteWidgetLists.FirstOrDefaultAsync(x => x.WidgetPublicKey == publicKey &&
-            x.OwnerUserTokenId == DemoOwnerUserTokenId && x.IsActive == true && x.IsVisible == true);
+            x.OwnerUserTokenId == ownerUserTokenId && x.IsActive == true && x.IsVisible == true);
 
     private static bool ReadRequired(string? json)
     {
@@ -1197,22 +1206,32 @@ public class WidgetController : ControllerBase
         return true;
     }
 
-    private bool TryGetDemoOwner(out IActionResult? error)
-    {
-        error = null;
-        if (!_environment.IsDevelopment())
-        {
-            error = NotFound();
-            return false;
-        }
-        if (Request.Headers["X-Demo-Owner-User-Token"].ToString() != DemoOwnerUserTokenId)
-        {
-            error = Unauthorized(new { success = false, message = "Demo owner login is required." });
-            return false;
-        }
-        return true;
-    }
 
+    private bool TryGetAuthenticatedOwner(out string ownerUserTokenId, out IActionResult? error)
+    {
+        ownerUserTokenId = string.Empty;
+        error = null;
+
+        // This claim is the AskPearls database user ID issued by the authenticated Portal.
+        var claimValue = User.FindFirst("AskPearlsUserId")?.Value;
+        if (long.TryParse(
+                claimValue,
+                NumberStyles.None,
+                CultureInfo.InvariantCulture,
+                out var userId) &&
+            userId > 0)
+        {
+            ownerUserTokenId = userId.ToString(CultureInfo.InvariantCulture);
+            return true;
+        }
+
+        error = Unauthorized(new
+        {
+            success = false,
+            message = "The access token does not contain a valid AskPearlsUserId claim."
+        });
+        return false;
+    }
     private static bool IsValidDesign(WidgetDesignDraftRequest? value)
     {
         if (value is null || !IsHex(value.Primary) || !IsHex(value.Background) || !IsHex(value.Text) ||
@@ -1243,6 +1262,7 @@ public class WidgetController : ControllerBase
 
 
 
+    [AllowAnonymous]
     [HttpGet("{publicKey}")]
     public async Task<IActionResult> GetPublished(string publicKey)
     {
@@ -1271,7 +1291,8 @@ public class WidgetController : ControllerBase
 
 
 
-    [HttpGet("{publicKey}/version")]
+    [AllowAnonymous]
+    [HttpGet("{publicKey}/design")]
     public async Task<IActionResult> GetPublishedVersion(
     string publicKey)
     {
@@ -1307,6 +1328,7 @@ public class WidgetController : ControllerBase
 
 
 
+    [AllowAnonymous]
     [HttpGet("{publicKey}/questions")]
     public async Task<IActionResult> GetPublishedQuestions(string publicKey)
     {

@@ -20,9 +20,11 @@
 
     const publicKey = (script.dataset.widget || "").trim();
 
+    // Accept either an API host (https://host) or an API base
+    // (https://host/api); endpoint paths below add /api themselves.
     const apiUrl = (
         script.dataset.apiUrl || "https://api.askpearls.com"
-    ).replace(/\/+$/, "");
+    ).trim().replace(/\/+$/, "").replace(/\/api$/i, "");
 
     if (!publicKey || !apiUrl) {
         console.error(
@@ -1159,17 +1161,31 @@
     // 13. Initialize
     // ----------------------------------------------------------
 
-    startSession()
-        .then(load)
-        .catch(error => {
-            console.error("AskPearls widget initialization failed.", error);
+    async function initializeWidget () {
+        // A failed session start must be retried before loading widget content.
+        widgetSessionTokenId = null;
+        await startSession();
+        await load();
+    }
 
-            showError(
-                "Unable to load the AskPearls widget. " +
-                "Please try again later.",
-                load
-            );
-        });
+    initializeWidget().catch(error => {
+        console.error("AskPearls widget initialization failed.", error);
+
+        showError(
+            "Unable to load the AskPearls widget. " +
+            "Please try again later.",
+            () => initializeWidget().catch(retryError => {
+                console.error("AskPearls widget retry failed.", retryError);
+                showError(
+                    "Unable to load the AskPearls widget. " +
+                    "Please try again later.",
+                    () => initializeWidget().catch(finalError => {
+                        console.error("AskPearls widget retry failed.", finalError);
+                    })
+                );
+            })
+        );
+    });
 
 })(window, document);
 
