@@ -30,7 +30,12 @@ public sealed record WidgetDesignDraftRequest(
     [property: JsonPropertyName("description")] string Description,
     [property: JsonPropertyName("buttonText")] string ButtonText,
     [property: JsonPropertyName("footer")] string Footer,
-    [property: JsonPropertyName("theme")] string Theme = "custom");
+    [property: JsonPropertyName("theme")] string Theme = "custom",
+
+    [property: JsonPropertyName("showTitle")] bool ShowTitle = true,
+    [property: JsonPropertyName("showDescription")] bool ShowDescription = true,
+    [property: JsonPropertyName("showIntroduction")] bool ShowIntroduction = true
+);
 
 public sealed record WidgetQuestionDraftRequest(
     [property: JsonPropertyName("text")] string Text,
@@ -84,7 +89,7 @@ public sealed record CreateWidgetRequest(
     [property: JsonPropertyName("description")] string Description);
 
 [ApiController]
-[Authorize]
+[Authorize(AuthenticationSchemes = "ApiJwt")]
 [Route("api/widgets")]
 public class WidgetController : ControllerBase
 //public class WidgetController(DBContextModel db) : ControllerBase
@@ -241,11 +246,23 @@ public class WidgetController : ControllerBase
     {
         if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error))
             return error!;
-        if (request is null || string.IsNullOrWhiteSpace(request.Name) || request.Name.Trim().Length > 100 ||
-            request.Type != "decision" || string.IsNullOrWhiteSpace(request.WebsiteTokenId) ||
-            string.IsNullOrWhiteSpace(request.Title) || request.Title.Trim().Length > 120 ||
-            request.Description?.Length > 500)
-            return BadRequest(new { success = false, message = "Enter a widget name, supported type, target website, title, and description of up to 500 characters." });
+
+        if (request is null ||
+    string.IsNullOrWhiteSpace(request.Name) ||
+    request.Name.Trim().Length > 100 ||
+    request.Type != "decision" ||
+    string.IsNullOrWhiteSpace(request.Title) ||
+    request.Title.Trim().Length > 120 ||
+    request.Description?.Length > 500 ||
+    (string.IsNullOrWhiteSpace(request.WebsiteTokenId) &&
+     string.IsNullOrWhiteSpace(request.WebsiteAddress)))
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = "Enter a valid widget name, supported type, target website, title, and description of up to 500 characters."
+            });
+        }
 
         AskpearlsPortalUserWebsiteList? website = null;
         if (!string.IsNullOrWhiteSpace(request.WebsiteTokenId))
@@ -392,45 +409,78 @@ public class WidgetController : ControllerBase
 
         var json = JsonSerializer.Serialize(request);
         var draft = drafts.SingleOrDefault();
+
         if (draft is null)
         {
-            var publishedVersions = versions.Where(x => x.WidgetStatusCode == "published" &&
-                                                        x.IsActive == true && x.IsVisible == true).ToList();
-            if (publishedVersions.Count != 1 || string.IsNullOrWhiteSpace(publishedVersions[0].WidgetVersionTokenId))
-                return Conflict(new { success = false, message = "A single published content version is required before saving a design draft." });
+            var publishedVersions = versions
+                .Where(x =>
+                    x.WidgetStatusCode == "published" &&
+                    x.IsActive == true &&
+                    x.IsVisible == true)
+                .ToList();
 
-            var publishedNumber = int.TryParse(widget.WidgetPublishedVersion, out var n) ? n : 0;
-            var maxNumber = versions.Select(x => int.TryParse(x.WidgetVersionNumber, out var v) ? v : 0)
-                                     .DefaultIfEmpty(0).Max();
-            var number = Math.Max(publishedNumber, maxNumber) + 1;
+            if (publishedVersions.Count > 1)
+            {
+                return Conflict(new
+                {
+                    success = false,
+                    message = "Multiple active published versions exist."
+                });
+            }
+
+            var published = publishedVersions.SingleOrDefault();
+
+            var maxNumber = versions
+                .Select(x =>
+                    int.TryParse(x.WidgetVersionNumber, out var v)
+                        ? v
+                        : 0)
+                .DefaultIfEmpty(0)
+                .Max();
+
+            var number = maxNumber + 1;
+
             draft = new AskpearlsPortalUserWebsiteWidgetVersionList
             {
+                RowViewTokenId = Guid.NewGuid(),
+
                 AccountType = widget.AccountType,
                 OwnerUserTokenId = widget.OwnerUserTokenId,
                 OwnerMobileNumberTokenId = widget.OwnerMobileNumberTokenId,
                 OrganizationTokenId = widget.OrganizationTokenId,
                 CompanyTokenId = widget.CompanyTokenId,
                 CompanyName = widget.CompanyName,
+
                 WidgetTokenId = widget.WidgetTokenId,
                 WebsiteTokenId = widget.WebsiteTokenId,
                 WebsiteName = widget.WebsiteName,
                 WidgetPublicKey = widget.WidgetPublicKey,
-                // Design-only drafts reuse the published content token so the
-                // existing questions, answers, rules and recommendations remain linked.
-                WidgetVersionTokenId = publishedVersions[0].WidgetVersionTokenId,
+
+                WidgetVersionTokenId =
+                    published?.WidgetVersionTokenId
+                    ?? Guid.NewGuid().ToString("N"),
+
                 WidgetVersionNumber = number.ToString(),
+
                 WidgetConfigurationJson = json,
+
                 WidgetStatusCode = "draft",
                 WidgetStatusText = "draft",
                 WidgetStatus = "draft",
-                WidgetPublishedVersion = widget.WidgetPublishedVersion,
+
+                WidgetPublishedVersion =
+                    widget.WidgetPublishedVersion,
+
                 ActiveStatus = "pending",
+
                 IsNew = true,
                 IsActive = true,
                 IsVisible = true,
+
                 CreatedAtUtc = DateTime.UtcNow,
                 UpdatedAtUtc = DateTime.UtcNow
             };
+
             _db.AskpearlsPortalUserWebsiteWidgetVersionLists.Add(draft);
         }
         else
@@ -1232,19 +1282,64 @@ public class WidgetController : ControllerBase
         });
         return false;
     }
+
     private static bool IsValidDesign(WidgetDesignDraftRequest? value)
     {
-        if (value is null || !IsHex(value.Primary) || !IsHex(value.Background) || !IsHex(value.Text) ||
-            value.FontSize is < 12 or > 18 || value.Radius is < 0 or > 28 || value.Width is < 300 or > 520 ||
-            value.Position is not ("bottom-right" or "bottom-left" or "center") ||
-            value.ButtonShape is not ("rounded" or "pill" or "square") ||
-            value.Theme is not ("custom" or "light" or "dark") ||
-            value.Heading is null || value.Description is null || value.ButtonText is null || value.Footer is null)
+        if (value is null)
             return false;
 
-        var fonts = new[] { "Inter, Arial, sans-serif", "Arial, sans-serif", "Georgia, serif", "Verdana, sans-serif" };
-        return fonts.Contains(value.Font, StringComparer.Ordinal) && value.Heading.Length <= 100 &&
-               value.Description.Length <= 250 && value.ButtonText.Length <= 40 && value.Footer.Length <= 80;
+        if (!IsHex(value.Primary) ||
+            !IsHex(value.Background) ||
+            !IsHex(value.Text))
+            return false;
+
+        if (value.FontSize is < 12 or > 18 ||
+            value.Radius is < 0 or > 28 ||
+            value.Width is < 300 or > 520)
+            return false;
+
+        if (value.Position is not (
+            "bottom-right" or
+            "bottom-left" or
+            "center"))
+            return false;
+
+        if (value.ButtonShape is not (
+            "rounded" or
+            "pill" or
+            "square"))
+            return false;
+
+        if (value.Theme is not (
+            "custom" or
+            "light" or
+            "dark"))
+            return false;
+
+        if (value.Heading is null ||
+            value.Description is null ||
+            value.ButtonText is null ||
+            value.Footer is null)
+            return false;
+
+        string[] allowedFonts =
+        {
+        "system",
+        "Inter, Arial, sans-serif",
+        "Arial, sans-serif",
+        "Georgia, serif",
+        "Verdana, sans-serif"
+    };
+
+        if (!allowedFonts.Contains(
+            value.Font,
+            StringComparer.Ordinal))
+            return false;
+
+        return value.Heading.Length <= 100 &&
+               value.Description.Length <= 250 &&
+               value.ButtonText.Length <= 40 &&
+               value.Footer.Length <= 80;
     }
 
     private static bool IsValidStoredDesign(string? json)

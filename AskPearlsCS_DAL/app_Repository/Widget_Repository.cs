@@ -1,13 +1,10 @@
-﻿using AskPearls.Domain;
+﻿
+using AskPearls.Domain;
 
 using AskPearlsCS_DAL.app_Mapper;
 using AskPearlsCS_DAL.DBContext;
 
 using Microsoft.EntityFrameworkCore;
-
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AskPearlsCS_DAL.app_Repository
 {
@@ -23,6 +20,9 @@ namespace AskPearlsCS_DAL.app_Repository
         public async Task<Widget?> GetPublishedWidgetAsync(
             string publicKey)
         {
+            if (string.IsNullOrWhiteSpace(publicKey))
+                return null;
+
             var entity = await _dbContext
                 .AskpearlsPortalUserWebsiteWidgetLists
                 .AsNoTracking()
@@ -34,8 +34,6 @@ namespace AskPearlsCS_DAL.app_Repository
 
             return Widget_Mapper.ToDomain(entity);
         }
-
-
 
         public async Task<List<Widget>> GetByCompanyTokenIdAsync(
             string companyTokenId,
@@ -64,8 +62,31 @@ namespace AskPearlsCS_DAL.app_Repository
                 .ToList();
         }
 
+        public async Task<List<Widget>> GetByOwnerUserTokenIdAsync(
+            string ownerUserTokenId,
+            CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(ownerUserTokenId) ||
+                ownerUserTokenId == "0")
+            {
+                return new List<Widget>();
+            }
 
+            var entities = await _dbContext
+                .AskpearlsPortalUserWebsiteWidgetLists
+                .AsNoTracking()
+                .Where(x =>
+                    x.OwnerUserTokenId == ownerUserTokenId &&
+                    x.IsActive == true &&
+                    x.IsVisible == true)
+                .OrderBy(x => x.WidgetName)
+                .ToListAsync(cancellationToken);
 
+            return entities
+                .Select(Widget_Mapper.ToDomain)
+                .Where(x => x != null)
+                .Select(x => x!)
+                .ToList();
+        }
     }
-
 }

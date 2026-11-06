@@ -93,7 +93,18 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 
 // HTTP client for communicating with the AskPearls API.
-builder.Services.AddHttpClient();
+
+
+builder.Services.AddHttpClient("AskPearlsWidgetApi", client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(60);
+})
+.ConfigurePrimaryHttpMessageHandler(() =>
+    new HttpClientHandler
+    {
+        AllowAutoRedirect = false
+    });
+
 
 
 // 1. MVC

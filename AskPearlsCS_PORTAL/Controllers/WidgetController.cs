@@ -1,7 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
 
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -10,146 +12,177 @@ namespace AskPearlsCS_PORTAL.Controllers;
 
 [Authorize]
 [Route("Widget")]
-[AutoValidateAntiforgeryToken]
 public sealed class WidgetController : Controller
 {
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IConfiguration _configuration;
+    private readonly IHttpClientFactory _clients;
+    private readonly IConfiguration _config;
+    private readonly IAntiforgery _antiforgery;
 
-    public WidgetController(
-        IHttpClientFactory httpClientFactory,
-        IConfiguration configuration)
+    public WidgetController(IHttpClientFactory clients, IConfiguration config, IAntiforgery antiforgery)
     {
-        _httpClientFactory = httpClientFactory;
-        _configuration = configuration;
+        _clients = clients;
+        _config = config;
+        _antiforgery = antiforgery;
     }
 
+    // Authenticated portal endpoints, mapped one-to-one to the supplied API controller.
+    [HttpGet("Api/widgets")]
+    public Task<IActionResult> GetMyWidgets(CancellationToken ct) => Forward(HttpMethod.Get, "widgets", ct);
+
+    [HttpGet("Api/widgets/websites")]
+    public Task<IActionResult> GetMyWebsites(CancellationToken ct) => Forward(HttpMethod.Get, "widgets/websites", ct);
+
+    [HttpPost("Api/widgets")]
+    public Task<IActionResult> CreateWidget(CancellationToken ct) => Forward(HttpMethod.Post, "widgets", ct);
+
+    [HttpGet("Api/widgets/{publicKey}")]
+    public Task<IActionResult> GetPublished(string publicKey, CancellationToken ct) => Forward(HttpMethod.Get, KeyPath(publicKey), ct);
+
+    [HttpGet("Api/widgets/{publicKey}/design")]
+    public Task<IActionResult> GetPublishedVersion(string publicKey, CancellationToken ct) => Forward(HttpMethod.Get, KeyPath(publicKey, "design"), ct);
+
+    [HttpGet("Api/widgets/{publicKey}/questions")]
+    public Task<IActionResult> GetPublishedQuestions(string publicKey, CancellationToken ct) => Forward(HttpMethod.Get, KeyPath(publicKey, "questions"), ct);
+
+    [HttpGet("Api/widgets/{publicKey}/draft/configuration")]
+    public Task<IActionResult> GetDesignDraft(string publicKey, CancellationToken ct) => Forward(HttpMethod.Get, KeyPath(publicKey, "draft/configuration"), ct);
+
+    [HttpPut("Api/widgets/{publicKey}/draft/configuration")]
+    public Task<IActionResult> SaveDesignDraft(string publicKey, CancellationToken ct) => Forward(HttpMethod.Put, KeyPath(publicKey, "draft/configuration"), ct);
+
+    [HttpPost("Api/widgets/{publicKey}/publish")]
+    public Task<IActionResult> PublishDesignDraft(string publicKey, CancellationToken ct) => Forward(HttpMethod.Post, KeyPath(publicKey, "publish"), ct);
+
+    [HttpGet("Api/widgets/{publicKey}/draft/questions")]
+    public Task<IActionResult> GetQuestionDraft(string publicKey, CancellationToken ct) => Forward(HttpMethod.Get, KeyPath(publicKey, "draft/questions"), ct);
+
+    [HttpPut("Api/widgets/{publicKey}/draft/questions")]
+    public Task<IActionResult> SaveQuestionDraft(string publicKey, CancellationToken ct) => Forward(HttpMethod.Put, KeyPath(publicKey, "draft/questions"), ct);
+
+    [HttpGet("Api/widgets/{publicKey}/draft/recommendations")]
+    public Task<IActionResult> GetRecommendationDraft(string publicKey, CancellationToken ct) => Forward(HttpMethod.Get, KeyPath(publicKey, "draft/recommendations"), ct);
+
+    [HttpPut("Api/widgets/{publicKey}/draft/recommendations")]
+    public Task<IActionResult> SaveRecommendationDraft(string publicKey, CancellationToken ct) => Forward(HttpMethod.Put, KeyPath(publicKey, "draft/recommendations"), ct);
+
+    [HttpGet("Api/widgets/{publicKey}/draft/rules")]
+    public Task<IActionResult> GetDecisionRuleDraft(string publicKey, CancellationToken ct) => Forward(HttpMethod.Get, KeyPath(publicKey, "draft/rules"), ct);
+
+    [HttpPut("Api/widgets/{publicKey}/draft/rules")]
+    public Task<IActionResult> SaveDecisionRuleDraft(string publicKey, CancellationToken ct) => Forward(HttpMethod.Put, KeyPath(publicKey, "draft/rules"), ct);
+
+    private static string KeyPath(string key, string suffix = "") =>
+        "widgets/" + Uri.EscapeDataString(key) + (suffix.Length == 0 ? "" : "/" + suffix);
+
+    // Compatibility route for other /api/* endpoints, if required. Restrict to widgets only.
     [AcceptVerbs("GET", "POST", "PUT", "PATCH", "DELETE")]
-    [Route("Api/{**apiPath}")]
-    public async Task<IActionResult> Api(
-        string? apiPath,
-        CancellationToken cancellationToken)
+    [Route("Api/widgets/{**rest}", Order = 100)]
+    public Task<IActionResult> WidgetFallback(string? rest, CancellationToken ct)
     {
-        if (string.IsNullOrWhiteSpace(apiPath) ||
-            !apiPath.StartsWith("widgets", StringComparison.OrdinalIgnoreCase) ||
-            apiPath.Contains("..", StringComparison.Ordinal) ||
-            apiPath.Contains('\\'))
+        if (string.IsNullOrWhiteSpace(rest) || rest.Split('/').Any(x => x is "." or ".."))
+            return Task.FromResult<IActionResult>(BadRequest(new { message = "Invalid widget path." }));
+        return Forward(new HttpMethod(Request.Method), "widgets/" + rest, ct);
+    }
+
+    private async Task<IActionResult> Forward(HttpMethod method, string relativePath, CancellationToken ct)
+    {
+        var userId = User.FindFirstValue("AskPearlsUserId");
+        if (!long.TryParse(userId, out var parsedId) || parsedId <= 0)
+            return Unauthorized(new { success = false, message = "Missing or invalid AskPearlsUserId claim." });
+
+        if (method != HttpMethod.Get && method != HttpMethod.Head)
         {
-            return BadRequest(new { message = "Invalid Widget API route." });
-        }
-
-        // This claim is added by the Portal after Google sign-in is validated.
-        // Do not use an ID from the browser request.
-        var userId = User.FindFirst("AskPearlsUserId")?.Value;
-
-        if (!long.TryParse(userId, out var parsedUserId) || parsedUserId <= 0)
-        {
-            return Unauthorized(new { message = "The authenticated Portal user ID is missing." });
-        }
-
-        var apiBaseUrl = _configuration["AskPearlsApi:BaseUrl"];
-        if (!Uri.TryCreate(apiBaseUrl, UriKind.Absolute, out var apiBaseUri) ||
-            apiBaseUri.Scheme != Uri.UriSchemeHttps)
-        {
-            return Problem("AskPearlsApi:BaseUrl must be configured as an HTTPS URL.");
-        }
-
-        var issuer = _configuration["ApiJwt:Issuer"];
-        var audience = _configuration["ApiJwt:Audience"];
-        var SigningKey = _configuration["ApiJwt:SigningKey"];
-
-        if (string.IsNullOrWhiteSpace(issuer) ||
-            string.IsNullOrWhiteSpace(audience) ||
-            string.IsNullOrWhiteSpace(SigningKey))
-        {
-            return Problem("The Portal-to-API JWT settings are not configured.");
-        }
-
-        byte[] keyBytes;
-        try
-        {
-            keyBytes = Convert.FromBase64String(SigningKey);
-        }
-        catch (FormatException)
-        {
-            return Problem("ApiJwt:SigningKey is not valid Base64.");
-        }
-
-        if (keyBytes.Length < 32)
-        {
-            return Problem("The JWT signing key must contain at least 32 bytes.");
-        }
-
-        var now = DateTime.UtcNow;
-        var userIdText = parsedUserId.ToString();
-
-        var claims = new[]
-        {
-            new Claim("AskPearlsUserId", userIdText),
-            new Claim(JwtRegisteredClaimNames.Sub, userIdText),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N"))
-        };
-
-        var credentials = new SigningCredentials(
-            new SymmetricSecurityKey(keyBytes),
-            SecurityAlgorithms.HmacSha256);
-
-        var jwt = new JwtSecurityToken(
-            issuer: issuer,
-            audience: audience,
-            claims: claims,
-            notBefore: now,
-            expires: now.AddMinutes(2),
-            signingCredentials: credentials);
-
-        var bearerToken = new JwtSecurityTokenHandler().WriteToken(jwt);
-        var upstreamUrl =
-            $"{apiBaseUri.ToString().TrimEnd('/')}/api/{apiPath}{Request.QueryString}";
-
-        using var upstreamRequest = new HttpRequestMessage(
-            new HttpMethod(Request.Method),
-            upstreamUrl);
-
-        upstreamRequest.Headers.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue(
-                "Bearer",
-                bearerToken);
-
-        if (Request.ContentLength > 0 || Request.Headers.ContainsKey("Transfer-Encoding"))
-        {
-            upstreamRequest.Content = new StreamContent(Request.Body);
-
-            if (!string.IsNullOrWhiteSpace(Request.ContentType))
+            try { await _antiforgery.ValidateRequestAsync(HttpContext); }
+            catch (AntiforgeryValidationException)
             {
-                upstreamRequest.Content.Headers.TryAddWithoutValidation(
-                    "Content-Type",
-                    Request.ContentType);
+                return BadRequest(new { success = false, message = "Missing or invalid anti-forgery token." });
             }
         }
 
+        var baseUrl = _config["AskPearlsApi:BaseUrl"]?.TrimEnd('/');
+        if (!Uri.TryCreate(baseUrl, UriKind.Absolute, out var baseUri) || baseUri.Scheme != Uri.UriSchemeHttps ||
+            !string.IsNullOrEmpty(baseUri.Query) || !string.IsNullOrEmpty(baseUri.Fragment))
+            return Problem(statusCode: 500, title: "AskPearlsApi:BaseUrl must be an HTTPS base URL.");
+
+        string jwt;
+        try { jwt = CreateJwt(parsedId.ToString(System.Globalization.CultureInfo.InvariantCulture)); }
+        catch (InvalidOperationException) { return Problem(statusCode: 500, title: "API JWT configuration is invalid."); }
+
+        // BaseUrl should be the API origin, e.g. https://api.askpearls.com (no /api suffix).
+        var target = new Uri(baseUrl + "/api/" + relativePath + Request.QueryString);
+        if (target.Host != baseUri.Host || target.Port != baseUri.Port || target.Scheme != baseUri.Scheme)
+            return BadRequest(new { message = "Invalid API destination." });
+
+        using var outgoing = new HttpRequestMessage(method, target);
+        outgoing.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+        if (Request.Headers.TryGetValue("Accept", out var accepts))
+            outgoing.Headers.TryAddWithoutValidation("Accept", accepts.ToArray());
+
+        if (method != HttpMethod.Get && method != HttpMethod.Head &&
+            (Request.ContentLength is > 0 || Request.Headers.ContainsKey("Transfer-Encoding")))
+        {
+            outgoing.Content = new StreamContent(Request.Body);
+            if (!string.IsNullOrWhiteSpace(Request.ContentType))
+                outgoing.Content.Headers.TryAddWithoutValidation("Content-Type", Request.ContentType);
+        }
+
         try
         {
-            var client = _httpClientFactory.CreateClient();
+            var client = _clients.CreateClient("AskPearlsWidgetApi");
+            using var incoming = await client.SendAsync(outgoing, HttpCompletionOption.ResponseHeadersRead, ct);
+            Response.StatusCode = (int)incoming.StatusCode;
 
-            using var upstreamResponse = await client.SendAsync(
-                upstreamRequest,
-                HttpCompletionOption.ResponseHeadersRead,
-                cancellationToken);
-
-            var responseBody = await upstreamResponse.Content.ReadAsStringAsync(
-                cancellationToken);
+            var apiJson = await incoming.Content.ReadAsStringAsync(ct);
 
             return new ContentResult
             {
-                StatusCode = (int)upstreamResponse.StatusCode,
-                ContentType = upstreamResponse.Content.Headers.ContentType?.ToString()
-                              ?? "application/json",
-                Content = responseBody
+                StatusCode = (int)incoming.StatusCode,
+                ContentType = incoming.Content.Headers.ContentType?.ToString()
+                              ?? "application/json; charset=utf-8",
+                Content = apiJson
             };
+
+            //////////var apiJson = await incoming.Content.ReadAsStringAsync(ct);
+
+            //////////if (incoming.Content.Headers.ContentType != null)
+            //////////    Response.ContentType = incoming.Content.Headers.ContentType.ToString();
+            //////////if (incoming.Content.Headers.ContentDisposition != null)
+            //////////    Response.Headers.ContentDisposition = incoming.Content.Headers.ContentDisposition.ToString();
+            //////////await incoming.Content.CopyToAsync(Response.Body, ct);
+            //////////return new EmptyResult();
+        }
+        catch (OperationCanceledException) when (!ct.IsCancellationRequested)
+        {
+            return Problem(statusCode: 504, title: "AskPearls API request timed out.");
         }
         catch (HttpRequestException)
         {
-            return Problem("The AskPearls API could not be reached.");
+            return Problem(statusCode: 502, title: "Could not reach the AskPearls API.");
         }
+    }
+
+    private string CreateJwt(string userId)
+    {
+        var section = _config.GetSection("ApiJwt");
+        var issuer = section["Issuer"];
+        var audience = section["Audience"];
+        var keyText = section["SigningKey"];
+        if (string.IsNullOrWhiteSpace(issuer) || string.IsNullOrWhiteSpace(audience) || string.IsNullOrWhiteSpace(keyText))
+            throw new InvalidOperationException("Missing API JWT settings.");
+        byte[] key;
+        try { key = Convert.FromBase64String(keyText); }
+        catch (FormatException ex) { throw new InvalidOperationException("Invalid signing key.", ex); }
+        if (key.Length < 32) throw new InvalidOperationException("Signing key must contain at least 32 bytes.");
+        var now = DateTime.UtcNow;
+        var token = new JwtSecurityToken(
+            issuer: issuer, audience: audience,
+            claims: new[] {
+                new Claim(JwtRegisteredClaimNames.Sub, userId),
+                new Claim(ClaimTypes.NameIdentifier, userId),
+                new Claim("AskPearlsUserId", userId)
+            },
+            notBefore: now, expires: now.AddMinutes(3),
+            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256));
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

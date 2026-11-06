@@ -597,3 +597,36 @@ body.dark-mode .page-widget-builder .wb-theme-option input:checked + span {
         color: #526579 !important;
         opacity: 1 !important;
     }
+
+/* Wizard footer: shared save action below all steps */
+.page-widget-builder .wb-wizard-footer {
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.page-widget-builder .wb-wizard-footer-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.page-widget-builder .wb-save-draft-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    white-space: nowrap;
+}
+
+@media (max-width: 575.98px) {
+    .page-widget-builder .wb-wizard-footer-actions {
+        gap: 8px;
+    }
+
+    .page-widget-builder .wb-save-draft-button {
+        min-width: 120px;
+    }
+}

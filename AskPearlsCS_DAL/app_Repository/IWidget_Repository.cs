@@ -15,5 +15,11 @@ namespace AskPearlsCS_DAL.app_Repository
         Task<List<Widget>> GetByCompanyTokenIdAsync(
             string companyTokenId,
             CancellationToken cancellationToken = default);
+
+
+        Task<List<Widget>> GetByOwnerUserTokenIdAsync(
+        string ownerUserTokenId,
+        CancellationToken cancellationToken = default);
+
     }
 }

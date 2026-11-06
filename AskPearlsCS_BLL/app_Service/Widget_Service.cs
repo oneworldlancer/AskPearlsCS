@@ -1,14 +1,10 @@
-﻿using AskPearls.Domain;
+﻿
+using AskPearls.Domain;
 
 using AskPearlsCS_DAL.app_Repository;
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace AskPearlsCS_BLL.app_Service
 {
-
     public class Widget_Service : IWidget_Service
     {
         private readonly IWidget_Repository _widgetRepository;
@@ -29,8 +25,6 @@ namespace AskPearlsCS_BLL.app_Service
                 .GetPublishedWidgetAsync(publicKey);
         }
 
-
-
         public async Task<List<Widget>> GetByCompanyTokenIdAsync(
             string companyTokenId,
             CancellationToken cancellationToken = default)
@@ -41,10 +35,26 @@ namespace AskPearlsCS_BLL.app_Service
                 return new List<Widget>();
             }
 
-            return await _widgetRepository.GetByCompanyTokenIdAsync(
-                companyTokenId,
-                cancellationToken);
+            return await _widgetRepository
+                .GetByCompanyTokenIdAsync(
+                    companyTokenId,
+                    cancellationToken);
         }
 
+        public async Task<List<Widget>> GetByOwnerUserTokenIdAsync(
+            string ownerUserTokenId,
+            CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(ownerUserTokenId) ||
+                ownerUserTokenId == "0")
+            {
+                return new List<Widget>();
+            }
+
+            return await _widgetRepository
+                .GetByOwnerUserTokenIdAsync(
+                    ownerUserTokenId,
+                    cancellationToken);
+        }
     }
 }

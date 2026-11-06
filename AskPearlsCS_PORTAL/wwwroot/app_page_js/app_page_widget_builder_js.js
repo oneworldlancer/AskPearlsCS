@@ -1,4 +1,5 @@
-﻿(function () {
+﻿
+(function () {
     "use strict";
 
     const root = document.querySelector(
@@ -8,478 +9,1058 @@
     if (!root || root.dataset.wbInitialized === "true") return;
     root.dataset.wbInitialized = "true";
 
-    const $ = (id) => root.querySelector("#" + id);
+    const $ = id => root.querySelector("#" + id);
 
-    const elements = {
+    // =====================================================
+    // RAZOR ELEMENTS
+    // =====================================================
+
+    const el = {
         message: $("wbApiMessage"),
-        draftIndicator: $("wbDraftIndicator"),
-        saveButton: $("wbSaveButton"),
-        widgetName: $("wbWidgetName"),
-        widgetType: $("wbWidgetType"),
+        apiNote: $("wbApiNote"),
+        indicator: $("wbDraftIndicator"),
+
+        save: $("wbSaveButton"),
+        saveBottom: $("wbSaveBottomButton"),
+        previewButton: $("wbPreviewButton"),
+
+        pageTitle: $("wbPageTitle"),
+        pageDescription: $("wbPageDescription"),
+
+        select: $("wbWidgetSelect"),
+        version: $("wbWidgetVersion"),
+
+        name: $("wbWidgetName"),
+        type: $("wbWidgetType"),
         website: $("wbWebsite"),
         title: $("wbWidgetTitle"),
         description: $("wbWidgetDescription"),
-        buttonText: $("wbButtonText"),
-        position: $("wbWidgetPosition"),
-        cornerStyle: $("wbCornerStyle"),
-        primaryColor: $("wbPrimaryColor"),
+
+        primary: $("wbPrimaryColor"),
         colorValue: $("wbColorValue"),
+        buttonText: $("wbButtonText"),
+        corners: $("wbCornerStyle"),
+        position: $("wbWidgetPosition"),
+
+        showTitle: $("wbShowTitle"),
+        showDescription: $("wbShowDescription"),
+        showIntroduction: $("wbShowIntroduction"),
+
+        previous: $("wbPreviousButton"),
+        next: $("wbNextButton"),
+
+        previewStage: $("wbPreviewStage"),
+        previewWidget: $("wbPreviewWidget"),
         previewTitle: $("wbPreviewTitle"),
         previewDescription: $("wbPreviewDescription"),
-        previewPrimary: $("wbPreviewPrimary"),
-        previewWidget: $("wbPreviewWidget"),
-        widgetSelect: $("wbWidgetSelect"),
-        widgetVersion: $("wbWidgetVersion"),
-        apiNote: $("wbApiNote"),
-        pageTitle: $("wbPageTitle"),
-        pageDescription: $("wbPageDescription"),
-        previousButton: $("wbPreviousButton"),
-        nextButton: $("wbNextButton"),
-        previewButton: $("wbPreviewButton"),
-        previewStage: $("wbPreviewStage")
+        previewPrimary: $("wbPreviewPrimary")
     };
 
-    const storage = {
-        mode: "askpearls.widgetBuilderMode",
-        activeWidget: "askpearls.activeWidgetPublicKey"
-    };
+    // Same-origin Portal proxy.
+    // Portal handles authentication and JWT.
+    const API_ROOT = "/Widget/Api";
+
+    const STORAGE_KEY = "askpearls.activeWidgetPublicKey";
+    const STORAGE_MODE = "askpearls.widgetBuilderMode";
 
     const steps = [ "basics", "appearance", "behavior" ];
-    let currentStep = 0;
-    let widgets = [];
-    let activeWidgetPublicKey = "";
-    let creating = false;
-    let toastTimer = null;
 
-    function getAntiForgeryToken () {
-        const tokenInput = document.querySelector(
-            'input[name="__RequestVerificationToken"]'
-        );
-        return tokenInput ? tokenInput.value : "";
-    }
+    const state = {
+        widgets: [],
+        key: "",
+        creating: false,
+        busy: false,
+        dirty: false,
+        step: 0
+    };
 
-    function showMessage (message, isError) {
-        if (!elements.message) return;
+    const tabs = Array.from(
+        root.querySelectorAll("[data-wb-tab]")
+    );
 
-        elements.message.textContent = message || "";
-        elements.message.hidden = !message;
-        elements.message.classList.toggle("is-error", Boolean(isError));
-        elements.message.classList.toggle("is-success", Boolean(message) && !isError);
-    }
+    const panels = Array.from(
+        root.querySelectorAll("[data-wb-panel]")
+    );
 
-    function setDraftIndicator (message, isSaved) {
-        if (elements.draftIndicator) {
-            elements.draftIndicator.textContent = message;
-            elements.draftIndicator.classList.toggle("is-saved", Boolean(isSaved));
+    // =====================================================
+    // HELPERS
+    // =====================================================
+
+    function value (element, fallback = "") {
+        if (!element) return fallback;
+
+        if (element.type === "checkbox") {
+            return element.checked;
         }
 
-        if (elements.saveButton) {
-            elements.saveButton.disabled = false;
-        }
-    }
-
-    function setSaving (isSaving) {
-        if (!elements.saveButton) return;
-
-        elements.saveButton.disabled = isSaving;
-        elements.saveButton.setAttribute("aria-busy", String(isSaving));
-
-        const label = elements.saveButton.querySelector("[data-save-label]");
-        if (label) {
-            label.textContent = isSaving ? "Saving…" : "Save Draft";
-        }
-    }
-
-    function getValue (element, fallback) {
-        return element && typeof element.value === "string"
+        return typeof element.value === "string"
             ? element.value.trim()
-            : (fallback || "");
+            : fallback;
     }
 
-    function getApiError (data, fallback) {
+    function setValue (element, newValue) {
+        if (!element || newValue === undefined ||
+            newValue === null) return;
+
+        if (element.type === "checkbox") {
+            element.checked = Boolean(newValue);
+        } else {
+            element.value = String(newValue);
+        }
+    }
+
+    function field (object, camel, pascal) {
+        if (!object) return undefined;
+
+        return object[ camel ] !== undefined
+            ? object[ camel ]
+            : object[ pascal ];
+    }
+
+    function storageGet (key) {
+        try {
+            return localStorage.getItem(key) || "";
+        } catch {
+            return "";
+        }
+    }
+
+    function storageSet (key, val) {
+        try {
+            if (val) {
+                localStorage.setItem(key, val);
+            } else {
+                localStorage.removeItem(key);
+            }
+        } catch {
+            // Browser storage is optional.
+        }
+    }
+
+    function message (text, error = false) {
+        if (!el.message) return;
+
+        el.message.textContent = text || "";
+        el.message.hidden = !text;
+
+        el.message.classList.toggle("is-error", error);
+        el.message.classList.toggle(
+            "is-success",
+            Boolean(text) && !error
+        );
+    }
+
+    function setIndicator (text, saved = false) {
+        if (!el.indicator) return;
+
+        el.indicator.textContent = text;
+        el.indicator.classList.toggle("is-saved", saved);
+    }
+
+    // =====================================================
+    // BOTH SAVE DRAFT BUTTONS
+    // =====================================================
+
+    function updateSaveButton () {
+        const buttons = [
+            el.save,
+            el.saveBottom
+        ].filter(Boolean);
+
+        buttons.forEach(button => {
+            button.disabled = state.busy;
+
+            button.setAttribute(
+                "aria-busy",
+                String(state.busy)
+            );
+
+            button.replaceChildren();
+
+            const icon = document.createElement("i");
+            icon.className = state.busy
+                ? "spinner-border spinner-border-sm me-2"
+                : "bi bi-floppy me-2";
+
+            button.appendChild(icon);
+
+            button.append(
+                document.createTextNode(
+                    state.busy ? "Saving..." : "Save Draft"
+                )
+            );
+        });
+    }
+
+    function setBusy (busy) {
+        state.busy = Boolean(busy);
+
+        updateSaveButton();
+
+        if (el.select) {
+            el.select.disabled =
+                state.busy ||
+                state.creating ||
+                state.widgets.length === 0;
+        }
+    }
+
+    // =====================================================
+    // PORTAL API
+    // =====================================================
+
+    function antiForgeryToken () {
+        return root.querySelector(
+            'input[name="__RequestVerificationToken"]'
+        )?.value || document.querySelector(
+            'input[name="__RequestVerificationToken"]'
+        )?.value || "";
+    }
+
+    function apiError (data, fallback) {
         if (!data) return fallback;
 
-        if (typeof data === "string" && data.trim()) {
-            return data;
+        if (typeof data === "string") {
+            return data || fallback;
         }
 
-        return data.detail ||
-            data.message ||
+        if (data.errors && typeof data.errors === "object") {
+            const errors = Object.values(data.errors)
+                .flat()
+                .filter(Boolean);
+
+            if (errors.length) {
+                return errors.join(" ");
+            }
+        }
+
+        return data.message ||
+            data.detail ||
             data.title ||
             data.error ||
             fallback;
     }
 
-    async function portalRequest (path, options) {
-        const requestOptions = options || {};
-        const headers = new Headers(requestOptions.headers || {});
+    async function portalRequest (path, options = {}) {
+        const method = (
+            options.method || "GET"
+        ).toUpperCase();
 
-        headers.set("Accept", "application/json");
-        headers.set("X-Requested-With", "XMLHttpRequest");
-
-        const csrfToken = getAntiForgeryToken();
-        if (csrfToken) {
-            headers.set("RequestVerificationToken", csrfToken);
-        }
-
-        if (requestOptions.body !== undefined) {
-            headers.set("Content-Type", "application/json");
-        }
-
-        const response = await fetch("/Widget/Api/" + path.replace(/^\/+/, ""), {
-            method: requestOptions.method || "GET",
-            credentials: "same-origin",
-            headers: headers,
-            body: requestOptions.body === undefined
-                ? undefined
-                : JSON.stringify(requestOptions.body)
+        const headers = new Headers({
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest"
         });
 
-        const text = await response.text();
+        if (![ "GET", "HEAD" ].includes(method)) {
+            const token = antiForgeryToken();
+
+            if (!token) {
+                throw new Error(
+                    "Anti-forgery token is missing. Refresh the Portal page."
+                );
+            }
+
+            headers.set(
+                "RequestVerificationToken",
+                token
+            );
+        }
+
+        if (options.body !== undefined) {
+            headers.set(
+                "Content-Type",
+                "application/json"
+            );
+        }
+
+        const response = await fetch(
+            API_ROOT + "/" + path.replace(/^\/+/, ""),
+            {
+                method: method,
+                credentials: "same-origin",
+                cache: "no-store",
+                redirect: "manual",
+                headers: headers,
+                body: options.body === undefined
+                    ? undefined
+                    : JSON.stringify(options.body)
+            }
+        );
+
+        if (response.type === "opaqueredirect" ||
+            (response.status >= 300 &&
+                response.status < 400)) {
+            throw new Error(
+                "Your login session may have expired."
+            );
+        }
+
+        if (response.status === 401) {
+            throw new Error(
+                "Your login session has expired."
+            );
+        }
+
+        if (response.status === 403) {
+            throw new Error(
+                "You do not have permission to access this widget."
+            );
+        }
+
+        const contentType = (
+            response.headers.get("content-type") || ""
+        ).toLowerCase();
+
+        const raw = await response.text();
         let data = null;
 
-        if (text) {
+        if (raw) {
+            if (!contentType.includes("json")) {
+                throw new Error(
+                    "Expected JSON, received " +
+                    (contentType || "unknown content type")
+                );
+            }
+
             try {
-                data = JSON.parse(text);
-            } catch (_) {
-                data = text;
+                data = JSON.parse(raw);
+            } catch {
+                throw new Error(
+                    "The API returned invalid JSON."
+                );
             }
         }
 
-        if (!response.ok) {
+        if (!response.ok || data?.success === false) {
             throw new Error(
-                getApiError(data, "Request failed (" + response.status + ").")
+                apiError(
+                    data,
+                    "API request failed: HTTP " + response.status
+                )
             );
         }
 
         return data;
     }
 
-    function setCreateMode () {
-        creating = true;
-        activeWidgetPublicKey = "";
+    // =====================================================
+    // WIDGET HELPERS
+    // =====================================================
 
-        try {
-            localStorage.setItem(storage.mode, "create");
-            localStorage.removeItem(storage.activeWidget);
-        } catch (_) {
-            // Browser storage can be unavailable; this page still works.
-        }
+    function normalizeWidgets (result) {
+        if (Array.isArray(result)) return result;
 
-        if (elements.pageTitle) {
-            elements.pageTitle.textContent = "Create a new widget";
-        }
+        const list =
+            result?.widgets ??
+            result?.data?.widgets ??
+            result?.data ??
+            result?.items;
 
-        if (elements.pageDescription) {
-            elements.pageDescription.textContent =
-                "Set up your widget details, appearance, and behavior.";
-        }
+        if (Array.isArray(list)) return list;
 
-        if (elements.widgetSelect) {
-            elements.widgetSelect.innerHTML =
-                '<option value="">New widget</option>';
-            elements.widgetSelect.value = "";
-        }
-
-        if (elements.widgetName) elements.widgetName.value = "";
-        if (elements.widgetType) elements.widgetType.value = "decision";
-        if (elements.website) elements.website.value = "";
-        if (elements.title) elements.title.value = "";
-        if (elements.description) elements.description.value = "";
-        if (elements.buttonText) elements.buttonText.value = "";
-
-        setDraftIndicator("Unsaved draft", false);
-        updatePreview();
+        throw new Error(
+            "The API returned an invalid widget list."
+        );
     }
 
-    function isCreateModeRequested () {
-        try {
-            return localStorage.getItem(storage.mode) === "create";
-        } catch (_) {
-            return false;
-        }
+    function publicKey (widget) {
+        return String(
+            field(widget, "publicKey", "PublicKey") ||
+            field(widget, "widgetPublicKey", "WidgetPublicKey") ||
+            ""
+        );
     }
 
-    function getStoredActiveWidgetKey () {
-        try {
-            return localStorage.getItem(storage.activeWidget) || "";
-        } catch (_) {
-            return "";
+    function widgetName (widget) {
+        return String(
+            field(widget, "name", "Name") ||
+            field(widget, "widgetName", "WidgetName") ||
+            "Untitled Widget"
+        );
+    }
+
+    function renderWidgetOptions () {
+        if (!el.select) return;
+
+        el.select.replaceChildren();
+
+        if (state.creating || !state.widgets.length) {
+            el.select.add(new Option("NEW Widget", ""));
+            el.select.value = "";
+            el.select.disabled = true;
+            return;
+        }
+
+        el.select.add(
+            new Option("Select a widget", "")
+        );
+
+        state.widgets.forEach(widget => {
+            const key = publicKey(widget);
+
+            if (!key) return;
+
+            el.select.add(
+                new Option(widgetName(widget), key)
+            );
+        });
+
+        // Keep a newly created widget visible even if
+        // the list has not been refreshed yet.
+        const exists = state.widgets.some(
+            widget => publicKey(widget) === state.key
+        );
+
+        if (state.key && !exists) {
+            el.select.add(
+                new Option(
+                    value(el.name, "New Widget"),
+                    state.key
+                )
+            );
+        }
+
+        el.select.value = state.key || "";
+        el.select.disabled = state.busy;
+    }
+
+    // =====================================================
+    // THEME AND DESIGN
+    // =====================================================
+
+    function theme () {
+        return root.querySelector(
+            'input[name="wbTheme"]:checked'
+        )?.value || "light";
+    }
+
+    function setTheme (newTheme) {
+        const selected = newTheme === "dark"
+            ? "dark"
+            : "light";
+
+        const radio = root.querySelector(
+            'input[name="wbTheme"][value="' +
+            selected + '"]'
+        );
+
+        if (radio) {
+            radio.checked = true;
         }
     }
 
     function currentSettings () {
-        const color = getValue(elements.primaryColor, "#16a96b");
+        const dark = theme() === "dark";
+
+        const selectedCorners = value(
+            el.corners,
+            "rounded"
+        );
 
         return {
-            primary: color,
-            background: "#ffffff",
-            text: "#16352b",
-            font: "system",
+            primary: value(el.primary, "#16a085"),
+            background: dark ? "#10242b" : "#ffffff",
+            text: dark ? "#edf5f7" : "#16352b",
+
+            // Accepted by IsValidDesign() in your API.
+            font: "Inter, Arial, sans-serif",
+
             fontSize: 16,
             radius: 16,
             shadow: true,
             width: 420,
-            position: getValue(elements.position, "right"),
-            buttonShape: getValue(elements.cornerStyle, "rounded"),
-            heading: getValue(elements.title, ""),
-            description: getValue(elements.description, ""),
-            buttonText: getValue(elements.buttonText, ""),
+
+            position: value(
+                el.position,
+                "bottom-right"
+            ),
+
+            buttonShape:
+                [ "rounded", "pill", "square" ].includes(
+                    selectedCorners
+                )
+                    ? selectedCorners
+                    : "rounded",
+
+            heading: value(el.title),
+            description: value(el.description),
+            buttonText: value(
+                el.buttonText,
+                "Get Started"
+            ),
+
             footer: "",
-            theme: "light"
+            theme: theme(),
+
+            showTitle: value(el.showTitle, true),
+            showDescription: value(
+                el.showDescription,
+                true
+            ),
+            showIntroduction: value(
+                el.showIntroduction,
+                true
+            )
         };
     }
 
     function updatePreview () {
-        const title = getValue(elements.title, "Your widget title");
-        const description = getValue(elements.description, "Your description");
-        const buttonText = getValue(elements.buttonText, "Get started");
-        const color = getValue(elements.primaryColor, "#16a96b");
+        const settings = currentSettings();
 
-        if (elements.previewTitle) {
-            elements.previewTitle.textContent = title || "Your widget title";
+        if (el.previewTitle) {
+            el.previewTitle.textContent =
+                settings.heading || "Your widget title";
+
+            el.previewTitle.hidden =
+                !settings.showTitle;
         }
 
-        if (elements.previewDescription) {
-            elements.previewDescription.textContent =
-                description || "Your description";
+        if (el.previewDescription) {
+            el.previewDescription.textContent =
+                settings.description ||
+                "Your description";
+
+            el.previewDescription.hidden =
+                !settings.showDescription;
         }
 
-        if (elements.previewPrimary) {
-            elements.previewPrimary.textContent = buttonText || "Get started";
-            elements.previewPrimary.style.backgroundColor = color;
+        if (el.previewPrimary) {
+            el.previewPrimary.textContent =
+                settings.buttonText || "Get Started";
+
+            el.previewPrimary.style.backgroundColor =
+                settings.primary;
+
+            el.previewPrimary.style.borderColor =
+                settings.primary;
         }
 
-        if (elements.colorValue) {
-            elements.colorValue.textContent = color;
+        if (el.colorValue) {
+            el.colorValue.textContent =
+                settings.primary;
         }
 
-        if (elements.previewWidget) {
-            elements.previewWidget.style.setProperty("--wb-primary", color);
+        if (el.previewWidget) {
+            el.previewWidget.style.setProperty(
+                "--wb-primary",
+                settings.primary
+            );
+
+            el.previewWidget.dataset.theme =
+                settings.theme;
+
+            el.previewWidget.dataset.corners =
+                settings.buttonShape;
+
+            el.previewWidget.dataset.position =
+                settings.position;
         }
     }
 
-    function markUnsaved () {
-        setDraftIndicator("Unsaved draft", false);
+    function markDirty () {
+        state.dirty = true;
+        setIndicator("Unsaved changes", false);
         updatePreview();
     }
 
+    function markSaved () {
+        state.dirty = false;
+        setIndicator("Draft saved", true);
+    }
+
+    // =====================================================
+    // WIZARD NAVIGATION
+    // =====================================================
+
     function setStep (index) {
-        currentStep = Math.max(0, Math.min(index, steps.length - 1));
+        state.step = Math.max(
+            0,
+            Math.min(index, steps.length - 1)
+        );
 
-        root.querySelectorAll("[data-wb-step]").forEach(function (button, i) {
-            const selected = i === currentStep;
-            button.classList.toggle("is-active", selected);
-            button.setAttribute("aria-current", selected ? "step" : "false");
+        const activeStep = steps[ state.step ];
+
+        tabs.forEach(button => {
+            const active =
+                button.dataset.wbTab === activeStep;
+
+            button.classList.toggle("active", active);
+
+            button.setAttribute(
+                "aria-current",
+                active ? "step" : "false"
+            );
         });
 
-        root.querySelectorAll("[data-wb-panel]").forEach(function (panel) {
-            panel.hidden = panel.dataset.wbPanel !== steps[ currentStep ];
+        panels.forEach(panel => {
+            const active =
+                panel.dataset.wbPanel === activeStep;
+
+            panel.classList.toggle("active", active);
+            panel.hidden = !active;
         });
 
-        if (elements.previousButton) {
-            elements.previousButton.disabled = currentStep === 0;
+        if (el.previous) {
+            el.previous.disabled = state.step === 0;
         }
 
-        if (elements.nextButton) {
-            elements.nextButton.hidden = currentStep === steps.length - 1;
+        if (el.next) {
+            el.next.hidden =
+                state.step === steps.length - 1;
         }
+
+        // Both Save Draft buttons stay visible
+        // on all wizard steps.
     }
 
-    function readField (object, lowerName, upperName) {
-        if (!object) return undefined;
-        return object[ lowerName ] !== undefined
-            ? object[ lowerName ]
-            : object[ upperName ];
+    // =====================================================
+    // CREATE MODE
+    // =====================================================
+
+    function resetFields () {
+        setValue(el.name, "");
+        setValue(el.type, "decision");
+        setValue(el.website, "");
+        setValue(el.title, "");
+        setValue(el.description, "");
+
+        setValue(el.buttonText, "Get Started");
+        setValue(el.primary, "#16a085");
+        setValue(el.corners, "rounded");
+        setValue(el.position, "bottom-right");
+
+        setValue(el.showTitle, true);
+        setValue(el.showDescription, true);
+        setValue(el.showIntroduction, true);
+
+        setTheme("light");
+        updatePreview();
     }
 
-    function applySettings (configuration) {
-        if (!configuration) return;
+    function createMode () {
+        storageSet(STORAGE_MODE, "");
 
-        const fields = [
-            [ "primaryColor", "primary", "Primary" ],
+        state.creating = true;
+        state.key = "";
+
+        storageSet(STORAGE_KEY, "");
+
+        resetFields();
+        renderWidgetOptions();
+
+        if (el.pageTitle) {
+            el.pageTitle.textContent =
+                "Create a new widget";
+        }
+
+        if (el.pageDescription) {
+            el.pageDescription.textContent =
+                "Set up your widget details, appearance, and behavior.";
+        }
+
+        if (el.version) {
+            el.version.textContent = "New";
+        }
+
+        if (el.apiNote) {
+            el.apiNote.textContent =
+                "Enter your widget details and click Save Draft.";
+        }
+
+        setStep(0);
+        markDirty();
+
+        message(
+            "Enter your widget details to create a new widget."
+        );
+    }
+
+    // =====================================================
+    // APPLY EXISTING WIDGET CONFIGURATION
+    // =====================================================
+
+    function applySettings (result) {
+        if (!result) return;
+
+        const source =
+            result.configuration ??
+            result.design ??
+            result.data ??
+            result;
+
+        if (!source) return;
+
+        const mappings = [
+            [ "primary", "primary", "Primary" ],
             [ "title", "heading", "Heading" ],
             [ "description", "description", "Description" ],
             [ "buttonText", "buttonText", "ButtonText" ],
             [ "position", "position", "Position" ],
-            [ "cornerStyle", "buttonShape", "ButtonShape" ]
+            [ "corners", "buttonShape", "ButtonShape" ],
+            [ "showTitle", "showTitle", "ShowTitle" ],
+            [
+                "showDescription",
+                "showDescription",
+                "ShowDescription"
+            ],
+            [
+                "showIntroduction",
+                "showIntroduction",
+                "ShowIntroduction"
+            ]
         ];
 
-        fields.forEach(function (field) {
-            const element = elements[ field[ 0 ] ];
-            const value = readField(configuration, field[ 1 ], field[ 2 ]);
-            if (element && value !== undefined && value !== null) {
-                element.value = value;
+        mappings.forEach(([ elementName, camel, pascal ]) => {
+            const setting = field(
+                source,
+                camel,
+                pascal
+            );
+
+            if (setting !== undefined &&
+                setting !== null) {
+                setValue(el[ elementName ], setting);
             }
         });
+
+        const savedTheme = field(
+            source,
+            "theme",
+            "Theme"
+        );
+
+        if (savedTheme) {
+            setTheme(savedTheme);
+        }
 
         updatePreview();
     }
 
-    function widgetPublicKey (widget) {
-        return readField(widget, "publicKey", "PublicKey") ||
-            readField(widget, "widgetPublicKey", "WidgetPublicKey") ||
-            "";
+    function applyWidget (widget) {
+        if (!widget) return;
+
+        const key = publicKey(widget);
+
+        if (!key) {
+            throw new Error(
+                "Widget public key is missing."
+            );
+        }
+
+        state.key = key;
+        state.creating = false;
+
+        storageSet(STORAGE_KEY, key);
+
+        setValue(el.name, widgetName(widget));
+
+        const widgetType = field(
+            widget,
+            "type",
+            "Type"
+        );
+
+        if (widgetType) {
+            setValue(el.type, widgetType);
+        }
+
+        const website =
+            field(
+                widget,
+                "websiteAddress",
+                "WebsiteAddress"
+            ) ||
+            field(
+                widget,
+                "targetWebsite",
+                "TargetWebsite"
+            );
+
+        if (website) {
+            setValue(el.website, website);
+        }
+
+        const title = field(
+            widget,
+            "title",
+            "Title"
+        );
+
+        if (title !== undefined) {
+            setValue(el.title, title);
+        }
+
+        const description = field(
+            widget,
+            "description",
+            "Description"
+        );
+
+        if (description !== undefined) {
+            setValue(el.description, description);
+        }
+
+        if (el.pageTitle) {
+            el.pageTitle.textContent = "Widget Builder";
+        }
+
+        if (el.version) {
+            el.version.textContent = "Draft";
+        }
+
+        renderWidgetOptions();
+        updatePreview();
     }
 
-    function widgetName (widget) {
-        return readField(widget, "name", "Name") ||
-            readField(widget, "widgetName", "WidgetName") ||
-            "Widget";
+    // =====================================================
+    // LOAD WIDGETS
+    // =====================================================
+
+    async function loadConfiguration (key) {
+        const result = await portalRequest(
+            "widgets/" +
+            encodeURIComponent(key) +
+            "/draft/configuration"
+        );
+
+        applySettings(result);
+
+        const version = field(
+            result,
+            "versionNumber",
+            "VersionNumber"
+        );
+
+        if (version !== undefined &&
+            version !== null &&
+            el.version) {
+            el.version.textContent =
+                "Draft v" + version;
+        }
+
+        markSaved();
     }
 
     async function loadWidgets () {
-        if (creating) return;
+        const result = await portalRequest("widgets");
 
-        try {
-            const result = await portalRequest("widgets");
-            const list = Array.isArray(result)
-                ? result
-                : (result && (result.widgets || result.data)) || [];
+        state.widgets = normalizeWidgets(result);
 
-            widgets = Array.isArray(list) ? list : [];
-
-            if (elements.widgetSelect) {
-                elements.widgetSelect.innerHTML = "";
-
-                if (widgets.length === 0) {
-                    elements.widgetSelect.add(
-                        new Option("No widgets yet — create a new widget", "")
-                    );
-                    activeWidgetPublicKey = "";
-                    setDraftIndicator("No saved widgets", false);
-                    return;
-                }
-
-                widgets.forEach(function (widget) {
-                    const key = widgetPublicKey(widget);
-                    if (!key) return;
-
-                    elements.widgetSelect.add(
-                        new Option(widgetName(widget), key)
-                    );
-                });
-            }
-
-            const storedKey = getStoredActiveWidgetKey();
-            const selectedWidget = widgets.find(function (widget) {
-                return widgetPublicKey(widget) === storedKey;
-            }) || widgets[ 0 ];
-
-            if (selectedWidget) {
-                activeWidgetPublicKey = widgetPublicKey(selectedWidget);
-
-                if (elements.widgetSelect) {
-                    elements.widgetSelect.value = activeWidgetPublicKey;
-                }
-
-                await loadConfiguration(activeWidgetPublicKey);
-            }
-        } catch (error) {
-            widgets = [];
-            if (elements.widgetSelect) {
-                elements.widgetSelect.innerHTML =
-                    '<option value="">Could not load widgets</option>';
-            }
-            showMessage(error.message || "Could not load your widgets.", true);
-        }
+        renderWidgetOptions();
     }
 
-    async function loadConfiguration (publicKey) {
-        if (!publicKey) return;
+    async function selectWidget (key) {
+        if (!key || state.busy) return;
 
-        try {
-            const result = await portalRequest(
-                "widgets/" + encodeURIComponent(publicKey) +
-                "/draft/configuration"
-            );
+        const widget = state.widgets.find(
+            item => publicKey(item) === key
+        );
 
-            const configuration =
-                result.configuration ||
-                result.design ||
-                result.data ||
-                result;
-
-            applySettings(configuration);
-
-            const version = readField(result, "versionNumber", "VersionNumber");
-            if (elements.widgetVersion && version !== undefined) {
-                elements.widgetVersion.textContent = "Draft v" + version;
-            }
-
-            setDraftIndicator("Saved settings loaded", true);
-            showMessage("", false);
-        } catch (error) {
-            showMessage(
-                error.message || "Could not load this widget's saved settings.",
+        if (!widget) {
+            message(
+                "Selected widget was not found.",
                 true
             );
+            return;
+        }
+
+        setBusy(true);
+        message("Loading widget...");
+
+        try {
+            applyWidget(widget);
+
+            await loadConfiguration(key);
+
+            message("");
+        } catch (error) {
+            message(
+                error.message ||
+                "Could not load widget configuration.",
+                true
+            );
+        } finally {
+            setBusy(false);
+            renderWidgetOptions();
         }
     }
 
-    function validateForm () {
-        const name = getValue(elements.widgetName);
-        const type = getValue(elements.widgetType, "decision");
-        const website = getValue(elements.website);
-        const title = getValue(elements.title);
-        const description = getValue(elements.description);
+    // =====================================================
+    // WEBSITE VALIDATION
+    // =====================================================
 
-        if (!name) return "Enter an internal widget name.";
-        if (name.length > 100) return "Widget name must be 100 characters or fewer.";
-        if (type.toLowerCase() !== "decision") {
-            return "Widget type must be Decision.";
+    function normalizedWebsite () {
+        const input = value(el.website);
+
+        if (!input) return "";
+
+        return /^https?:\/\//i.test(input)
+            ? input
+            : "https://" + input;
+    }
+
+    function validate () {
+        const name = value(el.name);
+        const type = value(el.type, "decision");
+        const title = value(el.title);
+        const description = value(el.description);
+        const buttonText = value(el.buttonText);
+
+        if (!name) {
+            return "Enter an internal widget name.";
         }
-        if (!website) return "Enter the website address for this widget.";
 
-        let websiteUrl;
+        if (name.length > 100) {
+            return "Widget name must be 100 characters or fewer.";
+        }
+
+        if (type !== "decision") {
+            return "Unsupported widget type.";
+        }
+
+        const website = normalizedWebsite();
+
+        if (!website) {
+            return "Enter the target website.";
+        }
+
         try {
-            websiteUrl = new URL(
-                /^https?:\/\//i.test(website) ? website : "https://" + website
-            );
-        } catch (_) {
-            return "Enter a valid website address.";
+            const url = new URL(website);
+
+            if (![ "http:", "https:" ].includes(url.protocol)) {
+                throw new Error();
+            }
+
+            if (!url.hostname.includes(".") &&
+                url.hostname !== "localhost") {
+                throw new Error();
+            }
+
+            if (website.length > 250) {
+                return "Website URL must be 250 characters or fewer.";
+            }
+        } catch {
+            return "Enter a valid website URL.";
         }
 
-        if (![ "http:", "https:" ].includes(websiteUrl.protocol)) {
-            return "Website address must use HTTP or HTTPS.";
+        if (!title) {
+            return "Enter a visitor-facing widget title.";
         }
 
-        if (!title) return "Enter the title visitors will see.";
-        if (title.length > 120) return "Widget title must be 120 characters or fewer.";
-        if (description.length > 500) {
-            return "Description must be 500 characters or fewer.";
+        // API design validation requires max 100.
+        if (title.length > 100) {
+            return "Widget title must be 100 characters or fewer.";
+        }
+
+        // API design validation requires max 250.
+        if (description.length > 250) {
+            return "Description must be 250 characters or fewer.";
+        }
+
+        if (buttonText.length > 40) {
+            return "Button label must be 40 characters or fewer.";
         }
 
         return "";
     }
 
-    function buildCreateRequest () {
-        const websiteInput = getValue(elements.website);
-        const websiteAddress = /^https?:\/\//i.test(websiteInput)
-            ? websiteInput
-            : "https://" + websiteInput;
+    // =====================================================
+    // WEBSITE LOOKUP
+    // =====================================================
 
-        let hostname = websiteAddress;
-        try {
-            hostname = new URL(websiteAddress).hostname;
-        } catch (_) {
-            // Validation reports an invalid address before this is called.
+    async function resolveWebsite () {
+        const address = normalizedWebsite();
+
+        const result = await portalRequest(
+            "widgets/websites"
+        );
+
+        const websites =
+            result?.websites ??
+            result?.data?.websites ??
+            result?.data ??
+            [];
+
+        if (!Array.isArray(websites)) {
+            throw new Error(
+                "The websites API returned an invalid list."
+            );
         }
 
+        function normalizeAddress (input) {
+            try {
+                const url = new URL(input);
+
+                return (
+                    url.origin +
+                    url.pathname.replace(/\/+$/, "")
+                ).toLowerCase();
+            } catch {
+                return "";
+            }
+        }
+
+        const target = normalizeAddress(address);
+
+        const existing = websites.find(site => {
+            const siteAddress =
+                field(site, "address", "Address") ||
+                field(
+                    site,
+                    "websiteAddress",
+                    "WebsiteAddress"
+                ) ||
+                "";
+
+            return normalizeAddress(siteAddress) === target;
+        });
+
+        const token = existing
+            ? String(
+                field(
+                    existing,
+                    "websiteTokenId",
+                    "WebsiteTokenId"
+                ) || ""
+            )
+            : "";
+
         return {
-            name: getValue(elements.widgetName),
-            type: getValue(elements.widgetType, "decision"),
-            websiteTokenId: "",
-            websiteName: hostname,
-            websiteAddress: websiteAddress,
-            title: getValue(elements.title),
-            description: getValue(elements.description)
+            websiteTokenId: token,
+
+            websiteName: existing
+                ? (
+                    field(existing, "name", "Name") ||
+                    new URL(address).hostname
+                )
+                : new URL(address).hostname,
+
+            websiteAddress: address
         };
     }
 
-    async function saveDesign (publicKey) {
+    async function createPayload () {
+        const website = await resolveWebsite();
+
+        return {
+            name: value(el.name),
+            type: value(el.type, "decision"),
+            websiteTokenId: website.websiteTokenId,
+            websiteName: website.websiteName,
+            websiteAddress: website.websiteAddress,
+            title: value(el.title),
+            description: value(el.description)
+        };
+    }
+
+    // =====================================================
+    // SAVE DESIGN CONFIGURATION
+    // =====================================================
+
+    async function saveDesign (key) {
         return portalRequest(
-            "widgets/" + encodeURIComponent(publicKey) +
+            "widgets/" +
+            encodeURIComponent(key) +
             "/draft/configuration",
             {
                 method: "PUT",
@@ -488,165 +1069,301 @@
         );
     }
 
-    async function saveDraft () {
-        const validationMessage = validateForm();
+    // =====================================================
+    // SAVE DRAFT
+    // Shared by BOTH Save Draft buttons.
+    // =====================================================
 
-        if (validationMessage) {
-            showMessage(validationMessage, true);
+    async function saveDraft () {
+        if (state.busy) return;
+
+        const validationError = validate();
+
+        if (validationError) {
+            message(validationError, true);
             return;
         }
 
-        setSaving(true);
-        showMessage("", false);
+        setBusy(true);
+        message("Saving widget draft...");
+
+        let createdKey = "";
 
         try {
-            if (creating) {
-                const created = await portalRequest("widgets", {
-                    method: "POST",
-                    body: buildCreateRequest()
-                });
+            // Create widget only once.
+            if (state.creating) {
+                const payload = await createPayload();
 
-                const createdKey = widgetPublicKey(created);
+                const result = await portalRequest(
+                    "widgets",
+                    {
+                        method: "POST",
+                        body: payload
+                    }
+                );
+
+                const created =
+                    result?.widget ??
+                    result?.data?.widget ??
+                    result?.data ??
+                    result;
+
+                createdKey = publicKey(created);
+
                 if (!createdKey) {
                     throw new Error(
-                        "The API created no widget key in its response. Check the Portal proxy response."
+                        "Widget creation returned no public key. " +
+                        "Check the API response before retrying."
                     );
                 }
 
-                activeWidgetPublicKey = createdKey;
-                creating = false;
+                state.key = createdKey;
+                state.creating = false;
 
-                try {
-                    localStorage.removeItem(storage.mode);
-                    localStorage.setItem(storage.activeWidget, createdKey);
-                } catch (_) {
-                    // The server has created the widget; storage is optional.
+                storageSet(STORAGE_KEY, createdKey);
+                storageSet(STORAGE_MODE, "");
+
+                // Immediately update the selector.
+                renderWidgetOptions();
+
+                if (el.pageTitle) {
+                    el.pageTitle.textContent =
+                        "Widget Builder";
                 }
-
-                await saveDesign(createdKey);
-                await loadWidgets();
-
-                if (elements.widgetSelect) {
-                    elements.widgetSelect.value = createdKey;
-                }
-
-                setDraftIndicator("Draft saved", true);
-                showMessage("Widget created and draft saved.", false);
-                return;
             }
 
-            if (!activeWidgetPublicKey) {
+            if (!state.key) {
                 throw new Error(
-                    "Select a widget to save, or open Widget Builder using Create New Widget."
+                    "No widget is selected for saving."
                 );
             }
 
-            await saveDesign(activeWidgetPublicKey);
-            setDraftIndicator("Draft saved", true);
-            showMessage("Draft saved.", false);
+            // Save Appearance and Behavior configuration.
+            const saveResult = await saveDesign(state.key);
+
+            markSaved();
+
+            const version = field(
+                saveResult,
+                "versionNumber",
+                "VersionNumber"
+            );
+
+            if (el.version) {
+                el.version.textContent =
+                    version !== undefined &&
+                        version !== null
+                        ? "Draft v" + version
+                        : "Draft";
+            }
+
+            // Refresh the list without losing form values.
+            try {
+                await loadWidgets();
+            } catch (refreshError) {
+                console.warn(
+                    "Widget saved, but list refresh failed:",
+                    refreshError
+                );
+            }
+
+            renderWidgetOptions();
+
+            message(
+                createdKey
+                    ? "Widget created and draft saved successfully."
+                    : "Widget draft saved successfully."
+            );
+
         } catch (error) {
-            showMessage(error.message || "Could not save the widget draft.", true);
-            setDraftIndicator("Unsaved draft", false);
+            console.error(
+                "AskPearls Widget Builder save error:",
+                error
+            );
+
+            state.dirty = true;
+
+            if (createdKey) {
+                setIndicator(
+                    "Widget created; settings not saved",
+                    false
+                );
+
+                message(
+                    "Widget was created, but saving its " +
+                    "configuration failed. Click Save Draft " +
+                    "again to retry without creating a duplicate. " +
+                    (error.message || ""),
+                    true
+                );
+            } else {
+                setIndicator(
+                    "Unsaved changes",
+                    false
+                );
+
+                message(
+                    error.message ||
+                    "Could not save the widget.",
+                    true
+                );
+            }
         } finally {
-            setSaving(false);
+            setBusy(false);
+            renderWidgetOptions();
         }
     }
+
+    // =====================================================
+    // EVENTS
+    // =====================================================
 
     function bindEvents () {
-        root.querySelectorAll("[data-wb-step]").forEach(function (button, index) {
-            button.addEventListener("click", function () {
-                setStep(index);
+        tabs.forEach(button => {
+            button.addEventListener("click", () => {
+                const index = steps.indexOf(
+                    button.dataset.wbTab
+                );
+
+                if (index >= 0) {
+                    setStep(index);
+                }
             });
         });
 
-        if (elements.previousButton) {
-            elements.previousButton.addEventListener("click", function () {
-                setStep(currentStep - 1);
-            });
-        }
+        el.previous?.addEventListener(
+            "click",
+            () => setStep(state.step - 1)
+        );
 
-        if (elements.nextButton) {
-            elements.nextButton.addEventListener("click", function () {
-                setStep(currentStep + 1);
-            });
-        }
+        el.next?.addEventListener(
+            "click",
+            () => setStep(state.step + 1)
+        );
 
-        if (elements.saveButton) {
-            elements.saveButton.addEventListener("click", saveDraft);
-        }
+        // TOP-RIGHT SAVE DRAFT BUTTON
+        el.save?.addEventListener(
+            "click",
+            saveDraft
+        );
 
-        if (elements.widgetSelect) {
-            elements.widgetSelect.addEventListener("change", async function () {
-                const selectedKey = elements.widgetSelect.value;
-                if (!selectedKey) return;
+        // BOTTOM-RIGHT SAVE DRAFT BUTTON
+        el.saveBottom?.addEventListener(
+            "click",
+            saveDraft
+        );
 
-                creating = false;
-                activeWidgetPublicKey = selectedKey;
+        el.select?.addEventListener(
+            "change",
+            () => selectWidget(el.select.value)
+        );
 
-                try {
-                    localStorage.removeItem(storage.mode);
-                    localStorage.setItem(storage.activeWidget, selectedKey);
-                } catch (_) {
-                    // Storage is optional.
-                }
+        const inputs = [
+            el.name,
+            el.type,
+            el.website,
+            el.title,
+            el.description,
+            el.primary,
+            el.buttonText,
+            el.corners,
+            el.position,
+            el.showTitle,
+            el.showDescription,
+            el.showIntroduction
+        ];
 
-                await loadConfiguration(selectedKey);
-            });
-        }
+        inputs.filter(Boolean).forEach(input => {
+            input.addEventListener(
+                "input",
+                markDirty
+            );
 
-        [
-            elements.widgetName,
-            elements.widgetType,
-            elements.website,
-            elements.title,
-            elements.description,
-            elements.buttonText,
-            elements.position,
-            elements.cornerStyle,
-            elements.primaryColor
-        ].forEach(function (element) {
-            if (element) {
-                element.addEventListener("input", markUnsaved);
-                element.addEventListener("change", markUnsaved);
+            input.addEventListener(
+                "change",
+                markDirty
+            );
+        });
+
+        root.querySelectorAll(
+            'input[name="wbTheme"]'
+        ).forEach(radio => {
+            radio.addEventListener(
+                "change",
+                markDirty
+            );
+        });
+
+        el.previewButton?.addEventListener(
+            "click",
+            () => {
+                el.previewStage?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest"
+                });
             }
-        });
-
-        if (elements.previewButton) {
-            elements.previewButton.addEventListener("click", function () {
-                if (elements.previewStage) {
-                    elements.previewStage.scrollIntoView({
-                        behavior: "smooth",
-                        block: "nearest"
-                    });
-                }
-            });
-        }
-
-        root.querySelectorAll("[data-wb-preview-close]").forEach(function (button) {
-            button.addEventListener("click", function () {
-                if (elements.previewStage) {
-                    elements.previewStage.hidden = true;
-                }
-            });
-        });
+        );
     }
+
+    // =====================================================
+    // INITIALIZATION
+    // =====================================================
 
     async function initialize () {
         bindEvents();
+
         setStep(0);
         updatePreview();
+        updateSaveButton();
 
-        if (isCreateModeRequested()) {
-            setCreateMode();
-            return;
+        try {
+            if (storageGet(STORAGE_MODE) === "create") {
+                createMode();
+                return;
+            }
+
+            await loadWidgets();
+
+            if (!state.widgets.length) {
+                createMode();
+                return;
+            }
+
+            const storedKey = storageGet(STORAGE_KEY);
+
+            const selected =
+                state.widgets.find(
+                    widget => publicKey(widget) === storedKey
+                ) ||
+                state.widgets[ 0 ];
+
+            if (selected) {
+                await selectWidget(
+                    publicKey(selected)
+                );
+            }
+        } catch (error) {
+            message(
+                error.message ||
+                "Could not initialize Widget Builder.",
+                true
+            );
+
+            console.error(
+                "AskPearls Widget Builder initialization error:",
+                error
+            );
         }
-
-        await loadWidgets();
     }
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initialize, { once: true });
+        document.addEventListener(
+            "DOMContentLoaded",
+            initialize,
+            { once: true }
+        );
     } else {
         initialize();
     }
+
 })();
