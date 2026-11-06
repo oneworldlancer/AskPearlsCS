@@ -1,8 +1,8 @@
-﻿/* =====================================================
-           AskPearls Dashboard
-           Theme-aware styles scoped to this page
-           ===================================================== */
-/* Shared AskPearls page wrapper: avoid Bootstrap container gutters */
+﻿
+/* ==========================================
+   ASKPEARLS DASHBOARD
+   ========================================== */
+
 .ap-page.page-dashboard {
     display: block;
     width: 100%;
@@ -17,12 +17,16 @@
     color: var(--ap-text, #243447);
 }
 
+    /* ==========================================
+   BREADCRUMB
+   ========================================== */
+
     [data-ap-page="dashboard"] .ap-breadcrumb {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         gap: 10px;
-        font-size: 0.875rem;
+        font-size: .875rem;
         margin-bottom: 1rem;
     }
 
@@ -44,6 +48,10 @@
         font-weight: 500;
     }
 
+    /* ==========================================
+   DASHBOARD CARDS
+   ========================================== */
+
     [data-ap-page="dashboard"] .ap-dashboard-heading {
         color: var(--ap-text, #243447);
     }
@@ -53,29 +61,29 @@
     }
 
     [data-ap-page="dashboard"] .ap-dashboard-card {
-        background-color: var(--ap-surface, #ffffff);
+        background: var(--ap-surface, #fff);
         color: var(--ap-text, #243447);
         border: 1px solid var(--ap-border, #dfe5ec);
         border-radius: var(--ap-radius, 12px);
     }
 
     [data-ap-page="dashboard"] .ap-dashboard-card-header {
-        background-color: transparent;
+        background: transparent;
         color: var(--ap-text, #243447);
     }
 
     [data-ap-page="dashboard"] .ap-dashboard-workflow-item {
-        background-color: var(--ap-surface, #ffffff);
+        background: var(--ap-surface, #fff);
         border-color: var(--ap-border, #dfe5ec) !important;
     }
 
     [data-ap-page="dashboard"] .ap-dashboard-start-badge {
-        background-color: #d9fbe8;
+        background: #d9fbe8;
         color: #087443;
     }
 
     [data-ap-page="dashboard"] .ap-dashboard-neutral-badge {
-        background-color: var(--ap-page-bg, #f1f5f9);
+        background: var(--ap-page-bg, #f1f5f9);
         color: var(--ap-text, #243447);
         border: 1px solid var(--ap-border, #dfe5ec);
         white-space: normal;
@@ -86,19 +94,193 @@
         font-weight: 600;
     }
 
-/* Dark mode: Bootstrap 5 data-bs-theme */
+    /* ==========================================
+   RECENT WIDGETS TABLE
+   ========================================== */
+
+    [data-ap-page="dashboard"] .dashboard-recent-list {
+        display: block;
+        width: 100%;
+        min-width: 0;
+    }
+
+    [data-ap-page="dashboard"] .dashboard-recent-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        border: 1px solid var(--ap-border, #dfe5ec);
+        border-radius: 12px;
+    }
+
+    [data-ap-page="dashboard"] .dashboard-recent-table {
+        width: 100%;
+        min-width: 720px;
+        border-collapse: collapse;
+        color: var(--ap-text, #243447);
+        background: var(--ap-surface, #fff);
+    }
+
+        [data-ap-page="dashboard"] .dashboard-recent-table thead th {
+            padding: 15px 18px;
+            background: var(--ap-page-bg, #f1f5f9);
+            color: var(--ap-muted, #64748b);
+            border-bottom: 1px solid var(--ap-border, #dfe5ec);
+            font-size: .8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            white-space: nowrap;
+        }
+
+        [data-ap-page="dashboard"] .dashboard-recent-table tbody td {
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--ap-border, #dfe5ec);
+            color: var(--ap-text, #243447);
+            vertical-align: middle;
+        }
+
+        [data-ap-page="dashboard"] .dashboard-recent-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        [data-ap-page="dashboard"] .dashboard-recent-table tbody tr:hover {
+            background: color-mix( in srgb, var(--ap-primary, #087f6b) 5%, var(--ap-surface, #fff) );
+        }
+
+    /* ==========================================
+   WIDGET INFORMATION
+   ========================================== */
+
+    [data-ap-page="dashboard"] .dashboard-recent-widget {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+    }
+
+    [data-ap-page="dashboard"] .dashboard-recent-icon {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        place-items: center;
+        border-radius: 11px;
+        background: color-mix( in srgb, var(--ap-primary, #087f6b) 12%, transparent );
+        color: var(--ap-primary, #087f6b);
+        font-size: 1.15rem;
+    }
+
+    [data-ap-page="dashboard"] .dashboard-recent-copy {
+        min-width: 0;
+    }
+
+    [data-ap-page="dashboard"] .dashboard-widget-name {
+        display: inline-block;
+        color: var(--ap-text, #243447);
+        font-size: .96rem;
+        font-weight: 700;
+        line-height: 1.4;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+        [data-ap-page="dashboard"] .dashboard-widget-name:hover,
+        [data-ap-page="dashboard"] .dashboard-widget-name:focus-visible {
+            color: var(--ap-primary, #087f6b);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        [data-ap-page="dashboard"] .dashboard-widget-name.is-disabled {
+            opacity: .55;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+
+    [data-ap-page="dashboard"] .dashboard-recent-copy p {
+        overflow: hidden;
+        max-width: 360px;
+        margin: 4px 0 0;
+        color: var(--ap-muted, #64748b);
+        font-size: .8rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* ==========================================
+   STATUS BADGES
+   ========================================== */
+
+    [data-ap-page="dashboard"] .dashboard-recent-status {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 11px;
+        border-radius: 999px;
+        font-size: .75rem;
+        font-weight: 700;
+        text-transform: capitalize;
+        white-space: nowrap;
+    }
+
+        [data-ap-page="dashboard"] .dashboard-recent-status.is-draft {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        [data-ap-page="dashboard"] .dashboard-recent-status.is-published {
+            background: #dcfce7;
+            color: #087443;
+        }
+
+        [data-ap-page="dashboard"] .dashboard-recent-status.is-other {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+    [data-ap-page="dashboard"] .dashboard-recent-version {
+        color: var(--ap-muted, #64748b);
+        font-size: .84rem;
+        white-space: nowrap;
+    }
+
+    /* ==========================================
+   ACTION BUTTONS
+   ========================================== */
+
+    [data-ap-page="dashboard"] .dashboard-recent-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 7px;
+    }
+
+        [data-ap-page="dashboard"] .dashboard-recent-actions .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            padding: 6px 11px;
+            border-radius: 7px;
+            font-size: .78rem;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+            [data-ap-page="dashboard"] .dashboard-recent-actions .btn:hover {
+                transform: translateY(-1px);
+            }
+
+            [data-ap-page="dashboard"] .dashboard-recent-actions .btn:focus-visible {
+                outline: 2px solid var(--ap-primary, #087f6b);
+                outline-offset: 2px;
+            }
+
+/* ==========================================
+   DARK THEME
+   ========================================== */
+
 html[data-bs-theme="dark"] [data-ap-page="dashboard"],
 body[data-bs-theme="dark"] [data-ap-page="dashboard"],
-[data-bs-theme="dark"] [data-ap-page="dashboard"] {
-    --ap-page-bg: #0b1513;
-    --ap-surface: #11211d;
-    --ap-text: #edf5f2;
-    --ap-muted: #b8c9c3;
-    --ap-border: #2b443d;
-    --ap-primary: #36df91;
-}
-
-/* Dark mode: common class-based theme toggles */
 html.dark [data-ap-page="dashboard"],
 body.dark [data-ap-page="dashboard"],
 html.dark-theme [data-ap-page="dashboard"],
@@ -113,45 +295,36 @@ body[data-theme="dark"] [data-ap-page="dashboard"] {
     --ap-primary: #36df91;
 }
 
-    /* Explicit dark-mode card surfaces */
     html[data-bs-theme="dark"] [data-ap-page="dashboard"] .card,
     body[data-bs-theme="dark"] [data-ap-page="dashboard"] .card,
     html.dark [data-ap-page="dashboard"] .card,
     body.dark [data-ap-page="dashboard"] .card,
-    html.dark-theme [data-ap-page="dashboard"] .card,
-    body.dark-theme [data-ap-page="dashboard"] .card,
     html[data-theme="dark"] [data-ap-page="dashboard"] .card,
     body[data-theme="dark"] [data-ap-page="dashboard"] .card {
-        background-color: #11211d !important;
-        color: #edf5f2 !important;
-        border-color: #2b443d !important;
+        background-color: var(--ap-surface) !important;
+        color: var(--ap-text) !important;
+        border-color: var(--ap-border) !important;
     }
 
     html[data-bs-theme="dark"] [data-ap-page="dashboard"] .card-header,
     body[data-bs-theme="dark"] [data-ap-page="dashboard"] .card-header,
     html.dark [data-ap-page="dashboard"] .card-header,
     body.dark [data-ap-page="dashboard"] .card-header,
-    html.dark-theme [data-ap-page="dashboard"] .card-header,
-    body.dark-theme [data-ap-page="dashboard"] .card-header,
     html[data-theme="dark"] [data-ap-page="dashboard"] .card-header,
     body[data-theme="dark"] [data-ap-page="dashboard"] .card-header {
-        background-color: transparent !important;
-        color: #edf5f2 !important;
+        background: transparent !important;
+        color: var(--ap-text) !important;
     }
 
-    /* Override Bootstrap text-muted, which may be too dim in dark mode */
     html[data-bs-theme="dark"] [data-ap-page="dashboard"] .text-muted,
     body[data-bs-theme="dark"] [data-ap-page="dashboard"] .text-muted,
     html.dark [data-ap-page="dashboard"] .text-muted,
     body.dark [data-ap-page="dashboard"] .text-muted,
-    html.dark-theme [data-ap-page="dashboard"] .text-muted,
-    body.dark-theme [data-ap-page="dashboard"] .text-muted,
     html[data-theme="dark"] [data-ap-page="dashboard"] .text-muted,
     body[data-theme="dark"] [data-ap-page="dashboard"] .text-muted {
-        color: #b8c9c3 !important;
+        color: var(--ap-muted) !important;
     }
 
-    /* Headings and strong text */
     html[data-bs-theme="dark"] [data-ap-page="dashboard"] h1,
     html[data-bs-theme="dark"] [data-ap-page="dashboard"] h2,
     html[data-bs-theme="dark"] [data-ap-page="dashboard"] h3,
@@ -161,38 +334,38 @@ body[data-theme="dark"] [data-ap-page="dashboard"] {
     html.dark [data-ap-page="dashboard"] h1,
     html.dark [data-ap-page="dashboard"] h2,
     html.dark [data-ap-page="dashboard"] h3,
-    body.dark [data-ap-page="dashboard"] h1,
-    body.dark [data-ap-page="dashboard"] h2,
-    body.dark [data-ap-page="dashboard"] h3,
     html[data-theme="dark"] [data-ap-page="dashboard"] h1,
     html[data-theme="dark"] [data-ap-page="dashboard"] h2,
-    html[data-theme="dark"] [data-ap-page="dashboard"] h3,
-    body[data-theme="dark"] [data-ap-page="dashboard"] h1,
-    body[data-theme="dark"] [data-ap-page="dashboard"] h2,
-    body[data-theme="dark"] [data-ap-page="dashboard"] h3 {
-        color: #edf5f2 !important;
+    html[data-theme="dark"] [data-ap-page="dashboard"] h3 {
+        color: var(--ap-text) !important;
     }
 
-    /* Workflow borders and badges */
-    html[data-bs-theme="dark"] [data-ap-page="dashboard"] .border,
-    body[data-bs-theme="dark"] [data-ap-page="dashboard"] .border,
-    html.dark [data-ap-page="dashboard"] .border,
-    body.dark [data-ap-page="dashboard"] .border,
-    html[data-theme="dark"] [data-ap-page="dashboard"] .border,
-    body[data-theme="dark"] [data-ap-page="dashboard"] .border {
-        border-color: #2b443d !important;
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 767.98px) {
+    .ap-page.page-dashboard {
+        padding: 16px;
     }
 
-    html[data-bs-theme="dark"] [data-ap-page="dashboard"] .ap-dashboard-neutral-badge,
-    body[data-bs-theme="dark"] [data-ap-page="dashboard"] .ap-dashboard-neutral-badge,
-    html.dark [data-ap-page="dashboard"] .ap-dashboard-neutral-badge,
-    body.dark [data-ap-page="dashboard"] .ap-dashboard-neutral-badge,
-    html[data-theme="dark"] [data-ap-page="dashboard"] .ap-dashboard-neutral-badge,
-    body[data-theme="dark"] [data-ap-page="dashboard"] .ap-dashboard-neutral-badge {
-        background-color: #20342e !important;
-        color: #edf5f2 !important;
-        border-color: #3a574c !important;
+    [data-ap-page="dashboard"] .dashboard-recent-table {
+        min-width: 680px;
     }
+
+        [data-ap-page="dashboard"] .dashboard-recent-table thead th,
+        [data-ap-page="dashboard"] .dashboard-recent-table tbody td {
+            padding: 12px;
+        }
+
+    [data-ap-page="dashboard"] .dashboard-recent-actions {
+        gap: 5px;
+    }
+
+        [data-ap-page="dashboard"] .dashboard-recent-actions .btn {
+            padding: 5px 8px;
+        }
+}
 
 @media (max-width: 575.98px) {
     [data-ap-page="dashboard"] .ap-breadcrumb {
@@ -204,113 +377,128 @@ body[data-theme="dark"] [data-ap-page="dashboard"] {
     }
 }
 
-/* Recent widgets loaded from the widgets API */
-[data-ap-page="dashboard"] .dashboard-recent-list {
-    display: grid;
-    gap: 10px;
+
+[data-ap-page="dashboard"] .dashboard-publish-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none !important;
 }
 
-[data-ap-page="dashboard"] .dashboard-recent-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 14px 16px;
-    border: 1px solid var(--ap-border, #dfe5ec);
-    border-radius: var(--ap-radius, 12px);
-    background: var(--ap-surface, #fff);
+
+/* ==========================================
+   RECENT WIDGETS - FULL WIDTH TABLE
+   ========================================== */
+
+[data-ap-page="dashboard"] .dashboard-recent-list,
+[data-ap-page="dashboard"] .dashboard-recent-table-wrapper {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
-[data-ap-page="dashboard"] .dashboard-recent-main,
+[data-ap-page="dashboard"] .dashboard-recent-table {
+    width: 100% !important;
+    max-width: 100%;
+    table-layout: fixed;
+}
+
+    /* Column widths */
+    [data-ap-page="dashboard"] .dashboard-recent-table th:nth-child(1),
+    [data-ap-page="dashboard"] .dashboard-recent-table td:nth-child(1) {
+        width: 34%;
+    }
+
+    [data-ap-page="dashboard"] .dashboard-recent-table th:nth-child(2),
+    [data-ap-page="dashboard"] .dashboard-recent-table td:nth-child(2) {
+        width: 13%;
+    }
+
+    [data-ap-page="dashboard"] .dashboard-recent-table th:nth-child(3),
+    [data-ap-page="dashboard"] .dashboard-recent-table td:nth-child(3) {
+        width: 13%;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    [data-ap-page="dashboard"] .dashboard-recent-table th:nth-child(4),
+    [data-ap-page="dashboard"] .dashboard-recent-table td:nth-child(4) {
+        width: 40%;
+    }
+
+    /* Center the Version header and values */
+    [data-ap-page="dashboard"] .dashboard-recent-table th:nth-child(3) {
+        text-align: center !important;
+    }
+
+    [data-ap-page="dashboard"] .dashboard-recent-table td:nth-child(3) {
+        text-align: center !important;
+    }
+
+
+/* ==========================================
+   RECENT WIDGETS - FULL WIDTH DISTRIBUTION
+   ========================================== */
+
+[data-ap-page="dashboard"] .dashboard-recent-list,
+[data-ap-page="dashboard"] .dashboard-recent-table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+[data-ap-page="dashboard"] .dashboard-recent-table {
+    width: 100% !important;
+    table-layout: fixed;
+}
+
+    /* Widget - far left */
+    [data-ap-page="dashboard"] .dashboard-recent-table th:nth-child(1),
+    [data-ap-page="dashboard"] .dashboard-recent-table td:nth-child(1) {
+        width: 35%;
+        text-align: left;
+    }
+
+    /* Status */
+    [data-ap-page="dashboard"] .dashboard-recent-table th:nth-child(2),
+    [data-ap-page="dashboard"] .dashboard-recent-table td:nth-child(2) {
+        width: 15%;
+        text-align: center;
+    }
+
+    /* Version */
+    [data-ap-page="dashboard"] .dashboard-recent-table th:nth-child(3),
+    [data-ap-page="dashboard"] .dashboard-recent-table td:nth-child(3) {
+        width: 15%;
+        text-align: center;
+    }
+
+    /* Actions - far right */
+    [data-ap-page="dashboard"] .dashboard-recent-table th:nth-child(4),
+    [data-ap-page="dashboard"] .dashboard-recent-table td:nth-child(4) {
+        width: 35%;
+        text-align: right !important;
+    }
+
+/* Push buttons to the far-right edge */
 [data-ap-page="dashboard"] .dashboard-recent-actions {
     display: flex;
     align-items: center;
-    gap: 12px;
-    min-width: 0;
+    justify-content: flex-end !important;
+    flex-wrap: nowrap;
+    gap: 8px;
+    width: 100%;
 }
 
-[data-ap-page="dashboard"] .dashboard-recent-icon {
-    display: grid;
-    width: 44px;
-    height: 44px;
-    flex: 0 0 44px;
-    place-items: center;
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--ap-primary, #087f6b) 12%, transparent);
-    color: var(--ap-primary, #087f6b);
-    font-size: 1.2rem;
-}
-
-[data-ap-page="dashboard"] .dashboard-recent-copy {
-    min-width: 0;
-}
-
-    [data-ap-page="dashboard"] .dashboard-recent-copy h3 {
-        margin: 0 0 3px;
-        color: var(--ap-text, #243447);
-        font-size: 0.95rem;
-        font-weight: 700;
-    }
-
-[data-ap-page="dashboard"] .dashboard-widget-name {
-    color: inherit;
-    text-decoration: none;
-}
-
-    [data-ap-page="dashboard"] .dashboard-widget-name:hover,
-    [data-ap-page="dashboard"] .dashboard-widget-name:focus-visible {
-        color: var(--ap-primary, #00d67b);
-        text-decoration: underline;
-        text-underline-offset: 3px;
-    }
-
-[data-ap-page="dashboard"] .dashboard-recent-copy p {
-    overflow: hidden;
-    margin: 0;
-    color: var(--ap-muted, #64748b);
-    font-size: 0.82rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-[data-ap-page="dashboard"] .dashboard-recent-status {
-    padding: 5px 10px;
-    border-radius: 999px;
-    background: #dcfce7;
-    color: #087443;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: capitalize;
-}
-
-    [data-ap-page="dashboard"] .dashboard-recent-status.is-draft {
-        background: #e2e8f0;
-        color: #475569;
-    }
-
-[data-ap-page="dashboard"] .dashboard-recent-version {
-    color: var(--ap-muted, #64748b);
-    font-size: 0.8rem;
-    white-space: nowrap;
-}
-
-[data-ap-page="dashboard"] .dashboard-publish-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.55;
-}
-
+/* Preserve horizontal scrolling on smaller screens */
 @media (max-width: 767.98px) {
-    .ap-page.page-dashboard {
-        padding: 16px;
+    [data-ap-page="dashboard"] .dashboard-recent-table-wrapper {
+        overflow-x: auto;
     }
 
-    [data-ap-page="dashboard"] .dashboard-recent-row,
-    [data-ap-page="dashboard"] .dashboard-recent-actions {
-        align-items: flex-start;
-        flex-wrap: wrap;
-    }
-
-    [data-ap-page="dashboard"] .dashboard-recent-row {
-        flex-direction: column;
+    [data-ap-page="dashboard"] .dashboard-recent-table {
+        min-width: 720px;
     }
 }
+

@@ -2,411 +2,660 @@
 (function () {
     "use strict";
 
-    // ==========================================
-    // 1. DASHBOARD INITIALIZATION
-    // ==========================================
-
     const root = document.querySelector(
         '.page-dashboard[data-ap-page="dashboard"]'
     );
 
-    if (!root) {
-        console.warn(
-            "AskPearls Dashboard: Root element not found."
-        );
-        return;
-    }
-
-    if (root.dataset.dashboardInitialized === "true") {
+    if (!root || root.dataset.dashboardInitialized === "true") {
         return;
     }
 
     root.dataset.dashboardInitialized = "true";
 
-    // ==========================================
-    // 2. RAZOR ELEMENT REFERENCES
-    // ==========================================
-
-    const widgetCount = root.querySelector(
-        "#dashboardWidgetCountAll"
-    );
-
-    const publishedCount = root.querySelector(
-        "#dashboardWidgetCountPublished"
-    );
-
-    const draftCount = root.querySelector(
-        "#dashboardWidgetCountDrafts"
-    );
-
-    const interactionCount = root.querySelector(
-        "#dashboardInteractionCount"
-    );
-
-    const recentLoading = root.querySelector(
-        "#dashboardRecentLoading"
-    );
-
-    const recentError = root.querySelector(
-        "#dashboardRecentError"
-    );
-
-    const recentRetry = root.querySelector(
-        "#dashboardRecentRetry"
-    );
-
-    const recentList = root.querySelector(
-        "#dashboardRecentList"
-    );
-
-    const recentEmpty = root.querySelector(
-        "#dashboardRecentEmpty"
-    );
-
-    // Portal controller endpoint.
-    // Portal forwards requests to AskPearls API.
-
     const widgetsUrl = "/Widget/Api/widgets";
+
+    const STORAGE_KEY = "askpearls.activeWidgetPublicKey";
+    const STORAGE_MODE = "askpearls.widgetBuilderMode";
+
+    const el = {
+        widgetCount: root.querySelector("#dashboardWidgetCountAll"),
+        publishedCount: root.querySelector("#dashboardWidgetCountPublished"),
+        draftCount: root.querySelector("#dashboardWidgetCountDrafts"),
+        interactionCount: root.querySelector("#dashboardInteractionCount"),
+        recentLoading: root.querySelector("#dashboardRecentLoading"),
+        recentError: root.querySelector("#dashboardRecentError"),
+        recentRetry: root.querySelector("#dashboardRecentRetry"),
+        recentList: root.querySelector("#dashboardRecentList"),
+        recentEmpty: root.querySelector("#dashboardRecentEmpty")
+    };
 
     let isLoading = false;
 
     // ==========================================
-    // 3. GENERAL HELPERS
+    // GENERAL HELPERS
     // ==========================================
 
     function setText (element, value) {
-        if (!element) return;
-
-        element.textContent = String(value);
-    }
-
-    function showElement (element) {
         if (element) {
-            element.hidden = false;
+            element.textContent = String(value);
         }
     }
 
-    function hideElement (element) {
-        if (element) {
-            element.hidden = true;
-        }
+    function show (element) {
+        if (element) element.hidden = false;
+    }
+
+    function hide (element) {
+        if (element) element.hidden = true;
     }
 
     function setRecentState (state) {
-
-        hideElement(recentLoading);
-        hideElement(recentError);
-        hideElement(recentList);
-        hideElement(recentEmpty);
+        hide(el.recentLoading);
+        hide(el.recentError);
+        hide(el.recentList);
+        hide(el.recentEmpty);
 
         switch (state) {
-
             case "loading":
-                showElement(recentLoading);
+                show(el.recentLoading);
                 break;
 
             case "error":
-                showElement(recentError);
+                show(el.recentError);
                 break;
 
             case "empty":
-                showElement(recentEmpty);
+                show(el.recentEmpty);
                 break;
 
             case "list":
-                showElement(recentList);
-                break;
-
-            default:
-                console.warn(
-                    "AskPearls Dashboard: Unknown state:",
-                    state
-                );
+                show(el.recentList);
                 break;
         }
     }
 
     function showError (message) {
+        const text = el.recentError?.querySelector("p");
 
-        if (recentError) {
-
-            const errorText = recentError.querySelector("p");
-
-            if (errorText) {
-                errorText.textContent =
-                    message || "We couldn't load your widgets.";
-            }
+        if (text) {
+            text.textContent = message ||
+                "We couldn't load your widgets.";
         }
 
         setRecentState("error");
     }
 
-    // ==========================================
-    // 4. API RESPONSE NORMALIZATION
-    // ==========================================
-
     function normalizeWidgets (result) {
-
-        // Support a plain JSON array.
-        if (Array.isArray(result)) {
-            return result;
-        }
+        if (Array.isArray(result)) return result;
 
         if (!result || typeof result !== "object") {
-            throw new Error(
-                "The API returned an invalid response."
-            );
+            throw new Error("Invalid API response.");
         }
 
-        // Handle API business errors.
         if (result.success === false) {
-
             throw new Error(
                 result.message ||
                 result.detail ||
-                "The API could not load widgets."
+                "Could not load widgets."
             );
         }
 
-        // Current AskPearls API format:
-        // { success: true, widgets: [] }
+        const widgets =
+            result.widgets ??
+            result.data?.widgets ??
+            result.data ??
+            result.items;
 
-        if (Array.isArray(result.widgets)) {
-            return result.widgets;
+        if (!Array.isArray(widgets)) {
+            throw new Error(
+                "The API response does not contain a widgets array."
+            );
         }
 
-        // Support alternative wrapped formats.
+        return widgets;
+    }
 
-        if (Array.isArray(result.data)) {
-            return result.data;
-        }
-
-        if (Array.isArray(result.items)) {
-            return result.items;
-        }
-
-        if (Array.isArray(result.data?.widgets)) {
-            return result.data.widgets;
-        }
-
-        throw new Error(
-            "The API response does not contain a widgets array."
+    function getWidgetName (widget) {
+        return String(
+            widget.name ??
+            widget.widgetName ??
+            widget.title ??
+            "Untitled widget"
         );
     }
 
-    // ==========================================
-    // 5. WIDGET DATA HELPERS
-    // ==========================================
-
-    function getWidgetName (widget) {
-
-        if (!widget || typeof widget !== "object") {
-            return "Untitled widget";
-        }
-
-        return widget.name ||
-            widget.widgetName ||
-            widget.title ||
-            "Untitled widget";
+    function getWidgetKey (widget) {
+        return String(
+            widget.publicKey ??
+            widget.widgetPublicKey ??
+            ""
+        ).trim();
     }
 
     function getWidgetStatus (widget) {
-
-        if (!widget || typeof widget !== "object") {
-            return "draft";
-        }
-
-        const status =
+        return String(
             widget.status ??
-            widget.widgetStatus ??
             widget.widgetStatusCode ??
-            "draft";
-
-        return String(status).trim().toLowerCase();
+            widget.widgetStatus ??
+            "draft"
+        ).trim().toLowerCase();
     }
 
-    function hasPublishedVersion (widget) {
+    function getWidgetVersion (widget) {
+        const version =
+            widget.draftVersionNumber ??
+            widget.versionNumber ??
+            widget.publishedVersionNumber ??
+            widget.widgetPublishedVersion;
 
-        if (!widget || typeof widget !== "object") {
-            return false;
+        if (version === null ||
+            version === undefined ||
+            version === "") {
+            return "—";
         }
 
-        if (
-            typeof widget.hasPublishedVersion === "boolean"
-        ) {
-            return widget.hasPublishedVersion;
-        }
-
-        if (
-            typeof widget.isPublished === "boolean"
-        ) {
-            return widget.isPublished;
-        }
-
-        return [
-            "published",
-            "live",
-            "active"
-        ].includes(getWidgetStatus(widget));
-    }
-
-    function hasDraftVersion (widget) {
-
-        if (!widget || typeof widget !== "object") {
-            return false;
-        }
-
-        if (typeof widget.hasDraft === "boolean") {
-            return widget.hasDraft;
-        }
-
-        if (
-            typeof widget.hasDraftVersion === "boolean"
-        ) {
-            return widget.hasDraftVersion;
-        }
-
-        return getWidgetStatus(widget) === "draft";
+        return String(version);
     }
 
     // ==========================================
-    // 6. DASHBOARD COUNTERS
+    // DASHBOARD COUNTERS
     // ==========================================
 
     function updateCounters (widgets) {
-
         const total = widgets.length;
 
         const published = widgets.filter(
-            hasPublishedVersion
+            widget => getWidgetStatus(widget) === "published"
         ).length;
 
         const drafts = widgets.filter(
-            hasDraftVersion
+            widget => getWidgetStatus(widget) === "draft"
         ).length;
 
-        setText(widgetCount, total);
+        setText(el.widgetCount, total);
+        setText(el.publishedCount, published);
+        setText(el.draftCount, drafts);
+    }
 
-        setText(publishedCount, published);
+    function resetCounters () {
+        setText(el.widgetCount, "—");
+        setText(el.publishedCount, "—");
+        setText(el.draftCount, "—");
+    }
 
-        setText(draftCount, drafts);
+    // ==========================================
+    // SELECT WIDGET FOR EDIT
+    // ==========================================
+
+    function selectWidgetForEdit (publicKey) {
+        if (!publicKey) return false;
+
+        try {
+            localStorage.setItem(STORAGE_MODE, "edit");
+            localStorage.setItem(STORAGE_KEY, publicKey);
+            return true;
+        } catch (error) {
+            console.error(
+                "Could not save selected widget:",
+                error
+            );
+            return false;
+        }
+    }
+
+    // ==========================================
+    // CREATE TABLE ELEMENTS SAFELY
+    // ==========================================
+
+    function createElement (tag, className, text) {
+        const element = document.createElement(tag);
+
+        if (className) element.className = className;
+
+        if (text !== undefined) {
+            element.textContent = String(text);
+        }
+
+        return element;
+    }
+
+    function createActionLink (
+        label,
+        icon,
+        page,
+        publicKey,
+        className
+    ) {
+        const link = createElement(
+            "a",
+            "btn btn-sm " + className
+        );
+
+        link.href = "#";
+        link.dataset.page = page;
+        link.dataset.widgetOpen = publicKey;
+        link.title = label;
+
+        const iconElement = createElement(
+            "i",
+            "bi " + icon + " me-1"
+        );
+
+        iconElement.setAttribute("aria-hidden", "true");
+
+        link.append(
+            iconElement,
+            document.createTextNode(label)
+        );
+
+        return link;
+    }
+
+    function createTable () {
+        const wrapper = createElement(
+            "div",
+            "dashboard-recent-table-wrapper"
+        );
+
+        const table = createElement(
+            "table",
+            "table dashboard-recent-table align-middle mb-0"
+        );
+
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+
+        [ "Widget", "Status", "Version", "Actions" ].forEach(
+            function (title) {
+                const th = createElement("th", "", title);
+                th.scope = "col";
+                headerRow.appendChild(th);
+            }
+        );
+
+        thead.appendChild(headerRow);
+
+        const tbody = document.createElement("tbody");
+
+        table.append(thead, tbody);
+        wrapper.appendChild(table);
+
+        return { wrapper, tbody };
+    }
+
+    // ==========================================
+    // RENDER RECENT WIDGETS TABLE
+    // ==========================================
+
+
+    function renderWidgets (widgets) {
+
+        if (!el.recentList) {
+            console.warn(
+                "AskPearls Dashboard: Recent Widgets container not found."
+            );
+            return;
+        }
+
+        el.recentList.replaceChildren();
+
+        if (!Array.isArray(widgets) || widgets.length === 0) {
+            setRecentState("empty");
+            return;
+        }
+
+        // ==========================================
+        // 1. CREATE TABLE
+        // ==========================================
+
+        const { wrapper, tbody } = createTable();
+
+        const fragment = document.createDocumentFragment();
+
+        // Display the five most recent widgets.
+        widgets.slice(0, 5).forEach(function (widget) {
+
+            const publicKey = getWidgetKey(widget);
+            const name = getWidgetName(widget);
+
+            // Parent widget status is the source of truth.
+            const status = getWidgetStatus(widget);
+
+            const isDraft = status === "draft";
+            const isPublished = status === "published";
+
+            const version = getWidgetVersion(widget);
+
+            const tr = document.createElement("tr");
+            tr.className = "dashboard-recent-row";
+
+            // ==========================================
+            // 2. WIDGET NAME COLUMN
+            // ==========================================
+
+            const widgetCell = document.createElement("td");
+
+            const widgetInfo = createElement(
+                "div",
+                "dashboard-recent-widget"
+            );
+
+            const widgetIcon = createElement(
+                "span",
+                "dashboard-recent-icon"
+            );
+
+            const icon = createElement(
+                "i",
+                "bi bi-window-stack"
+            );
+
+            icon.setAttribute("aria-hidden", "true");
+
+            widgetIcon.appendChild(icon);
+
+            const widgetCopy = createElement(
+                "div",
+                "dashboard-recent-copy"
+            );
+
+            const widgetLink = createElement(
+                "a",
+                "dashboard-widget-name",
+                name
+            );
+
+            if (publicKey) {
+
+                widgetLink.href = "#";
+
+                widgetLink.dataset.page = "widget-builder";
+                widgetLink.dataset.widgetOpen = publicKey;
+
+                widgetLink.title = "Edit " + name;
+
+            } else {
+
+                widgetLink.classList.add("is-disabled");
+                widgetLink.removeAttribute("href");
+
+                widgetLink.setAttribute(
+                    "aria-disabled",
+                    "true"
+                );
+            }
+
+            const description = createElement(
+                "p",
+                "",
+                widget.description ??
+                widget.widgetDescription ??
+                "DecisionOS Widget"
+            );
+
+            widgetCopy.append(
+                widgetLink,
+                description
+            );
+
+            widgetInfo.append(
+                widgetIcon,
+                widgetCopy
+            );
+
+            widgetCell.appendChild(widgetInfo);
+
+            // ==========================================
+            // 3. STATUS COLUMN
+            // ==========================================
+
+            const statusCell = document.createElement("td");
+
+            let statusClass = "is-other";
+
+            if (isDraft) {
+                statusClass = "is-draft";
+            } else if (isPublished) {
+                statusClass = "is-published";
+            }
+
+            const statusBadge = createElement(
+                "span",
+                "dashboard-recent-status " + statusClass,
+                status
+            );
+
+            statusBadge.dataset.status = status;
+
+            statusCell.appendChild(statusBadge);
+
+            // ==========================================
+            // 4. VERSION COLUMN
+            // ==========================================
+
+            const versionCell = document.createElement("td");
+
+            versionCell.className =
+                "dashboard-recent-version";
+
+            versionCell.textContent =
+                version === "—"
+                    ? "—"
+                    : "v" + version;
+
+            // ==========================================
+            // 5. ACTIONS COLUMN
+            // ==========================================
+
+            const actionsCell = document.createElement("td");
+
+            const actions = createElement(
+                "div",
+                "dashboard-recent-actions"
+            );
+
+            if (publicKey) {
+
+                // --------------------------------------
+                // EDIT BUTTON
+                // Always enabled for valid widgets.
+                // --------------------------------------
+
+                const editButton = createActionLink(
+                    "Edit",
+                    "bi-pencil-square",
+                    "widget-builder",
+                    publicKey,
+                    "btn-outline-success"
+                );
+
+                editButton.title = "Edit " + name;
+
+                actions.appendChild(editButton);
+
+                // --------------------------------------
+                // DESIGN BUTTON
+                // Always enabled for valid widgets.
+                // --------------------------------------
+
+                const designButton = createActionLink(
+                    "Design",
+                    "bi-palette",
+                    "design-customize",
+                    publicKey,
+                    "btn-outline-secondary"
+                );
+
+                designButton.title =
+                    "Customize design for " + name;
+
+                actions.appendChild(designButton);
+
+                // --------------------------------------
+                // PUBLISH BUTTON
+                // Enabled ONLY for Draft widgets.
+                // --------------------------------------
+
+                if (isDraft) {
+
+                    const publishButton = createActionLink(
+                        "Publish",
+                        "bi-send",
+                        "publish-embed",
+                        publicKey,
+                        "btn-outline-success dashboard-publish-button"
+                    );
+
+                    publishButton.title =
+                        "Publish " + name;
+
+                    actions.appendChild(publishButton);
+
+                } else {
+
+                    // Published and other non-draft
+                    // widgets cannot be published here.
+
+                    const publishButton = createElement(
+                        "button",
+                        "btn btn-sm btn-outline-secondary dashboard-publish-button"
+                    );
+
+                    publishButton.type = "button";
+                    publishButton.disabled = true;
+
+                    const publishIcon = createElement(
+                        "i",
+                        isPublished
+                            ? "bi bi-check-circle me-1"
+                            : "bi bi-lock me-1"
+                    );
+
+                    publishIcon.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+
+                    const publishText = isPublished
+                        ? "Published"
+                        : "Publish";
+
+                    publishButton.append(
+                        publishIcon,
+                        document.createTextNode(publishText)
+                    );
+
+                    publishButton.title = isPublished
+                        ? "This widget is already published."
+                        : "Only draft widgets can be published.";
+
+                    publishButton.setAttribute(
+                        "aria-label",
+                        publishButton.title
+                    );
+
+                    actions.appendChild(publishButton);
+                }
+
+            } else {
+
+                // Widget without a public key cannot
+                // be edited, designed, or published.
+
+                const unavailable = createElement(
+                    "span",
+                    "small text-muted",
+                    "Actions unavailable"
+                );
+
+                actions.appendChild(unavailable);
+            }
+
+            actionsCell.appendChild(actions);
+
+            // ==========================================
+            // 6. APPEND TABLE ROW
+            // ==========================================
+
+            tr.append(
+                widgetCell,
+                statusCell,
+                versionCell,
+                actionsCell
+            );
+
+            fragment.appendChild(tr);
+        });
+
+        // ==========================================
+        // 7. RENDER TABLE
+        // ==========================================
+
+        tbody.appendChild(fragment);
+
+        el.recentList.appendChild(wrapper);
+
+        setRecentState("list");
 
         console.debug(
-            "AskPearls Dashboard: Counters updated",
+            "AskPearls Dashboard: Recent Widgets rendered.",
             {
-                total: total,
-                published: published,
-                drafts: drafts
+                displayed: Math.min(widgets.length, 5),
+                total: widgets.length
             }
         );
     }
 
-    function resetCounters (value = "—") {
-
-        setText(widgetCount, value);
-
-        setText(publishedCount, value);
-
-        setText(draftCount, value);
-    }
 
     // ==========================================
-    // 7. RENDER RECENT WIDGETS
+    // CLICK HANDLER
     // ==========================================
 
-    function renderWidgets (widgets) {
+    // The existing Portal data-page navigation handles
+    // page changes. Save the selected widget first.
+    // Do not prevent default navigation on success.
 
-        if (!recentList) {
-            console.warn(
-                "AskPearls Dashboard: Recent list not found."
+    el.recentList?.addEventListener(
+        "click",
+        function (event) {
+            const link = event.target.closest(
+                "a[data-widget-open]"
             );
-            return;
+
+            if (!link || !el.recentList.contains(link)) {
+                return;
+            }
+
+            const publicKey = link.dataset.widgetOpen;
+
+            if (!selectWidgetForEdit(publicKey)) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
         }
-
-        recentList.replaceChildren();
-
-        if (widgets.length === 0) {
-
-            setRecentState("empty");
-
-            return;
-        }
-
-        const fragment = document.createDocumentFragment();
-
-        // Display up to five recent widgets.
-        // Assumes API returns newest widgets first.
-
-        widgets.slice(0, 5).forEach(function (widget) {
-
-            const item = document.createElement("article");
-
-            item.className = "dashboard-widget-item";
-
-            const name = document.createElement("h3");
-
-            name.className = "dashboard-widget-name";
-
-            name.textContent = getWidgetName(widget);
-
-            const status = document.createElement("span");
-
-            status.className = "dashboard-widget-status";
-
-            const currentStatus = getWidgetStatus(widget);
-
-            status.textContent = currentStatus;
-
-            status.dataset.status = currentStatus;
-
-            item.append(name, status);
-
-            fragment.appendChild(item);
-        });
-
-        recentList.appendChild(fragment);
-
-        setRecentState("list");
-    }
+    );
 
     // ==========================================
-    // 8. HTTP RESPONSE HANDLING
+    // HTTP RESPONSE HANDLING
     // ==========================================
 
     async function readResponse (response) {
-
-        if (
-            response.type === "opaqueredirect" ||
-            (response.status >= 300 &&
-                response.status < 400)
-        ) {
-
+        if (response.type === "opaqueredirect" ||
+            response.redirected) {
             throw new Error(
-                "The API redirected the request. " +
-                "Please sign in again."
-            );
-        }
-
-        if (response.redirected) {
-
-            throw new Error(
-                "The server redirected the API request. " +
-                "Your session may have expired."
+                "Your session may have expired. Please sign in again."
             );
         }
 
         if (response.status === 401) {
-
             throw new Error(
                 "Your session has expired. Please sign in again."
             );
         }
 
         if (response.status === 403) {
-
             throw new Error(
-                "Access denied. You do not have permission " +
-                "to access these widgets."
+                "You do not have permission to access these widgets."
             );
         }
 
@@ -415,32 +664,23 @@
         ).toLowerCase();
 
         if (!contentType.includes("json")) {
-
             throw new Error(
-                `Unexpected server response (HTTP ${ response.status }). ` +
-                "Expected JSON."
+                "Unexpected server response. Expected JSON."
             );
         }
 
         let result;
 
         try {
-
             result = await response.json();
-
         } catch {
-
-            throw new Error(
-                "The server returned invalid JSON."
-            );
+            throw new Error("Invalid JSON returned by the server.");
         }
 
         if (!response.ok) {
-
             throw new Error(
-                result?.detail ||
-                result?.message ||
-                result?.title ||
+                result?.message ??
+                result?.detail ??
                 `Could not load widgets (HTTP ${ response.status }).`
             );
         }
@@ -449,77 +689,46 @@
     }
 
     // ==========================================
-    // 9. LOAD DASHBOARD WIDGETS
+    // LOAD WIDGETS
     // ==========================================
 
     async function loadWidgets () {
-
-        if (isLoading) {
-            return;
-        }
+        if (isLoading) return;
 
         isLoading = true;
 
         setRecentState("loading");
 
-        if (recentRetry) {
-            recentRetry.disabled = true;
-        }
-
-        if (recentList) {
-            recentList.setAttribute("aria-busy", "true");
+        if (el.recentRetry) {
+            el.recentRetry.disabled = true;
         }
 
         try {
-
-            console.info(
-                "AskPearls Dashboard: Loading widgets..."
-            );
-
             const response = await fetch(widgetsUrl, {
-
                 method: "GET",
-
                 credentials: "same-origin",
-
                 cache: "no-store",
-
                 redirect: "manual",
-
                 headers: {
                     "Accept": "application/json"
                 }
             });
 
             const result = await readResponse(response);
-
             const widgets = normalizeWidgets(result);
 
-            // Update overview cards.
             updateCounters(widgets);
-
-            // Render recent widgets or empty state.
             renderWidgets(widgets);
 
-            console.info(
-                "AskPearls Dashboard: Widgets loaded successfully.",
-                {
-                    count: widgets.length
-                }
-            );
-
         } catch (error) {
-
             console.error(
-                "AskPearls Dashboard: Widget loading failed:",
+                "AskPearls Dashboard: Loading failed:",
                 error
             );
 
-            resetCounters("—");
+            resetCounters();
 
-            if (recentList) {
-                recentList.replaceChildren();
-            }
+            el.recentList?.replaceChildren();
 
             showError(
                 error instanceof Error
@@ -528,123 +737,57 @@
             );
 
         } finally {
-
             isLoading = false;
 
-            if (recentRetry) {
-                recentRetry.disabled = false;
-            }
-
-            if (recentList) {
-                recentList.removeAttribute("aria-busy");
+            if (el.recentRetry) {
+                el.recentRetry.disabled = false;
             }
         }
     }
 
     // ==========================================
-    // 10. RETRY BUTTON
+    // RETRY
     // ==========================================
 
-    if (recentRetry) {
-
-        recentRetry.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-
-                loadWidgets();
-            }
-        );
-    }
+    el.recentRetry?.addEventListener(
+        "click",
+        function (event) {
+            event.preventDefault();
+            loadWidgets();
+        }
+    );
 
     // ==========================================
-    // 11. CREATE WIDGET NAVIGATION
+    // CREATE NEW WIDGET
     // ==========================================
-
-    // Match existing Razor attribute:
-    // data-widget-builder-create
 
     root.querySelectorAll(
         "[data-widget-builder-create]"
     ).forEach(function (button) {
-
         button.addEventListener("click", function () {
-
             try {
-
                 localStorage.setItem(
-                    "askpearls.widgetBuilderMode",
+                    STORAGE_MODE,
                     "create"
                 );
 
-                localStorage.removeItem(
-                    "askpearls.activeWidgetPublicKey"
-                );
-
+                localStorage.removeItem(STORAGE_KEY);
             } catch (error) {
-
-                console.warn(
-                    "AskPearls Dashboard: Could not save " +
-                    "Widget Builder mode:",
-                    error
-                );
+                console.error(error);
             }
-
-            // Do not prevent default navigation.
-            // Existing data-page navigation handles it.
         });
     });
 
     // ==========================================
-    // 12. VALIDATE RAZOR ELEMENTS
+    // INITIALIZATION
     // ==========================================
 
-    function validateElements () {
+    resetCounters();
 
-        const elements = {
-
-            widgetCount,
-            publishedCount,
-            draftCount,
-            recentLoading,
-            recentError,
-            recentRetry,
-            recentList,
-            recentEmpty
-        };
-
-        Object.entries(elements).forEach(
-            function ([ name, element ]) {
-
-                if (!element) {
-
-                    console.warn(
-                        `AskPearls Dashboard: Missing Razor element: ${ name }`
-                    );
-                }
-            }
-        );
+    if (el.interactionCount) {
+        setText(el.interactionCount, "—");
     }
 
-    // ==========================================
-    // 13. INITIALIZE DASHBOARD
-    // ==========================================
-
-    validateElements();
-
-    // Initial counter values.
-    resetCounters("—");
-
-    // Visitor interactions require a separate
-    // analytics endpoint. Do not invent a count.
-    // Keep the Razor placeholder until implemented.
-
-    if (interactionCount) {
-        setText(interactionCount, "—");
-    }
-
-    // Load widgets from Portal controller.
     loadWidgets();
 
 })();

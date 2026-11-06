@@ -1069,18 +1069,165 @@
         );
     }
 
+
+
+
+    /* ==========================================
+       WIDGET BUILDER TOAST NOTIFICATION
+       ========================================== */
+
+    function showWidgetToast (
+        text,
+        type = "success",
+        delay = 4500
+    ) {
+        const toastId = "askpearlsWidgetBuilderToast";
+
+        let container = document.getElementById(
+            "askpearlsWidgetToastContainer"
+        );
+
+        if (!container) {
+            container = document.createElement("div");
+
+            container.id = "askpearlsWidgetToastContainer";
+
+            container.className =
+                "toast-container position-fixed bottom-0 end-0 p-4";
+
+            container.style.zIndex = "1090";
+
+            document.body.appendChild(container);
+        }
+
+        let toastElement = document.getElementById(toastId);
+
+        if (!toastElement) {
+            toastElement = document.createElement("div");
+
+            toastElement.id = toastId;
+            toastElement.className = "toast border-0 shadow-lg";
+            toastElement.setAttribute("role", "status");
+            toastElement.setAttribute("aria-live", "polite");
+            toastElement.setAttribute("aria-atomic", "true");
+
+            toastElement.innerHTML = `
+            <div class="d-flex align-items-center">
+                <div class="toast-body d-flex align-items-center gap-3">
+                    <i class="bi fs-5" data-toast-icon></i>
+                    <span data-toast-message></span>
+                </div>
+                <button type="button"
+                        class="btn-close btn-close-white me-3 m-auto"
+                        data-bs-dismiss="toast"
+                        aria-label="Close">
+                </button>
+            </div>
+        `;
+
+            container.appendChild(toastElement);
+        }
+
+        const isError = type === "error";
+        const isWarning = type === "warning";
+
+        toastElement.classList.remove(
+            "text-bg-success",
+            "text-bg-danger",
+            "text-bg-warning"
+        );
+
+        toastElement.classList.add(
+            isError
+                ? "text-bg-danger"
+                : isWarning
+                    ? "text-bg-warning"
+                    : "text-bg-success"
+        );
+
+        const icon = toastElement.querySelector(
+            "[data-toast-icon]"
+        );
+
+        icon.className = "bi fs-5 " + (
+            isError
+                ? "bi-x-circle-fill"
+                : isWarning
+                    ? "bi-exclamation-triangle-fill"
+                    : "bi-check-circle-fill"
+        );
+
+        const messageElement = toastElement.querySelector(
+            "[data-toast-message]"
+        );
+
+        messageElement.textContent = text;
+
+        const closeButton = toastElement.querySelector(
+            ".btn-close"
+        );
+
+        closeButton.classList.toggle(
+            "btn-close-white",
+            !isWarning
+        );
+
+        toastElement.setAttribute(
+            "role",
+            isError ? "alert" : "status"
+        );
+
+        toastElement.setAttribute(
+            "aria-live",
+            isError ? "assertive" : "polite"
+        );
+
+        if (!window.bootstrap?.Toast) {
+            console.warn(
+                "Bootstrap Toast is unavailable:",
+                text
+            );
+            return;
+        }
+
+        const toast = bootstrap.Toast.getOrCreateInstance(
+            toastElement,
+            {
+                autohide: true,
+                delay: delay
+            }
+        );
+
+        toast.show();
+    }
+
+
     // =====================================================
     // SAVE DRAFT
     // Shared by BOTH Save Draft buttons.
     // =====================================================
 
+
     async function saveDraft () {
+
         if (state.busy) return;
+
+        // ==========================================
+        // 1. VALIDATE WIDGET
+        // ==========================================
 
         const validationError = validate();
 
         if (validationError) {
+
             message(validationError, true);
+
+            showWidgetToast(
+                validationError,
+                "warning",
+                4500
+            );
+
             return;
         }
 
@@ -1088,10 +1235,19 @@
         message("Saving widget draft...");
 
         let createdKey = "";
+        let saveCompleted = false;
+
+        const previousVersionText =
+            el.version?.textContent || "Draft";
 
         try {
-            // Create widget only once.
+
+            // ==========================================
+            // 2. CREATE MODE
+            // ==========================================
+
             if (state.creating) {
+
                 const payload = await createPayload();
 
                 const result = await portalRequest(
@@ -1112,8 +1268,8 @@
 
                 if (!createdKey) {
                     throw new Error(
-                        "Widget creation returned no public key. " +
-                        "Check the API response before retrying."
+                        "Widget creation succeeded but no " +
+                        "public key was returned."
                     );
                 }
 
@@ -1123,14 +1279,16 @@
                 storageSet(STORAGE_KEY, createdKey);
                 storageSet(STORAGE_MODE, "");
 
-                // Immediately update the selector.
-                renderWidgetOptions();
-
                 if (el.pageTitle) {
-                    el.pageTitle.textContent =
-                        "Widget Builder";
+                    el.pageTitle.textContent = "Widget Builder";
                 }
+
+                renderWidgetOptions();
             }
+
+            // ==========================================
+            // 3. VERIFY SELECTED WIDGET
+            // ==========================================
 
             if (!state.key) {
                 throw new Error(
@@ -1138,81 +1296,164 @@
                 );
             }
 
-            // Save Appearance and Behavior configuration.
+            // ==========================================
+            // 4. SAVE DRAFT CONFIGURATION
+            // ==========================================
+
             const saveResult = await saveDesign(state.key);
+
+            saveCompleted = true;
 
             markSaved();
 
-            const version = field(
-                saveResult,
-                "versionNumber",
-                "VersionNumber"
-            );
+            // ==========================================
+            // 5. READ VERSION RETURNED BY API
+            // ==========================================
 
-            if (el.version) {
-                el.version.textContent =
-                    version !== undefined &&
-                        version !== null
-                        ? "Draft v" + version
-                        : "Draft";
+            const savedVersion =
+                field(
+                    saveResult,
+                    "versionNumber",
+                    "VersionNumber"
+                ) ??
+                field(
+                    saveResult?.data,
+                    "versionNumber",
+                    "VersionNumber"
+                ) ??
+                field(
+                    saveResult?.widget,
+                    "versionNumber",
+                    "VersionNumber"
+                );
+
+            if (
+                savedVersion !== undefined &&
+                savedVersion !== null &&
+                String(savedVersion).trim() !== ""
+            ) {
+
+                if (el.version) {
+                    el.version.textContent =
+                        "Draft v" + savedVersion;
+                }
+
+            } else {
+
+                console.warn(
+                    "Draft saved, but the API did not " +
+                    "return a version number."
+                );
+
+                // Keep the previous version.
+                if (el.version) {
+                    el.version.textContent =
+                        previousVersionText;
+                }
             }
 
-            // Refresh the list without losing form values.
+            // ==========================================
+            // 6. REFRESH WIDGET LIST
+            // ==========================================
+
             try {
+
                 await loadWidgets();
+
+                // Keep the widget selected.
+                storageSet(STORAGE_KEY, state.key);
+
+                renderWidgetOptions();
+
             } catch (refreshError) {
+
                 console.warn(
-                    "Widget saved, but list refresh failed:",
+                    "Widget saved, but refreshing " +
+                    "the widget list failed:",
                     refreshError
                 );
             }
 
-            renderWidgetOptions();
+            // ==========================================
+            // 7. SUCCESS MESSAGE + TOAST
+            // ==========================================
 
-            message(
-                createdKey
-                    ? "Widget created and draft saved successfully."
-                    : "Widget draft saved successfully."
+            const successMessage = createdKey
+                ? "Widget created and draft saved successfully."
+                : "Widget draft saved successfully.";
+
+            message(successMessage);
+
+            showWidgetToast(
+                successMessage,
+                "success",
+                4000
             );
 
         } catch (error) {
+
+            // ==========================================
+            // 8. ERROR HANDLING
+            // ==========================================
+
             console.error(
                 "AskPearls Widget Builder save error:",
                 error
             );
 
-            state.dirty = true;
+            if (!saveCompleted) {
+                state.dirty = true;
 
-            if (createdKey) {
+                if (el.version) {
+                    el.version.textContent =
+                        previousVersionText;
+                }
+            }
+
+            let errorMessage;
+
+            if (createdKey && !saveCompleted) {
+
                 setIndicator(
                     "Widget created; settings not saved",
                     false
                 );
 
-                message(
-                    "Widget was created, but saving its " +
-                    "configuration failed. Click Save Draft " +
-                    "again to retry without creating a duplicate. " +
-                    (error.message || ""),
-                    true
-                );
-            } else {
-                setIndicator(
-                    "Unsaved changes",
-                    false
-                );
+                errorMessage =
+                    "Widget created, but its configuration " +
+                    "could not be saved. Please retry. " +
+                    (error.message || "");
 
-                message(
+            } else {
+
+                if (!saveCompleted) {
+                    setIndicator("Unsaved changes", false);
+                }
+
+                errorMessage =
                     error.message ||
-                    "Could not save the widget.",
-                    true
-                );
+                    "Could not save the widget draft.";
             }
+
+            message(errorMessage, true);
+
+            showWidgetToast(
+                errorMessage,
+                "error",
+                6000
+            );
+
         } finally {
+
+            // ==========================================
+            // 9. RESTORE SAVE BUTTONS
+            // ==========================================
+
             setBusy(false);
             renderWidgetOptions();
         }
     }
+
 
     // =====================================================
     // EVENTS
