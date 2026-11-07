@@ -1,6 +1,8 @@
-using AskPearlsCS_DOMAIN.app_ContractsManager;
+using AskPearls.Domain;
 
 using AskPearlsCS_BLL.app_Service;
+
+using AskPearlsCS_DOMAIN.app_ContractsManager;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -69,6 +71,13 @@ public class WidgetController : ControllerBase
 
         var result = await _widgetService.CreateWidgetAsync(ownerUserTokenId, request);
         return FromOperation(result);
+    }
+
+    [HttpPut("{publicKey}/basics")]
+    public async Task<IActionResult> UpdateWidgetBasics(string publicKey, [FromBody] UpdateWidgetBasicsRequest? request)
+    {
+        if (!TryGetAuthenticatedOwner(out var ownerUserTokenId, out var error)) return error!;
+        return FromOperation(await _widgetService.UpdateWidgetBasicsAsync(ownerUserTokenId, publicKey, request));
     }
 
     [HttpPut("{publicKey}/draft/configuration")]

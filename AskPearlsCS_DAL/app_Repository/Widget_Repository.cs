@@ -147,6 +147,7 @@ public class Widget_Repository : IWidget_Repository
             {
                 publicKey = widget.WidgetPublicKey,
                 name = widget.WidgetName ?? widget.WidgetTitle ?? "Untitled widget",
+                title = widget.WidgetTitle,
                 description = widget.WidgetDescription ?? string.Empty,
 
                 // Required to populate Target Website in Edit Mode.
@@ -324,6 +325,111 @@ public class Widget_Repository : IWidget_Repository
     // Increment the editable draft revision on every successful Save Draft.
     // This keeps a single active draft and updates its dependent version references.
     // It does NOT create immutable historical snapshots of each draft revision.
+    // Save the editable parent widget fields and resolve/create its target website.
+    public async Task<WidgetOperationResult> UpdateWidgetBasicsAsync(
+        string ownerUserTokenId, string publicKey, UpdateWidgetBasicsRequest? request)
+    {
+        if (string.IsNullOrWhiteSpace(publicKey) || request is null ||
+            string.IsNullOrWhiteSpace(request.Name) || request.Name.Trim().Length > 100 ||
+            string.IsNullOrWhiteSpace(request.Title) || request.Title.Trim().Length > 120 ||
+            request.Description?.Length > 500)
+            return BadRequest(new { success = false, message = "Invalid widget basic information." });
+
+        var address = request.WebsiteAddress?.Trim();
+        Uri? uri = null;
+        if (!string.IsNullOrWhiteSpace(address) &&
+            (address.Length > 250 ||
+             !Uri.TryCreate(address, UriKind.Absolute, out uri) ||
+             uri.Scheme is not ("http" or "https") ||
+             string.IsNullOrWhiteSpace(uri.Host)))
+            return BadRequest(new { success = false, message = "Enter a valid HTTP/HTTPS Target Website URL." });
+        if (string.IsNullOrWhiteSpace(address) && string.IsNullOrWhiteSpace(request.WebsiteTokenId))
+            return BadRequest(new { success = false, message = "Target Website is required." });
+
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync(
+            System.Data.IsolationLevel.Serializable);
+        var widget = await _dbContext.AskpearlsPortalUserWebsiteWidgetLists
+            .FirstOrDefaultAsync(x => x.WidgetPublicKey == publicKey &&
+                x.OwnerUserTokenId == ownerUserTokenId && x.IsActive == true && x.IsVisible == true);
+        if (widget is null)
+            return NotFound(new { success = false, message = "Widget was not found for this user." });
+
+        AskpearlsPortalUserWebsiteList? website = null;
+        if (!string.IsNullOrWhiteSpace(address))
+        {
+            website = await _dbContext.AskpearlsPortalUserWebsiteLists.FirstOrDefaultAsync(x =>
+                x.OwnerUserTokenId == ownerUserTokenId && x.WebsiteAddress == address &&
+                x.IsActive == true && x.IsVisible == true);
+            if (website is null)
+            {
+                var now = DateTime.UtcNow;
+                website = new AskpearlsPortalUserWebsiteList
+                {
+                    RowViewTokenId = Guid.NewGuid(),
+                    RowDataTokenId = Guid.NewGuid().ToString("N"),
+                    AccountType = "portal",
+                    OwnerUserTokenId = ownerUserTokenId,
+                    WebsiteTokenId = Guid.NewGuid().ToString("N"),
+                    WebsiteName = string.IsNullOrWhiteSpace(request.WebsiteName)
+                        ? uri!.Host : request.WebsiteName.Trim(),
+                    WebsiteAddress = address,
+                    ActiveStatus = "active",
+                    IsNew = true,
+                    IsActive = true,
+                    IsVisible = true,
+                    CreatedAtUtc = now,
+                    UpdatedAtUtc = now
+                };
+                _dbContext.AskpearlsPortalUserWebsiteLists.Add(website);
+            }
+        }
+        else
+        {
+            website = await _dbContext.AskpearlsPortalUserWebsiteLists.FirstOrDefaultAsync(x =>
+                x.OwnerUserTokenId == ownerUserTokenId &&
+                x.WebsiteTokenId == request.WebsiteTokenId &&
+                x.IsActive == true && x.IsVisible == true);
+        }
+        if (website is null)
+            return BadRequest(new { success = false, message = "Target Website was not found for this user." });
+
+        widget.WidgetName = request.Name.Trim();
+        widget.WidgetTitle = request.Title.Trim();
+        widget.WidgetDescription = (request.Description ?? string.Empty).Trim();
+        widget.WebsiteTokenId = website.WebsiteTokenId;
+        widget.WebsiteName = website.WebsiteName;
+        widget.WebsiteAddress = website.WebsiteAddress;
+
+        // Keep editable draft metadata in sync, but never rewrite published history.
+        var activeDrafts = await _dbContext.AskpearlsPortalUserWebsiteWidgetVersionLists
+            .Where(x => x.OwnerUserTokenId == ownerUserTokenId &&
+                x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey &&
+                x.WidgetStatusCode == "draft" && x.IsActive == true && x.IsVisible == true)
+            .ToListAsync();
+        if (activeDrafts.Count > 1)
+            return Conflict(new { success = false, message = "More than one active draft exists for this widget." });
+        foreach (var draft in activeDrafts)
+        {
+            draft.WebsiteTokenId = website.WebsiteTokenId;
+            draft.WebsiteName = website.WebsiteName;
+            draft.UpdatedAtUtc = DateTime.UtcNow;
+        }
+        await _dbContext.SaveChangesAsync();
+        await transaction.CommitAsync();
+        return Ok(new
+        {
+            success = true,
+            publicKey = widget.WidgetPublicKey,
+            name = widget.WidgetName,
+            title = widget.WidgetTitle,
+            description = widget.WidgetDescription,
+            websiteTokenId = website.WebsiteTokenId,
+            websiteName = website.WebsiteName,
+            websiteAddress = website.WebsiteAddress,
+            status = widget.WidgetStatusCode
+        });
+    }
+
     public async Task<WidgetOperationResult> SaveDesignDraftAsync(
         string ownerUserTokenId,
         string publicKey,
@@ -446,6 +552,8 @@ public class Widget_Repository : IWidget_Repository
             foreach (var row in rules) row.WidgetVersionNumber = nextVersionNumber;
 
             draft.WidgetVersionNumber = nextVersionNumber;
+            draft.WebsiteTokenId = widget.WebsiteTokenId;
+            draft.WebsiteName = widget.WebsiteName;
             draft.WidgetConfigurationJson = json;
             draft.UpdatedAtUtc = now;
         }

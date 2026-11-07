@@ -33,6 +33,9 @@ public class Widget_Service : IWidget_Service
     public Task<WidgetOperationResult> CreateWidgetAsync(string ownerUserTokenId, CreateWidgetRequest? request)
         => _widgetRepository.CreateWidgetAsync(ownerUserTokenId, request);
 
+    public Task<WidgetOperationResult> UpdateWidgetBasicsAsync(string ownerUserTokenId, string publicKey, UpdateWidgetBasicsRequest? request)
+        => _widgetRepository.UpdateWidgetBasicsAsync(ownerUserTokenId, publicKey, request);
+
     public Task<WidgetOperationResult> SaveDesignDraftAsync(string ownerUserTokenId, string publicKey, WidgetDesignDraftRequest? request)
         => _widgetRepository.SaveDesignDraftAsync(ownerUserTokenId, publicKey, request);
 

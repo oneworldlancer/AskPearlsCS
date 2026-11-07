@@ -7,19 +7,15 @@
     );
 
     if (!root || root.dataset.wbInitialized === "true") return;
+
     root.dataset.wbInitialized = "true";
 
     const $ = id => root.querySelector("#" + id);
-
-    // =====================================================
-    // RAZOR ELEMENTS
-    // =====================================================
 
     const el = {
         message: $("wbApiMessage"),
         apiNote: $("wbApiNote"),
         indicator: $("wbDraftIndicator"),
-
         save: $("wbSaveButton"),
         saveBottom: $("wbSaveBottomButton"),
         previewButton: $("wbPreviewButton"),
@@ -56,8 +52,6 @@
         previewPrimary: $("wbPreviewPrimary")
     };
 
-    // Same-origin Portal proxy.
-    // Portal handles authentication and JWT.
     const API_ROOT = "/Widget/Api";
 
     const STORAGE_KEY = "askpearls.activeWidgetPublicKey";
@@ -81,10 +75,6 @@
     const panels = Array.from(
         root.querySelectorAll("[data-wb-panel]")
     );
-
-    // =====================================================
-    // HELPERS
-    // =====================================================
 
     function value (element, fallback = "") {
         if (!element) return fallback;
@@ -127,13 +117,10 @@
 
     function storageSet (key, val) {
         try {
-            if (val) {
-                localStorage.setItem(key, val);
-            } else {
-                localStorage.removeItem(key);
-            }
+            if (val) localStorage.setItem(key, val);
+            else localStorage.removeItem(key);
         } catch {
-            // Browser storage is optional.
+            // Storage is optional.
         }
     }
 
@@ -157,38 +144,14 @@
         el.indicator.classList.toggle("is-saved", saved);
     }
 
-    // =====================================================
-    // BOTH SAVE DRAFT BUTTONS
-    // =====================================================
-
     function updateSaveButton () {
-        const buttons = [
-            el.save,
-            el.saveBottom
-        ].filter(Boolean);
-
-        buttons.forEach(button => {
+        [el.save, el.saveBottom].filter(Boolean).forEach(button => {
             button.disabled = state.busy;
-
-            button.setAttribute(
-                "aria-busy",
-                String(state.busy)
-            );
-
+            button.setAttribute("aria-busy", String(state.busy));
+            const icon = button.querySelector("i");
             button.replaceChildren();
-
-            const icon = document.createElement("i");
-            icon.className = state.busy
-                ? "spinner-border spinner-border-sm me-2"
-                : "bi bi-floppy me-2";
-
-            button.appendChild(icon);
-
-            button.append(
-                document.createTextNode(
-                    state.busy ? "Saving..." : "Save Draft"
-                )
-            );
+            if (icon) button.appendChild(icon);
+            button.append(document.createTextNode(state.busy ? " Saving..." : " Save Draft"));
         });
     }
 
@@ -205,10 +168,6 @@
         }
     }
 
-    // =====================================================
-    // PORTAL API
-    // =====================================================
-
     function antiForgeryToken () {
         return root.querySelector(
             'input[name="__RequestVerificationToken"]'
@@ -224,14 +183,13 @@
             return data || fallback;
         }
 
-        if (data.errors && typeof data.errors === "object") {
+        if (data.errors &&
+            typeof data.errors === "object") {
             const errors = Object.values(data.errors)
                 .flat()
                 .filter(Boolean);
 
-            if (errors.length) {
-                return errors.join(" ");
-            }
+            if (errors.length) return errors.join(" ");
         }
 
         return data.message ||
@@ -256,7 +214,8 @@
 
             if (!token) {
                 throw new Error(
-                    "Anti-forgery token is missing. Refresh the Portal page."
+                    "Anti-forgery token is missing. " +
+                    "Refresh the Portal page."
                 );
             }
 
@@ -276,11 +235,11 @@
         const response = await fetch(
             API_ROOT + "/" + path.replace(/^\/+/, ""),
             {
-                method: method,
+                method,
                 credentials: "same-origin",
                 cache: "no-store",
                 redirect: "manual",
-                headers: headers,
+                headers,
                 body: options.body === undefined
                     ? undefined
                     : JSON.stringify(options.body)
@@ -291,7 +250,8 @@
             (response.status >= 300 &&
                 response.status < 400)) {
             throw new Error(
-                "Your login session may have expired."
+                "Your session may have expired. " +
+                "Please sign in again."
             );
         }
 
@@ -303,7 +263,7 @@
 
         if (response.status === 403) {
             throw new Error(
-                "You do not have permission to access this widget."
+                "Access denied to this widget."
             );
         }
 
@@ -312,6 +272,7 @@
         ).toLowerCase();
 
         const raw = await response.text();
+
         let data = null;
 
         if (raw) {
@@ -335,17 +296,14 @@
             throw new Error(
                 apiError(
                     data,
-                    "API request failed: HTTP " + response.status
+                    "API request failed: HTTP " +
+                    response.status
                 )
             );
         }
 
         return data;
     }
-
-    // =====================================================
-    // WIDGET HELPERS
-    // =====================================================
 
     function normalizeWidgets (result) {
         if (Array.isArray(result)) return result;
@@ -366,7 +324,11 @@
     function publicKey (widget) {
         return String(
             field(widget, "publicKey", "PublicKey") ||
-            field(widget, "widgetPublicKey", "WidgetPublicKey") ||
+            field(
+                widget,
+                "widgetPublicKey",
+                "WidgetPublicKey"
+            ) ||
             ""
         );
     }
@@ -385,7 +347,10 @@
         el.select.replaceChildren();
 
         if (state.creating || !state.widgets.length) {
-            el.select.add(new Option("NEW Widget", ""));
+            el.select.add(
+                new Option("NEW Widget", "")
+            );
+
             el.select.value = "";
             el.select.disabled = true;
             return;
@@ -405,28 +370,13 @@
             );
         });
 
-        // Keep a newly created widget visible even if
-        // the list has not been refreshed yet.
         const exists = state.widgets.some(
             widget => publicKey(widget) === state.key
         );
 
-        if (state.key && !exists) {
-            el.select.add(
-                new Option(
-                    value(el.name, "New Widget"),
-                    state.key
-                )
-            );
-        }
-
-        el.select.value = state.key || "";
+        el.select.value = exists ? state.key : "";
         el.select.disabled = state.busy;
     }
-
-    // =====================================================
-    // THEME AND DESIGN
-    // =====================================================
 
     function theme () {
         return root.querySelector(
@@ -444,51 +394,34 @@
             selected + '"]'
         );
 
-        if (radio) {
-            radio.checked = true;
-        }
+        if (radio) radio.checked = true;
     }
 
     function currentSettings () {
         const dark = theme() === "dark";
 
-        const selectedCorners = value(
-            el.corners,
-            "rounded"
-        );
-
         return {
             primary: value(el.primary, "#16a085"),
             background: dark ? "#10242b" : "#ffffff",
             text: dark ? "#edf5f7" : "#16352b",
-
-            // Accepted by IsValidDesign() in your API.
             font: "Inter, Arial, sans-serif",
-
             fontSize: 16,
             radius: 16,
             shadow: true,
             width: 420,
-
             position: value(
                 el.position,
                 "bottom-right"
             ),
-
-            buttonShape:
-                [ "rounded", "pill", "square" ].includes(
-                    selectedCorners
-                )
-                    ? selectedCorners
-                    : "rounded",
-
+            buttonShape: value(el.corners, "rounded") === "soft"
+                ? "rounded"
+                : value(el.corners, "rounded"),
             heading: value(el.title),
             description: value(el.description),
             buttonText: value(
                 el.buttonText,
                 "Get Started"
             ),
-
             footer: "",
             theme: theme(),
 
@@ -568,10 +501,6 @@
         setIndicator("Draft saved", true);
     }
 
-    // =====================================================
-    // WIZARD NAVIGATION
-    // =====================================================
-
     function setStep (index) {
         state.step = Math.max(
             0,
@@ -584,7 +513,10 @@
             const active =
                 button.dataset.wbTab === activeStep;
 
-            button.classList.toggle("active", active);
+            button.classList.toggle(
+                "active",
+                active
+            );
 
             button.setAttribute(
                 "aria-current",
@@ -596,26 +528,24 @@
             const active =
                 panel.dataset.wbPanel === activeStep;
 
-            panel.classList.toggle("active", active);
+            panel.classList.toggle(
+                "active",
+                active
+            );
+
             panel.hidden = !active;
         });
 
         if (el.previous) {
-            el.previous.disabled = state.step === 0;
+            el.previous.disabled =
+                state.step === 0;
         }
 
         if (el.next) {
             el.next.hidden =
                 state.step === steps.length - 1;
         }
-
-        // Both Save Draft buttons stay visible
-        // on all wizard steps.
     }
-
-    // =====================================================
-    // CREATE MODE
-    // =====================================================
 
     function resetFields () {
         setValue(el.name, "");
@@ -624,7 +554,11 @@
         setValue(el.title, "");
         setValue(el.description, "");
 
-        setValue(el.buttonText, "Get Started");
+        setValue(
+            el.buttonText,
+            "Get Started"
+        );
+
         setValue(el.primary, "#16a085");
         setValue(el.corners, "rounded");
         setValue(el.position, "bottom-right");
@@ -655,7 +589,8 @@
 
         if (el.pageDescription) {
             el.pageDescription.textContent =
-                "Set up your widget details, appearance, and behavior.";
+                "Set up your widget details, " +
+                "appearance, and behavior.";
         }
 
         if (el.version) {
@@ -664,20 +599,18 @@
 
         if (el.apiNote) {
             el.apiNote.textContent =
-                "Enter your widget details and click Save Draft.";
+                "Create a widget by entering its " +
+                "details and clicking Save Draft.";
         }
 
         setStep(0);
         markDirty();
 
         message(
-            "Enter your widget details to create a new widget."
+            "Enter your widget details to create " +
+            "a new widget."
         );
     }
-
-    // =====================================================
-    // APPLY EXISTING WIDGET CONFIGURATION
-    // =====================================================
 
     function applySettings (result) {
         if (!result) return;
@@ -729,9 +662,7 @@
             "Theme"
         );
 
-        if (savedTheme) {
-            setTheme(savedTheme);
-        }
+        if (savedTheme) setTheme(savedTheme);
 
         updatePreview();
     }
@@ -801,7 +732,8 @@
         }
 
         if (el.pageTitle) {
-            el.pageTitle.textContent = "Widget Builder";
+            el.pageTitle.textContent =
+                "Widget Builder";
         }
 
         if (el.version) {
@@ -811,10 +743,6 @@
         renderWidgetOptions();
         updatePreview();
     }
-
-    // =====================================================
-    // LOAD WIDGETS
-    // =====================================================
 
     async function loadConfiguration (key) {
         const result = await portalRequest(
@@ -869,7 +797,6 @@
 
         try {
             applyWidget(widget);
-
             await loadConfiguration(key);
 
             message("");
@@ -884,10 +811,6 @@
             renderWidgetOptions();
         }
     }
-
-    // =====================================================
-    // WEBSITE VALIDATION
-    // =====================================================
 
     function normalizedWebsite () {
         const input = value(el.website);
@@ -904,7 +827,6 @@
         const type = value(el.type, "decision");
         const title = value(el.title);
         const description = value(el.description);
-        const buttonText = value(el.buttonText);
 
         if (!name) {
             return "Enter an internal widget name.";
@@ -927,7 +849,9 @@
         try {
             const url = new URL(website);
 
-            if (![ "http:", "https:" ].includes(url.protocol)) {
+            if (![ "http:", "https:" ].includes(
+                url.protocol
+            )) {
                 throw new Error();
             }
 
@@ -947,26 +871,16 @@
             return "Enter a visitor-facing widget title.";
         }
 
-        // API design validation requires max 100.
-        if (title.length > 100) {
-            return "Widget title must be 100 characters or fewer.";
+        if (title.length > 120) {
+            return "Widget title must be 120 characters or fewer.";
         }
 
-        // API design validation requires max 250.
-        if (description.length > 250) {
-            return "Description must be 250 characters or fewer.";
-        }
-
-        if (buttonText.length > 40) {
-            return "Button label must be 40 characters or fewer.";
+        if (description.length > 500) {
+            return "Description must be 500 characters or fewer.";
         }
 
         return "";
     }
-
-    // =====================================================
-    // WEBSITE LOOKUP
-    // =====================================================
 
     async function resolveWebsite () {
         const address = normalizedWebsite();
@@ -1027,14 +941,12 @@
 
         return {
             websiteTokenId: token,
-
             websiteName: existing
                 ? (
                     field(existing, "name", "Name") ||
                     new URL(address).hostname
                 )
                 : new URL(address).hostname,
-
             websiteAddress: address
         };
     }
@@ -1053,9 +965,20 @@
         };
     }
 
-    // =====================================================
-    // SAVE DESIGN CONFIGURATION
-    // =====================================================
+    async function saveWidgetBasics (key) {
+        const website = await resolveWebsite();
+        return portalRequest("widgets/" + encodeURIComponent(key) + "/basics", {
+            method: "PUT",
+            body: {
+                name: value(el.name),
+                title: value(el.title),
+                description: value(el.description),
+                websiteTokenId: website.websiteTokenId,
+                websiteName: website.websiteName,
+                websiteAddress: website.websiteAddress
+            }
+        });
+    }
 
     async function saveDesign (key) {
         return portalRequest(
@@ -1069,165 +992,13 @@
         );
     }
 
-
-
-
-    /* ==========================================
-       WIDGET BUILDER TOAST NOTIFICATION
-       ========================================== */
-
-    function showWidgetToast (
-        text,
-        type = "success",
-        delay = 4500
-    ) {
-        const toastId = "askpearlsWidgetBuilderToast";
-
-        let container = document.getElementById(
-            "askpearlsWidgetToastContainer"
-        );
-
-        if (!container) {
-            container = document.createElement("div");
-
-            container.id = "askpearlsWidgetToastContainer";
-
-            container.className =
-                "toast-container position-fixed bottom-0 end-0 p-4";
-
-            container.style.zIndex = "1090";
-
-            document.body.appendChild(container);
-        }
-
-        let toastElement = document.getElementById(toastId);
-
-        if (!toastElement) {
-            toastElement = document.createElement("div");
-
-            toastElement.id = toastId;
-            toastElement.className = "toast border-0 shadow-lg";
-            toastElement.setAttribute("role", "status");
-            toastElement.setAttribute("aria-live", "polite");
-            toastElement.setAttribute("aria-atomic", "true");
-
-            toastElement.innerHTML = `
-            <div class="d-flex align-items-center">
-                <div class="toast-body d-flex align-items-center gap-3">
-                    <i class="bi fs-5" data-toast-icon></i>
-                    <span data-toast-message></span>
-                </div>
-                <button type="button"
-                        class="btn-close btn-close-white me-3 m-auto"
-                        data-bs-dismiss="toast"
-                        aria-label="Close">
-                </button>
-            </div>
-        `;
-
-            container.appendChild(toastElement);
-        }
-
-        const isError = type === "error";
-        const isWarning = type === "warning";
-
-        toastElement.classList.remove(
-            "text-bg-success",
-            "text-bg-danger",
-            "text-bg-warning"
-        );
-
-        toastElement.classList.add(
-            isError
-                ? "text-bg-danger"
-                : isWarning
-                    ? "text-bg-warning"
-                    : "text-bg-success"
-        );
-
-        const icon = toastElement.querySelector(
-            "[data-toast-icon]"
-        );
-
-        icon.className = "bi fs-5 " + (
-            isError
-                ? "bi-x-circle-fill"
-                : isWarning
-                    ? "bi-exclamation-triangle-fill"
-                    : "bi-check-circle-fill"
-        );
-
-        const messageElement = toastElement.querySelector(
-            "[data-toast-message]"
-        );
-
-        messageElement.textContent = text;
-
-        const closeButton = toastElement.querySelector(
-            ".btn-close"
-        );
-
-        closeButton.classList.toggle(
-            "btn-close-white",
-            !isWarning
-        );
-
-        toastElement.setAttribute(
-            "role",
-            isError ? "alert" : "status"
-        );
-
-        toastElement.setAttribute(
-            "aria-live",
-            isError ? "assertive" : "polite"
-        );
-
-        if (!window.bootstrap?.Toast) {
-            console.warn(
-                "Bootstrap Toast is unavailable:",
-                text
-            );
-            return;
-        }
-
-        const toast = bootstrap.Toast.getOrCreateInstance(
-            toastElement,
-            {
-                autohide: true,
-                delay: delay
-            }
-        );
-
-        toast.show();
-    }
-
-
-    // =====================================================
-    // SAVE DRAFT
-    // Shared by BOTH Save Draft buttons.
-    // =====================================================
-
-
     async function saveDraft () {
-
         if (state.busy) return;
-
-        // ==========================================
-        // 1. VALIDATE WIDGET
-        // ==========================================
 
         const validationError = validate();
 
         if (validationError) {
-
             message(validationError, true);
-
-            showWidgetToast(
-                validationError,
-                "warning",
-                4500
-            );
-
             return;
         }
 
@@ -1235,19 +1006,9 @@
         message("Saving widget draft...");
 
         let createdKey = "";
-        let saveCompleted = false;
-
-        const previousVersionText =
-            el.version?.textContent || "Draft";
 
         try {
-
-            // ==========================================
-            // 2. CREATE MODE
-            // ==========================================
-
             if (state.creating) {
-
                 const payload = await createPayload();
 
                 const result = await portalRequest(
@@ -1268,8 +1029,8 @@
 
                 if (!createdKey) {
                     throw new Error(
-                        "Widget creation succeeded but no " +
-                        "public key was returned."
+                        "Widget creation returned no public key. " +
+                        "Check the API response before retrying."
                     );
                 }
 
@@ -1278,17 +1039,7 @@
 
                 storageSet(STORAGE_KEY, createdKey);
                 storageSet(STORAGE_MODE, "");
-
-                if (el.pageTitle) {
-                    el.pageTitle.textContent = "Widget Builder";
-                }
-
-                renderWidgetOptions();
             }
-
-            // ==========================================
-            // 3. VERIFY SELECTED WIDGET
-            // ==========================================
 
             if (!state.key) {
                 throw new Error(
@@ -1296,168 +1047,79 @@
                 );
             }
 
-            // ==========================================
-            // 4. SAVE DRAFT CONFIGURATION
-            // ==========================================
-
+            // Save Basics first, including new or existing Target Website.
+            const basicsResult = await saveWidgetBasics(state.key);
+            const savedWebsiteTokenId = field(basicsResult, "websiteTokenId", "WebsiteTokenId");
+            console.debug("Saved Target Website token:", savedWebsiteTokenId);
+            // Save design and receive the authoritative new draft version.
             const saveResult = await saveDesign(state.key);
 
-            saveCompleted = true;
-
+            // The draft has been saved at this point.
             markSaved();
 
-            // ==========================================
-            // 5. READ VERSION RETURNED BY API
-            // ==========================================
-
-            const savedVersion =
-                field(
-                    saveResult,
-                    "versionNumber",
-                    "VersionNumber"
-                ) ??
-                field(
-                    saveResult?.data,
-                    "versionNumber",
-                    "VersionNumber"
-                ) ??
-                field(
-                    saveResult?.widget,
-                    "versionNumber",
-                    "VersionNumber"
-                );
-
-            if (
-                savedVersion !== undefined &&
-                savedVersion !== null &&
-                String(savedVersion).trim() !== ""
-            ) {
-
-                if (el.version) {
-                    el.version.textContent =
-                        "Draft v" + savedVersion;
-                }
-
-            } else {
-
-                console.warn(
-                    "Draft saved, but the API did not " +
-                    "return a version number."
-                );
-
-                // Keep the previous version.
-                if (el.version) {
-                    el.version.textContent =
-                        previousVersionText;
-                }
+            const savedVersion = field(saveResult, "versionNumber", "VersionNumber") ??
+                field(saveResult?.data, "versionNumber", "VersionNumber");
+            if (el.version && savedVersion !== undefined && savedVersion !== null) {
+                el.version.textContent = "Draft v" + savedVersion;
             }
 
-            // ==========================================
-            // 6. REFRESH WIDGET LIST
-            // ==========================================
-
+            // A list refresh failure must not be treated
+            // as a failure to save the draft.
             try {
-
                 await loadWidgets();
-
-                // Keep the widget selected.
-                storageSet(STORAGE_KEY, state.key);
-
-                renderWidgetOptions();
-
             } catch (refreshError) {
-
                 console.warn(
-                    "Widget saved, but refreshing " +
-                    "the widget list failed:",
+                    "Widget saved, but list refresh failed:",
                     refreshError
                 );
             }
 
-            // ==========================================
-            // 7. SUCCESS MESSAGE + TOAST
-            // ==========================================
+            renderWidgetOptions();
 
-            const successMessage = createdKey
-                ? "Widget created and draft saved successfully."
-                : "Widget draft saved successfully.";
-
-            message(successMessage);
-
-            showWidgetToast(
-                successMessage,
-                "success",
-                4000
+            message(
+                createdKey
+                    ? "Widget created and draft saved successfully."
+                    : "Widget draft saved successfully."
             );
 
         } catch (error) {
-
-            // ==========================================
-            // 8. ERROR HANDLING
-            // ==========================================
-
             console.error(
                 "AskPearls Widget Builder save error:",
                 error
             );
 
-            if (!saveCompleted) {
-                state.dirty = true;
+            state.dirty = true;
 
-                if (el.version) {
-                    el.version.textContent =
-                        previousVersionText;
-                }
-            }
-
-            let errorMessage;
-
-            if (createdKey && !saveCompleted) {
-
+            if (createdKey) {
                 setIndicator(
                     "Widget created; settings not saved",
                     false
                 );
 
-                errorMessage =
-                    "Widget created, but its configuration " +
-                    "could not be saved. Please retry. " +
-                    (error.message || "");
-
+                message(
+                    "Widget was created, but saving its " +
+                    "configuration failed. Click Save Draft " +
+                    "again to retry without creating a duplicate. " +
+                    (error.message || ""),
+                    true
+                );
             } else {
+                setIndicator(
+                    "Unsaved changes",
+                    false
+                );
 
-                if (!saveCompleted) {
-                    setIndicator("Unsaved changes", false);
-                }
-
-                errorMessage =
+                message(
                     error.message ||
-                    "Could not save the widget draft.";
+                    "Could not save the widget.",
+                    true
+                );
             }
-
-            message(errorMessage, true);
-
-            showWidgetToast(
-                errorMessage,
-                "error",
-                6000
-            );
-
         } finally {
-
-            // ==========================================
-            // 9. RESTORE SAVE BUTTONS
-            // ==========================================
-
             setBusy(false);
             renderWidgetOptions();
         }
     }
-
-
-    // =====================================================
-    // EVENTS
-    // =====================================================
 
     function bindEvents () {
         tabs.forEach(button => {
@@ -1466,9 +1128,7 @@
                     button.dataset.wbTab
                 );
 
-                if (index >= 0) {
-                    setStep(index);
-                }
+                if (index >= 0) setStep(index);
             });
         });
 
@@ -1482,13 +1142,11 @@
             () => setStep(state.step + 1)
         );
 
-        // TOP-RIGHT SAVE DRAFT BUTTON
         el.save?.addEventListener(
             "click",
             saveDraft
         );
 
-        // BOTTOM-RIGHT SAVE DRAFT BUTTON
         el.saveBottom?.addEventListener(
             "click",
             saveDraft
@@ -1546,10 +1204,6 @@
         );
     }
 
-    // =====================================================
-    // INITIALIZATION
-    // =====================================================
-
     async function initialize () {
         bindEvents();
 
@@ -1558,6 +1212,7 @@
         updateSaveButton();
 
         try {
+            // Explicit Create New Widget request.
             if (storageGet(STORAGE_MODE) === "create") {
                 createMode();
                 return;

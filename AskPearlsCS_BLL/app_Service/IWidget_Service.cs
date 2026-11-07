@@ -1,6 +1,4 @@
-﻿
-
-using AskPearls.Domain;
+﻿using AskPearls.Domain;
 
 using AskPearlsCS_DOMAIN.app_ContractsManager;
 
@@ -15,6 +13,7 @@ public interface IWidget_Service
     Task<WidgetOperationResult> GetMyWidgetsAsync(string ownerUserTokenId);
     Task<WidgetOperationResult> GetMyWebsitesAsync(string ownerUserTokenId);
     Task<WidgetOperationResult> CreateWidgetAsync(string ownerUserTokenId, CreateWidgetRequest? request);
+    Task<WidgetOperationResult> UpdateWidgetBasicsAsync(string ownerUserTokenId, string publicKey, UpdateWidgetBasicsRequest? request);
     Task<WidgetOperationResult> SaveDesignDraftAsync(string ownerUserTokenId, string publicKey, WidgetDesignDraftRequest? request);
     Task<WidgetOperationResult> PublishDesignDraftAsync(string ownerUserTokenId, string publicKey);
     Task<WidgetOperationResult> GetDesignDraftAsync(string ownerUserTokenId, string publicKey);

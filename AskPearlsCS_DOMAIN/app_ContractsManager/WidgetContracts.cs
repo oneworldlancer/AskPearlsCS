@@ -26,6 +26,14 @@ public sealed record WidgetDesignDraftRequest(
     [property: JsonPropertyName("showIntroduction")] bool ShowIntroduction = true
 );
 
+public sealed record UpdateWidgetBasicsRequest(
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("title")] string Title,
+    [property: JsonPropertyName("description")] string? Description,
+    [property: JsonPropertyName("websiteTokenId")] string? WebsiteTokenId,
+    [property: JsonPropertyName("websiteName")] string? WebsiteName,
+    [property: JsonPropertyName("websiteAddress")] string? WebsiteAddress);
+
 public sealed record WidgetQuestionDraftRequest(
     [property: JsonPropertyName("text")] string Text,
     [property: JsonPropertyName("key")] string Key,
