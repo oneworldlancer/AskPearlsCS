@@ -1,7 +1,4 @@
-<div class="ap-page page-widgets"
-     data-ap-page="my-widgets"
-     data-api-base="https://localhost:7014/api"
-     data-demo-owner-user-token="1101">
+<div class="ap-page page-widgets" data-ap-page="my-widgets">
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
         <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
@@ -16,6 +13,15 @@
     </header>
 
     <section class="active-widget-picker ap-widget-selector" aria-label="Active widget">
+        <!-- Same Create New Widget corner action as the Widget Builder selector. -->
+        <a href="#"
+           class="active-widget-picker-create ap-widget-builder-link"
+           data-page="widget-builder"
+           data-widget-builder-create
+           title="Create New Widget"
+           aria-label="Create New Widget">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+        </a>
         <div class="active-widget-picker-icon ap-widget-selector-icon" aria-hidden="true"><i class="bi bi-grid-1x2"></i></div>
         <div class="active-widget-picker-main ap-widget-selector-info">
             <label for="activeWidgetSelect">Select widget</label>
@@ -57,13 +63,8 @@
                     <option value="published">Published</option>
                     <option value="draft">Draft</option>
                 </select>
-                <a href="#" data-page="widget-builder"
-                   data-widget-builder-create
-                   class="btn btn-success ap-widget-builder-link">
-                    <i class="bi bi-plus-circle me-2" aria-hidden="true"></i>Create new widget
-                </a>
-            </div>
 
+            </div>
             <div class="widget-table-scroll" aria-live="polite">
                 <div id="widgetLoadingState" class="widget-loading-state">
                     <span class="spinner-border spinner-border-sm text-success" aria-hidden="true"></span>
@@ -86,6 +87,5 @@
     </section>
 </div>
 
-<link href="~/app_page_css/app_page_my_widgets_css.css?v=20261021-3" rel="stylesheet" />
-
-<script src="~/app_page_js/app_page_my_widgets_js.js"></script>
+<link href="~/app_page_css/app_page_my_widgets_css.css?v=20261107-8" rel="stylesheet" />
+<script src="~/app_page_js/app_page_my_widgets_js.js?v=20261107-8"></script>

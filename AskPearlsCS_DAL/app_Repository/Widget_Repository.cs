@@ -16,7 +16,12 @@ namespace AskPearlsCS_DAL.app_Repository;
 public class Widget_Repository : IWidget_Repository
 {
     private readonly DBContextModel _dbContext;
-    public Widget_Repository(DBContextModel dbContext) => _dbContext = dbContext;
+    private readonly IWidgetBrandingEntitlement? _brandingEntitlement;
+    public Widget_Repository(DBContextModel dbContext, IWidgetBrandingEntitlement? brandingEntitlement = null)
+    {
+        _dbContext = dbContext;
+        _brandingEntitlement = brandingEntitlement;
+    }
 
     public async Task<Widget?> GetPublishedWidgetAsync(string publicKey)
     {
@@ -147,7 +152,6 @@ public class Widget_Repository : IWidget_Repository
             {
                 publicKey = widget.WidgetPublicKey,
                 name = widget.WidgetName ?? widget.WidgetTitle ?? "Untitled widget",
-                title = widget.WidgetTitle,
                 description = widget.WidgetDescription ?? string.Empty,
 
                 // Required to populate Target Website in Edit Mode.
@@ -322,114 +326,248 @@ public class Widget_Repository : IWidget_Repository
     }
 
 
-    // Increment the editable draft revision on every successful Save Draft.
-    // This keeps a single active draft and updates its dependent version references.
-    // It does NOT create immutable historical snapshots of each draft revision.
-    // Save the editable parent widget fields and resolve/create its target website.
     public async Task<WidgetOperationResult> UpdateWidgetBasicsAsync(
-        string ownerUserTokenId, string publicKey, UpdateWidgetBasicsRequest? request)
+        string ownerUserTokenId,
+        string publicKey,
+        UpdateWidgetBasicsRequest? request)
     {
-        if (string.IsNullOrWhiteSpace(publicKey) || request is null ||
-            string.IsNullOrWhiteSpace(request.Name) || request.Name.Trim().Length > 100 ||
-            string.IsNullOrWhiteSpace(request.Title) || request.Title.Trim().Length > 120 ||
+        // ---------------------------------------------------------
+        // 1. Validate request
+        // ---------------------------------------------------------
+
+        if (string.IsNullOrWhiteSpace(ownerUserTokenId) ||
+            string.IsNullOrWhiteSpace(publicKey) ||
+            request is null ||
+            string.IsNullOrWhiteSpace(request.Name) ||
+            request.Name.Trim().Length > 100 ||
+            string.IsNullOrWhiteSpace(request.Title) ||
+            request.Title.Trim().Length > 120 ||
             request.Description?.Length > 500)
-            return BadRequest(new { success = false, message = "Invalid widget basic information." });
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = "Invalid widget basic information."
+            });
+        }
+
+        // ---------------------------------------------------------
+        // 2. Validate target website
+        // ---------------------------------------------------------
 
         var address = request.WebsiteAddress?.Trim();
+
         Uri? uri = null;
+
         if (!string.IsNullOrWhiteSpace(address) &&
             (address.Length > 250 ||
              !Uri.TryCreate(address, UriKind.Absolute, out uri) ||
              uri.Scheme is not ("http" or "https") ||
              string.IsNullOrWhiteSpace(uri.Host)))
-            return BadRequest(new { success = false, message = "Enter a valid HTTP/HTTPS Target Website URL." });
-        if (string.IsNullOrWhiteSpace(address) && string.IsNullOrWhiteSpace(request.WebsiteTokenId))
-            return BadRequest(new { success = false, message = "Target Website is required." });
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = "Enter a valid HTTP/HTTPS Target Website URL."
+            });
+        }
 
-        await using var transaction = await _dbContext.Database.BeginTransactionAsync(
-            System.Data.IsolationLevel.Serializable);
-        var widget = await _dbContext.AskpearlsPortalUserWebsiteWidgetLists
-            .FirstOrDefaultAsync(x => x.WidgetPublicKey == publicKey &&
-                x.OwnerUserTokenId == ownerUserTokenId && x.IsActive == true && x.IsVisible == true);
+        if (string.IsNullOrWhiteSpace(address) &&
+            string.IsNullOrWhiteSpace(request.WebsiteTokenId))
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = "Target Website is required."
+            });
+        }
+
+        // ---------------------------------------------------------
+        // 3. Begin transaction
+        // ---------------------------------------------------------
+
+        await using var transaction =
+            await _dbContext.Database.BeginTransactionAsync(
+                System.Data.IsolationLevel.Serializable);
+
+        // ---------------------------------------------------------
+        // 4. Find widget belonging to current user
+        // ---------------------------------------------------------
+
+        var widget = await _dbContext
+            .AskpearlsPortalUserWebsiteWidgetLists
+            .FirstOrDefaultAsync(x =>
+                x.WidgetPublicKey == publicKey &&
+                x.OwnerUserTokenId == ownerUserTokenId &&
+                x.IsActive == true &&
+                x.IsVisible == true);
+
         if (widget is null)
-            return NotFound(new { success = false, message = "Widget was not found for this user." });
+        {
+            return NotFound(new
+            {
+                success = false,
+                message = "Widget was not found for this user."
+            });
+        }
+
+        // ---------------------------------------------------------
+        // 5. Find or create target website
+        // ---------------------------------------------------------
 
         AskpearlsPortalUserWebsiteList? website = null;
+
         if (!string.IsNullOrWhiteSpace(address))
         {
-            website = await _dbContext.AskpearlsPortalUserWebsiteLists.FirstOrDefaultAsync(x =>
-                x.OwnerUserTokenId == ownerUserTokenId && x.WebsiteAddress == address &&
-                x.IsActive == true && x.IsVisible == true);
+            website = await _dbContext
+                .AskpearlsPortalUserWebsiteLists
+                .FirstOrDefaultAsync(x =>
+                    x.OwnerUserTokenId == ownerUserTokenId &&
+                    x.WebsiteAddress == address &&
+                    x.IsActive == true &&
+                    x.IsVisible == true);
+
             if (website is null)
             {
                 var now = DateTime.UtcNow;
+
                 website = new AskpearlsPortalUserWebsiteList
                 {
                     RowViewTokenId = Guid.NewGuid(),
                     RowDataTokenId = Guid.NewGuid().ToString("N"),
+
                     AccountType = "portal",
+
                     OwnerUserTokenId = ownerUserTokenId,
+
                     WebsiteTokenId = Guid.NewGuid().ToString("N"),
-                    WebsiteName = string.IsNullOrWhiteSpace(request.WebsiteName)
-                        ? uri!.Host : request.WebsiteName.Trim(),
+
+                    WebsiteName =
+                        string.IsNullOrWhiteSpace(request.WebsiteName)
+                            ? uri!.Host
+                            : request.WebsiteName.Trim(),
+
                     WebsiteAddress = address,
+
                     ActiveStatus = "active",
+
                     IsNew = true,
                     IsActive = true,
                     IsVisible = true,
+
                     CreatedAtUtc = now,
                     UpdatedAtUtc = now
                 };
-                _dbContext.AskpearlsPortalUserWebsiteLists.Add(website);
+
+                _dbContext
+                    .AskpearlsPortalUserWebsiteLists
+                    .Add(website);
             }
         }
         else
         {
-            website = await _dbContext.AskpearlsPortalUserWebsiteLists.FirstOrDefaultAsync(x =>
-                x.OwnerUserTokenId == ownerUserTokenId &&
-                x.WebsiteTokenId == request.WebsiteTokenId &&
-                x.IsActive == true && x.IsVisible == true);
+            website = await _dbContext
+                .AskpearlsPortalUserWebsiteLists
+                .FirstOrDefaultAsync(x =>
+                    x.OwnerUserTokenId == ownerUserTokenId &&
+                    x.WebsiteTokenId == request.WebsiteTokenId &&
+                    x.IsActive == true &&
+                    x.IsVisible == true);
         }
+
         if (website is null)
-            return BadRequest(new { success = false, message = "Target Website was not found for this user." });
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = "Target Website was not found for this user."
+            });
+        }
+
+        // ---------------------------------------------------------
+        // 6. Find active draft and validate uniqueness
+        // ---------------------------------------------------------
+
+        var activeDrafts = await _dbContext
+            .AskpearlsPortalUserWebsiteWidgetVersionLists
+            .Where(x =>
+                x.OwnerUserTokenId == ownerUserTokenId &&
+                x.WidgetTokenId == widget.WidgetTokenId &&
+                x.WidgetPublicKey == publicKey &&
+                x.WidgetStatusCode == "draft" &&
+                x.IsActive == true &&
+                x.IsVisible == true)
+            .ToListAsync();
+
+        if (activeDrafts.Count > 1)
+        {
+            return Conflict(new
+            {
+                success = false,
+                message = "More than one active draft exists for this widget."
+            });
+        }
+
+        // ---------------------------------------------------------
+        // 7. Update widget basic information
+        // ---------------------------------------------------------
 
         widget.WidgetName = request.Name.Trim();
         widget.WidgetTitle = request.Title.Trim();
-        widget.WidgetDescription = (request.Description ?? string.Empty).Trim();
+
+        widget.WidgetDescription =
+            (request.Description ?? string.Empty).Trim();
+
         widget.WebsiteTokenId = website.WebsiteTokenId;
         widget.WebsiteName = website.WebsiteName;
         widget.WebsiteAddress = website.WebsiteAddress;
 
-        // Keep editable draft metadata in sync, but never rewrite published history.
-        var activeDrafts = await _dbContext.AskpearlsPortalUserWebsiteWidgetVersionLists
-            .Where(x => x.OwnerUserTokenId == ownerUserTokenId &&
-                x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey &&
-                x.WidgetStatusCode == "draft" && x.IsActive == true && x.IsVisible == true)
-            .ToListAsync();
-        if (activeDrafts.Count > 1)
-            return Conflict(new { success = false, message = "More than one active draft exists for this widget." });
+        // ---------------------------------------------------------
+        // 8. Synchronize active draft website metadata
+        // ---------------------------------------------------------
+
         foreach (var draft in activeDrafts)
         {
             draft.WebsiteTokenId = website.WebsiteTokenId;
             draft.WebsiteName = website.WebsiteName;
             draft.UpdatedAtUtc = DateTime.UtcNow;
         }
+
+        // ---------------------------------------------------------
+        // 9. Save and commit
+        // ---------------------------------------------------------
+
         await _dbContext.SaveChangesAsync();
+
         await transaction.CommitAsync();
+
+        // ---------------------------------------------------------
+        // 10. Return updated widget
+        // ---------------------------------------------------------
+
         return Ok(new
         {
             success = true,
+
             publicKey = widget.WidgetPublicKey,
+
             name = widget.WidgetName,
             title = widget.WidgetTitle,
             description = widget.WidgetDescription,
+
             websiteTokenId = website.WebsiteTokenId,
             websiteName = website.WebsiteName,
             websiteAddress = website.WebsiteAddress,
+
             status = widget.WidgetStatusCode
         });
     }
 
+
+
+    // Increment the editable draft revision on every successful Save Draft.
+    // This keeps a single active draft and updates its dependent version references.
+    // It does NOT create immutable historical snapshots of each draft revision.
     public async Task<WidgetOperationResult> SaveDesignDraftAsync(
         string ownerUserTokenId,
         string publicKey,
@@ -437,6 +575,16 @@ public class Widget_Repository : IWidget_Repository
     {
         if (string.IsNullOrWhiteSpace(publicKey) || !IsValidDesign(request))
             return BadRequest(new { success = false, message = "Widget key or design settings are invalid." });
+
+        // Fail closed: premium branding must be authorized by the subscription service.
+        if (HasPremiumBranding(request!) &&
+            (_brandingEntitlement is null ||
+             !await _brandingEntitlement.CanUseWhiteLabelAsync(ownerUserTokenId)))
+            return BadRequest(new
+            {
+                success = false,
+                message = "White-label branding requires an eligible paid subscription."
+            });
 
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(
             System.Data.IsolationLevel.Serializable);
@@ -552,8 +700,6 @@ public class Widget_Repository : IWidget_Repository
             foreach (var row in rules) row.WidgetVersionNumber = nextVersionNumber;
 
             draft.WidgetVersionNumber = nextVersionNumber;
-            draft.WebsiteTokenId = widget.WebsiteTokenId;
-            draft.WebsiteName = widget.WebsiteName;
             draft.WidgetConfigurationJson = json;
             draft.UpdatedAtUtc = now;
         }
@@ -936,7 +1082,14 @@ public class Widget_Repository : IWidget_Repository
         if (rows.Count == 0)
             rows = widgetRows.Where(row => string.IsNullOrWhiteSpace(row.WidgetVersionTokenId) &&
                 string.IsNullOrWhiteSpace(row.WidgetVersionNumber)).ToList();
-        rows = rows.OrderBy(x => x.RecommendationSortOrder).ThenBy(x => x.RecommendationName).ToList();
+        // Legacy saves may have inserted several visible rows with the same identifier.
+        // Display the most recently updated row for each identifier. The next save
+        // consolidates duplicate draft rows in the database as well.
+        rows = rows
+            .GroupBy(x => (x.RecommendationKey ?? x.RecommendationCode ?? "").Trim(), StringComparer.OrdinalIgnoreCase)
+            .Select(g => g.OrderByDescending(x => x.UpdatedAtUtc ?? x.CreatedAtUtc)
+                          .ThenByDescending(x => x.CreatedAtUtc).First())
+            .OrderBy(x => x.RecommendationSortOrder).ThenBy(x => x.RecommendationName).ToList();
 
         var usedRecommendationKeys = await _dbContext.AskpearlsPortalUserWebsiteWidgetDecisionRuleLists.AsNoTracking()
             .Where(x => x.WidgetTokenId == widget.WidgetTokenId && x.WidgetPublicKey == publicKey &&
@@ -1024,46 +1177,113 @@ public class Widget_Repository : IWidget_Repository
             _dbContext.AskpearlsPortalUserWebsiteWidgetVersionLists.Add(draft);
         }
 
+        // Match draft rows by the version NUMBER or its token. Older saves can
+        // carry a stale token after the draft version was updated elsewhere.
+        // Never match published rows solely through a reused token.
         var oldDraftRows = await _dbContext.AskpearlsPortalUserWebsiteWidgetRecommendationLists
-            .Where(x => x.OwnerUserTokenId == ownerUserTokenId && x.WidgetTokenId == widget.WidgetTokenId &&
-                        x.WidgetPublicKey == publicKey && x.WidgetVersionNumber == draft.WidgetVersionNumber && x.IsActive == true)
+            .Where(x => x.OwnerUserTokenId == ownerUserTokenId &&
+                        x.WidgetTokenId == widget.WidgetTokenId &&
+                        x.WidgetPublicKey == publicKey &&
+                        x.IsVisible == true &&
+                        (x.WidgetVersionNumber == draft.WidgetVersionNumber ||
+                         (x.WidgetVersionTokenId == draft.WidgetVersionTokenId &&
+                          (x.WidgetVersionNumber == null || x.WidgetVersionNumber == ""))))
             .ToListAsync();
-        foreach (var row in oldDraftRows) { row.IsActive = false; row.IsVisible = false; row.UpdatedAtUtc = now; }
-        var newRows = request!.Items.Select((item, index) => new AskpearlsPortalUserWebsiteWidgetRecommendationList
+
+        // Existing identifiers are immutable. Keep the newest physical row,
+        // hide legacy duplicates, and UPDATE that row instead of INSERTING.
+        var existingByKey = new Dictionary<string, AskpearlsPortalUserWebsiteWidgetRecommendationList>(StringComparer.OrdinalIgnoreCase);
+        foreach (var group in oldDraftRows
+            .GroupBy(x => (x.RecommendationKey ?? x.RecommendationCode ?? "").Trim(), StringComparer.OrdinalIgnoreCase))
         {
-            RowViewTokenId = Guid.NewGuid(),
-            RowDataTokenId = Guid.NewGuid().ToString("N"),
-            AccountType = widget.AccountType,
-            OwnerUserTokenId = widget.OwnerUserTokenId,
-            OwnerMobileNumberTokenId = widget.OwnerMobileNumberTokenId,
-            OrganizationTokenId = widget.OrganizationTokenId,
-            CompanyTokenId = widget.CompanyTokenId,
-            CompanyName = widget.CompanyName,
-            WebsiteTokenId = widget.WebsiteTokenId,
-            WidgetTokenId = widget.WidgetTokenId,
-            WidgetPublicKey = publicKey,
-            WidgetVersionTokenId = draft.WidgetVersionTokenId,
-            WidgetVersionNumber = draft.WidgetVersionNumber,
-            RecommendationTokenId = Guid.NewGuid().ToString("N"),
-            RecommendationKey = item.Key.Trim(),
-            RecommendationCode = item.Key.Trim(),
-            RecommendationType = "outcome",
-            RecommendationName = item.Name.Trim(),
-            RecommendationTitle = item.Name.Trim(),
-            RecommendationDescription = item.Description?.Trim(),
-            RecommendationShortDescription = item.Description?.Trim(),
-            RecommendationImageUrl = item.ImageUrl?.Trim(),
-            RecommendationUrl = item.Url?.Trim(),
-            RecommendationCtatext = item.CtaText?.Trim(),
-            RecommendationSortOrder = index + 1,
-            IsNew = true,
-            ActiveStatus = item.Active ? "active" : "inactive",
-            IsActive = item.Active,
-            IsVisible = true,
-            CreatedAtUtc = now,
-            UpdatedAtUtc = now
-        }).ToList();
-        _dbContext.AskpearlsPortalUserWebsiteWidgetRecommendationLists.AddRange(newRows);
+            var ordered = group.OrderByDescending(x => x.UpdatedAtUtc ?? x.CreatedAtUtc)
+                               .ThenByDescending(x => x.CreatedAtUtc).ToList();
+            if (group.Key.Length > 0) existingByKey[group.Key] = ordered[0];
+            foreach (var duplicate in ordered.Skip(group.Key.Length > 0 ? 1 : 0))
+            {
+                duplicate.IsVisible = false;
+                duplicate.UpdatedAtUtc = now;
+            }
+        }
+
+        var incomingKeys = request!.Items.Select(x => x.Key.Trim())
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        foreach (var pair in existingByKey)
+        {
+            if (!incomingKeys.Contains(pair.Key))
+            {
+                pair.Value.IsVisible = false;
+                pair.Value.UpdatedAtUtc = now;
+            }
+        }
+
+        var savedRows = new List<AskpearlsPortalUserWebsiteWidgetRecommendationList>();
+        for (var index = 0; index < request.Items.Count; index++)
+        {
+            var item = request.Items[index];
+            var key = item.Key.Trim();
+            if (existingByKey.TryGetValue(key, out var row))
+            {
+                // Preserve RowViewTokenId, RowDataTokenId, RecommendationTokenId,
+                // CreatedAtUtc, and the immutable identifier.
+                // Reconcile legacy version links while retaining row identity.
+                row.WidgetVersionTokenId = draft.WidgetVersionTokenId;
+                row.WidgetVersionNumber = draft.WidgetVersionNumber;
+                row.RecommendationKey = key;
+                row.RecommendationCode = key;
+                row.RecommendationName = item.Name.Trim();
+                row.RecommendationTitle = item.Name.Trim();
+                row.RecommendationDescription = item.Description?.Trim();
+                row.RecommendationShortDescription = item.Description?.Trim();
+                row.RecommendationImageUrl = item.ImageUrl?.Trim();
+                row.RecommendationUrl = item.Url?.Trim();
+                row.RecommendationCtatext = item.CtaText?.Trim();
+                row.RecommendationSortOrder = index + 1;
+                row.ActiveStatus = item.Active ? "active" : "inactive";
+                row.IsActive = item.Active;
+                row.IsVisible = true;
+                row.UpdatedAtUtc = now;
+            }
+            else
+            {
+                row = new AskpearlsPortalUserWebsiteWidgetRecommendationList
+                {
+                    RowViewTokenId = Guid.NewGuid(),
+                    RowDataTokenId = Guid.NewGuid().ToString("N"),
+                    AccountType = widget.AccountType,
+                    OwnerUserTokenId = widget.OwnerUserTokenId,
+                    OwnerMobileNumberTokenId = widget.OwnerMobileNumberTokenId,
+                    OrganizationTokenId = widget.OrganizationTokenId,
+                    CompanyTokenId = widget.CompanyTokenId,
+                    CompanyName = widget.CompanyName,
+                    WebsiteTokenId = widget.WebsiteTokenId,
+                    WidgetTokenId = widget.WidgetTokenId,
+                    WidgetPublicKey = publicKey,
+                    WidgetVersionTokenId = draft.WidgetVersionTokenId,
+                    WidgetVersionNumber = draft.WidgetVersionNumber,
+                    RecommendationTokenId = Guid.NewGuid().ToString("N"),
+                    RecommendationKey = key,
+                    RecommendationCode = key,
+                    RecommendationType = "outcome",
+                    RecommendationName = item.Name.Trim(),
+                    RecommendationTitle = item.Name.Trim(),
+                    RecommendationDescription = item.Description?.Trim(),
+                    RecommendationShortDescription = item.Description?.Trim(),
+                    RecommendationImageUrl = item.ImageUrl?.Trim(),
+                    RecommendationUrl = item.Url?.Trim(),
+                    RecommendationCtatext = item.CtaText?.Trim(),
+                    RecommendationSortOrder = index + 1,
+                    IsNew = true,
+                    ActiveStatus = item.Active ? "active" : "inactive",
+                    IsActive = item.Active,
+                    IsVisible = true,
+                    CreatedAtUtc = now,
+                    UpdatedAtUtc = now
+                };
+                _dbContext.AskpearlsPortalUserWebsiteWidgetRecommendationLists.Add(row);
+            }
+            savedRows.Add(row);
+        }
         draft.UpdatedAtUtc = now;
         await _dbContext.SaveChangesAsync();
         var ruleKeys = await _dbContext.AskpearlsPortalUserWebsiteWidgetDecisionRuleLists.AsNoTracking()
@@ -1080,7 +1300,7 @@ public class Widget_Repository : IWidget_Repository
             success = true,
             status = "draft",
             versionNumber = draft.WidgetVersionNumber,
-            itemCount = newRows.Count,
+            itemCount = savedRows.Count,
             usedInRulesCount = request.Items.Count(item => ruleKeySet.Contains(item.Key.Trim())),
             recommendationsServedCount = eventCount
         });
@@ -1320,6 +1540,49 @@ public class Widget_Repository : IWidget_Repository
     }
 
 
+
+
+    private static bool HasPremiumBranding(WidgetDesignDraftRequest v) =>
+        !string.IsNullOrWhiteSpace(v.BrandName) ||
+        v.HeaderTitle != "AskPearls Assistant" ||
+        !string.IsNullOrWhiteSpace(v.LogoDataUrl) ||
+        !string.IsNullOrWhiteSpace(v.LogoUrl) ||
+        v.BrandIcon != "stars" || v.HideAskPearlsBranding;
+
+    private static bool IsValidLogoUrl(string? url)
+    {
+        if (string.IsNullOrWhiteSpace(url)) return true;
+        if (url.Length > 2048 || !Uri.TryCreate(url, UriKind.Absolute, out var uri)) return false;
+        return uri.Scheme == Uri.UriSchemeHttps &&
+               !string.IsNullOrWhiteSpace(uri.Host) &&
+               uri.UserInfo.Length == 0 &&
+               uri.HostNameType == UriHostNameType.Dns &&
+               !uri.IsLoopback &&
+               !uri.Host.EndsWith(".local", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsValidLogo(string? data) =>
+        string.IsNullOrEmpty(data) ||
+        (data.Length <= 110000 &&
+         (data.StartsWith("data:image/png;base64,", StringComparison.Ordinal) ||
+          data.StartsWith("data:image/jpeg;base64,", StringComparison.Ordinal) ||
+          data.StartsWith("data:image/webp;base64,", StringComparison.Ordinal)) &&
+         IsValidBase64Image(data));
+
+    private static bool IsValidBase64Image(string data)
+    {
+        try
+        {
+            var bytes = Convert.FromBase64String(data[(data.IndexOf(',') + 1)..]);
+            if (bytes.Length > 80000 || bytes.Length < 12) return false;
+            if (data.StartsWith("data:image/png;")) return bytes.AsSpan(0, 8).SequenceEqual(new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 });
+            if (data.StartsWith("data:image/jpeg;")) return bytes[0] == 255 && bytes[1] == 216;
+            if (data.StartsWith("data:image/webp;")) return System.Text.Encoding.ASCII.GetString(bytes, 0, 4) == "RIFF" && System.Text.Encoding.ASCII.GetString(bytes, 8, 4) == "WEBP";
+            return false;
+        }
+        catch (FormatException) { return false; }
+    }
+
     private static bool IsValidDesign(WidgetDesignDraftRequest? value)
     {
         if (value is null)
@@ -1372,6 +1635,13 @@ public class Widget_Repository : IWidget_Repository
             value.Font,
             StringComparer.Ordinal))
             return false;
+
+        if (value.BrandName is null || value.HeaderTitle is null ||
+            value.LogoDataUrl is null || value.LogoUrl is null || value.BrandIcon is null ||
+            value.BrandName.Length > 100 || value.HeaderTitle.Length > 80 ||
+            value.BrandIcon is not ("stars" or "building" or "chat" or "robot" or "custom") ||
+            !IsValidLogoUrl(value.LogoUrl) ||
+            !IsValidLogo(value.LogoDataUrl)) return false;
 
         return value.Heading.Length <= 100 &&
                value.Description.Length <= 250 &&

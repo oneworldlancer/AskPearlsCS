@@ -1,349 +1,323 @@
-﻿(function () {
-    "use strict";
-
-    const root = document.querySelector(".design-customize-page");
-    if (!root || root.dataset.dcInitialized === "true") return;
-    root.dataset.dcInitialized = "true";
-
-    const $ = id => root.querySelector("#" + id);
+﻿/* AskPearls Design & Customize — Dashboard partial-safe, authenticated portal API */
+(function () {
+    'use strict';
+    const root = document.querySelector('.design-customize-page[data-ap-page="design-customize"]');
+    if (!root || root.dataset.dcInitialized === 'true') return;
+    root.dataset.dcInitialized = 'true';
+    const el = id => root.querySelector('#' + id);
+    const apiBase = (root.dataset.apiBase || '/Widget/Api').replace(/\/+$/, '');
     const defaults = {
-        primary: "#0DA88B",
-        background: "#FFFFFF",
-        text: "#17212B",
-        theme: "custom",
-        font: "Inter, Arial, sans-serif",
-        fontSize: 14,
-        radius: 12,
-        shadow: true,
-        width: 360,
-        position: "bottom-right",
-        buttonShape: "rounded",
-        heading: "Find your perfect sofa",
-        description: "Answer a few quick questions and discover the sofa that fits your home.",
-        buttonText: "Get started",
-        footer: "Powered by AskPearls"
+        primary: '#0DA88B', background: '#FFFFFF', text: '#17212B', theme: 'custom',
+        font: 'Inter, Arial, sans-serif', fontSize: 14, radius: 12, shadow: true,
+        width: 360, position: 'bottom-right', buttonShape: 'rounded',
+        heading: 'Welcome to our assistant',
+        description: 'Answer a few quick questions to find the right recommendation for you.',
+        buttonText: 'Get started', footer: 'Powered by AskPearls',
+        brandName: '', headerTitle: 'AskPearls Assistant', logoDataUrl: '', logoUrl: '', brandIcon: 'stars', hideAskPearlsBranding: false
     };
+    const fields = [ 'dcPrimaryColor', 'dcBackgroundColor', 'dcTextColor', 'dcTheme', 'dcFontFamily',
+        'dcFontSize', 'dcRadius', 'dcShadow', 'dcWidth', 'dcPosition', 'dcButtonShape',
+        'dcHeading', 'dcDescription', 'dcButtonText', 'dcFooterText',
+        'dcBrandName', 'dcHeaderTitle', 'dcBrandIcon', 'dcLogoUrl', 'dcHideBranding' ];
+    let widgets = [], savedSettings = { ...defaults }, selectedKey = '', requestId = 0;
+    let busy = false, toastTimer = null, activeMode = 'light';
 
-    const apiBase = (root.dataset.apiBase || window.AskPearlsCS_API_URL || (window.location.origin + "/api")).replace(/\/+$/, "");
-    const demoOwnerToken = (root.dataset.demoOwnerUserToken || "").trim();
-    const defaultPublicKey = (root.dataset.widgetPublicKey || "").trim();
-    let savedSettings = { ...defaults };
-    let toastTimer = null;
-
-    function currentPublicKey () {
-        const select = $("dcWidgetSelect");
-        const option = select && select.options[ select.selectedIndex ];
-        return (option && option.dataset.publicKey) ||
-            (select && select.value === "sofa" ? defaultPublicKey : "") ||
-            (select && /^pk_[a-zA-Z0-9_-]+$/.test(select.value) ? select.value : "");
-    }
-
-    function currentSettings () {
+    function readSettings () {
         return {
-            primary: $("dcPrimaryColor").value,
-            background: $("dcBackgroundColor").value,
-            text: $("dcTextColor").value,
-            theme: $("dcTheme").value,
-            font: $("dcFontFamily").value,
-            fontSize: Number($("dcFontSize").value),
-            radius: Number($("dcRadius").value),
-            shadow: $("dcShadow").checked,
-            width: Number($("dcWidth").value),
-            position: $("dcPosition").value,
-            buttonShape: $("dcButtonShape").value,
-            heading: $("dcHeading").value,
-            description: $("dcDescription").value,
-            buttonText: $("dcButtonText").value,
-            footer: $("dcFooterText").value
+            primary: el('dcPrimaryColor').value.toUpperCase(),
+            background: el('dcBackgroundColor').value.toUpperCase(),
+            text: el('dcTextColor').value.toUpperCase(),
+            theme: el('dcTheme').value, font: el('dcFontFamily').value,
+            fontSize: Number(el('dcFontSize').value), radius: Number(el('dcRadius').value),
+            shadow: el('dcShadow').checked, width: Number(el('dcWidth').value),
+            position: el('dcPosition').value, buttonShape: el('dcButtonShape').value,
+            heading: el('dcHeading').value, description: el('dcDescription').value,
+            buttonText: el('dcButtonText').value, footer: el('dcFooterText').value,
+            brandName: el('dcBrandName').value.trim(), headerTitle: el('dcHeaderTitle').value.trim(),
+            logoDataUrl: '', logoUrl: el('dcLogoUrl').value.trim(), brandIcon: el('dcBrandIcon').value, hideAskPearlsBranding: el('dcHideBranding').checked
         };
     }
-
-    function validHex (value) {
-        return /^#[0-9a-fA-F]{6}$/.test(value);
+    function normalize (source) {
+        const s = source && typeof source === 'object' ? source : {};
+        const pick = (key, fallback) => s[ key ] ?? s[ key[ 0 ].toUpperCase() + key.slice(1) ] ?? fallback;
+        const out = {};
+        for (const [ key, value ] of Object.entries(defaults)) out[ key ] = pick(key, value);
+        for (const key of [ 'primary', 'background', 'text' ]) {
+            if (!/^#[0-9a-f]{6}$/i.test(String(out[ key ]))) out[ key ] = defaults[ key ];
+            out[ key ] = out[ key ].toUpperCase();
+        }
+        for (const [ key, min, max ] of [ [ 'fontSize', 12, 18 ], [ 'radius', 0, 28 ], [ 'width', 300, 520 ] ]) {
+            const n = Number(out[ key ]); out[ key ] = Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : defaults[ key ];
+        }
+        out.shadow = out.shadow === true || out.shadow === 'true';
+        out.hideAskPearlsBranding = out.hideAskPearlsBranding === true || out.hideAskPearlsBranding === 'true';
+        for (const [ key, values ] of Object.entries({
+            theme: [ 'custom', 'light', 'dark' ], position: [ 'bottom-right', 'bottom-left', 'center' ],
+            buttonShape: [ 'rounded', 'pill', 'square' ],
+            font: [ 'system', 'Inter, Arial, sans-serif', 'Arial, sans-serif', 'Georgia, serif', 'Verdana, sans-serif' ]
+        })) if (!values.includes(out[ key ])) out[ key ] = defaults[ key ];
+        if (out.font === 'system') out.font = defaults.font;
+        for (const key of [ 'heading', 'description', 'buttonText', 'footer', 'brandName', 'headerTitle', 'logoDataUrl', 'logoUrl', 'brandIcon' ]) out[ key ] = String(out[ key ] ?? '');
+        return out;
     }
-
-    function syncBackgroundToTheme (theme) {
-        const background = theme === "dark"
-            ? "#15231E"
-            : theme === "light" ? "#FFFFFF" : null;
-        if (!background) return;
-        $("dcBackgroundColor").value = background;
-        $("dcBackgroundHex").value = background;
+    function applySettings (raw) {
+        const s = normalize(raw);
+        for (const [ id, key ] of [ [ 'dcPrimaryColor', 'primary' ], [ 'dcBackgroundColor', 'background' ],
+        [ 'dcTextColor', 'text' ], [ 'dcTheme', 'theme' ], [ 'dcFontFamily', 'font' ],
+        [ 'dcFontSize', 'fontSize' ], [ 'dcRadius', 'radius' ], [ 'dcWidth', 'width' ],
+        [ 'dcPosition', 'position' ], [ 'dcButtonShape', 'buttonShape' ], [ 'dcHeading', 'heading' ],
+        [ 'dcDescription', 'description' ], [ 'dcButtonText', 'buttonText' ], [ 'dcFooterText', 'footer' ],
+        [ 'dcBrandName', 'brandName' ], [ 'dcHeaderTitle', 'headerTitle' ], [ 'dcBrandIcon', 'brandIcon' ] ]) el(id).value = s[ key ];
+        el('dcShadow').checked = s.shadow;
+        el('dcHideBranding').checked = s.hideAskPearlsBranding === true;
+        el('dcLogoUrl').value = s.logoUrl || '';
+        el('dcLogoThumbnail').hidden = !s.logoUrl; if (s.logoUrl) el('dcLogoThumbnail').src = s.logoUrl;
+        syncHexInputs(); renderPreview();
     }
-
-    function showToast (message) {
-        const toast = $("dcToast");
-        toast.textContent = message;
-        toast.classList.add("is-visible");
+    function syncHexInputs () {
+        for (const [ picker, hex ] of [ [ 'dcPrimaryColor', 'dcPrimaryHex' ], [ 'dcBackgroundColor', 'dcBackgroundHex' ], [ 'dcTextColor', 'dcTextHex' ] ]) el(hex).value = el(picker).value.toUpperCase();
+    }
+    function dirty () { return JSON.stringify(readSettings()) !== JSON.stringify(savedSettings); }
+    function updateDirty () {
+        const changed = dirty();
+        el('dcDraftIndicator').textContent = changed ? '● Unsaved changes' : '✓ No unsaved changes';
+        el('dcSave').disabled = busy || !selectedKey || !changed;
+        el('dcReset').disabled = busy || !selectedKey || !changed;
+    }
+    function notice (message, type = 'danger') {
+        const box = el('dcPageAlert');
+        box.textContent = message || '';
+        box.className = message ? 'alert alert-' + type : 'alert d-none';
+    }
+    function toast (message) {
+        const box = el('dcToast'); if (!box) return;
+        box.textContent = message; box.classList.add('is-visible');
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 3500);
+        toastTimer = setTimeout(() => box.classList.remove('is-visible'), 3500);
     }
-
-    function syncColorFromText (textId, colorId) {
-        const value = $(textId).value.trim();
-        if (!validHex(value)) {
-            showToast("Enter a valid 6-digit hex color, for example #0DA88B.");
-            return;
+    function setBusy (value) { busy = value; el('dcWidgetSelect').disabled = value; updateDirty(); }
+    function antiForgeryToken () {
+        return document.querySelector('input[name="__RequestVerificationToken"]')?.value ||
+            document.querySelector('meta[name="RequestVerificationToken"]')?.content ||
+            document.querySelector('meta[name="request-verification-token"]')?.content || '';
+    }
+    async function api (path, options = {}) {
+        const headers = { Accept: 'application/json', ...(options.body ? { 'Content-Type': 'application/json' } : {}) };
+        const token = antiForgeryToken();
+        if (token && options.method && options.method.toUpperCase() !== 'GET') headers.RequestVerificationToken = token;
+        const response = await fetch(apiBase + path, { credentials: 'same-origin', ...options, headers: { ...headers, ...options.headers } });
+        const text = await response.text(); let data;
+        try { data = text ? JSON.parse(text) : {}; }
+        catch { throw new Error('API returned an invalid JSON response (HTTP ' + response.status + ').'); }
+        if (!response.ok || data.success === false) throw new Error(data.message || data.title || 'API request failed (HTTP ' + response.status + ').');
+        return data;
+    }
+    function renderPreview () {
+        const s = readSettings(); const widget = el('dcWidgetPreview');
+        el('dcPreviewBrandTitle').textContent = s.headerTitle || 'AskPearls Assistant';
+        const brandIcon = el('dcPreviewBrandIcon'); brandIcon.replaceChildren();
+        const assistantIcon = document.createElement('i');
+        assistantIcon.className = 'bi bi-' + ({ building: 'building', chat: 'chat-dots', robot: 'robot' }[ s.brandIcon ] || 'stars');
+        brandIcon.append(assistantIcon);
+        el('dcPreviewCompanyName').textContent = s.brandName && s.brandName !== s.headerTitle ? s.brandName : '';
+        const companyLogo = el('dcPreviewCompanyLogo');
+        companyLogo.replaceChildren();
+        if (s.logoUrl && /^https:\/\//i.test(s.logoUrl)) {
+            const img = document.createElement('img'); img.src = s.logoUrl;
+            img.alt = (s.brandName || 'Company') + ' logo';
+            img.referrerPolicy = 'no-referrer';
+            img.onerror = () => { img.remove(); companyLogo.classList.remove('has-logo'); companyLogo.innerHTML = '<i class="bi bi-stars"></i>'; };
+            companyLogo.classList.add('has-logo'); companyLogo.append(img);
+        } else {
+            companyLogo.classList.remove('has-logo');
+            const fallback = document.createElement('i'); fallback.className = 'bi bi-stars'; companyLogo.append(fallback);
         }
-        $(colorId).value = value;
-        if (colorId !== "dcPrimaryColor") $("dcTheme").value = "custom";
-        updatePreview();
-    }
-
-    function syncColorFromPicker (colorId, textId) {
-        $(textId).value = $(colorId).value.toUpperCase();
-        if (colorId !== "dcPrimaryColor") $("dcTheme").value = "custom";
-        updatePreview();
-    }
-
-    function applySettings (settings) {
-        const s = { ...defaults, ...(settings || {}) };
-        $("dcPrimaryColor").value = validHex(s.primary) ? s.primary : defaults.primary;
-        $("dcPrimaryHex").value = $("dcPrimaryColor").value.toUpperCase();
-        const theme = [ "custom", "light", "dark" ].includes(s.theme) ? s.theme : defaults.theme;
-        const background = theme === "dark" ? "#15231E"
-            : theme === "light" ? "#FFFFFF"
-                : (validHex(s.background) ? s.background : defaults.background);
-        $("dcBackgroundColor").value = background;
-        $("dcBackgroundHex").value = $("dcBackgroundColor").value.toUpperCase();
-        $("dcTextColor").value = validHex(s.text) ? s.text : defaults.text;
-        $("dcTextHex").value = $("dcTextColor").value.toUpperCase();
-        $("dcTheme").value = theme;
-        $("dcFontFamily").value = s.font;
-        $("dcFontSize").value = s.fontSize;
-        $("dcRadius").value = s.radius;
-        $("dcShadow").checked = Boolean(s.shadow);
-        $("dcWidth").value = s.width;
-        $("dcPosition").value = s.position;
-        $("dcButtonShape").value = s.buttonShape;
-        $("dcHeading").value = s.heading;
-        $("dcDescription").value = s.description;
-        $("dcButtonText").value = s.buttonText;
-        $("dcFooterText").value = s.footer;
-        updatePreview();
-    }
-
-    function setPreviewMode (mode) {
-        const canvas = $("dcPreviewCanvas");
-        canvas.dataset.mode = mode;
-        root.querySelectorAll(".dc-preview-mode").forEach(button => {
-            button.classList.toggle("active", button.dataset.dcMode === mode);
+        const mode = activeMode;
+        const dark = mode === 'dark' || (mode === 'mobile' && s.theme === 'dark') || (mode === 'light' && s.theme === 'dark');
+        const bg = dark ? '#15231E' : s.background;
+        const color = dark && s.text.toUpperCase() === '#17212B' ? '#E7F0EC' : s.text;
+        root.style.setProperty('--dc-primary', s.primary);
+        root.style.setProperty('--dc-widget-bg', bg);
+        root.style.setProperty('--dc-widget-text', color);
+        widget.style.backgroundColor = bg; widget.style.color = color;
+        widget.style.fontFamily = s.font; widget.style.fontSize = s.fontSize + 'px';
+        widget.style.borderRadius = s.radius + 'px';
+        widget.style.boxShadow = s.shadow ? '0 18px 55px rgba(20,35,30,.18)' : 'none';
+        widget.style.width = 'min(100%, ' + (mode === 'mobile' ? Math.min(320, s.width) : s.width) + 'px)';
+        el('dcPreviewHeading').textContent = s.heading || 'Welcome';
+        el('dcPreviewHeading').style.fontSize = Math.max(16, s.fontSize + 6) + 'px';
+        el('dcPreviewDescription').textContent = s.description;
+        el('dcPreviewButton').replaceChildren(document.createTextNode((s.buttonText || 'Get started') + ' '));
+        const icon = document.createElement('i'); icon.className = 'bi bi-arrow-right'; el('dcPreviewButton').append(icon);
+        el('dcPreviewFooter').textContent = s.hideAskPearlsBranding ? s.footer :
+            (s.footer.toLowerCase().includes('askpearls') ? s.footer : s.footer + ' · AskPearls');
+        for (const id of [ 'dcPreviewHeading', 'dcPreviewDescription', 'dcPreviewFooter' ]) el(id).style.color = color;
+        const radius = s.buttonShape === 'pill' ? '999px' : s.buttonShape === 'square' ? '2px' : s.radius + 'px';
+        el('dcPreviewButton').style.borderRadius = radius;
+        root.querySelectorAll('.dc-preview-answer').forEach(b => {
+            b.style.borderRadius = radius; b.style.color = color;
+            b.style.borderColor = dark ? 'rgba(231,240,236,.2)' : 'rgba(100,120,110,.2)';
         });
-
-        const s = currentSettings();
-        const previewTheme = mode === "dark" ? "dark" : s.theme;
-        const savedText = /^#[0-9a-f]{6}$/i.test(s.text || "") ? s.text : "#17212B";
-        const previewText = previewTheme === "dark" && savedText.toUpperCase() === "#17212B"
-            ? "#E7F0EC"
-            : savedText;
-        const colors = previewTheme === "dark"
-            ? { background: "#15231E", text: previewText, border: "rgba(231,240,236,.2)" }
-            : previewTheme === "light"
-                ? { background: "#FFFFFF", text: previewText, border: "rgba(100,120,110,.2)" }
-                : { background: s.background, text: previewText, border: "rgba(100,120,110,.2)" };
-        const widget = $("dcWidgetPreview");
-        widget.style.backgroundColor = colors.background;
-        widget.style.color = colors.text;
-        $("dcPreviewHeading").style.color = colors.text;
-        $("dcPreviewDescription").style.color = colors.text;
-        $("dcPreviewFooter").style.color = colors.text;
-        root.querySelectorAll(".dc-preview-answer").forEach(answer => {
-            answer.style.color = colors.text;
-            answer.style.borderColor = colors.border;
-        });
-
-        widget.style.width = mode === "mobile"
-            ? "min(100%, 320px)"
-            : "min(100%, " + currentSettings().width + "px)";
+        el('dcPreviewPosition').dataset.position = s.position;
+        el('dcPreviewCanvas').dataset.mode = mode;
+        for (const [ id, value ] of [ [ 'dcFontSizeValue', s.fontSize ], [ 'dcRadiusValue', s.radius ], [ 'dcWidthValue', s.width ] ]) el(id).textContent = value + ' px';
+        root.querySelectorAll('.dc-preview-mode').forEach(b => b.classList.toggle('active', b.dataset.dcMode === mode));
+        updateDirty();
     }
-
-    function shapeRadius (shape) {
-        if (shape === "pill") return "999px";
-        if (shape === "square") return "2px";
-        return $("dcRadius").value + "px";
+    function versionText (widget, draft) {
+        const dv = draft?.status === 'draft' ? draft.versionNumber : (widget?.draftVersionNumber ?? null);
+        const live = widget?.publishedVersionNumber ?? '0';
+        return 'Draft v' + (dv ?? '0') + ' · Live v' + (live || '0');
     }
-
-    function escapeHtml (value) {
-        return String(value ?? "").replace(/[&<>"']/g, character => ({
-            "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-        })[ character ]);
-    }
-
-    function updateDirtyState () {
-        const changed = JSON.stringify(currentSettings()) !== JSON.stringify(savedSettings);
-        const indicator = $("dcDraftIndicator");
-        indicator.innerHTML = changed
-            ? '<i class="bi bi-circle-fill"></i> Unsaved changes'
-            : '<i class="bi bi-check-circle-fill"></i> Saved settings loaded';
-        indicator.style.color = changed ? "" : "#0d9278";
-    }
-
-    function updatePreview () {
-        const s = currentSettings();
-        const widget = $("dcWidgetPreview");
-        root.style.setProperty("--dc-primary", s.primary);
-        root.style.setProperty("--dc-widget-bg", s.background);
-        root.style.setProperty("--dc-widget-text", s.text);
-        widget.style.fontFamily = s.font;
-        widget.style.fontSize = s.fontSize + "px";
-        widget.style.borderRadius = s.radius + "px";
-        widget.style.boxShadow = s.shadow ? "0 18px 55px rgba(20,35,30,.18)" : "none";
-        widget.style.width = "min(100%, " + s.width + "px)";
-
-        $("dcPreviewHeading").textContent = s.heading || "Your welcome heading";
-        $("dcPreviewHeading").style.fontSize = Math.max(16, s.fontSize + 6) + "px";
-        $("dcPreviewDescription").textContent = s.description || "Your welcome message will appear here.";
-        $("dcPreviewButton").innerHTML = escapeHtml(s.buttonText || "Get started") + ' <i class="bi bi-arrow-right"></i>';
-        $("dcPreviewFooter").textContent = s.footer;
-
-        root.querySelectorAll(".dc-preview-answer").forEach(answer => {
-            answer.style.borderRadius = shapeRadius(s.buttonShape);
-        });
-        $("dcPreviewButton").style.borderRadius = shapeRadius(s.buttonShape);
-        root.querySelector("#dcPreviewPosition").dataset.position = s.position;
-        $("dcFontSizeValue").textContent = s.fontSize + " px";
-        $("dcRadiusValue").textContent = s.radius + " px";
-        $("dcWidthValue").textContent = s.width + " px";
-
-        const activeMode = root.querySelector(".dc-preview-mode.active");
-        setPreviewMode(activeMode ? activeMode.dataset.dcMode : "light");
-        updateDirtyState();
-    }
-
-    function requestHeaders (json) {
-        const headers = { "Accept": "application/json" };
-        if (json) headers[ "Content-Type" ] = "application/json";
-        if (demoOwnerToken) headers[ "X-Demo-Owner-User-Token" ] = demoOwnerToken;
-        return headers;
-    }
-
-    async function readResponse (response) {
-        const text = await response.text();
-        let data = null;
-        if (text) {
-            try { data = JSON.parse(text); }
-            catch { throw new Error("The API returned an unreadable response."); }
-        }
-        if (!response.ok) {
-            throw new Error((data && data.message) || ("API request failed (HTTP " + response.status + ")."));
-        }
-        return data || {};
-    }
-
-    async function loadWidgetVersion () {
-        const versionLabel = $("dcWidgetVersion");
-        const publicKey = currentPublicKey();
-        if (!versionLabel) return;
-        versionLabel.textContent = "—";
-        if (!publicKey) return;
-
+    function widgetKey (w) { return String(w.publicKey ?? w.widgetPublicKey ?? w.PublicKey ?? ''); }
+    async function loadWidgets () {
+        const select = el('dcWidgetSelect'); select.disabled = true;
         try {
-            const [ draftResponse, liveResponse ] = await Promise.all([
-                fetch(apiBase + "/widgets/" + encodeURIComponent(publicKey) + "/draft/configuration", { method: "GET", headers: requestHeaders(false) }),
-                fetch(apiBase + "/widgets/" + encodeURIComponent(publicKey) + "/version", { method: "GET", headers: requestHeaders(false) }).catch(() => null)
-            ]);
-            const data = await readResponse(draftResponse);
-            const liveData = liveResponse ? await readResponse(liveResponse).catch(() => ({})) : {};
-            if (currentPublicKey() !== publicKey) return;
-            versionLabel.textContent = data.status === "draft"
-                ? "Draft v" + (data.versionNumber || "—") + (liveData.versionNumber ? " · Live v" + liveData.versionNumber : "")
-                : liveData.versionNumber ? "Live v" + liveData.versionNumber : "—";
-        } catch (error) {
-            console.warn("Could not load the current widget version.", error);
+            const data = await api('/widgets');
+            widgets = Array.isArray(data.widgets) ? data.widgets : Array.isArray(data.data?.widgets) ? data.data.widgets : [];
+            select.replaceChildren(new Option('-- Select a widget --', ''));
+            for (const w of widgets) {
+                const key = widgetKey(w); if (!key) continue;
+                select.add(new Option(w.name || w.widgetName || w.title || key, key));
+            }
+            select.disabled = false;
+            const preferred = new URLSearchParams(location.search).get('publicKey') || root.dataset.widgetPublicKey || '';
+            if (preferred && widgets.some(w => widgetKey(w) === preferred)) select.value = preferred;
+            else if (widgets.length === 1) select.value = widgetKey(widgets[ 0 ]);
+            if (select.value) await selectWidget(select.value);
+            else { el('dcWidgetMessage').textContent = widgets.length ? 'Select a widget to load its design.' : 'No widgets found. Create a widget first.'; updateDirty(); }
+        } catch (err) {
+            select.replaceChildren(new Option('Unable to load widgets', ''));
+            el('dcWidgetMessage').textContent = 'Could not retrieve widgets.';
+            notice(err.message); console.error('Design & Customize: widget list failed', err);
         }
     }
-
-    async function loadSettings (showMessage) {
-        const publicKey = currentPublicKey();
-        if (!publicKey) {
-            applySettings(defaults);
-            savedSettings = currentSettings();
-            loadWidgetVersion();
-            showToast("This widget has no API public key configured yet.");
-            return;
-        }
-
+    async function selectWidget (key) {
+        const seq = ++requestId; selectedKey = key; notice('');
+        el('dcWidgetVersion').textContent = '—';
+        if (!key) { el('dcWidgetMessage').textContent = 'Choose a widget to customize.'; applySettings(defaults); savedSettings = readSettings(); updateDirty(); return; }
+        setBusy(true);
         try {
-            const response = await fetch(apiBase + "/widgets/" + encodeURIComponent(publicKey) + "/draft/configuration", {
-                method: "GET",
-                headers: requestHeaders(false)
-            });
-            const data = await readResponse(response);
-            if (currentPublicKey() !== publicKey) return;
-            const configuration = data.configuration || defaults;
-            applySettings(configuration);
-            savedSettings = currentSettings();
-            const versionLabel = $("dcWidgetVersion");
-            if (versionLabel && data.versionNumber) versionLabel.textContent = (data.status === "draft" ? "Draft v" : "Live v") + data.versionNumber;
-            loadWidgetVersion();
-            if (showMessage) showToast(data.status === "draft" ? "Draft settings loaded." : "Published settings loaded.");
-        } catch (error) {
-            console.error("Could not load widget design settings.", error);
-            showToast(error.message || "Could not load widget settings.");
-        }
+            const data = await api('/widgets/' + encodeURIComponent(key) + '/draft/configuration');
+            if (seq !== requestId) return;
+            applySettings(data.configuration || defaults); savedSettings = readSettings();
+            const w = widgets.find(w => widgetKey(w) === key);
+            el('dcWidgetVersion').textContent = versionText(w, data);
+            el('dcWidgetMessage').textContent = (w?.name || 'Widget') + ' · ' + (data.status === 'draft' ? 'Draft loaded' : 'Published/default design loaded');
+            updateDirty();
+        } catch (err) {
+            if (seq !== requestId) return;
+            applySettings(defaults); savedSettings = readSettings();
+            el('dcWidgetMessage').textContent = 'Could not load design configuration.';
+            notice(err.message); console.error('Design & Customize: load failed', err);
+        } finally { if (seq === requestId) setBusy(false); }
     }
+    async function save () {
+        if (!selectedKey || busy) return;
+        const key = selectedKey, payload = readSettings();
+        if (payload.logoUrl && !/^https:\/\/[^\s/]+/i.test(payload.logoUrl)) {
+            notice('Company logo must be a public HTTPS URL.', 'warning'); return;
+        }
+        setBusy(true); notice('');
+        try {
+            const data = await api('/widgets/' + encodeURIComponent(key) + '/draft/configuration',
+                { method: 'PUT', body: JSON.stringify(payload) });
+            if (selectedKey !== key) return;
+            savedSettings = { ...payload };
+            const w = widgets.find(w => widgetKey(w) === key);
+            if (w && data.versionNumber != null) w.draftVersionNumber = data.versionNumber;
+            if (w && data.publishedVersionNumber != null) w.publishedVersionNumber = data.publishedVersionNumber;
+            el('dcWidgetVersion').textContent = versionText(w, { status: 'draft', versionNumber: data.versionNumber ?? w?.draftVersionNumber });
+            el('dcWidgetMessage').textContent = 'Draft saved successfully.';
+            toast('Draft saved' + (data.versionNumber != null ? ' as v' + data.versionNumber : '') + '.');
+        } catch (err) { notice(err.message); console.error('Design & Customize: save failed', err); }
+        finally { setBusy(false); }
+    }
+    function changed () { renderPreview(); }
+    for (const id of fields) { const node = el(id); node.addEventListener('input', changed); node.addEventListener('change', changed); }
+    for (const [ picker, hex ] of [ [ 'dcPrimaryColor', 'dcPrimaryHex' ], [ 'dcBackgroundColor', 'dcBackgroundHex' ], [ 'dcTextColor', 'dcTextHex' ] ]) {
+        el(picker).addEventListener('input', () => {
+            if (picker === 'dcBackgroundColor' || picker === 'dcTextColor') el('dcTheme').value = 'custom';
+            syncHexInputs(); renderPreview();
+        });
+        el(hex).addEventListener('change', () => {
+            const v = el(hex).value.trim();
+            if (!/^#[0-9a-f]{6}$/i.test(v)) { syncHexInputs(); notice('Use a six-digit hex color such as #0DA88B.', 'warning'); return; }
+            el(picker).value = v; if (picker !== 'dcPrimaryColor') el('dcTheme').value = 'custom';
+            notice(''); changed();
+        });
+    }
+    el('dcTheme').addEventListener('change', () => {
+        const theme = el('dcTheme').value;
+        if (theme === 'dark') { el('dcBackgroundColor').value = '#15231E'; el('dcTextColor').value = '#E7F0EC'; }
+        if (theme === 'light') { el('dcBackgroundColor').value = '#FFFFFF'; el('dcTextColor').value = '#17212B'; }
+        syncHexInputs(); changed();
+    });
+    root.querySelectorAll('.dc-preview-mode').forEach(b => b.addEventListener('click', () => { activeMode = b.dataset.dcMode; renderPreview(); }));
+    el('dcLogoUrl').addEventListener('input', () => {
+        const url = el('dcLogoUrl').value.trim();
+        const thumbnail = el('dcLogoThumbnail');
+        thumbnail.hidden = !/^https:\/\//i.test(url);
+        if (!thumbnail.hidden) thumbnail.src = url;
+        changed();
+    });
+    el('dcRemoveLogo').addEventListener('click', () => {
+        el('dcLogoUrl').value = '';
+        el('dcLogoThumbnail').hidden = true;
+        changed();
+    });
 
-    async function saveDraft () {
-        const publicKey = currentPublicKey();
-        if (!publicKey) {
-            showToast("This widget has no API public key configured yet.");
+    // Use the portal's existing Widget Builder navigation and Create Widget action.
+    function createWidgetFromDesigner () {
+        if (busy) return;
+        if (dirty() && !window.confirm('Discard unsaved design changes and create a new widget?')) return;
+
+        const findBuilderButton = () => document.querySelector(
+            '.page-widget-builder[data-ap-page="widget-builder"] #wbCreateWidgetButton'
+        );
+        const startCreateMode = () => {
+            const button = findBuilderButton();
+            if (!button) return false;
+            button.click(); // Reuses Widget Builder's existing createMode() handler.
+            return true;
+        };
+        if (startCreateMode()) return;
+
+        // Dashboard loads its pages dynamically; navigate using its own sidebar link.
+        const links = Array.from(document.querySelectorAll('a[href], [data-page], [data-ap-target]'));
+        const builderLink = links.find(link => {
+            if (root.contains(link)) return false;
+            const label = (link.textContent || '').trim().replace(/\s+/g, ' ');
+            return /^Widget Builder$/i.test(label) ||
+                /widget[-_]?builder/i.test(link.getAttribute('data-page') || '') ||
+                /widget[-_]?builder/i.test(link.getAttribute('data-ap-target') || '');
+        });
+        if (!builderLink) {
+            notice('Widget Builder navigation was not found. Open Widget Builder from the left menu and click +.', 'warning');
             return;
         }
 
-        const button = $("dcSave");
-        button.disabled = true;
-        try {
-            const response = await fetch(apiBase + "/widgets/" + encodeURIComponent(publicKey) + "/draft/configuration", {
-                method: "PUT",
-                headers: requestHeaders(true),
-                body: JSON.stringify(currentSettings())
-            });
-            const data = await readResponse(response);
-            savedSettings = currentSettings();
-            updateDirtyState();
-            await loadWidgetVersion();
-            showToast("Draft saved" + (data.versionNumber ? " as version " + data.versionNumber : "") + ". Publish it when ready.");
-        } catch (error) {
-            console.error("Could not save widget design draft.", error);
-            showToast(error.message || "Could not save the draft.");
-        } finally {
-            button.disabled = false;
-        }
+        // Register before clicking because the page may be injected immediately.
+        const observer = new MutationObserver(() => {
+            if (startCreateMode()) observer.disconnect();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+        builderLink.click();
+        if (startCreateMode()) observer.disconnect();
+        // Prevent an observer from persisting indefinitely if navigation fails.
+        window.setTimeout(() => observer.disconnect(), 10000);
     }
+    el('dcCreateWidget').addEventListener('click', createWidgetFromDesigner);
 
-    [ [ "dcPrimaryColor", "dcPrimaryHex" ], [ "dcBackgroundColor", "dcBackgroundHex" ], [ "dcTextColor", "dcTextHex" ] ]
-        .forEach(([ colorId, textId ]) => {
-            $(colorId).addEventListener("input", () => syncColorFromPicker(colorId, textId));
-            $(textId).addEventListener("change", () => syncColorFromText(textId, colorId));
-        });
-
-    $("dcTheme").addEventListener("change", () => {
-        syncBackgroundToTheme($("dcTheme").value);
-        updatePreview();
+    el('dcSave').addEventListener('click', save);
+    el('dcReset').addEventListener('click', () => { applySettings(savedSettings); toast('Restored the last loaded or saved settings.'); });
+    el('dcWidgetSelect').addEventListener('change', async e => {
+        const next = e.target.value, previous = selectedKey;
+        if (dirty() && !window.confirm('Discard unsaved design changes and switch widgets?')) { e.target.value = previous; return; }
+        // clear the dirty state before loading the next widget
+        savedSettings = readSettings();
+        await selectWidget(next);
     });
-
-    [ "dcFontFamily", "dcFontSize", "dcRadius", "dcShadow", "dcWidth", "dcPosition", "dcButtonShape", "dcHeading", "dcDescription", "dcButtonText", "dcFooterText" ]
-        .forEach(id => {
-            $(id).addEventListener("input", updatePreview);
-            $(id).addEventListener("change", updatePreview);
-        });
-
-    root.querySelectorAll(".dc-preview-mode").forEach(button => {
-        button.addEventListener("click", () => setPreviewMode(button.dataset.dcMode));
-    });
-
-    $("dcSave").addEventListener("click", saveDraft);
-    $("dcReset").addEventListener("click", () => {
-        applySettings(savedSettings);
-        showToast("Restored the settings last loaded or saved from the server.");
-    });
-    $("dcWidgetSelect").addEventListener("change", () => {
-        loadWidgetVersion();
-        loadSettings(true);
-    });
-
-    applySettings(defaults);
-    savedSettings = currentSettings();
-    loadWidgetVersion();
-    loadSettings(false);
+    applySettings(defaults); savedSettings = readSettings(); updateDirty();
+    loadWidgets();
 })();

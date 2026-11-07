@@ -1,5 +1,5 @@
 <!-- PAGE: DESIGN & CUSTOMIZE -->
-<div class="ap-page design-customize-page" data-ap-page="design-customize" data-api-base="https://localhost:7014/api" data-demo-owner-user-token="1101" data-widget-public-key="pk_demo_sofa_finder">
+<div class="ap-page design-customize-page" data-ap-page="design-customize" data-api-base="/Widget/Api">
     <!-- Shared AskPearls breadcrumb -->
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
@@ -27,15 +27,16 @@
     </header>
 
     <div class="dc-widget-selector ap-widget-selector">
+        <button type="button" id="dcCreateWidget" class="dc-selector-create-button" title="Create New Widget" aria-label="Create New Widget">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+        </button>
         <div class="dc-selector-icon ap-widget-selector-icon"><i class="bi bi-grid-1x2"></i></div>
         <div class="dc-selector-info ap-widget-selector-info">
             <label for="dcWidgetSelect">Widget to customize</label>
             <select id="dcWidgetSelect" class="ap-widget-selector-control">
-                <option value="sofa" data-public-key="pk_demo_sofa_finder">Sofa Finder Widget</option>
-                <option value="furniture">Furniture Recommendation Widget</option>
-                <option value="demo">Demo Recommendation Widget</option>
+                <option value="">Loading widgets…</option>
             </select>
-            <small class="ap-widget-selector-help">Choose the widget you want to customize.</small>
+            <small id="dcWidgetMessage" class="ap-widget-selector-help" aria-live="polite">Choose the widget you want to customize.</small>
         </div>
         <div class="dc-version ap-widget-selector-version">
             <span>Draft / live</span>
@@ -43,11 +44,23 @@
         </div>
     </div>
 
-    <div class="dc-workspace">
+    <div id="dcPageAlert" class="alert d-none" role="alert" aria-live="polite"></div>
+
+    <div class="dc-workspace" id="dcWorkspace">
 
         <!-- SETTINGS -->
         <section class="dc-settings">
 
+            <!-- White-label branding (subscription-gated on the API) -->
+            <div class="dc-section-heading"><div><h5>Widget Branding <span class="dc-premium-tag">PAID PLAN</span></h5><p>Customize the assistant identity for visitors.</p></div><i class="bi bi-gem"></i></div>
+            <div class="dc-settings-body dc-branding-settings">
+                <div class="dc-field"><label for="dcBrandName">Company name</label><input type="text" id="dcBrandName" maxlength="100" placeholder="Your company name"></div>
+                <div class="dc-field"><label for="dcHeaderTitle">Widget header title</label><input type="text" id="dcHeaderTitle" maxlength="80" value="AskPearls Assistant"></div>
+                <div class="dc-field"><label for="dcBrandIcon">Assistant icon</label><select id="dcBrandIcon"><option value="stars">AskPearls stars</option><option value="building">Company</option><option value="chat">Chat</option><option value="robot">AI robot</option><option value="custom">Custom icon (legacy)</option></select></div>
+                <div class="dc-field"><label for="dcLogoUrl">Company logo URL</label><input type="url" id="dcLogoUrl" maxlength="2048" placeholder="https://example.com/logo.png" autocomplete="url"><small>Public HTTPS image URL (PNG, JPG, WebP). No image is uploaded or stored on AskPearls.</small><div class="dc-logo-actions"><img id="dcLogoThumbnail" alt="Company logo preview" hidden><button type="button" class="dc-btn-outline" id="dcRemoveLogo">Clear logo URL</button></div></div>
+                <div class="dc-field"><label class="dc-toggle-row"><span><strong>Hide AskPearls branding</strong><small>Available with an eligible white-label subscription.</small></span><span class="dc-switch"><input type="checkbox" id="dcHideBranding"><span class="dc-switch-track"></span></span></label></div>
+                <p class="dc-branding-note">Premium branding is validated on the server. An eligible subscription is required to save these settings.</p>
+            </div>
             <div class="dc-section-heading">
                 <div>
                     <h5>Widget Appearance</h5>
@@ -185,12 +198,12 @@
                 <div class="dc-field">
                     <label for="dcHeading">Welcome heading</label>
                     <input type="text" id="dcHeading" maxlength="100"
-                           value="Find your perfect sofa">
+                           value="Welcome to our assistant">
                 </div>
 
                 <div class="dc-field">
                     <label for="dcDescription">Welcome message</label>
-                    <textarea id="dcDescription" rows="3" maxlength="250">Answer a few quick questions and discover the sofa that fits your home.</textarea>
+                    <textarea id="dcDescription" rows="3" maxlength="250">Answer a few quick questions to find the right recommendation for you.</textarea>
                 </div>
 
                 <div class="dc-field">
@@ -235,8 +248,8 @@
                     <div class="dc-widget-preview" id="dcWidgetPreview">
                         <div class="dc-widget-top">
                             <div class="dc-widget-brand">
-                                <div class="dc-brand-icon"><i class="bi bi-stars"></i></div>
-                                <span>AskPearls Assistant</span>
+                                <div class="dc-brand-icon" id="dcPreviewBrandIcon"><i class="bi bi-stars"></i></div>
+                                <span class="dc-brand-labels"><strong id="dcPreviewBrandTitle">AskPearls Assistant</strong><small id="dcPreviewCompanyName"></small></span>
                             </div>
                             <button type="button" class="dc-widget-menu"
                                     aria-label="Preview menu">
@@ -245,26 +258,26 @@
                         </div>
 
                         <div class="dc-widget-content">
-                            <div class="dc-welcome-icon"><i class="bi bi-stars"></i></div>
-                            <h3 id="dcPreviewHeading">Find your perfect sofa</h3>
+                            <div class="dc-welcome-icon" id="dcPreviewCompanyLogo"><i class="bi bi-stars"></i></div>
+                            <h3 id="dcPreviewHeading">Welcome to our assistant</h3>
                             <p id="dcPreviewDescription">
-                                Answer a few quick questions and discover the sofa that fits your home.
+                                Answer a few quick questions to find the right recommendation for you.
                             </p>
 
                             <div class="dc-preview-question">
                                 <span class="dc-preview-step">01</span>
                                 <div>
-                                    <strong>What best describes your living space?</strong>
+                                    <strong>Choose the answer that best fits your needs.</strong>
                                     <small>Choose the option that fits you best.</small>
                                 </div>
                             </div>
 
                             <button type="button" class="dc-preview-answer">
-                                <span><i class="bi bi-house"></i> Apartment</span>
+                                <span><i class="bi bi-house"></i> Option one</span>
                                 <i class="bi bi-chevron-right"></i>
                             </button>
                             <button type="button" class="dc-preview-answer">
-                                <span><i class="bi bi-house-door"></i> House</span>
+                                <span><i class="bi bi-house-door"></i> Option two</span>
                                 <i class="bi bi-chevron-right"></i>
                             </button>
 
@@ -290,6 +303,6 @@
     <div class="dc-toast" id="dcToast" role="status" aria-live="polite"></div>
 </div>
 
-<link href="~/app_page_css/app_page_design_customize_css.css?v=20261021-4" rel="stylesheet" />
-<script src="~/app_page_js/app_page_design_customize_js.js"></script>
+<link href="~/app_page_css/app_page_design_customize_css.css?v=20261107-green-plus-2" rel="stylesheet" />
+<script src="~/app_page_js/app_page_design_customize_js.js?v=20261107-green-plus-2"></script>
 

@@ -687,3 +687,79 @@ html:not([data-theme="dark"]) .ap-page.sp-page select[id^="spVisitor_"] {
         border-color: #0DA88B !important;
         box-shadow: 0 0 0 3px rgba(13, 168, 139, .16) !important;
     }
+
+/* Dynamic scoring preview additions */
+.sp-page #spWorkspace.d-none {
+    display: none !important
+}
+
+.sp-page #spPageAlert {
+    margin-bottom: 20px
+}
+
+.sp-page .sp-allocation-card .sp-point-input.is-invalid {
+    border-color: #e25b6b
+}
+
+.sp-page .sp-result .sp-rank {
+    flex-shrink: 0
+}
+
+.sp-page .sp-empty {
+    padding: 22px;
+    text-align: center;
+    color: var(--ap-muted,#aabbb4)
+}
+
+.sp-page .sp-breakdown-scroll {
+    overflow-x: auto
+}
+
+.sp-page .sp-result .sp-score {
+    white-space: nowrap
+}
+
+.sp-page .sp-progress > div {
+    max-width: 100%
+}
+
+/* Scoring & Preview: same green circular Create Widget button as My Widgets. */
+.sp-page .sp-widget-selector {
+    position: relative;
+    padding-top: 28px;
+}
+
+.sp-page .sp-create-widget-button {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 50% !important;
+    background: #12ce79 !important;
+    color: #fff !important;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color .15s ease, transform .15s ease;
+}
+
+    .sp-page .sp-create-widget-button:hover {
+        background: #0bb96b !important;
+        transform: translateY(-1px);
+    }
+
+    .sp-page .sp-create-widget-button:focus-visible {
+        outline: 3px solid rgba(18,206,121,.35);
+        outline-offset: 3px;
+    }
+
+    .sp-page .sp-create-widget-button i {
+        line-height: 1;
+    }

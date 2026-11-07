@@ -16,8 +16,8 @@
     let questionsLoaded = false;
     let draftQuestionsRouteAvailable = false;
     let widgets = [];
-    const apiBase = (root.dataset.apiBase || window.AskPearlsCS_API_URL || (window.location.origin + "/api")).replace(/\/+$/, "");
-    const ownerToken = (root.dataset.demoOwnerUserToken || "").trim();
+    const apiBase = (root.dataset.apiBase || "/Widget/Api").replace(/\/+$/, "");
+
 
     const backdrop = $("qnaModalBackdrop");
     const form = $("qnaQuestionForm");
@@ -26,7 +26,6 @@
 
     function apiHeaders () {
         const headers = { Accept: "application/json" };
-        if (ownerToken) headers[ "X-Demo-Owner-User-Token" ] = ownerToken;
         return headers;
     }
 
@@ -46,6 +45,35 @@
         box.textContent = message;
         box.hidden = !message;
         box.classList.toggle("is-error", Boolean(isError));
+    }
+
+    function antiforgeryToken () {
+        return document.querySelector('input[name="__RequestVerificationToken"]')?.value
+            || document.querySelector('meta[name="request-verification-token"]')?.content
+            || document.querySelector('meta[name="csrf-token"]')?.content
+            || "";
+    }
+
+    function setEditorEnabled (enabled) {
+        $("addQuestionButton").disabled = !enabled;
+        $("saveDraftButton").disabled = !enabled || !draftQuestionsRouteAvailable;
+        $("previewButton").disabled = !enabled;
+        $("editQuestionButton").disabled = !enabled || !selectedQuestion();
+    }
+
+    function resetSelection () {
+        questions = [];
+        selectedId = null;
+        editingId = null;
+        questionsLoaded = false;
+        draftQuestionsRouteAvailable = false;
+        $("qnaWidgetName").textContent = "No widget selected";
+        $("qnaWidgetSummary").textContent = "Select a widget above to manage its questions.";
+        $("qnaWidgetVersion").textContent = "—";
+        $("draftStatus").textContent = "Select a widget";
+        showApiMessage("");
+        render();
+        setEditorEnabled(false);
     }
 
     function currentWidget () {
@@ -73,12 +101,15 @@
 
     async function loadQuestionsForWidget () {
         const widget = currentWidget();
-        if (!widget) return;
+        if (!widget) { resetSelection(); return; }
+        questions = [];
+        selectedId = null;
+        setEditorEnabled(false);
         questionsLoaded = false;
         draftQuestionsRouteAvailable = false;
         $("questionList").innerHTML = '<p class="empty-state">Loading questions…</p>';
         $("questionOverview").innerHTML = '<p class="empty-state">Loading question details…</p>';
-        $("qnaWidgetVersion").textContent = widget.hasDraft ? "Draft v" + (widget.draftVersionNumber || widget.versionNumber) : widget.hasPublishedVersion ? "Live v" + (widget.publishedVersionNumber || widget.versionNumber) : "—";
+        $("qnaWidgetVersion").textContent = versionLabel(widget);
         try {
             const path = apiBase + "/widgets/" + encodeURIComponent(widget.publicKey);
             let questionResult;
@@ -103,7 +134,11 @@
             nextId = questions.length + 1;
             selectedId = questions.length ? questions[ 0 ].id : null;
             const version = questionResult.versionNumber || (questionResult.status === "draft" ? widget.draftVersionNumber : widget.publishedVersionNumber) || widget.versionNumber;
-            $("qnaWidgetVersion").textContent = widget.hasDraft ? "Draft v" + (version || widget.draftVersionNumber) + (widget.hasPublishedVersion ? " · Live v" + widget.publishedVersionNumber : "") : version ? "Live v" + version : "—";
+            if (questionResult.status === "draft" && version) {
+                widget.hasDraft = true;
+                widget.draftVersionNumber = String(version);
+            }
+            $("qnaWidgetVersion").textContent = versionLabel(widget);
             $("qnaWidgetName").textContent = widget.name;
             $("qnaWidgetSummary").textContent = questionResult.status === "draft"
                 ? "Questions loaded from the saved draft version. The live published version is unchanged."
@@ -115,6 +150,7 @@
                     ? "Questions loaded from the selected widget. Add or edit questions, then save the draft to the API."
                     : "No questions exist yet. Add your first question and save the draft."), usedPublishedFallback);
             $("draftStatus").textContent = questionResult.status === "draft" ? "Saved draft loaded" : "Published questions loaded";
+            setEditorEnabled(draftQuestionsRouteAvailable);
         } catch (error) {
             if (currentWidget()?.publicKey !== widget.publicKey) return;
             questions = [];
@@ -122,6 +158,7 @@
             render();
             showApiMessage(error.message || "Could not load this widget's questions.", true);
             $("draftStatus").textContent = "Questions could not be loaded";
+            setEditorEnabled(false);
         }
     }
 
@@ -139,7 +176,9 @@
                 hasDraft: Boolean(item.hasDraft ?? item.HasDraft ?? String(item.status ?? item.Status ?? "").toLowerCase() === "draft"),
                 hasPublishedVersion: Boolean(item.hasPublishedVersion ?? item.HasPublishedVersion ?? String(item.status ?? item.Status ?? "").toLowerCase() === "published")
             })).filter(item => item.publicKey);
-            select.replaceChildren();
+            select.replaceChildren(new Option("-- Select a widget --", ""));
+            select.value = "";
+            resetSelection();
             if (!widgets.length) {
                 select.add(new Option("No widgets available", ""));
                 $("qnaWidgetName").textContent = "No widget selected";
@@ -151,11 +190,11 @@
             }
             widgets.forEach(widget => select.add(new Option(widget.name, widget.publicKey)));
             select.disabled = false;
-            await loadQuestionsForWidget();
+            // Do not select the first widget automatically. Wait for a manual choice.
         } catch (error) {
             select.replaceChildren(new Option("Could not load widgets", ""));
             questions = [];
-            render();
+            resetSelection();
             showApiMessage(error.message || "Could not load widgets from the API.", true);
         }
     }
@@ -168,6 +207,19 @@
             '"': "&quot;",
             "'": "&#39;"
         })[ character ]);
+    }
+
+    function versionLabel (widget) {
+        if (!widget) return "—";
+        const valid = value => /^[1-9]\d*$/.test(String(value ?? "").trim());
+        const draftNumber = valid(widget.draftVersionNumber)
+            ? widget.draftVersionNumber
+            : (widget.hasDraft && valid(widget.versionNumber) ? widget.versionNumber : "");
+        const liveNumber = valid(widget.publishedVersionNumber)
+            ? widget.publishedVersionNumber : "";
+        const draft = widget.hasDraft && valid(draftNumber) ? "Draft v" + draftNumber : "";
+        const live = widget.hasPublishedVersion && valid(liveNumber) ? "Live v" + liveNumber : "";
+        return [ draft, live ].filter(Boolean).join(" · ") || "—";
     }
 
     function selectedQuestion () {
@@ -196,7 +248,7 @@
             : `<p class="empty-state">No questions yet. Select Add to create your first question.</p>`;
 
         const question = selectedQuestion();
-        $("editQuestionButton").disabled = !question;
+        $("editQuestionButton").disabled = !question || !currentWidget() || !questionsLoaded;
 
         if (!question) {
             $("questionOverview").innerHTML =
@@ -423,7 +475,7 @@
             }
         } else {
             const question = {
-                id: nextId++,
+                id: String(nextId++),
                 text,
                 key,
                 helper,
@@ -465,7 +517,7 @@
         const button = event.target.closest("[data-select-question]");
         if (!button) return;
 
-        selectedId = button.dataset.selectQuestion;
+        selectedId = String(button.dataset.selectQuestion);
         render();
     });
 
@@ -488,7 +540,11 @@
         try {
             const response = await fetch(apiBase + "/widgets/" + encodeURIComponent(widget.publicKey) + "/draft/questions", {
                 method: "PUT",
-                headers: { ...apiHeaders(), "Content-Type": "application/json" },
+                headers: {
+                    ...apiHeaders(),
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": antiforgeryToken()
+                },
                 body: JSON.stringify({
                     questions: questions.map(question => ({
                         text: question.text,
@@ -503,7 +559,7 @@
             $("draftStatus").textContent = "Saved draft";
             widget.hasDraft = true;
             widget.draftVersionNumber = String(result.versionNumber || widget.draftVersionNumber || "");
-            $("qnaWidgetVersion").textContent = result.versionNumber ? "Draft v" + result.versionNumber + (widget.hasPublishedVersion ? " · Live v" + widget.publishedVersionNumber : "") : $("qnaWidgetVersion").textContent;
+            $("qnaWidgetVersion").textContent = versionLabel(widget);
             showApiMessage("Question draft saved to the API. Published questions are unchanged until you publish the draft.");
             showToast("Question draft saved.");
             await loadQuestionsForWidget();
@@ -512,7 +568,7 @@
             showApiMessage(error.message || "Could not save the question draft.", true);
             showToast("Could not save question draft.");
         } finally {
-            button.disabled = false;
+            setEditorEnabled(Boolean(currentWidget()) && questionsLoaded && draftQuestionsRouteAvailable);
         }
     });
 
@@ -523,6 +579,6 @@
         });
     });
 
-    render();
+    resetSelection();
     loadWidgets();
 })();

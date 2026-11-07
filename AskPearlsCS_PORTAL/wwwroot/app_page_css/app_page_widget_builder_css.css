@@ -630,3 +630,214 @@ body.dark-mode .page-widget-builder .wb-theme-option input:checked + span {
         min-width: 120px;
     }
 }
+
+
+/* =========================================================
+   FIX: Behavior switches in light and dark portal themes
+   The controls are Bootstrap switches (checkboxes), not radios.
+   Explicit thumb/track colors avoid inherited theme overrides.
+   ========================================================= */
+.page-widget-builder .wb-setting-row .form-check.form-switch {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 1.5rem;
+    padding-left: 0;
+    margin: 0;
+}
+
+.page-widget-builder .wb-setting-row .form-switch .form-check-input {
+    float: none;
+    display: block;
+    flex: 0 0 auto;
+    width: 2.25rem;
+    height: 1.25rem;
+    margin: 0;
+    border: 1px solid #8297a3;
+    border-radius: 2rem;
+    background-color: #e5edf1;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    /* White thumb remains visible on either portal theme. */
+    --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23556b78'/%3e%3c/svg%3e");
+    background-image: var(--bs-form-switch-bg);
+    box-shadow: none;
+    opacity: 1;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: background-position .15s ease-in-out, background-color .15s ease-in-out;
+}
+
+    .page-widget-builder .wb-setting-row .form-switch .form-check-input:checked {
+        border-color: #12856f;
+        background-color: #16a085;
+        background-position: right center;
+        --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
+        background-image: var(--bs-form-switch-bg);
+    }
+
+    .page-widget-builder .wb-setting-row .form-switch .form-check-input:focus-visible {
+        outline: 2px solid #16a085;
+        outline-offset: 3px;
+    }
+
+[data-bs-theme="dark"] .page-widget-builder .wb-setting-row .form-switch .form-check-input:not(:checked) {
+    border-color: #6f9389;
+    background-color: #29463c;
+    --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23d9e8e3'/%3e%3c/svg%3e");
+    background-image: var(--bs-form-switch-bg);
+}
+
+
+/* FINAL OVERRIDE — high-contrast Behavior switches.
+   !important defeats global portal rules that color all inputs yellow. */
+.page-widget-builder .wb-setting-row .form-check.form-switch input.form-check-input[type="checkbox"] {
+    position: relative !important;
+    display: inline-block !important;
+    width: 46px !important;
+    min-width: 46px !important;
+    height: 26px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 2px solid #657b89 !important;
+    border-radius: 999px !important;
+    background: #a9bac4 !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: background-color .18s ease, border-color .18s ease;
+}
+
+    .page-widget-builder .wb-setting-row .form-check.form-switch input.form-check-input[type="checkbox"]::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 1px 3px rgba(0,0,0,.28);
+        transition: transform .18s ease;
+        pointer-events: none;
+    }
+
+    .page-widget-builder .wb-setting-row .form-check.form-switch input.form-check-input[type="checkbox"]:checked {
+        background: #008f70 !important;
+        background-image: none !important;
+        border-color: #007b61 !important;
+    }
+
+        .page-widget-builder .wb-setting-row .form-check.form-switch input.form-check-input[type="checkbox"]:checked::before {
+            transform: translateX(20px);
+        }
+
+    .page-widget-builder .wb-setting-row .form-check.form-switch input.form-check-input[type="checkbox"]:focus-visible {
+        outline: 3px solid #55d3b1 !important;
+        outline-offset: 3px;
+    }
+
+[data-bs-theme="dark"] .page-widget-builder .wb-setting-row .form-check.form-switch input.form-check-input[type="checkbox"]:not(:checked) {
+    background: #36564e !important;
+    border-color: #8ba69d !important;
+}
+
+
+/* 2026-11-07 FIX 3: Paint the switch track with a pseudo-element.
+   This remains visible even if portal styles force a yellow input background. */
+.page-widget-builder .wb-setting-row .form-check.form-switch input.form-check-input[type="checkbox"]::after {
+    content: "" !important;
+    display: block !important;
+    position: absolute !important;
+    inset: -2px !important;
+    z-index: 0 !important;
+    border: 2px solid #667b89 !important;
+    border-radius: 999px !important;
+    background-color: #8799a5 !important;
+    background-image: none !important;
+    pointer-events: none !important;
+    transition: background-color .18s ease, border-color .18s ease;
+}
+
+.page-widget-builder .wb-setting-row .form-check.form-switch input.form-check-input[type="checkbox"]:checked::after {
+    background-color: #008f70 !important;
+    border-color: #007b61 !important;
+}
+
+.page-widget-builder .wb-setting-row .form-check.form-switch input.form-check-input[type="checkbox"]::before {
+    z-index: 1 !important;
+    background-color: #ffffff !important;
+}
+
+[data-bs-theme="dark"] .page-widget-builder .wb-setting-row .form-check.form-switch input.form-check-input[type="checkbox"]:not(:checked)::after {
+    background-color: #36564e !important;
+    border-color: #8ba69d !important;
+}
+
+/* Builder preview: independent header icon and external company logo. */
+.page-widget-builder .wb-company-logo {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+    .page-widget-builder .wb-company-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+
+.page-widget-builder .wb-preview-brand small:empty {
+    display: none !important;
+}
+
+.page-widget-builder .wb-preview-brand strong {
+    font-size: inherit;
+}
+
+/* Widget Builder: matching green circular Create button */
+.page-widget-builder .wb-widget-selector {
+    position: relative;
+}
+
+.page-widget-builder .wb-create-widget-button {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #10c978 !important;
+    color: #fff !important;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+
+    .page-widget-builder .wb-create-widget-button:hover {
+        background: #0baa65 !important;
+    }
+
+    .page-widget-builder .wb-create-widget-button:focus-visible {
+        outline: 3px solid #fff;
+        outline-offset: 3px;
+    }
+
+.page-widget-builder .wb-widget-selector {
+    padding-top: 30px;
+}

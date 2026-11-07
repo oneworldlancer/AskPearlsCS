@@ -837,3 +837,93 @@ body[data-bs-theme="dark"] .ap-page .ap-widget-selector-version > strong {
         grid-column: 1 !important;
     }
 }
+
+
+/* My Widgets: matching green + action at the selector's top-right.
+   The selector retains its full-width grid and dropdown proportions. */
+.page-widgets .active-widget-picker {
+    position: relative;
+    width: 100% !important;
+}
+
+    .page-widgets .active-widget-picker .active-widget-picker-create {
+        position: absolute;
+        z-index: 3;
+        top: 12px;
+        right: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        border: 1px solid #0fa779;
+        border-radius: 50%;
+        background: #18c964;
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,.16);
+        text-decoration: none;
+        cursor: pointer;
+        transition: background .15s ease, transform .15s ease;
+    }
+
+        .page-widgets .active-widget-picker .active-widget-picker-create:hover {
+            background: #0fa978;
+            color: #fff;
+            transform: scale(1.07);
+        }
+
+        .page-widgets .active-widget-picker .active-widget-picker-create:focus-visible {
+            outline: 3px solid #65d9b0;
+            outline-offset: 3px;
+        }
+    /* Only the version column makes room for the + icon. */
+    .page-widgets .active-widget-picker .active-widget-picker-version {
+        padding-right: 46px;
+    }
+
+@media (max-width: 575.98px) {
+    .page-widgets .active-widget-picker .active-widget-picker-create {
+        top: 8px;
+        right: 8px;
+    }
+}
+
+
+/* =============================================================
+   My Widgets: separate, center-aligned Version column
+   Matches Dashboard's Name | Status | Version | Actions table.
+   ============================================================= */
+@media (min-width: 768px) {
+    .page-widgets .widget-table-heading,
+    .page-widgets .widget-table-row {
+        grid-template-columns: minmax(0, 1fr) minmax(110px, .22fr) minmax(85px, .18fr) minmax(155px, auto);
+    }
+
+        .page-widgets .widget-table-heading > :nth-child(3) {
+            text-align: center;
+        }
+
+    .page-widgets .widget-table-version-cell {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        white-space: nowrap;
+    }
+}
+
+.page-widgets .widget-table-version-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ap-text, #e7edf3);
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 767.98px) {
+    .page-widgets .widget-table-version-cell {
+        align-self: center;
+        justify-items: end;
+        text-align: right;
+    }
+}

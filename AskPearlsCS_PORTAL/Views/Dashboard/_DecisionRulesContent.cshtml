@@ -1,4 +1,4 @@
-<div class="ap-page decision-rules-page" data-ap-page="decision-rules" data-api-base="https://localhost:7014/api" data-demo-owner-user-token="1101">
+<div class="ap-page decision-rules-page" data-ap-page="decision-rules" data-api-base="/Widget/Api">
     <!-- Shared AskPearls breadcrumb -->
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
@@ -25,6 +25,7 @@
             <select id="drWidgetSelect" class="ap-widget-selector-control" disabled><option value="">Loading widgets…</option></select>
             <small class="ap-widget-selector-help">Choose the widget whose decision rules you want to manage.</small>
         </div>
+        <button type="button" class="dr-selector-add" data-dr-action="add" aria-label="Create decision rule" title="Create decision rule"><i class="bi bi-plus-lg"></i></button>
         <div class="ap-widget-selector-version" aria-live="polite"><span>Draft / live</span><strong id="drWidgetVersion">—</strong></div>
     </section>
     <div class="dr-api-message" data-dr-api-message role="status" aria-live="polite" hidden></div>
@@ -122,6 +123,7 @@
             </div>
 
             <form data-dr-form>
+                @Html.AntiForgeryToken()
                 <div class="dr-modal-body">
                     <div class="dr-validation" data-dr-validation role="alert"></div>
 
@@ -209,9 +211,9 @@
                         <select id="dr-recommendation" name="recommendation"
                                 class="dr-select" style="width:100%;" required>
                             <option value="">Select a recommendation</option>
-                            <option value="Oslo Sofa">Oslo Sofa</option>
-                            <option value="Luna Sofa">Luna Sofa</option>
-                            <option value="Haven Sofa">Haven Sofa</option>
+
+                            
+                            
                         </select>
                         <div class="dr-help">Choose an active recommendation outcome for this rule.</div>
                     </div>

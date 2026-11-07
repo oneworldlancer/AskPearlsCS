@@ -443,3 +443,40 @@ html[data-theme="dark"] .ri-page .ri-stat-icon, body[data-theme="dark"] .ri-page
             min-width: 0
         }
 }
+
+/* New widget action: anchored to the selector, without reducing selector width */
+.ri-page .ri-widget-selector {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ri-page .ri-selector-create {
+    position: absolute;
+    right: 13px;
+    top: 12px;
+    z-index: 2;
+    width: 33px;
+    height: 33px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #19cc7d;
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+    .ri-page .ri-selector-create:hover {
+        filter: brightness(1.12);
+        color: #fff;
+    }
+
+.ri-page .ri-widget-selector .ap-widget-selector-version {
+    padding-right: 35px;
+}
+
+.ri-page #riAddButton:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}

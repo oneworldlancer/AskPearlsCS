@@ -1,443 +1,244 @@
-﻿
-(function () {
+﻿(function () {
     "use strict";
+    // Dashboard injects Razor partials via AJAX. Never initialize against an
+    // outdated/partially inserted Scoring & Preview DOM.
+    const roots = Array.from(document.querySelectorAll('.sp-page'));
+    const root = roots.findLast ? roots.findLast(el => el.isConnected) : roots.filter(el => el.isConnected).pop();
+    if (!root || root.dataset.initialized === 'true') return;
 
-    const root = document.querySelector(".sp-page");
-    if (!root || root.dataset.initialized === "true") return;
-    root.dataset.initialized = "true";
-
-    const MAX_PER_QUESTION = 50;
-
-    const questions = [
-        {
-            key: "users",
-            text: "How many people will use the sofa?",
-            answers: [
-                { value: "1-2", text: "1–2 people" },
-                { value: "3-4", text: "3–4 people" },
-                { value: "5-plus", text: "5 or more people" }
-            ]
-        },
-        {
-            key: "priority",
-            text: "What matters most to you?",
-            answers: [
-                { value: "comfort", text: "Comfort" },
-                { value: "style", text: "Style" },
-                { value: "space-saving", text: "Space saving" }
-            ]
-        },
-        {
-            key: "room_size",
-            text: "How much space do you have?",
-            answers: [
-                { value: "small", text: "Small room" },
-                { value: "medium", text: "Medium room" },
-                { value: "large", text: "Large room" }
-            ]
-        }
+    const requiredIds = [
+        'spWidgetSelect', 'spWidgetMessage', 'spWidgetVersion', 'spPageAlert',
+        'spWorkspace', 'spEditQuestion', 'spEditAnswer', 'spAllocationEditor',
+        'spAllocationTotal', 'spAllocationStatus', 'spAllocationBar',
+        'spResetAnswers', 'spResetAllocations', 'spVisitorAnswers',
+        'spQuestionCount', 'spMaximum', 'spRanking', 'spRankingEmpty',
+        'spBreakdownHead', 'spBreakdown', 'spBreakdownFooter'
     ];
-
-    const recommendations = [
-        { key: "oslo_sofa", name: "Oslo Sofa", description: "Compact and practical for everyday comfort." },
-        { key: "luna_sofa", name: "Luna Sofa", description: "A contemporary, style-focused option." },
-        { key: "haven_sofa", name: "Haven Sofa", description: "A spacious option for larger living areas." }
-    ];
-
-    // Demo defaults only. Every answer distributes exactly 50 points.
-    // Shape: allocations[questionKey][answerValue] = [Oslo, Luna, Haven].
-    const allocations = {
-        users: {
-            "1-2": [ 30, 10, 10 ],
-            "3-4": [ 15, 20, 15 ],
-            "5-plus": [ 5, 10, 35 ]
-        },
-        priority: {
-            comfort: [ 20, 15, 15 ],
-            style: [ 10, 30, 10 ],
-            "space-saving": [ 35, 10, 5 ]
-        },
-        room_size: {
-            small: [ 35, 10, 5 ],
-            medium: [ 15, 20, 15 ],
-            large: [ 5, 10, 35 ]
+    const missing = requiredIds.filter(id => !root.querySelector('#' + id));
+    if (missing.length) {
+        const msg = 'Scoring & Preview: outdated/incomplete Razor partial. Missing: ' + missing.join(', ');
+        console.error(msg);
+        const selector = root.querySelector('#spWidgetSelect');
+        const help = root.querySelector('#spWidgetMessage');
+        if (selector) {
+            selector.disabled = true;
+            selector.innerHTML = '<option value="">Page update required</option>';
         }
-    };
-
-    const visitorAnswers = {
-        users: "3-4",
-        priority: "comfort",
-        room_size: "small"
-    };
-
-    const $ = id => root.querySelector("#" + id);
-    const editQuestion = $("spEditQuestion");
-    const editAnswer = $("spEditAnswer");
-    const widgetSelect = $("spWidgetSelect");
-    const widgetVersion = $("spWidgetVersion");
-    const widgetMessage = $("spWidgetMessage");
-
-    const apiBase = (root.dataset.apiBase || "").replace(/\/+$/, "");
-    const ownerToken = (root.dataset.demoOwnerUserToken || "").trim();
-    const activeWidgetStorageKey = "askpearls.activeWidgetPublicKey";
-    let availableWidgets = [];
-
-    function read (item, camel, pascal) {
-        return item?.[ camel ] ?? item?.[ pascal ];
+        if (help) help.textContent = 'The Dashboard loaded an outdated Scoring & Preview view. Replace the partial and reload.';
+        return; // Do not mark initialized; a later correct partial can initialize.
     }
-
-    function escapeHtml (value) {
-        return String(value ?? "").replace(/[&<>\"']/g, character => ({
-            "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
-        })[ character ]);
+    root.dataset.initialized = 'true';
+    const $ = id => root.querySelector('#' + id);
+    const MAX = 50;
+    const apiBase = (root.dataset.apiBase || '/Widget/Api').replace(/\/+$/, '');
+    const owner = (root.dataset.demoOwnerUserToken || '').trim();
+    const headers = { Accept: 'application/json' };
+    // Only the authenticated portal proxy should be used for production.
+    if (owner && !apiBase.startsWith('/Widget/Api')) headers[ 'X-Demo-Owner-User-Token' ] = owner;
+    let widgets = [], questions = [], recommendations = [], allocations = {}, visitorAnswers = {};
+    let requestSequence = 0;
+    const value = (obj, key) => obj?.[ key ] ?? obj?.[ key[ 0 ].toUpperCase() + key.slice(1) ];
+    const esc = input => String(input ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ ch ]));
+    const option = (id, text) => `<option value="${ esc(id) }">${ esc(text) }</option>`;
+    function alertMessage (message, kind = 'info') {
+        const el = $('spPageAlert'); el.className = `alert alert-${ kind }`; el.textContent = message;
     }
-
-    function updateSelectedWidget () {
-        const selected = availableWidgets.find(widget => widget.publicKey === widgetSelect.value);
-        widgetVersion.textContent = selected ? (selected.hasDraft ? "Draft v" + (selected.draftVersionNumber || selected.versionNumber) + (selected.hasPublishedVersion ? " · Live v" + selected.publishedVersionNumber : "") : selected.hasPublishedVersion ? "Live v" + (selected.publishedVersionNumber || selected.versionNumber) : "—") : "—";
-        widgetMessage.textContent = selected
-            ? "Scoring preview for " + selected.name + "."
-            : "Choose the widget you want to preview.";
-        if (selected) window.localStorage.setItem(activeWidgetStorageKey, selected.publicKey);
+    function clearAlert () { $('spPageAlert').className = 'alert d-none'; $('spPageAlert').textContent = ''; }
+    async function getJson (path) {
+        const response = await fetch(apiBase + path, { headers, credentials: 'same-origin', cache: 'no-store' });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || data.success === false) throw new Error(data.message || `API request failed (${ response.status }).`);
+        return data;
     }
-
+    function setVersion (widget) {
+        $('spWidgetVersion').textContent = widget ? (
+            widget.hasDraft ? `Draft v${ widget.draftVersionNumber || widget.versionNumber || '?' }` +
+                (widget.hasPublishedVersion ? ` · Live v${ widget.publishedVersionNumber }` : '') :
+                widget.hasPublishedVersion ? `Live v${ widget.publishedVersionNumber || widget.versionNumber }` : '—'
+        ) : '—';
+    }
     async function loadWidgets () {
-        widgetSelect.disabled = true;
-        widgetMessage.textContent = "Loading your widgets…";
-
+        const select = $('spWidgetSelect'); select.disabled = true;
         try {
-            if (!apiBase) throw new Error("The widgets API address is not configured.");
-            const headers = { Accept: "application/json" };
-            if (ownerToken) headers[ "X-Demo-Owner-User-Token" ] = ownerToken;
-
-            const response = await fetch(apiBase + "/widgets", { headers });
-            const body = await response.json().catch(() => ({}));
-            if (!response.ok) throw new Error(body.message || "Your widgets could not be loaded.");
-
-            const records = Array.isArray(body.widgets) ? body.widgets : [];
-            availableWidgets = records.map(item => ({
-                publicKey: String(read(item, "publicKey", "PublicKey") || ""),
-                name: String(read(item, "name", "Name") || "Untitled widget"),
-                versionNumber: String(read(item, "versionNumber", "VersionNumber") || ""),
-                draftVersionNumber: String(read(item, "draftVersionNumber", "DraftVersionNumber") || ""),
-                publishedVersionNumber: String(read(item, "publishedVersionNumber", "PublishedVersionNumber") || ""),
-                hasDraft: Boolean(read(item, "hasDraft", "HasDraft") ?? String(read(item, "status", "Status") || "").toLowerCase() === "draft"),
-                hasPublishedVersion: Boolean(read(item, "hasPublishedVersion", "HasPublishedVersion") ?? String(read(item, "status", "Status") || "").toLowerCase() === "published")
-            })).filter(widget => widget.publicKey);
-
-            widgetSelect.innerHTML = availableWidgets.length
-                ? availableWidgets.map(widget => `<option value="${ escapeHtml(widget.publicKey) }">${ escapeHtml(widget.name) }</option>`).join("")
-                : '<option value="">No widgets found</option>';
-            widgetSelect.disabled = availableWidgets.length === 0;
-
-            const savedKey = window.localStorage.getItem(activeWidgetStorageKey);
-            const selected = availableWidgets.find(widget => widget.publicKey === savedKey) || availableWidgets[ 0 ];
-            if (selected) widgetSelect.value = selected.publicKey;
-            updateSelectedWidget();
-            if (!selected) widgetMessage.textContent = "Create a widget before opening the scoring preview.";
-        } catch (exception) {
-            widgetSelect.innerHTML = '<option value="">Widgets unavailable</option>';
-            widgetMessage.textContent = exception.message || "Your widgets could not be loaded.";
-            widgetVersion.textContent = "—";
+            const body = await getJson('/widgets');
+            const payload = body.data && typeof body.data === 'object' ? body.data : body;
+            widgets = (Array.isArray(payload.widgets) ? payload.widgets : []).map(w => ({
+                publicKey: String(value(w, 'publicKey') || ''),
+                name: String(value(w, 'name') || 'Untitled widget'),
+                versionNumber: value(w, 'versionNumber'),
+                draftVersionNumber: value(w, 'draftVersionNumber'),
+                publishedVersionNumber: value(w, 'publishedVersionNumber'),
+                hasDraft: Boolean(value(w, 'hasDraft')),
+                hasPublishedVersion: Boolean(value(w, 'hasPublishedVersion'))
+            })).filter(w => w.publicKey);
+            select.innerHTML = option('', '-- Select a widget --') + widgets.map(w => option(w.publicKey, w.name)).join('');
+            select.value = ''; select.disabled = widgets.length === 0;
+            $('spWidgetMessage').textContent = widgets.length ? 'Choose a widget to load its questions and recommendations.' : 'No widgets found. Create a widget first.';
+        } catch (error) {
+            select.innerHTML = option('', 'Widgets unavailable');
+            alertMessage(error.message, 'danger');
         }
     }
-
-    widgetSelect.addEventListener("change", updateSelectedWidget);
-    loadWidgets();
-
-    $("spQuestionCount").textContent = questions.length;
-    $("spMaximum").textContent = questions.length * MAX_PER_QUESTION;
-
-    function getQuestion (key) {
-        return questions.find(q => q.key === key);
+    function normalizeQuestions (data) {
+        const payload = data.data && typeof data.data === 'object' ? data.data : data;
+        return (Array.isArray(payload.questions) ? payload.questions : []).map((q, i) => {
+            const rawOptions = value(q, 'options') || [];
+            const answers = (Array.isArray(rawOptions) ? rawOptions : []).map((a, j) => {
+                const text = typeof a === 'string' ? a : String(value(a, 'text') || value(a, 'label') || '');
+                return { id: String(j), text };
+            }).filter(a => a.text);
+            return { id: String(value(q, 'id') || value(q, 'key') || i), text: String(value(q, 'text') || `Question ${ i + 1 }`), answers };
+        }).filter(q => q.answers.length);
     }
-
-    function getAnswerLabel (questionKey, answerValue) {
-        const question = getQuestion(questionKey);
-        const answer = question && question.answers.find(a => a.value === answerValue);
-        return answer ? answer.text : answerValue;
+    function normalizeRecommendations (data) {
+        const payload = data.data && typeof data.data === 'object' ? data.data : data;
+        return (Array.isArray(payload.items) ? payload.items : []).filter(r => value(r, 'active') === true).map((r, i) => ({
+            id: String(value(r, 'key') || value(r, 'id') || i),
+            name: String(value(r, 'name') || 'Untitled recommendation'),
+            description: String(value(r, 'description') || '')
+        })).filter(r => r.id);
     }
-
+    function equalSplit () {
+        const n = recommendations.length;
+        if (!n) return [];
+        const base = Math.floor(MAX / n), remainder = MAX % n;
+        return recommendations.map((_, i) => base + (i < remainder ? 1 : 0));
+    }
+    function resetAllocations () {
+        allocations = {};
+        for (const q of questions) {
+            allocations[ q.id ] = {};
+            for (const a of q.answers) allocations[ q.id ][ a.id ] = equalSplit();
+        }
+        renderAllocationEditor(); renderResults();
+    }
+    function resetVisitorAnswers () {
+        visitorAnswers = {};
+        for (const q of questions) visitorAnswers[ q.id ] = q.answers[ 0 ].id;
+        renderVisitorAnswers(); renderResults();
+    }
+    function selectedQuestion () { return questions.find(q => q.id === $('spEditQuestion').value); }
     function renderAnswerOptions () {
-        const question = getQuestion(editQuestion.value);
-        editAnswer.innerHTML = question.answers.map(a =>
-            `<option value="${ a.value }">${ a.text }</option>`
-        ).join("");
+        const q = selectedQuestion();
+        $('spEditAnswer').innerHTML = q ? q.answers.map(a => option(a.id, a.text)).join('') : '';
         renderAllocationEditor();
     }
-
     function renderAllocationEditor () {
-        const qKey = editQuestion.value;
-        const aValue = editAnswer.value;
-        const values = allocations[ qKey ][ aValue ];
-
-        $("spAllocationEditor").innerHTML = recommendations.map((r, i) => `
-    <div class="col-12 col-md-4">
-        <div class="sp-allocation-card">
-            <label for="spPoints${ i }">${ r.name } points</label>
-            <input class="form-control sp-point-input" type="number"
-                id="spPoints${ i }" min="0" max="50" step="1"
-                value="${ values[ i ] }" data-index="${ i }">
-                <small class="text-muted d-block mt-2">${ r.description }</small>
-        </div>
-    </div>
-    `).join("");
-
-        root.querySelectorAll(".sp-point-input").forEach(input => {
-            input.addEventListener("input", () => {
-                const index = Number(input.dataset.index);
-                const rawValue = input.value.trim();
-                const value = Number(rawValue);
-
-                const isValid =
-                    rawValue !== "" &&
-                    Number.isInteger(value) &&
-                    value >= 0 &&
-                    value <= MAX_PER_QUESTION;
-
-                input.classList.toggle("is-invalid", !isValid);
-
-                if (isValid) {
-                    allocations[ qKey ][ aValue ][ index ] = value;
-                }
-
-                updateAllocationStatus();
-                renderResults();
-            });
-        });
-
+        const q = selectedQuestion(), a = $('spEditAnswer').value;
+        const current = q && allocations[ q.id ]?.[ a ];
+        $('spAllocationEditor').innerHTML = current ? recommendations.map((r, i) => `<div class="col-12 col-md-4"><div class="sp-allocation-card"><label for="spPoints${ i }">${ esc(r.name) } points</label><input id="spPoints${ i }" class="form-control sp-point-input" type="number" min="0" max="${ MAX }" step="1" data-index="${ i }" value="${ current[ i ] }"><small class="text-muted d-block mt-2">${ esc(r.description) }</small></div></div>`).join('') : '';
+        root.querySelectorAll('.sp-point-input').forEach(input => input.addEventListener('input', () => {
+            const raw = input.value.trim(), number = Number(raw);
+            const valid = raw !== '' && Number.isInteger(number) && number >= 0 && number <= MAX;
+            input.classList.toggle('is-invalid', !valid);
+            current[ Number(input.dataset.index) ] = valid ? number : null;
+            updateAllocationStatus(); renderResults();
+        }));
         updateAllocationStatus();
     }
-
+    function validValues (values) {
+        return Array.isArray(values) && values.length === recommendations.length &&
+            values.every(v => Number.isInteger(v) && v >= 0 && v <= MAX) &&
+            values.reduce((sum, v) => sum + v, 0) === MAX;
+    }
+    function allValid () { return questions.every(q => q.answers.every(a => validValues(allocations[ q.id ]?.[ a.id ]))); }
     function updateAllocationStatus () {
-        const inputs = Array.from(
-            root.querySelectorAll(".sp-point-input")
-        );
-
-        const rawValues = inputs.map(input => input.value.trim());
-
-        const values = rawValues.map(value => Number(value));
-
-        const hasInvalidInput = inputs.some((input, index) => {
-            const value = values[ index ];
-
-            return (
-                rawValues[ index ] === "" ||
-                !Number.isInteger(value) ||
-                value < 0 ||
-                value > MAX_PER_QUESTION
-            );
-        });
-
-        const total = hasInvalidInput
-            ? null
-            : values.reduce((sum, value) => sum + value, 0);
-
-        let message = "";
-        let statusClass = "sp-valid";
-
-        if (hasInvalidInput) {
-            message = "Enter a whole number between 0 and 50 for each item.";
-            statusClass = "sp-invalid";
-        } else if (total < MAX_PER_QUESTION) {
-            message = `Add ${ MAX_PER_QUESTION - total } points to reach 50.`;
-            statusClass = "sp-invalid";
-        } else if (total > MAX_PER_QUESTION) {
-            message = `Remove ${ total - MAX_PER_QUESTION } points to reach 50.`;
-            statusClass = "sp-invalid";
-        } else {
-            message = "Valid — total is 50 points.";
-        }
-
-        let status = $("spAllocationStatus");
-
-        // Create the status element if it doesn't exist in the HTML yet.
-        if (!status) {
-            status = document.createElement("div");
-            status.id = "spAllocationStatus";
-            status.className = "mt-3";
-            $("spAllocationEditor").insertAdjacentElement("afterend", status);
-        }
-
-        status.className = `mt-3 ${ statusClass }`;
-        status.textContent = message;
+        const q = selectedQuestion(), values = q && allocations[ q.id ]?.[ $('spEditAnswer').value ];
+        const validNumbers = values && values.every(v => Number.isInteger(v) && v >= 0 && v <= MAX);
+        const total = validNumbers ? values.reduce((s, n) => s + n, 0) : null;
+        $('spAllocationTotal').textContent = `${ total === null ? '—' : total } / ${ MAX }`;
+        $('spAllocationStatus').textContent = total === MAX ? '✓ Valid allocation' : total === null ? 'Enter whole numbers between 0 and 50.' : total < MAX ? `Add ${ MAX - total } points.` : `Remove ${ total - MAX } points.`;
+        $('spAllocationStatus').className = total === MAX ? 'sp-valid' : 'sp-invalid';
+        $('spAllocationBar').style.width = `${ total === null ? 0 : Math.min(100, total / MAX * 100) }%`;
+        $('spAllocationBar').classList.toggle('invalid', total !== MAX);
     }
-
-
     function renderVisitorAnswers () {
-        $("spVisitorAnswers").innerHTML = questions.map(q => `
-        <div class="col-12 col-md-4">
-            <div class="sp-answer-card">
-                <label for="spVisitor_${ q.key }">${ q.text }</label>
-                <select
-                    class="form-select"
-                    id="spVisitor_${ q.key }"
-                    data-question="${ q.key }">
-                    ${ q.answers.map(a => `
-                        <option
-                            value="${ a.value }"
-                            ${ visitorAnswers[ q.key ] === a.value ? "selected" : "" }>
-                            ${ a.text }
-                        </option>
-                    `).join("") }
-                </select>
-            </div>
-        </div>
-    `).join("");
-
-        root.querySelectorAll("#spVisitorAnswers [data-question]")
-            .forEach(select => {
-                select.addEventListener("change", function () {
-                    const questionKey = this.dataset.question;
-                    const selectedValue = this.value;
-
-                    // Update the selected visitor answer.
-                    visitorAnswers[ questionKey ] = selectedValue;
-
-                    // Recalculate rankings and score breakdown.
-                    renderResults();
-
-                    // Diagnostic message for browser developer tools.
-                    console.log("Visitor answer changed:", {
-                        question: questionKey,
-                        answer: selectedValue,
-                        visitorAnswers: { ...visitorAnswers }
-                    });
-                });
-            });
-    }
-
-
-    function calculateResults () {
-        const results = recommendations.map((recommendation, index) => {
-            let score = 0;
-            const reasons = [];
-
-            questions.forEach(q => {
-                const answer = visitorAnswers[ q.key ];
-                const points = allocations[ q.key ][ answer ][ index ];
-                score += points;
-                reasons.push(`${ q.text }: ${ getAnswerLabel(q.key, answer) } (+${ points })`);
-            });
-
-            return {
-                ...recommendation,
-                score,
-                maximum: questions.length * MAX_PER_QUESTION,
-                percentage: Math.round(score / (questions.length * MAX_PER_QUESTION) * 100),
-                reasons
-            };
+        $('spVisitorAnswers').innerHTML = questions.map((q, i) => `<div class="col-12 col-md-4"><div class="sp-answer-card"><label for="spVisitor${ i }">${ esc(q.text) }</label><select id="spVisitor${ i }" class="form-select" data-question="${ esc(q.id) }">${ q.answers.map(a => option(a.id, a.text)).join('') }</select></div></div>`).join('');
+        root.querySelectorAll('#spVisitorAnswers select').forEach(select => {
+            select.value = visitorAnswers[ select.dataset.question ];
+            select.addEventListener('change', () => { visitorAnswers[ select.dataset.question ] = select.value; renderResults(); });
         });
-
-        return results.sort((a, b) => b.score - a.score);
     }
-
     function renderResults () {
-
-        const inputs = Array.from(
-            root.querySelectorAll(".sp-point-input")
-        );
-
-        const visibleInputsValid = inputs.every(input => {
-            const rawValue = input.value.trim();
-            const value = Number(rawValue);
-
-            return (
-                rawValue !== "" &&
-                Number.isInteger(value) &&
-                value >= 0 &&
-                value <= MAX_PER_QUESTION
-            );
-        });
-
-        const storedAllocationsValid = questions.every(q =>
-            q.answers.every(a => {
-                const values = allocations[ q.key ][ a.value ];
-
-                return (
-                    Array.isArray(values) &&
-                    values.length === recommendations.length &&
-                    values.every(value =>
-                        Number.isInteger(value) &&
-                        value >= 0 &&
-                        value <= MAX_PER_QUESTION
-                    ) &&
-                    values.reduce((sum, value) => sum + value, 0)
-                    === MAX_PER_QUESTION
-                );
-            })
-        );
-
-        const allValid = visibleInputsValid && storedAllocationsValid;
-
-        $("spRankingEmpty").classList.toggle("d-none", allValid);
-        $("spRanking").classList.toggle("d-none", !allValid);
-
-        if (!allValid) {
-            $("spRanking").innerHTML = "";
-            $("spBreakdown").innerHTML = "";
-            $("spBreakdownFooter").innerHTML = "";
-            return;
+        const valid = questions.length > 0 && recommendations.length > 0 && allValid() &&
+            questions.every(q => q.answers.some(a => a.id === visitorAnswers[ q.id ]));
+        $('spRankingEmpty').classList.toggle('d-none', valid);
+        $('spRanking').classList.toggle('d-none', !valid);
+        if (!valid) { $('spRanking').innerHTML = ''; $('spBreakdownHead').innerHTML = ''; $('spBreakdown').innerHTML = ''; $('spBreakdownFooter').innerHTML = ''; return; }
+        const max = questions.length * MAX;
+        const results = recommendations.map((r, i) => {
+            const score = questions.reduce((sum, q) => sum + allocations[ q.id ][ visitorAnswers[ q.id ] ][ i ], 0);
+            return { ...r, score, percentage: Math.round(score / max * 100), originalIndex: i };
+        }).sort((a, b) => b.score - a.score || a.originalIndex - b.originalIndex);
+        $('spRanking').innerHTML = results.map((r, i) => `<div class="sp-result ${ i === 0 ? 'sp-winner' : '' }"><div class="sp-result-top"><div class="d-flex align-items-center gap-3"><span class="sp-rank">${ i + 1 }</span><div><div class="fw-bold">${ esc(r.name) } ${ i === 0 ? '<span class="sp-valid ms-2">Top score</span>' : '' }</div><div class="text-muted small">${ esc(r.description) }</div></div></div><div class="text-end"><div class="sp-score">${ r.score } / ${ max }</div><div class="text-muted small">${ r.percentage }% of maximum</div></div></div><div class="sp-match-track"><div style="width:${ r.percentage }%"></div></div></div>`).join('');
+        $('spBreakdownHead').innerHTML = `<tr><th>Selected answer</th>${ recommendations.map(r => `<th>${ esc(r.name) }</th>`).join('') }</tr>`;
+        $('spBreakdown').innerHTML = questions.map(q => {
+            const answer = q.answers.find(a => a.id === visitorAnswers[ q.id ]);
+            const points = allocations[ q.id ][ visitorAnswers[ q.id ] ];
+            return `<tr><td><strong>${ esc(q.text) }</strong><div class="text-muted small">${ esc(answer?.text) }</div></td>${ points.map(n => `<td><span class="sp-points">${ n }</span> <small class="text-muted">pts</small></td>`).join('') }</tr>`;
+        }).join('');
+        const scores = recommendations.map((_, i) => questions.reduce((sum, q) => sum + allocations[ q.id ][ visitorAnswers[ q.id ] ][ i ], 0));
+        $('spBreakdownFooter').innerHTML = `<tr><th>Total score</th>${ scores.map(n => `<th>${ n } / ${ max }</th>`).join('') }</tr>`;
+    }
+    async function selectWidget () {
+        const key = $('spWidgetSelect').value;
+        const sequence = ++requestSequence;
+        $('spWorkspace').classList.add('d-none'); clearAlert();
+        const widget = widgets.find(w => w.publicKey === key);
+        setVersion(widget);
+        if (!widget) { $('spWidgetMessage').textContent = 'Choose the widget you want to preview.'; return; }
+        $('spWidgetMessage').textContent = `Loading ${ widget.name }…`;
+        try {
+            const encoded = encodeURIComponent(key);
+            const [ qData, rData ] = await Promise.all([
+                getJson(`/widgets/${ encoded }/draft/questions`),
+                getJson(`/widgets/${ encoded }/draft/recommendations`)
+            ]);
+            if (sequence !== requestSequence) return;
+            questions = normalizeQuestions(qData);
+            recommendations = normalizeRecommendations(rData);
+            if (!questions.length || !recommendations.length) {
+                alertMessage(!questions.length ? 'This widget has no answer options to score. Add questions and answers first.' : 'This widget has no active recommendations. Activate a recommendation first.', 'warning');
+                $('spWidgetMessage').textContent = widget.name;
+                return;
+            }
+            $('spQuestionCount').textContent = questions.length;
+            $('spMaximum').textContent = questions.length * MAX;
+            $('spEditQuestion').innerHTML = questions.map(q => option(q.id, q.text)).join('');
+            visitorAnswers = {};
+            for (const q of questions) visitorAnswers[ q.id ] = q.answers[ 0 ]?.id ?? '';
+            resetAllocations(); renderAnswerOptions(); renderVisitorAnswers(); renderResults();
+            $('spWorkspace').classList.remove('d-none');
+            $('spWidgetMessage').textContent = `${ questions.length } questions · ${ recommendations.length } active recommendations`;
+            alertMessage('Default allocations are evenly distributed for preview. They are not stored scoring rules.', 'info');
+        } catch (error) {
+            if (sequence !== requestSequence) return;
+            $('spWidgetMessage').textContent = 'Could not load widget data.';
+            alertMessage(error.message, 'danger');
         }
-
-
-        const results = calculateResults();
-
-        $("spRanking").innerHTML = results.map((r, index) => `
-    <div class="sp-result ${ index === 0 ? " sp-winner" : "" }">
-    <div class="sp-result-top">
-        <div class="d-flex align-items-center gap-3">
-            <span class="sp-rank">${ index + 1 }</span>
-            <div>
-                <div class="fw-bold">${ r.name } ${ index === 0 ? '<span class="sp-valid ms-2">Top match</span>' : "" }</div>
-                <div class="text-muted small">${ r.description }</div>
-            </div>
-        </div>
-        <div class="text-end">
-            <div class="sp-score">${ r.score } / ${ r.maximum }</div>
-            <div class="text-muted small">${ r.percentage }% match</div>
-        </div>
-    </div>
-    <div class="sp-match-track"><div style="width:${ r.percentage }%"></div></div>
-    <div class="text-muted small">${ r.reasons.join(" · ") }</div>
-</div>
-`).join("");
-
-        $("spBreakdown").innerHTML = questions.map(q => {
-            const answer = visitorAnswers[ q.key ];
-            const points = allocations[ q.key ][ answer ];
-            return `
-    <tr>
-    <td><strong>${ q.text }</strong><div class="text-muted small">${ getAnswerLabel(q.key, answer) }</div></td>
-                        ${ points.map(value => `<td><span class="sp-points">${ value }</span> <span class="text-muted small">pts</span></td>`).join("") }
-                    </tr>
-    `;
-        }).join("");
-
-        const totals = recommendations.map((r, i) =>
-            questions.reduce((sum, q) => sum + allocations[ q.key ][ visitorAnswers[ q.key ] ][ i ], 0)
-        );
-
-        $("spBreakdownFooter").innerHTML = `
-    <tr>
-    <th>Total score</th>
-                    ${ totals.map(total => `<th>${ total } / ${ questions.length * MAX_PER_QUESTION }</th>`).join("") }
-                </tr>
-    `;
+    }
+    // Create widget: use the Dashboard's existing Widget Builder navigation.
+    const createButton = $('spCreateWidgetButton');
+    if (createButton) {
+        createButton.addEventListener('click', () => {
+            const links = Array.from(document.querySelectorAll('a[href]'));
+            const builderLink = links.find(link =>
+                link.closest('aside, nav, .sidebar, .left-sidebar, .app-sidebar, .ap-sidebar') &&
+                link.textContent.trim().replace(/\s+/g, ' ').toLowerCase() === 'widget builder'
+            ) || links.find(link => link.textContent.trim().replace(/\s+/g, ' ').toLowerCase() === 'widget builder');
+            if (builderLink) {
+                builderLink.click();
+            } else {
+                // Safe fallback to Dashboard; do not assume an unknown builder URL.
+                window.location.assign('/Dashboard');
+            }
+        });
     }
 
-    editQuestion.addEventListener("change", renderAnswerOptions);
-    editAnswer.addEventListener("change", renderAllocationEditor);
-
-    $("spResetAnswers").addEventListener("click", () => {
-        visitorAnswers.users = "3-4";
-        visitorAnswers.priority = "comfort";
-        visitorAnswers.room_size = "small";
-        renderVisitorAnswers();
-        renderResults();
-    });
-
-    renderAnswerOptions();
-    renderVisitorAnswers();
-    renderResults();
+    $('spWidgetSelect').addEventListener('change', selectWidget);
+    $('spEditQuestion').addEventListener('change', renderAnswerOptions);
+    $('spEditAnswer').addEventListener('change', renderAllocationEditor);
+    $('spResetAnswers').addEventListener('click', resetVisitorAnswers);
+    $('spResetAllocations').addEventListener('click', resetAllocations);
+    loadWidgets();
 })();

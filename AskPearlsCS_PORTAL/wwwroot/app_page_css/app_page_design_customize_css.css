@@ -873,3 +873,188 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23b8ccc3' d='M3.5 5.75 8 10.25l4.5-4.5z'/%3E%3C/svg%3E") !important;
 }
 
+
+/* Real-widget selector and API feedback */
+.design-customize-page .dc-selector-info select {
+    max-width: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+    .design-customize-page .dc-selector-info select:disabled {
+        opacity: .65;
+        cursor: wait;
+    }
+
+.design-customize-page .dc-version {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 145px;
+}
+
+    .design-customize-page .dc-version span {
+        font-size: 11px;
+        color: var(--ap-muted, #718096);
+    }
+
+    .design-customize-page .dc-version strong {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+.design-customize-page #dcPageAlert {
+    margin-bottom: 18px;
+}
+
+.design-customize-page .dc-btn-primary:disabled, .design-customize-page .dc-btn-outline:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+@media (max-width: 575px) {
+    .design-customize-page .dc-widget-selector {
+        flex-wrap: wrap;
+    }
+
+    .design-customize-page .dc-version {
+        width: 100%;
+        padding-left: 56px;
+    }
+}
+
+/* Widget preview background must follow the selected custom color. */
+.ap-page.design-customize-page #dcWidgetPreview,
+.ap-page.design-customize-page #dcWidgetPreview .dc-widget-content,
+.ap-page.design-customize-page #dcWidgetPreview .dc-widget-footer {
+    background-color: var(--dc-widget-bg) !important;
+}
+
+/* Premium widget branding */
+.design-customize-page .dc-premium-tag {
+    font-size: 10px;
+    color: #d8a743;
+    margin-left: 6px;
+}
+
+.design-customize-page .dc-branding-note {
+    font-size: 11px;
+    color: var(--ap-muted,#718096);
+    line-height: 1.5;
+}
+
+.design-customize-page .dc-logo-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.design-customize-page #dcLogoThumbnail {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.design-customize-page .dc-brand-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 7px;
+}
+
+.design-customize-page .dc-field input[type=file] {
+    max-width: 100%;
+    font-size: 11px;
+    color: var(--ap-text,#fff);
+}
+
+/* Separate assistant identity in header from company logo in welcome section. */
+.design-customize-page .dc-brand-labels {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 2px;
+}
+
+    .design-customize-page .dc-brand-labels strong {
+        font-size: inherit;
+        line-height: 1.2;
+    }
+
+    .design-customize-page .dc-brand-labels small {
+        font-size: 10px;
+        opacity: .85;
+        line-height: 1.2;
+    }
+
+        .design-customize-page .dc-brand-labels small:empty {
+            display: none;
+        }
+
+.design-customize-page .dc-welcome-icon.has-logo {
+    background: transparent !important;
+    overflow: hidden;
+}
+
+.design-customize-page .dc-welcome-icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+
+/* Create Widget: identical green circular action used by My Widgets. */
+.design-customize-page .dc-widget-selector {
+    position: relative;
+    padding-top: 42px;
+}
+
+    .design-customize-page .dc-widget-selector .dc-selector-create-button {
+        position: absolute;
+        z-index: 3;
+        top: 12px;
+        right: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        border: 1px solid #0fa779;
+        border-radius: 50%;
+        background: #18c964;
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,.16);
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 17px;
+        line-height: 1;
+        transition: background .15s ease, transform .15s ease;
+    }
+
+        .design-customize-page .dc-widget-selector .dc-selector-create-button:hover {
+            background: #0fa978;
+            color: #fff;
+            transform: scale(1.07);
+        }
+
+        .design-customize-page .dc-widget-selector .dc-selector-create-button:focus-visible {
+            outline: 3px solid #65d9b0;
+            outline-offset: 3px;
+        }
+
+@media (max-width: 575.98px) {
+    .design-customize-page .dc-widget-selector {
+        padding-top: 44px;
+    }
+
+        .design-customize-page .dc-widget-selector .dc-selector-create-button {
+            top: 8px;
+            right: 8px;
+        }
+}

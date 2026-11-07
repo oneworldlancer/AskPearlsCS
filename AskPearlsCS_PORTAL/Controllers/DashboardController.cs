@@ -56,7 +56,7 @@ namespace AskPearlsCS_PORTAL.Controllers
                     return PartialView("_AccountSettingsContent");
 
                 case "scoring-preview":
-                    return PartialView("~/Views/Dashboard/_ScoringPreviewContent.cshtml");
+                    return PartialView("_ScoringPreviewContent");
 
 
                 default:

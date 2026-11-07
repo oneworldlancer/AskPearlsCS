@@ -60,8 +60,10 @@
     <!-- =====================================================
          WIDGET SELECTOR
          ===================================================== -->
-    <section class="wb-widget-selector"
+    <section class="wb-widget-selector ap-widget-selector"
              aria-label="Widget selection">
+
+        <button type="button" id="wbCreateWidgetButton" class="wb-create-widget-button" title="Create new widget" aria-label="Create new widget"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>
 
         <div class="wb-selector-icon" aria-hidden="true">
             <i class="bi bi-grid-1x2"></i>
@@ -77,7 +79,7 @@
                     class="form-select"
                     aria-describedby="wbSelectorHelp"
                     disabled>
-                <option value="">NEW Widget</option>
+                <option value="">-- Select a widget --</option>
             </select>
 
             <small id="wbSelectorHelp">
@@ -646,16 +648,17 @@
                         <!-- Branding -->
                         <div class="wb-preview-brand">
 
-                            <span class="wb-preview-brand-icon">
+                            <span class="wb-preview-brand-icon" id="wbPreviewAssistantIcon">
                                 <i class="bi bi-stars"></i>
                             </span>
 
-                            <span>DecisionOS</span>
+                            <span><strong id="wbPreviewHeaderTitle">DecisionOS</strong><small id="wbPreviewCompanyName" class="d-block"></small></span>
 
                         </div>
 
                         <!-- Preview content -->
                         <div id="wbPreviewContent">
+                            <div id="wbPreviewCompanyLogo" class="wb-company-logo"><i class="bi bi-stars"></i></div>
 
                             <h3 id="wbPreviewTitle">
                                 Your widget title
@@ -677,8 +680,8 @@
                         </button>
 
                         <!-- Preview footer -->
-                        <div class="wb-preview-footer">
-                            Powered by DecisionOS
+                        <div class="wb-preview-footer" id="wbPreviewFooter">
+                            Powered by AskPearls
                         </div>
 
                     </div>
@@ -728,10 +731,10 @@
 <!-- =====================================================
      PAGE STYLES
      ===================================================== -->
-<link href="~/app_page_css/app_page_widget_builder_css.css?v=20261105-8"
+<link href="~/app_page_css/app_page_widget_builder_css.css?v=20261107-builder-routing-1"
       rel="stylesheet" />
 
 <!-- =====================================================
      PAGE JAVASCRIPT
      ===================================================== -->
-<script src="~/app_page_js/app_page_widget_builder_js.js?v=20261105-8"></script>
+<script src="~/app_page_js/app_page_widget_builder_js.js?v=20261107-builder-routing-1"></script>

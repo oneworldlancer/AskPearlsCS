@@ -20,18 +20,18 @@
     let recommendationOptions = [];
     let rules = [];
     let widgets = [];
-    let selectedWidgetKey = localStorage.getItem("askpearls.activeWidgetPublicKey") || "";
+    let selectedWidgetKey = ""; // Always require explicit selection on page load.
     let currentVersionNumber = "";
     let saveInProgress = false;
-    const apiBase = (root.dataset.apiBase || window.AskPearlsCS_API_URL || (window.location.origin + "/api")).replace(/\/+$/, "");
-    const ownerToken = (root.dataset.demoOwnerUserToken || "").trim();
+    const apiBase = "/Widget/Api";
     const $ = function (selector) {
         return root.querySelector(selector);
     };
 
     const apiHeaders = function () {
         const headers = { Accept: "application/json", "Content-Type": "application/json" };
-        if (ownerToken) headers[ "X-Demo-Owner-User-Token" ] = ownerToken;
+        const token = root.querySelector('input[name="__RequestVerificationToken"]')?.value;
+        if (token) headers[ "RequestVerificationToken" ] = token;
         return headers;
     };
 
@@ -93,30 +93,35 @@
         try {
             const widgetData = await readApi(await fetch(`${ apiBase }/widgets`, { headers: apiHeaders() }), "Widget list");
             widgets = widgetData.widgets || [];
-            select.innerHTML = widgets.length ? widgets.map(widget => {
+            select.innerHTML = '<option value="">-- Select a widget --</option>' + widgets.map(widget => {
                 const key = widget.publicKey ?? widget.PublicKey;
                 const name = widget.name ?? widget.Name ?? "Untitled widget";
                 return `<option value="${ escapeHtml(key) }">${ escapeHtml(name) }</option>`;
-            }).join("") : '<option value="">No widgets available</option>';
-            if (!widgets.some(widget => String(widget.publicKey ?? widget.PublicKey) === selectedWidgetKey))
-                selectedWidgetKey = String(widgets[ 0 ]?.publicKey ?? widgets[ 0 ]?.PublicKey ?? "");
-            select.value = selectedWidgetKey;
-            select.disabled = !selectedWidgetKey;
-            if (selectedWidgetKey) localStorage.setItem("askpearls.activeWidgetPublicKey", selectedWidgetKey);
+            }).join("");
+            select.value = "";
+            select.disabled = widgets.length === 0;
+            selectedWidgetKey = "";
+            currentVersionNumber = "";
+            $("#drWidgetVersion").textContent = "—";
+            rules = [];
+            questionOptions = [];
+            recommendationOptions = [];
+            renderTestQuestions();
+            populateRecommendationSelect();
+            renderRows();
+            showApiMessage(widgets.length ? "Select a widget to view its decision rules." : "No widgets available.");
         } catch (error) {
             select.innerHTML = '<option value="">Could not load widgets</option>';
             select.disabled = true;
             showApiMessage(error.message, true);
             return;
         }
-        try { await loadWidgetData(); }
-        catch (error) { rules = []; questionOptions = []; recommendationOptions = []; renderTestQuestions(); populateRecommendationSelect(); renderRows(); showApiMessage(error.message, true); }
     }
 
     async function loadWidgetData () {
         const widget = widgets.find(item => String(item.publicKey ?? item.PublicKey) === selectedWidgetKey);
         $("#drWidgetVersion").textContent = versionLabel(widget);
-        if (!widget) { rules = []; questionOptions = []; recommendationOptions = []; renderTestQuestions(); populateRecommendationSelect(); renderRows(); return; }
+        if (!widget) { $("#drWidgetVersion").textContent = "—"; rules = []; questionOptions = []; recommendationOptions = []; currentVersionNumber = ""; renderTestQuestions(); populateRecommendationSelect(); renderRows(); showApiMessage("Select a widget to view its decision rules."); return; }
         showApiMessage("Loading questions, recommendations, and rules…");
         const key = encodeURIComponent(selectedWidgetKey);
         const [ questionData, recommendationData, ruleData ] = await Promise.all([
@@ -688,6 +693,7 @@
 
     function openCreate () {
 
+        $("#dr-key").readOnly = false;
         resetTestRulePreview();
 
         editingId = null;
@@ -745,6 +751,7 @@
         renderConditions();
         openModal($("[data-dr-modal]"));
 
+        $("#dr-key").readOnly = true;
         $("#dr-name").focus();
     }
 
@@ -1034,7 +1041,7 @@
 
             return `
                 <div class="dr-test-condition ${ statusClass }">
-                    <strong>${ status } — Condition ${ item.index }</strong>
+                    <strong><span class="dr-condition-symbol" aria-hidden="true">${ item.matches ? "✓" : item.isAnswered ? "✕" : "!" }</span> ${ status } — Condition ${ item.index }</strong>
                     <div>
                         ${ escapeHtml(item.questionLabel) }:
                         expected
@@ -1071,8 +1078,12 @@
         result.hidden = false;
 
         result.innerHTML = `
-            <div class="dr-test-result-heading">
-                <strong>${ heading }</strong>
+            <div class="dr-test-result-heading" role="status">
+                <span class="dr-test-result-icon" aria-hidden="true">${ ruleMatches ? "✓" : "✕" }</span>
+                <div>
+                    <strong class="dr-test-result-title">${ !hasConditions ? "CANNOT TEST RULE" : ruleMatches ? "RULE MATCHED" : "RULE NOT MATCHED" }</strong>
+                    <span class="dr-test-result-subtitle">${ heading }</span>
+                </div>
             </div>
 
             <p>
@@ -1235,7 +1246,7 @@
 
     root.querySelector("#drWidgetSelect").addEventListener("change", async function () {
         selectedWidgetKey = this.value;
-        localStorage.setItem("askpearls.activeWidgetPublicKey", selectedWidgetKey);
+        if (selectedWidgetKey) localStorage.setItem("askpearls.activeWidgetPublicKey", selectedWidgetKey);
         try { await loadWidgetData(); }
         catch (error) { rules = []; questionOptions = []; recommendationOptions = []; renderTestQuestions(); populateRecommendationSelect(); renderRows(); showApiMessage(error.message, true); }
     });

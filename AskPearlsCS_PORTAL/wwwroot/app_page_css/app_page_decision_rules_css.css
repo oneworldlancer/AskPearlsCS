@@ -1530,3 +1530,116 @@ body[data-bs-theme="dark"] .decision-rules-page .dr-rule-summary {
         flex-direction: column;
     }
 }
+
+/* Decision Rules: widget selector add button, matching other portal pages */
+.decision-rules-page .dr-widget-selector {
+    position: relative;
+}
+
+.decision-rules-page .dr-selector-add {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    background: #16cf78;
+    color: #fff;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.decision-rules-page .dr-widget-selector .ap-widget-selector-version {
+    padding-top: 25px;
+}
+
+.decision-rules-page #dr-key[readonly] {
+    opacity: .72;
+    cursor: not-allowed;
+}
+
+/* Highly visible and accessible rule test verdicts */
+.decision-rules-page .dr-test-result.is-match {
+    background: #073b2c !important;
+    border: 2px solid #20d68b !important;
+    color: #e7fff4 !important;
+}
+
+.decision-rules-page .dr-test-result.is-no-match {
+    background: #421b22 !important;
+    border: 2px solid #fb7185 !important;
+    color: #fff0f2 !important;
+}
+
+.decision-rules-page .dr-test-result-heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.decision-rules-page .dr-test-result-icon {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-size: 27px;
+    font-weight: 900;
+    background: #16a56d;
+    color: white;
+}
+
+.decision-rules-page .is-no-match .dr-test-result-icon {
+    background: #d9304d;
+}
+
+.decision-rules-page .dr-test-result-title {
+    display: block;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: .03em;
+    color: inherit;
+}
+
+.decision-rules-page .dr-test-result-subtitle {
+    display: block;
+    font-size: 12px;
+    margin-top: 3px;
+    color: inherit;
+}
+
+.decision-rules-page .dr-test-condition {
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-top: 8px;
+    border-left: 4px solid transparent;
+    background: rgba(255,255,255,.07);
+}
+
+    .decision-rules-page .dr-test-condition.dr-test-match {
+        border-left-color: #20d68b;
+    }
+
+    .decision-rules-page .dr-test-condition.dr-test-no-match {
+        border-left-color: #fb7185;
+    }
+
+    .decision-rules-page .dr-test-condition.dr-test-unanswered {
+        border-left-color: #fbbf24;
+    }
+
+.decision-rules-page .dr-condition-symbol {
+    display: inline-grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.15);
+    margin-right: 4px;
+}

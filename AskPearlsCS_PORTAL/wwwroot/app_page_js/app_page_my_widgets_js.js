@@ -5,8 +5,9 @@
     if (!root || root.dataset.widgetsInitialized === "true") return;
     root.dataset.widgetsInitialized = "true";
 
-    const apiBase = (root.dataset.apiBase || "").replace(/\/+$/, "");
-    const ownerToken = (root.dataset.demoOwnerUserToken || "").trim();
+    // Same-origin authenticated Portal WidgetController proxy.
+    // The Portal forwards the authenticated user's identity to the API.
+    const apiBase = "/Widget/Api";
     const loading = root.querySelector("#widgetLoadingState");
     const error = root.querySelector("#widgetErrorState");
     const list = root.querySelector("#widgetInventoryList");
@@ -49,6 +50,27 @@
         return `<span>${ escapeHtml(absolute) }<small>${ escapeHtml(relative) }</small></span>`;
     }
 
+    function isPositiveVersion (number) {
+        const text = String(number ?? "").trim();
+        return /^\d+$/.test(text) && Number(text) > 0;
+    }
+
+    function widgetStatus (widget) {
+        // A pending draft is the current working status, even if an older version is live.
+        if (widget.hasDraft) return "draft";
+        if (widget.hasPublishedVersion) return "published";
+        return "unpublished";
+    }
+
+    function versionLabel (widget) {
+        const parts = [];
+        if (widget.hasDraft && isPositiveVersion(widget.draftVersionNumber || widget.versionNumber))
+            parts.push(`Draft v${ widget.draftVersionNumber || widget.versionNumber }`);
+        if (widget.hasPublishedVersion && isPositiveVersion(widget.publishedVersionNumber))
+            parts.push(`Live v${ widget.publishedVersionNumber }`);
+        return parts.join(" · ") || "—";
+    }
+
     function statusLabel (status) {
         return status === "published" ? "Published" : status === "draft" ? "Draft" : "Unpublished";
     }
@@ -61,14 +83,15 @@
         const current = widgets.find(widget => widget.publicKey === selectedKey);
         if (select) {
             select.innerHTML = widgets.length
-                ? widgets.map(widget => `<option value="${ escapeHtml(widget.publicKey) }">${ escapeHtml(widget.name) }</option>`).join("")
+                ? '<option value="">-- Select a widget --</option>' +
+                widgets.map(widget => `<option value="${ escapeHtml(widget.publicKey) }">${ escapeHtml(widget.name) }</option>`).join("")
                 : '<option value="">No widgets yet</option>';
             select.disabled = widgets.length === 0;
-            select.value = current ? selectedKey : (widgets[ 0 ]?.publicKey || "");
-            selectedKey = select.value;
+            // Never automatically select the first widget.
+            select.value = current ? selectedKey : "";
         }
         const active = widgets.find(widget => widget.publicKey === selectedKey);
-        if (activeVersion) activeVersion.textContent = active ? (active.hasDraft ? `Draft v${ active.draftVersionNumber || active.versionNumber }${ active.hasPublishedVersion ? " · Live v" + active.publishedVersionNumber : "" }` : "Live v" + (active.publishedVersionNumber || active.versionNumber)) : "—";
+        if (activeVersion) activeVersion.textContent = active ? versionLabel(active) : "—";
         if (activeStatus) {
             activeStatus.hidden = !active;
             activeStatus.classList.toggle("is-draft", active?.status === "draft");
@@ -83,17 +106,33 @@
                 .some(part => String(part || "").toLowerCase().includes(query));
             return matchesQuery && (filter === "all" || (filter === "draft" ? widget.hasDraft : widget.hasPublishedVersion));
         });
-        const tableHeading = '<div class="widget-table-heading" aria-hidden="true"><span>Name</span><span>Status</span><span>Actions</span></div>';
+        const tableHeading = '<div class="widget-table-heading" aria-hidden="true"><span>Name</span><span>Status</span><span>Version</span><span>Actions</span></div>';
         list.innerHTML = tableHeading + filtered.map(widget => {
             const isSelected = widget.publicKey === selectedKey;
             const publishDisabled = !widget.hasDraft;
             const description = widget.description || "Decision experience";
-            const versionText = widget.hasDraft ? `Draft v${ escapeHtml(widget.draftVersionNumber || widget.versionNumber) }${ widget.hasPublishedVersion ? ` · Live v${ escapeHtml(widget.publishedVersionNumber) }` : "" }` : widget.hasPublishedVersion ? `Live v${ escapeHtml(widget.publishedVersionNumber || widget.versionNumber) }` : "—";
+            // The table displays only the current working version (as on Dashboard).
+            // Draft takes precedence over an older published version.
+            const currentVersion = widget.hasDraft
+                ? (isPositiveVersion(widget.draftVersionNumber) ? widget.draftVersionNumber : widget.versionNumber)
+                : widget.hasPublishedVersion
+                    ? widget.publishedVersionNumber
+                    : widget.versionNumber;
+            const versionText = isPositiveVersion(currentVersion)
+                ? `v${ escapeHtml(String(currentVersion).trim()) }`
+                : "—";
+            const status = widgetStatus(widget);
+            const statusBadge = status === "draft"
+                ? '<span class="widget-status-badge is-draft">Draft</span>'
+                : status === "published"
+                    ? '<span class="widget-status-badge is-published">Published</span>'
+                    : '<span class="widget-status-badge is-unpublished">Unpublished</span>';
             return `<div class="widget-table-row${ isSelected ? " is-selected" : "" }" data-widget-row="${ escapeHtml(widget.publicKey) }">
                 <div class="widget-table-name"><span class="widget-row-icon" aria-hidden="true"><i class="bi bi-window-stack"></i></span><a class="widget-row-copy widget-workspace-link" href="#" data-page="widget-builder" data-widget-open="${ escapeHtml(widget.publicKey) }"><strong>${ escapeHtml(widget.name) }</strong><small>${ escapeHtml(description) }</small></a></div>
-                <div class="widget-table-cell" data-label="Status"><div class="widget-status-version">${ widget.hasDraft ? '<span class="widget-status-badge is-draft">Draft</span>' : '' }${ widget.hasPublishedVersion ? '<span class="widget-status-badge is-published">Published</span>' : '' }${ !widget.hasDraft && !widget.hasPublishedVersion ? '<span class="widget-status-badge is-unpublished">Unpublished</span>' : '' }<small class="widget-table-version">${ versionText }</small></div></div>
+                <div class="widget-table-cell" data-label="Status"><div class="widget-status-version">${ statusBadge }</div></div>
+                <div class="widget-table-cell widget-table-version-cell" data-label="Version"><span class="widget-table-version-value">${ versionText }</span></div>
                 <div class="widget-table-actions" data-label="Actions">
-                    <a class="btn btn-outline-success btn-sm${ publishDisabled ? " disabled" : "" }" href="#" ${ publishDisabled ? 'aria-disabled="true" tabindex="-1" title="There is no saved draft to publish"' : `data-page="publish-embed" data-widget-public-key="${ escapeHtml(widget.publicKey) }"` }><i class="bi bi-send me-1" aria-hidden="true"></i>Publish</a>
+                    <a class="btn btn-outline-success btn-sm${ publishDisabled ? " disabled" : "" }" href="#" ${ publishDisabled ? 'aria-disabled="true" tabindex="-1" title="This widget has no unpublished draft"' : `data-page="publish-embed" data-widget-public-key="${ escapeHtml(widget.publicKey) }"` }><i class="bi bi-send me-1" aria-hidden="true"></i>Publish</a>
                     <div class="dropdown"><button class="btn btn-icon btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions for ${ escapeHtml(widget.name) }"><i class="bi bi-three-dots" aria-hidden="true"></i></button><ul class="dropdown-menu dropdown-menu-end"><li><button class="dropdown-item" type="button" data-copy-widget-key="${ escapeHtml(widget.publicKey) }">Copy widget key</button></li></ul></div>
                 </div>
             </div>`;
@@ -125,13 +164,35 @@
         list.hidden = true;
         empty.hidden = true;
         try {
-            if (!apiBase) throw new Error("The widgets API address is not configured.");
-            const headers = { Accept: "application/json" };
-            if (ownerToken) headers[ "X-Demo-Owner-User-Token" ] = ownerToken;
-            const response = await fetch(`${ apiBase }/widgets`, { headers });
-            const body = await response.json().catch(() => ({}));
-            if (!response.ok) throw new Error(body.message || "Widget inventory could not be loaded.");
-            const records = Array.isArray(body.widgets) ? body.widgets : [];
+            const response = await fetch(`${ apiBase }/widgets`, {
+                method: "GET",
+                credentials: "same-origin",
+                cache: "no-store",
+                redirect: "manual",
+                headers: {
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
+            if (response.type === "opaqueredirect" || response.status === 401 || response.status === 403) {
+                throw new Error("Your Portal session has expired. Please sign in again.");
+            }
+            const contentType = response.headers.get("content-type") || "";
+            if (!contentType.includes("json")) {
+                throw new Error("The Portal returned an unexpected response. Check your login and Widget API configuration.");
+            }
+            const body = await response.json();
+            if (!response.ok || body?.success === false) {
+                throw new Error(body?.message || body?.detail || body?.title || `Widget inventory failed (HTTP ${ response.status }).`);
+            }
+            const payload = body?.data ?? body?.result ?? body;
+            const records = Array.isArray(payload) ? payload :
+                Array.isArray(payload?.widgets) ? payload.widgets :
+                    Array.isArray(payload?.items) ? payload.items : [];
+            if (!Array.isArray(payload) && !Array.isArray(payload?.widgets) &&
+                !Array.isArray(payload?.items)) {
+                throw new Error("Unexpected widget list response format from Portal API.");
+            }
             widgets = records.map(item => ({
                 publicKey: String(value(item, "publicKey", "PublicKey") || ""),
                 name: String(value(item, "name", "Name") || "Untitled widget"),
@@ -145,22 +206,49 @@
                 updatedAt: value(item, "updatedAt", "UpdatedAtUtc") || value(item, "updatedAtUtc", "UpdatedAtUtc"),
                 questionCount: value(item, "questionCount", "QuestionCount"),
                 recommendationCount: value(item, "recommendationCount", "RecommendationCount")
-            })).filter(widget => widget.publicKey);
-            const savedKey = window.localStorage.getItem("askpearls.activeWidgetPublicKey");
-            selectedKey = widgets.some(widget => widget.publicKey === savedKey) ? savedKey : (widgets[ 0 ]?.publicKey || "");
+            })).filter(widget => widget.publicKey).map(widget => {
+                widget.hasPublishedVersion = isPositiveVersion(widget.publishedVersionNumber) &&
+                    widget.hasPublishedVersion;
+                widget.hasDraft = widget.hasDraft &&
+                    isPositiveVersion(widget.draftVersionNumber || widget.versionNumber);
+                widget.status = widgetStatus(widget);
+                return widget;
+            });
+            // On every fresh visit to My Widgets, start with no selection.
+            // Keep the shared activeWidgetPublicKey storage intact for other pages;
+            // only a deliberate selection here will update it.
+            selectedKey = "";
+            const help = root.querySelector("#activeWidgetMessage");
+            if (help) help.textContent = widgets.length
+                ? "Choose the widget you want to manage."
+                : "No widgets yet. Create your first widget below.";
             loading.hidden = true;
             render();
         } catch (exception) {
             loading.hidden = true;
             error.hidden = false;
+            widgets = [];
+            if (select) {
+                select.innerHTML = '<option value="">Unable to load widgets</option>';
+                select.disabled = true;
+            }
+            if (activeVersion) activeVersion.textContent = "—";
+            for (const counter of Object.values(counts)) {
+                if (counter) counter.textContent = "—";
+            }
+            const help = root.querySelector("#activeWidgetMessage");
+            if (help) help.textContent = "Widget list could not be loaded.";
             const message = error.querySelector("span");
             if (message) message.textContent = exception.message || "We couldn't load your widgets.";
+            console.error("My Widgets: Portal request failed", exception);
         }
     }
 
     select?.addEventListener("change", () => {
         selectedKey = select.value;
-        if (selectedKey) window.localStorage.setItem("askpearls.activeWidgetPublicKey", selectedKey);
+        if (selectedKey) {
+            try { window.localStorage.setItem("askpearls.activeWidgetPublicKey", selectedKey); } catch { }
+        }
         render();
     });
     search?.addEventListener("input", render);

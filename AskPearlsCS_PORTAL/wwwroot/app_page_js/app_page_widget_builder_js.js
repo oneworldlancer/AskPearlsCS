@@ -24,6 +24,7 @@
         pageDescription: $("wbPageDescription"),
 
         select: $("wbWidgetSelect"),
+        createButton: $("wbCreateWidgetButton"),
         version: $("wbWidgetVersion"),
 
         name: $("wbWidgetName"),
@@ -49,13 +50,22 @@
         previewWidget: $("wbPreviewWidget"),
         previewTitle: $("wbPreviewTitle"),
         previewDescription: $("wbPreviewDescription"),
-        previewPrimary: $("wbPreviewPrimary")
+        previewPrimary: $("wbPreviewPrimary"),
+        previewAssistantIcon: $("wbPreviewAssistantIcon"),
+        previewHeaderTitle: $("wbPreviewHeaderTitle"),
+        previewCompanyName: $("wbPreviewCompanyName"),
+        previewCompanyLogo: $("wbPreviewCompanyLogo"),
+        previewFooter: $("wbPreviewFooter")
     };
 
     const API_ROOT = "/Widget/Api";
 
     const STORAGE_KEY = "askpearls.activeWidgetPublicKey";
     const STORAGE_MODE = "askpearls.widgetBuilderMode";
+    // Explicit navigation intent. A normal sidebar visit must not reuse a previously edited widget.
+    const route = new URLSearchParams(window.location.search);
+    const routeMode = (route.get("mode") || route.get("action") || "").toLowerCase();
+    const routeKey = route.get("publicKey") || route.get("widgetPublicKey") || route.get("widget") || "";
 
     const steps = [ "basics", "appearance", "behavior" ];
 
@@ -65,7 +75,8 @@
         creating: false,
         busy: false,
         dirty: false,
-        step: 0
+        step: 0,
+        loadedDesign: null
     };
 
     const tabs = Array.from(
@@ -145,7 +156,7 @@
     }
 
     function updateSaveButton () {
-        [el.save, el.saveBottom].filter(Boolean).forEach(button => {
+        [ el.save, el.saveBottom ].filter(Boolean).forEach(button => {
             button.disabled = state.busy;
             button.setAttribute("aria-busy", String(state.busy));
             const icon = button.querySelector("i");
@@ -346,19 +357,14 @@
 
         el.select.replaceChildren();
 
-        if (state.creating || !state.widgets.length) {
-            el.select.add(
-                new Option("NEW Widget", "")
-            );
-
+        if (state.creating) {
+            el.select.add(new Option("NEW Widget", ""));
             el.select.value = "";
             el.select.disabled = true;
             return;
         }
 
-        el.select.add(
-            new Option("Select a widget", "")
-        );
+        el.select.add(new Option("-- Select a widget --", ""));
 
         state.widgets.forEach(widget => {
             const key = publicKey(widget);
@@ -401,9 +407,10 @@
         const dark = theme() === "dark";
 
         return {
+            ...(state.loadedDesign || {}),
             primary: value(el.primary, "#16a085"),
-            background: dark ? "#10242b" : "#ffffff",
-            text: dark ? "#edf5f7" : "#16352b",
+            background: state.loadedDesign?.background ?? (dark ? "#10242b" : "#ffffff"),
+            text: state.loadedDesign?.text ?? (dark ? "#edf5f7" : "#16352b"),
             font: "Inter, Arial, sans-serif",
             fontSize: 16,
             radius: 16,
@@ -422,8 +429,8 @@
                 el.buttonText,
                 "Get Started"
             ),
-            footer: "",
-            theme: theme(),
+            footer: state.loadedDesign?.footer || "Powered by AskPearls",
+            theme: state.loadedDesign?.theme === "custom" ? "custom" : theme(),
 
             showTitle: value(el.showTitle, true),
             showDescription: value(
@@ -473,11 +480,35 @@
                 settings.primary;
         }
 
+        if (el.previewHeaderTitle) el.previewHeaderTitle.textContent = settings.headerTitle || 'AskPearls Assistant';
+        if (el.previewCompanyName) el.previewCompanyName.textContent =
+            settings.brandName && settings.brandName !== settings.headerTitle ? settings.brandName : '';
+        if (el.previewAssistantIcon) {
+            const icon = document.createElement('i');
+            icon.className = 'bi bi-' + ({ building: 'building', chat: 'chat-dots', robot: 'robot' }[ settings.brandIcon ] || 'stars');
+            el.previewAssistantIcon.replaceChildren(icon);
+        }
+        if (el.previewCompanyLogo) {
+            const holder = el.previewCompanyLogo;
+            holder.replaceChildren();
+            if (settings.logoUrl && /^https:\/\//i.test(settings.logoUrl)) {
+                const img = document.createElement('img');
+                img.src = settings.logoUrl; img.alt = (settings.brandName || 'Company') + ' logo';
+                img.referrerPolicy = 'no-referrer';
+                img.onerror = () => { holder.replaceChildren(); holder.hidden = true; };
+                holder.append(img); holder.hidden = false;
+            } else holder.hidden = true;
+        }
+        if (el.previewFooter) {
+            const footer = settings.footer || 'Powered by AskPearls';
+            el.previewFooter.textContent = settings.hideAskPearlsBranding ? footer :
+                (footer.toLowerCase().includes('askpearls') ? footer : footer + ' · AskPearls');
+        }
+
         if (el.previewWidget) {
-            el.previewWidget.style.setProperty(
-                "--wb-primary",
-                settings.primary
-            );
+            el.previewWidget.style.setProperty("--wb-primary", settings.primary);
+            el.previewWidget.style.backgroundColor = settings.background || '#ffffff';
+            el.previewWidget.style.color = settings.text || '#17212B';
 
             el.previewWidget.dataset.theme =
                 settings.theme;
@@ -571,6 +602,23 @@
         updatePreview();
     }
 
+    function selectionMode () {
+        state.creating = false;
+        state.key = "";
+        state.loadedDesign = null;
+        resetFields();
+        renderWidgetOptions();
+        if (el.pageTitle) el.pageTitle.textContent = "Widget Builder";
+        if (el.pageDescription) el.pageDescription.textContent = "Create and customize your DecisionOS experience.";
+        if (el.version) el.version.textContent = "—";
+        if (el.apiNote) el.apiNote.textContent = "Choose an existing widget to edit, or click + to create a new widget.";
+        setStep(0);
+        state.dirty = false;
+        setIndicator("Select a widget", false);
+        message("");
+        renderWidgetOptions();
+    }
+
     function createMode () {
         storageSet(STORAGE_MODE, "");
 
@@ -579,6 +627,7 @@
 
         storageSet(STORAGE_KEY, "");
 
+        state.loadedDesign = null;
         resetFields();
         renderWidgetOptions();
 
@@ -622,6 +671,7 @@
             result;
 
         if (!source) return;
+        state.loadedDesign = { ...source };
 
         const mappings = [
             [ "primary", "primary", "Primary" ],
@@ -778,7 +828,8 @@
     }
 
     async function selectWidget (key) {
-        if (!key || state.busy) return;
+        if (state.busy) return;
+        if (!key) { selectionMode(); return; }
 
         const widget = state.widgets.find(
             item => publicKey(item) === key
@@ -794,6 +845,12 @@
 
         setBusy(true);
         message("Loading widget...");
+
+        // Every widget selection starts the wizard at Basics (Step 1).
+        // Reset prior widget settings before applying the selected widget.
+        state.loadedDesign = null;
+        setStep(0);
+        resetFields();
 
         try {
             applyWidget(widget);
@@ -1157,6 +1214,11 @@
             () => selectWidget(el.select.value)
         );
 
+        el.createButton?.addEventListener("click", () => {
+            if (state.busy) return;
+            createMode();
+        });
+
         const inputs = [
             el.name,
             el.type,
@@ -1206,49 +1268,49 @@
 
     async function initialize () {
         bindEvents();
-
         setStep(0);
         updatePreview();
         updateSaveButton();
 
         try {
-            // Explicit Create New Widget request.
-            if (storageGet(STORAGE_MODE) === "create") {
+            // Query-string navigation is preferred. Legacy Dashboard sessionStorage
+            // intent is consumed once; sidebar navigation cannot auto-select.
+            const legacyMode = storageGet(STORAGE_MODE);
+            const legacyKey = storageGet(STORAGE_KEY);
+            storageSet(STORAGE_MODE, "");
+            const explicitCreate = routeMode === "create" || route.get("new") === "1" ||
+                (!routeMode && !routeKey && legacyMode === "create");
+            const explicitEdit = routeMode === "edit" || Boolean(routeKey) ||
+                (!routeMode && legacyMode === "edit");
+
+            if (explicitCreate) {
                 createMode();
                 return;
             }
 
             await loadWidgets();
-
-            if (!state.widgets.length) {
-                createMode();
+            if (explicitEdit) {
+                const requestedKey = routeKey || legacyKey;
+                if (!requestedKey) {
+                    selectionMode();
+                    message("No widget was specified for editing.", true);
+                    return;
+                }
+                const match = state.widgets.find(w => publicKey(w) === requestedKey);
+                if (!match) {
+                    selectionMode();
+                    message("The requested widget was not found or is unavailable.", true);
+                    return;
+                }
+                await selectWidget(requestedKey);
                 return;
             }
 
-            const storedKey = storageGet(STORAGE_KEY);
-
-            const selected =
-                state.widgets.find(
-                    widget => publicKey(widget) === storedKey
-                ) ||
-                state.widgets[ 0 ];
-
-            if (selected) {
-                await selectWidget(
-                    publicKey(selected)
-                );
-            }
+            // Direct/sidebar navigation: ALWAYS require manual selection.
+            selectionMode();
         } catch (error) {
-            message(
-                error.message ||
-                "Could not initialize Widget Builder.",
-                true
-            );
-
-            console.error(
-                "AskPearls Widget Builder initialization error:",
-                error
-            );
+            message(error.message || "Could not initialize Widget Builder.", true);
+            console.error("AskPearls Widget Builder initialization error:", error);
         }
     }
 

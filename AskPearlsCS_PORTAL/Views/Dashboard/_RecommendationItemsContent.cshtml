@@ -1,34 +1,44 @@
-<div class="ri-page ap-page" data-ap-page="recommendation-items" data-api-base="https://localhost:7014/api" data-demo-owner-user-token="1101">
+<div class="ri-page ap-page" data-ap-page="recommendation-items">
     <nav class="ap-breadcrumb" aria-label="Breadcrumb"><a href="/Dashboard">AskPearls</a><span>/</span><span aria-current="page">Recommendation Items</span></nav>
     <header class="ap-page-header">
         <div class="ap-page-heading"><h1 class="ap-page-title">Recommendation Items</h1><p class="ap-page-description">Manage the products, services, or outcomes your DecisionOS widgets recommend.</p></div>
-        <div class="ap-page-actions"><button class="ri-button ri-button-primary" id="riAddButton" type="button"><i class="bi bi-plus-lg"></i> Add Recommendation</button></div>
+        <div class="ap-page-actions"><button class="ri-button ri-button-primary" id="riAddButton" type="button" disabled><i class="bi bi-plus-lg"></i> Add Recommendation</button></div>
     </header>
     <section class="ap-widget-selector ri-widget-selector" aria-label="Widget selection">
+        <a id="riCreateWidget" href="#" class="ri-selector-create ap-widget-builder-link" data-page="widget-builder" data-widget-builder-create title="Create New Widget" aria-label="Create New Widget"><i class="bi bi-plus-lg" aria-hidden="true"></i></a>
         <div class="ap-widget-selector-icon" aria-hidden="true"><i class="bi bi-grid-1x2"></i></div>
-        <div class="ap-widget-selector-info"><label for="riWidgetSelect">Select widget</label><select id="riWidgetSelect" class="ap-widget-selector-control" disabled><option>Loading widgets…</option></select><small class="ap-widget-selector-help">Choose the widget whose recommendations you want to manage.</small></div>
+        <div class="ap-widget-selector-info"><label for="riWidgetSelect">Select widget</label><select id="riWidgetSelect" class="ap-widget-selector-control" disabled><option value="">-- Select a widget --</option></select><small class="ap-widget-selector-help">Choose the widget whose recommendations you want to manage.</small></div>
         <div class="ap-widget-selector-version" aria-live="polite"><span>Draft / live</span><strong id="riWidgetVersion">—</strong></div>
     </section>
     <div id="riMessage" class="ri-message" role="status" aria-live="polite" hidden></div>
     <section class="ri-stats" aria-label="Recommendation summary">
-        <article class="ri-stat"><span class="ri-stat-icon purple"><i class="bi bi-layers"></i></span><div><small>Total Items</small><strong id="riTotalCount">—</strong></div></article>
-        <article class="ri-stat"><span class="ri-stat-icon teal"><i class="bi bi-check-circle"></i></span><div><small>Active Items</small><strong id="riActiveCount">—</strong></div></article>
+        <article class="ri-stat"><span class="ri-stat-icon purple"><i class="bi bi-layers"></i></span><div><small>Total Items</small><strong id="riTotalCount">0</strong></div></article>
+        <article class="ri-stat"><span class="ri-stat-icon teal"><i class="bi bi-check-circle"></i></span><div><small>Active Items</small><strong id="riActiveCount">0</strong></div></article>
         <article class="ri-stat"><span class="ri-stat-icon blue"><i class="bi bi-diagram-3"></i></span><div><small>Used in Rules</small><strong id="riUsedCount">—</strong></div></article>
         <article class="ri-stat"><span class="ri-stat-icon orange"><i class="bi bi-graph-up-arrow"></i></span><div><small>Recommendations Served</small><strong id="riServedCount">—</strong></div></article>
     </section>
     <section class="ri-inventory">
         <div class="ri-inventory-heading"><h2>Recommendation Inventory</h2><p>Create and maintain the outcomes available to your decision widgets.</p></div>
         <div class="ri-toolbar"><input id="riSearch" type="search" placeholder="Search by name or identifier…" aria-label="Search recommendations"><select id="riStatusFilter" aria-label="Filter by status"><option value="all">All statuses</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
-        <div class="ri-table-wrap"><table class="ri-table"><thead><tr><th>Recommendation item</th><th>Identifier</th><th>Description</th><th>Status</th><th>Actions</th></tr></thead><tbody id="riTableBody"><tr><td colspan="5" class="ri-empty">Loading recommendations…</td></tr></tbody></table></div>
+        <div class="ri-table-wrap"><table class="ri-table"><thead><tr><th>Recommendation item</th><th>Identifier</th><th>Description</th><th>Status</th><th>Actions</th></tr></thead><tbody id="riTableBody"><tr><td colspan="5" class="ri-empty">Select a widget to view recommendations.</td></tr></tbody></table></div>
     </section>
     <div class="ri-modal-backdrop" id="riModal" hidden>
         <section class="ri-modal" role="dialog" aria-modal="true" aria-labelledby="riModalTitle">
             <header><div><h2 id="riModalTitle">Add Recommendation</h2><p>Enter the outcome visitors may receive.</p></div><button type="button" id="riClose" aria-label="Close">×</button></header>
-            <form id="riForm"><div class="ri-modal-body"><label>Name <span>*</span><input id="riName" maxlength="150" required></label><label>Identifier <span>*</span><input id="riKey" maxlength="80" pattern="[a-zA-Z][a-zA-Z0-9_-]*" required><small>Start with a letter; use letters, numbers, underscores, or hyphens.</small></label><label>Description<textarea id="riDescription" maxlength="1000" rows="3"></textarea></label><label>Image URL<input id="riImageUrl" type="url" maxlength="2000"></label><label>Website URL<input id="riUrl" type="url" maxlength="2000"></label><label>Button text<input id="riCtaText" maxlength="100" placeholder="Learn more"></label><label class="ri-active"><input id="riActive" type="checkbox" checked> Active recommendation</label><div class="ri-form-error" id="riFormError" role="alert"></div></div><footer><button class="ri-button" type="button" id="riCancel">Cancel</button><button class="ri-button ri-button-primary" type="submit" id="riSave">Save Recommendation</button></footer></form>
+            <form id="riForm">
+                <div class="ri-modal-body">
+                    <label>Name <span>*</span><input id="riName" maxlength="150" required></label>
+                    <label>Identifier <span>*</span><input id="riKey" maxlength="80" pattern="[a-zA-Z][a-zA-Z0-9_-]*" required><small>Start with a letter; use letters, numbers, underscores, or hyphens.</small></label>
+                    <label>Description<textarea id="riDescription" maxlength="1000" rows="3"></textarea></label>
+                    <label>Image URL<input id="riImageUrl" type="url" maxlength="2000"></label>
+                    <label>Website URL<input id="riUrl" type="url" maxlength="2000"></label>
+                    <label>Button text<input id="riCtaText" maxlength="100" placeholder="Learn more"></label>
+                    <label class="ri-active"><input id="riActive" type="checkbox" checked> Active recommendation</label>
+                    <div class="ri-form-error" id="riFormError" role="alert"></div>
+                </div><footer><button class="ri-button" type="button" id="riCancel">Cancel</button><button class="ri-button ri-button-primary" type="submit" id="riSave">Save Recommendation</button></footer>
+            </form>
         </section>
     </div>
 </div>
-
-
-<link href="~/app_page_css/app_page_recommendation_items_css.css" rel="stylesheet" />
-<script src="~/app_page_js/app_page_recommendation_items_js.js"></script>
+<link href="~/app_page_css/app_page_recommendation_items_css.css" rel="stylesheet" asp-append-version="true" />
+<script src="~/app_page_js/app_page_recommendation_items_js.js" asp-append-version="true"></script>

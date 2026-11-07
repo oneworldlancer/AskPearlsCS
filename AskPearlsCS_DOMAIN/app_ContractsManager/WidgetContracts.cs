@@ -23,7 +23,13 @@ public sealed record WidgetDesignDraftRequest(
 
     [property: JsonPropertyName("showTitle")] bool ShowTitle = true,
     [property: JsonPropertyName("showDescription")] bool ShowDescription = true,
-    [property: JsonPropertyName("showIntroduction")] bool ShowIntroduction = true
+    [property: JsonPropertyName("showIntroduction")] bool ShowIntroduction = true,
+    [property: JsonPropertyName("brandName")] string BrandName = "",
+    [property: JsonPropertyName("headerTitle")] string HeaderTitle = "AskPearls Assistant",
+    [property: JsonPropertyName("logoDataUrl")] string LogoDataUrl = "", // Legacy drafts only; no new uploads
+    [property: JsonPropertyName("logoUrl")] string LogoUrl = "",
+    [property: JsonPropertyName("brandIcon")] string BrandIcon = "stars",
+    [property: JsonPropertyName("hideAskPearlsBranding")] bool HideAskPearlsBranding = false
 );
 
 public sealed record UpdateWidgetBasicsRequest(

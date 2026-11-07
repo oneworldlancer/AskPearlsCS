@@ -1064,3 +1064,66 @@ body[data-bs-theme="dark"] .qna-page .preview-option {
     color: #edf5f2;
     border-color: #29483f;
 }
+
+
+/* Questions & Answers: match the full-width widget selectors on other pages. */
+.qna-page .qna-widget-selector {
+    position: relative;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    padding-right: 68px;
+}
+
+    .qna-page .qna-widget-selector .ap-widget-selector-info {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    .qna-page .qna-widget-selector .ap-widget-selector-control {
+        width: 100%;
+        min-width: 0;
+    }
+
+.qna-page .qna-widget-selector-create {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #0fa779;
+    border-radius: 50%;
+    color: #fff;
+    background: #18c964;
+    text-decoration: none;
+    font-size: 19px;
+    line-height: 1;
+}
+
+    .qna-page .qna-widget-selector-create:hover,
+    .qna-page .qna-widget-selector-create:focus-visible {
+        color: #fff;
+        background: #0fa978;
+    }
+
+.qna-page .qna-widget-selector-version {
+    min-width: 110px;
+}
+
+    .qna-page .qna-widget-selector-version strong {
+        overflow-wrap: anywhere;
+    }
+
+@media (max-width: 650px) {
+    .qna-page .qna-widget-selector {
+        padding-right: 56px;
+    }
+
+    .qna-page .qna-widget-selector-create {
+        right: 10px;
+        top: 10px;
+    }
+}
