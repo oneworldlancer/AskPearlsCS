@@ -1,3 +1,4 @@
+@using AskPearlsCS_DOMAIN.app_Service
 @inject IConfiguration Configuration
 
 @{
@@ -8,7 +9,7 @@
             ? apiHost
             : $"{apiHost}/api";
 
-    var userId = User.FindFirst("AskPearlsUserId")?.Value;
+    var userId = User.FindFirst(AskPearlsClaimTypes.ASKPEARLS_USER_ID)?.Value;
 }
 
 <div class="ap-page page-widget-builder"

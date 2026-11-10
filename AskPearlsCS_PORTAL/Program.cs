@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 
 using AskPearlsCS_PORTAL.app_Utility;
+using AskPearlsCS_DOMAIN.app_Service;
 
 
 
@@ -38,6 +39,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 #endregion
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserContext_Service, CurrentUserContext_Service>();
+builder.Services.AddScoped<IApiJwtToken_Service, ApiJwtToken_Service>();
 
 builder.Services.AddScoped<ApiAccessTokenService>();
 

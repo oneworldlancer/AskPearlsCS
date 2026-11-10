@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using AskPearlsCS_DOMAIN.app_Service;
 
 namespace AskPearlsCS_PORTAL.Controllers
 {
@@ -179,9 +180,9 @@ namespace AskPearlsCS_PORTAL.Controllers
       isPersistent: true,
       new[]
       {
-        new Claim("AskPearlsUserId", validatedUser.UserId.ToString()),
-        new Claim("AskPearlsName", validatedUser.Name ?? identityUser.UserName ?? "AskPearls user"),
-        new Claim("AskPearlsEmail", validatedUser.Email)
+        new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_ID, validatedUser.UserId.ToString()),
+        new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_NAME, validatedUser.Name ?? identityUser.UserName ?? "AskPearls user"),
+        new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_EMAIL, validatedUser.Email)
       });
 
 

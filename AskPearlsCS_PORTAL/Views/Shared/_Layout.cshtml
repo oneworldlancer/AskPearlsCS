@@ -1,4 +1,5 @@
-﻿@{
+﻿@using AskPearlsCS_DOMAIN.app_Service
+@{
     // ViewData["Title"] = "Home Page";
     Layout = null;
 }
@@ -421,7 +422,7 @@
              
 
                 @{
-    var email = User.FindFirst("AskPearlsEmail")?.Value
+    var email = User.FindFirst(AskPearlsClaimTypes.ASKPEARLS_USER_EMAIL)?.Value
                 ?? User.Identity?.Name
                 ?? "";
 }
@@ -451,7 +452,7 @@
 
             <div class="user-menu-info">
                 <div class="user-menu-name">
-                    @(User.FindFirst("AskPearlsName")?.Value ?? email)
+                    @(User.FindFirst(AskPearlsClaimTypes.ASKPEARLS_USER_NAME)?.Value ?? email)
                 </div>
                 <div class="user-menu-email" title="@email">@email</div>
             </div>

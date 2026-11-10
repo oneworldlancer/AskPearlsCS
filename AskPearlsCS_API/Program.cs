@@ -2,7 +2,7 @@ using System.Security.Claims;
 
 using AskPearlsCS_BLL.DecisionOSManager;
 using AskPearlsCS_BLL.WidgetDecision;
-using AskPearlsCS_BLL.app_Service;
+//using AskPearlsCS_BLL.app_Service;
 
 using AskPearlsCS_DAL.app_Repository;
 using AskPearlsCS_DAL.DBContext;
@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
+using AskPearlsCS_DOMAIN.app_Service;
+using AskPearlsCS_BLL.app_Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // DecisionOS services and repositories
@@ -26,6 +29,7 @@ builder.Services.AddScoped<IWidget_Service, Widget_Service>();
 
 builder.Services.AddScoped<IAnswer_Repository, Answer_Repository>();
 builder.Services.AddScoped<IAnswer_Service, Answer_Service>();
+
 
 builder.Services.AddScoped<IWidgetVersion_Repository, WidgetVersion_Repository>();
 builder.Services.AddScoped<IWidgetVersion_Service, WidgetVersion_Service>();
@@ -44,6 +48,9 @@ builder.Services.AddScoped<ICurrentUser_Service, CurrentUser_Service>();
 
 builder.Services.AddScoped<IGoogleAuth_Repository, GoogleAuth_Repository>();
 builder.Services.AddScoped<IGoogleAuth_Service, GoogleAuth_Service>();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserContext_Service, CurrentUserContext_Service>();
 
 // Application database
 builder.Services.AddDbContext<DBContextModel>(options =>

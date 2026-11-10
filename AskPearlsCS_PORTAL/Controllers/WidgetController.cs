@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 
+using AskPearlsCS_DOMAIN.app_Service;
+
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -86,7 +88,7 @@ public sealed class WidgetController : Controller
 
     private async Task<IActionResult> Forward(HttpMethod method, string relativePath, CancellationToken ct)
     {
-        var userId = User.FindFirstValue("AskPearlsUserId");
+        var userId = User.FindFirstValue(AskPearlsClaimTypes.ASKPEARLS_USER_ID);
         if (!long.TryParse(userId, out var parsedId) || parsedId <= 0)
             return Unauthorized(new { success = false, message = "Missing or invalid AskPearlsUserId claim." });
 
@@ -179,7 +181,7 @@ public sealed class WidgetController : Controller
             claims: new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, userId),
                 new Claim(ClaimTypes.NameIdentifier, userId),
-                new Claim("AskPearlsUserId", userId)
+                new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_ID, userId)
             },
             notBefore: now, expires: now.AddMinutes(3),
             signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256));

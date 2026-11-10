@@ -3,6 +3,7 @@ using AskPearls.Domain;
 using AskPearlsCS_BLL.app_Service;
 
 using AskPearlsCS_DOMAIN.app_ContractsManager;
+using AskPearlsCS_DOMAIN.app_Service;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -179,7 +180,7 @@ public class WidgetController : ControllerBase
         error = null;
 
         // This claim is the AskPearls database user ID issued by the authenticated Portal.
-        var claimValue = User.FindFirst("AskPearlsUserId")?.Value;
+        var claimValue = User.FindFirst(AskPearlsClaimTypes.ASKPEARLS_USER_ID)?.Value;
         if (long.TryParse(
                 claimValue,
                 NumberStyles.None,
