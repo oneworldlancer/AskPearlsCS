@@ -14,9 +14,12 @@ namespace AskPearlsCS_BLL.app_Service
     }
 
     public sealed record CurrentUserDto(
-        long UserId,
-        string? Name,
-        string Email,
-        long? AccountId,
-        string? AccountType);
+        string OwnerUserTokenID,
+        string? FirstName,
+        string? LastName,
+        string EmailAddress);
+    
+    //,
+    //    long? AccountId,
+    //    string? AccountType
 }

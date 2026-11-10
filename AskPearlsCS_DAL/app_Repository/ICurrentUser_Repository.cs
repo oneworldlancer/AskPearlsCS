@@ -15,10 +15,10 @@ namespace AskPearlsCS_DAL.app_Repository
         Task<UserLogin?> GetLoginByEmailAsync(
             string email, CancellationToken cancellationToken);
 
-        Task<AskpearlsPortalUserList?> GetPortalUserByIdAsync(
-            long userId, CancellationToken cancellationToken);
+        //Task<AskpearlsPortalUserList?> GetPortalUserByIdAsync(
+        //    long userId, CancellationToken cancellationToken);
 
-        Task<AskpearlsPortalUserAccountList?> GetAccountByOwnerUserTokenIdAsync(
+        Task<AskpearlsPortalUserList?> GetAccountByOwnerUserTokenIdAsync(
             string ownerUserTokenId, CancellationToken cancellationToken);
     }
 }

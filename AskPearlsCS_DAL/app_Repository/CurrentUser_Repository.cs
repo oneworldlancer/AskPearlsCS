@@ -33,21 +33,26 @@ namespace AskPearlsCS_DAL.app_Repository
                 x => x.MailId == email, cancellationToken);
         }
 
-        public Task<AskpearlsPortalUserList?> GetPortalUserByIdAsync(
-            long userId, CancellationToken cancellationToken)
-        {
-            return _db.AskpearlsPortalUserLists.FirstOrDefaultAsync(
-                x => x.UserId == userId, cancellationToken);
-        }
+        //public Task<AskpearlsPortalUserList?> GetPortalUserByIdAsync(
+        //    long userId, CancellationToken cancellationToken)
+        //{
+        //    return _db.AskpearlsPortalUserLists.FirstOrDefaultAsync(
+        //        x => x.UserId == userId, cancellationToken);
+        //}
 
-        public Task<AskpearlsPortalUserAccountList?>
+        public Task<AskpearlsPortalUserList?>
             GetAccountByOwnerUserTokenIdAsync(
                 string ownerUserTokenId,
                 CancellationToken cancellationToken)
         {
-            return _db.AskpearlsPortalUserAccountLists.FirstOrDefaultAsync(
+            return _db.AskpearlsPortalUserLists.FirstOrDefaultAsync(
                 x => x.OwnerUserTokenId == ownerUserTokenId,
                 cancellationToken);
+           
+            
+            //return _db.AskpearlsPortalUserAccountLists.FirstOrDefaultAsync(
+            //    x => x.OwnerUserTokenId == ownerUserTokenId,
+            //    cancellationToken);
         }
     }
 

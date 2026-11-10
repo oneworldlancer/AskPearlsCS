@@ -6,19 +6,17 @@
     root.dataset.asInitialized = "true";
 
     const $ = id => root.querySelector("#" + id);
-    const apiBase = (root.dataset.apiBase || window.AskPearlsCS_API_URL || "https://localhost:7014/api").replace(/\/+$/, "");
-    // const apiBase = (root.dataset.apiBase || window.AskPearlsCS_API_URL || (window.location.origin + "/api")).replace(/\/+$/, "");
-    const ownerToken = (root.dataset.demoOwnerUserToken || "").trim();
+    const settingsUrl = "/Account/Api/settings";
 
     const defaults = {
         nonEssentialNotifications: true,
-        firstName: "John",
-        lastName: "Doe",
-        email: "john.doe@example.com",
-        jobTitle: "Product Admin",
-        bio: "Building better customer experiences with AskPearls.",
-        companyName: "AskPearls Limited",
-        website: "https://askpearls.com",
+        firstName: "",
+        lastName: "",
+        email: "",
+        jobTitle: "",
+        bio: "",
+        companyName: "",
+        website: "",
         industry: "technology",
         companySize: "2-10",
         country: "EG",
@@ -68,6 +66,7 @@
             const element = $(id);
             result[ key ] = element.type === "checkbox" ? element.checked : element.value;
         });
+        result.language = "en";
         return result;
     }
 
@@ -244,7 +243,10 @@
     function apiHeaders (json) {
         const result = { Accept: "application/json" };
         if (json) result[ "Content-Type" ] = "application/json";
-        if (ownerToken) result[ "X-Demo-Owner-User-Token" ] = ownerToken;
+        if (json) {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+            if (token) result[ "RequestVerificationToken" ] = token;
+        }
         return result;
     }
 
@@ -282,7 +284,7 @@
         saveButton.disabled = true;
         $("asSaveStatus").textContent = "Loading account settings";
         try {
-            const data = await apiRequest(apiBase + "/account/settings", { headers: apiHeaders(false) });
+            const data = await apiRequest(settingsUrl, { headers: apiHeaders(false) });
             const settings = { ...defaults, ...(data.settings || {}) };
             setSettings(settings);
             savedSettings = currentSettings();
@@ -578,24 +580,18 @@
     $("asSave").addEventListener("click", async () => {
         const firstName = $("asFirstName").value.trim();
         const lastName = $("asLastName").value.trim();
-        const email = $("asEmail").value.trim();
+
         const company = $("asCompanyName").value.trim();
 
-        if (!firstName || !lastName || !email || !company) {
+        if (!firstName || !lastName || !company) {
             showToast("Please complete all required fields.");
             const firstInvalid = !firstName ? $("asFirstName")
                 : !lastName ? $("asLastName")
-                    : !email ? $("asEmail")
-                        : $("asCompanyName");
+                    : $("asCompanyName");
             firstInvalid.focus();
             return;
         }
 
-        if (!$("asEmail").checkValidity()) {
-            showToast("Please enter a valid email address.");
-            $("asEmail").focus();
-            return;
-        }
 
         if ($("asWebsite").value.trim() && !$("asWebsite").checkValidity()) {
             showToast("Please enter a valid website URL.");
@@ -606,7 +602,7 @@
         const button = $("asSave");
         button.disabled = true;
         try {
-            const data = await apiRequest(apiBase + "/account/settings", {
+            const data = await apiRequest(settingsUrl, {
                 method: "PUT",
                 headers: apiHeaders(true),
                 body: JSON.stringify(currentSettings())
@@ -892,4 +888,3 @@
     showSection("profile");
     loadSettings();
 })();
-

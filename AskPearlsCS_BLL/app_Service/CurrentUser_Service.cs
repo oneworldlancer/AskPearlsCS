@@ -34,18 +34,21 @@ namespace AskPearlsCS_BLL.app_Service
             if (login is null)
                 return null;
 
-            var portalUser = await _repository.GetPortalUserByIdAsync(
-                login.UserId, cancellationToken);
+            //var portalUser = await _repository.GetPortalUserByIdAsync(
+            //    login.UserId, cancellationToken);
 
-            var account = await _repository.GetAccountByOwnerUserTokenIdAsync(
+            var userModel = await _repository.GetAccountByOwnerUserTokenIdAsync(
                 login.UserId.ToString(), cancellationToken);
 
             return new CurrentUserDto(
-                portalUser?.UserId ?? login.UserId,
-                portalUser?.FirstName ?? login.FirstName,
-                login.MailId,
-                account?.UaccountId,
-                account?.AccountType);
+                userModel?.OwnerUserTokenId,
+                userModel?.FirstName ,
+                userModel?.LastName ,
+                userModel?.EmailAddress);
+            
+            //,
+            //    userModel?.UserId,
+            //    userModel?.AccountType
         }
     }
 

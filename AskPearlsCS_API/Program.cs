@@ -46,6 +46,14 @@ builder.Services.AddScoped<IRecommendationItem_Service, RecommendationItem_Servi
 builder.Services.AddScoped<ICurrentUser_Repository, CurrentUser_Repository>();
 builder.Services.AddScoped<ICurrentUser_Service, CurrentUser_Service>();
 
+// ========================================
+// ACCOUNT & SETTINGS - BLL / DAL
+// ========================================
+
+builder.Services.AddScoped<IAccountSettings_Repository, AccountSettings_Repository>();
+
+builder.Services.AddScoped<IAccountSettings_Service, AccountSettings_Service>();
+
 builder.Services.AddScoped<IGoogleAuth_Repository, GoogleAuth_Repository>();
 builder.Services.AddScoped<IGoogleAuth_Service, GoogleAuth_Service>();
 

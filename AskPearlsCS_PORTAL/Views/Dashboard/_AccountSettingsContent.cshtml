@@ -1,5 +1,6 @@
 <!-- PAGE: ACCOUNT & SETTINGS -->
-<div class="ap-page account-settings-page" data-ap-page="account-settings" data-api-base="https://localhost:7014/api" data-demo-owner-user-token="1101">
+<div class="ap-page account-settings-page" data-ap-page="account-settings">
+    @Html.AntiForgeryToken()
     <!-- Shared AskPearls breadcrumb -->
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
@@ -108,20 +109,20 @@
                     <div class="as-form-grid">
                         <div class="as-field">
                             <label for="asFirstName">First name <span>*</span></label>
-                            <input type="text" id="asFirstName" value="John" maxlength="60" required>
+                            <input type="text" id="asFirstName" value="" maxlength="60" required>
                         </div>
                         <div class="as-field">
                             <label for="asLastName">Last name <span>*</span></label>
-                            <input type="text" id="asLastName" value="Doe" maxlength="60" required>
+                            <input type="text" id="asLastName" value="" maxlength="60" required>
                         </div>
                         <div class="as-field">
                             <label for="asEmail">Email address <span>*</span></label>
-                            <input type="email" id="asEmail" value="john.doe@example.com" maxlength="150" required>
-                            <small>Email verification is not connected yet.</small>
+                            <input type="email" id="asEmail" value="" readonly maxlength="150" required>
+                            <small>Your sign-in email is managed by Google and cannot be changed here.</small>
                         </div>
                         <div class="as-field">
                             <label for="asJobTitle">Job title</label>
-                            <input type="text" id="asJobTitle" value="Product Admin" maxlength="100">
+                            <input type="text" id="asJobTitle" value="" maxlength="100">
                         </div>
                         <div class="as-field as-field-full">
                             <label for="asBio">About</label>
@@ -170,12 +171,12 @@
 
                                 <button type="button"
                                         class="as-btn as-btn-outline"
-                                        id="asOrgLogoRemove">
+                                        id="asOrgLogoRemove" disabled>
                                     <i class="bi bi-trash3"></i> Remove
                                 </button>
 
                                 <input type="file"
-                                       id="asOrgLogoInput"
+                                       id="asOrgLogoInput" disabled
                                        accept="image/png,image/jpeg,image/webp,image/svg+xml"
                                        hidden>
                             </div>
@@ -207,11 +208,11 @@
                     <div class="as-form-grid">
                         <div class="as-field as-field-full">
                             <label for="asCompanyName">Organization name <span>*</span></label>
-                            <input type="text" id="asCompanyName" value="AskPearls Limited" maxlength="150" required>
+                            <input type="text" id="asCompanyName" value="" maxlength="150" required>
                         </div>
                         <div class="as-field">
                             <label for="asWebsite">Company website</label>
-                            <input type="url" id="asWebsite" value="https://askpearls.com" maxlength="200">
+                            <input type="url" id="asWebsite" value="" maxlength="200">
                         </div>
                         <div class="as-field">
                             <label for="asIndustry">Industry</label>
@@ -290,14 +291,14 @@
                         </div>
                         <div class="as-security-copy">
                             <strong>Password</strong>
-                            <p>Manage your account password.</p>
+                            <p>Your account uses Google sign-in.</p>
                             <span class="as-muted-note">
-                                Password changes are available as a UI prototype only.
+                                Password management is handled by Google.
                             </span>
                         </div>
                         <button type="button"
                                 class="as-btn as-btn-outline"
-                                id="asChangePassword">
+                                id="asChangePassword" disabled>
                             Change password
                         </button>
                     </div>
@@ -328,12 +329,12 @@
                             <p>Review devices and browser sessions signed in to your account.</p>
                             <span class="as-muted-note">
                                 <i class="bi bi-display"></i>
-                                <span id="asSessionCount">3 demo sessions</span>
+                                <span id="asSessionCount">Not available in MVP</span>
                             </span>
                         </div>
                         <button type="button"
                                 class="as-btn as-btn-outline"
-                                id="asViewSessions">
+                                id="asViewSessions" disabled>
                             <i class="bi bi-eye"></i>
                             View sessions
                         </button>
@@ -428,7 +429,7 @@
                                     <i class="bi bi-pc-display"></i>
                                 </div>
                                 <div>
-                                    <strong id="asSessionsSummaryCount">3 demo sessions</strong>
+                                    <strong id="asSessionsSummaryCount">Not available in MVP</strong>
                                     <p>Illustrative device information only</p>
                                 </div>
                             </div>
@@ -669,9 +670,9 @@
                             <label for="asLanguage">Language</label>
                             <select id="asLanguage">
                                 <option value="en" selected>English</option>
-                                <option value="ar">العربية</option>
-                                <option value="fr">Français</option>
-                                <option value="de">Deutsch</option>
+
+                                
+                                
                             </select>
                         </div>
                         <div class="as-field">

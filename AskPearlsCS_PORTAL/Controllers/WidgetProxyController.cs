@@ -1,30 +1,35 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Security.Claims;
+﻿using System.Net.Http.Headers;
 
 using AskPearlsCS_DOMAIN.app_Service;
 
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AskPearlsCS_PORTAL.Controllers;
 
 [Authorize]
 [Route("Widget")]
-public sealed class WidgetController : Controller
+public sealed class WidgetProxyController : Controller
 {
     private readonly IHttpClientFactory _clients;
     private readonly IConfiguration _config;
     private readonly IAntiforgery _antiforgery;
+    private readonly ICurrentUserContext_Service _currentUser;
+    private readonly IApiJwtToken_Service _jwtService;
 
-    public WidgetController(IHttpClientFactory clients, IConfiguration config, IAntiforgery antiforgery)
+    public WidgetProxyController(
+        IHttpClientFactory clients,
+        IConfiguration config,
+        IAntiforgery antiforgery,
+        ICurrentUserContext_Service currentUser,
+        IApiJwtToken_Service jwtService)
     {
         _clients = clients;
         _config = config;
         _antiforgery = antiforgery;
+        _currentUser = currentUser;
+        _jwtService = jwtService;
     }
 
     // Authenticated portal endpoints, mapped one-to-one to the supplied API controller.
@@ -88,8 +93,7 @@ public sealed class WidgetController : Controller
 
     private async Task<IActionResult> Forward(HttpMethod method, string relativePath, CancellationToken ct)
     {
-        var userId = User.FindFirstValue(AskPearlsClaimTypes.ASKPEARLS_USER_ID);
-        if (!long.TryParse(userId, out var parsedId) || parsedId <= 0)
+        if (!_currentUser.IsAuthenticated || _currentUser.UserId is null)
             return Unauthorized(new { success = false, message = "Missing or invalid AskPearlsUserId claim." });
 
         if (method != HttpMethod.Get && method != HttpMethod.Head)
@@ -107,7 +111,8 @@ public sealed class WidgetController : Controller
             return Problem(statusCode: 500, title: "AskPearlsApi:BaseUrl must be an HTTPS base URL.");
 
         string jwt;
-        try { jwt = CreateJwt(parsedId.ToString(System.Globalization.CultureInfo.InvariantCulture)); }
+        try { jwt = _jwtService.CreateForCurrentUser(); }
+        catch (UnauthorizedAccessException) { return Unauthorized(new { success = false, message = "Invalid authenticated user." }); }
         catch (InvalidOperationException) { return Problem(statusCode: 500, title: "API JWT configuration is invalid."); }
 
         // BaseUrl should be the API origin, e.g. https://api.askpearls.com (no /api suffix).
@@ -161,30 +166,5 @@ public sealed class WidgetController : Controller
         {
             return Problem(statusCode: 502, title: "Could not reach the AskPearls API.");
         }
-    }
-
-    private string CreateJwt(string userId)
-    {
-        var section = _config.GetSection("ApiJwt");
-        var issuer = section["Issuer"];
-        var audience = section["Audience"];
-        var keyText = section["SigningKey"];
-        if (string.IsNullOrWhiteSpace(issuer) || string.IsNullOrWhiteSpace(audience) || string.IsNullOrWhiteSpace(keyText))
-            throw new InvalidOperationException("Missing API JWT settings.");
-        byte[] key;
-        try { key = Convert.FromBase64String(keyText); }
-        catch (FormatException ex) { throw new InvalidOperationException("Invalid signing key.", ex); }
-        if (key.Length < 32) throw new InvalidOperationException("Signing key must contain at least 32 bytes.");
-        var now = DateTime.UtcNow;
-        var token = new JwtSecurityToken(
-            issuer: issuer, audience: audience,
-            claims: new[] {
-                new Claim(JwtRegisteredClaimNames.Sub, userId),
-                new Claim(ClaimTypes.NameIdentifier, userId),
-                new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_ID, userId)
-            },
-            notBefore: now, expires: now.AddMinutes(3),
-            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256));
-        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

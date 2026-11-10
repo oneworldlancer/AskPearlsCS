@@ -175,6 +175,8 @@ namespace AskPearlsCS_PORTAL.Controllers
 
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
+         
+
             await _signInManager.SignInWithClaimsAsync(
       identityUser,
       isPersistent: true,

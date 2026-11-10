@@ -8,7 +8,6 @@ using AskPearlsCS_DOMAIN.app_Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using System.Globalization;
 
 namespace AskPearlsCS_API.Controllers;
 
@@ -20,15 +19,18 @@ public class WidgetController : ControllerBase
     private readonly IWidget_Service _widgetService;
     private readonly IWidgetVersion_Service _widgetVersionService;
     private readonly IQuestion_Service _questionService;
+    private readonly ICurrentUserContext_Service _currentUser;
 
     public WidgetController(
         IWidget_Service widgetService,
         IWidgetVersion_Service widgetVersionService,
-        IQuestion_Service questionService)
+        IQuestion_Service questionService,
+        ICurrentUserContext_Service currentUser)
     {
         _widgetService = widgetService;
         _widgetVersionService = widgetVersionService;
         _questionService = questionService;
+        _currentUser = currentUser;
     }
 
     private IActionResult FromOperation(WidgetOperationResult result)
@@ -176,26 +178,16 @@ public class WidgetController : ControllerBase
 
     private bool TryGetAuthenticatedOwner(out string ownerUserTokenId, out IActionResult? error)
     {
-        ownerUserTokenId = string.Empty;
+        ownerUserTokenId = _currentUser.OwnerUserTokenId ?? string.Empty;
         error = null;
 
-        // This claim is the AskPearls database user ID issued by the authenticated Portal.
-        var claimValue = User.FindFirst(AskPearlsClaimTypes.ASKPEARLS_USER_ID)?.Value;
-        if (long.TryParse(
-                claimValue,
-                NumberStyles.None,
-                CultureInfo.InvariantCulture,
-                out var userId) &&
-            userId > 0)
-        {
-            ownerUserTokenId = userId.ToString(CultureInfo.InvariantCulture);
+        if (!string.IsNullOrEmpty(ownerUserTokenId))
             return true;
-        }
 
         error = Unauthorized(new
         {
             success = false,
-            message = "The access token does not contain a valid AskPearlsUserId claim."
+            message = "The authenticated access token has no valid AskPearls user ID."
         });
         return false;
     }
