@@ -25,7 +25,7 @@ public sealed class AccountSettingsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetSettings(CancellationToken ct)
     {
-        if (_currentUser.UserId is not long userId)
+        if (_currentUser.OwnerUserTokenID is not string userId)
             return Unauthorized(new { success = false, message = "Invalid authenticated AskPearls user." });
         var result = await _settings.GetAsync(userId, ct);
         return result is null
@@ -36,7 +36,7 @@ public sealed class AccountSettingsController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> SaveSettings([FromBody] AccountSettingsUpdateRequest? request, CancellationToken ct)
     {
-        if (_currentUser.UserId is not long userId)
+        if (_currentUser.OwnerUserTokenID is not string userId)
             return Unauthorized(new { success = false, message = "Invalid authenticated AskPearls user." });
         try
         {

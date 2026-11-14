@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using AskPearlsCS_DAL.DBModels;
-
 using Microsoft.EntityFrameworkCore;
+using AskPearlsCS_DAL.DBModels;
 
 namespace AskPearlsCS_DAL.DBContext;
 
 public partial class DBContextModel : DbContext
 {
+    public DBContextModel()
+    {
+    }
+
     public DBContextModel(DbContextOptions<DBContextModel> options)
         : base(options)
     {
@@ -299,6 +301,8 @@ public partial class DBContextModel : DbContext
     public virtual DbSet<AskpearlsPortalUserOrganizationCompanyMemberList> AskpearlsPortalUserOrganizationCompanyMemberLists { get; set; }
 
     public virtual DbSet<AskpearlsPortalUserOrganizationList> AskpearlsPortalUserOrganizationLists { get; set; }
+
+    public virtual DbSet<AskpearlsPortalUserOrganizationMembershipList> AskpearlsPortalUserOrganizationMembershipLists { get; set; }
 
     public virtual DbSet<AskpearlsPortalUserPaymentEarnTokenList> AskpearlsPortalUserPaymentEarnTokenLists { get; set; }
 
@@ -678,6 +682,18 @@ public partial class DBContextModel : DbContext
 
     public virtual DbSet<AskpearlsUserTokenPurchase> AskpearlsUserTokenPurchases { get; set; }
 
+    public virtual DbSet<AspNetRole1> AspNetRoles { get; set; }
+
+    public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
+
+    public virtual DbSet<AspNetUser1> AspNetUsers { get; set; }
+
+    public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+
+    public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+
+    public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
+
     public virtual DbSet<AspnetApplication> AspnetApplications { get; set; }
 
     public virtual DbSet<AspnetMembership> AspnetMemberships { get; set; }
@@ -701,6 +717,10 @@ public partial class DBContextModel : DbContext
     public virtual DbSet<Image> Images { get; set; }
 
     public virtual DbSet<UserLogin> UserLogins { get; set; }
+
+//////////    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//////////#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+//////////        => optionsBuilder.UseSqlServer("Data Source=SHAYMAA-LAP\\SQLEXPRESS;Initial Catalog= ASKPEARLSDB;Integrated Security=True; Command Timeout=60000;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -1375,6 +1395,9 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.BusinessJoinDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_ACCOUNT_DatingJoinDay1");
             entity.Property(e => e.BusinessJoinMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_ACCOUNT_DatingJoinMonth1");
             entity.Property(e => e.BusinessJoinYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_ACCOUNT_DatingJoinYear1");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ACCOUNT_LIST_OrganizationTokenID1")
+                .HasColumnName("CompanyTokenID");
             entity.Property(e => e.DatingJoinDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_ACCOUNT_DatingJoinDate")
                 .HasColumnType("smalldatetime");
@@ -1392,9 +1415,13 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.IsDating).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_ACCOUNT_IsDating");
             entity.Property(e => e.IsPersonal).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_ACCOUNT_IsDating1");
             entity.Property(e => e.IsSystemUser).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_ACCOUNT_LIST_IsSystemUser");
+            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_ACCOUNT_LIST_IsActive1");
             entity.Property(e => e.JoinDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_ACCOUNT_LIST_DatingJoinDay1");
             entity.Property(e => e.JoinMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_ACCOUNT_LIST_DatingJoinMonth1");
             entity.Property(e => e.JoinYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_ACCOUNT_LIST_DatingJoinYear1");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ACCOUNT_LIST_OwnerUserTokenID1")
+                .HasColumnName("OrganizationTokenID");
             entity.Property(e => e.OwnerMobileNumberTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ACCOUNT_LIST_OwnerMobileNumberTokenID")
                 .HasColumnName("OwnerMobileNumberTokenID");
@@ -1850,7 +1877,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadDay");
             entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadMonth");
             entity.Property(e => e.UploadTime)
-                .HasDefaultValue(new DateTime(2026, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadTime")
+                .HasDefaultValue(new DateTime(2026, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadTime")
                 .HasColumnType("smalldatetime");
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_BLOG_POST_COMMENT_LIST_UploadYear");
             entity.Property(e => e.UpostId)
@@ -4724,6 +4751,9 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.CompanyTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_EMPLOYEE_LIST_CompanyTokenID")
                 .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CompanyTokenId1)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_EMPLOYEE_LIST_CompanyTokenID1_1")
+                .HasColumnName("CompanyTokenID1");
             entity.Property(e => e.CompanyZipCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_EMPLOYEE_LIST_BuildingZipCode");
             entity.Property(e => e.CountryCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_EMPLOYEE_LIST_MobileNumber2");
             entity.Property(e => e.CountryName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_EMPLOYEE_LIST_MobileNumber3");
@@ -9565,9 +9595,6 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.CompanyTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_CompanyTokenID")
                 .HasColumnName("CompanyTokenID");
-            entity.Property(e => e.CompanyTokenId1)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_CompanyTokenID1_1")
-                .HasColumnName("CompanyTokenID1");
             entity.Property(e => e.CompanyZipCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_BuildingZipCode");
             entity.Property(e => e.CountryCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_MobileNumber2");
             entity.Property(e => e.CountryName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_MobileNumber3");
@@ -9587,6 +9614,9 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.MobileNumberCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_MobileNumber1_2");
             entity.Property(e => e.MobileNumberE164).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_MobileNumber1");
             entity.Property(e => e.MobileNumberWhatsappE164).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_MobileNumberE1641");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_CompanyTokenID1_1")
+                .HasColumnName("OrganizationTokenID");
             entity.Property(e => e.OwnerMobileNumberTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_COMPANY_MEMBER_LIST_OwnerMobileNumberTokenID")
                 .HasColumnName("OwnerMobileNumberTokenID");
@@ -9666,6 +9696,119 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_UploadDay");
             entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_UploadMonth");
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_UploadYear");
+        });
+
+        modelBuilder.Entity<AskpearlsPortalUserOrganizationMembershipList>(entity =>
+        {
+            entity.HasKey(e => e.UorganizationMembershipId);
+
+            entity.ToTable("ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST");
+
+            entity.Property(e => e.UorganizationMembershipId).HasColumnName("UOrganizationMembershipID");
+            entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_AccountType");
+            entity.Property(e => e.ActiveStatus).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_ActiveStatus");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_CompanyTokenID")
+                .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CreatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionTokenID5_1")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_IsActive");
+            entity.Property(e => e.IsDefaultOrganization).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionTokenID1");
+            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_IsVisible");
+            entity.Property(e => e.ItemOrder).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_ItemOrder");
+            entity.Property(e => e.MembershipCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionTokenID6");
+            entity.Property(e => e.MembershipRole).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionTokenID5");
+            entity.Property(e => e.MembershipStatus).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionTokenID2");
+            entity.Property(e => e.MembershipText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionTokenID3");
+            entity.Property(e => e.MembershipType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionTokenID4");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_CompanyTokenID1")
+                .HasColumnName("OrganizationTokenID");
+            entity.Property(e => e.OwnerMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_OwnerMobileNumberTokenID")
+                .HasColumnName("OwnerMobileNumberTokenID");
+            entity.Property(e => e.OwnerUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_OwnerUserTokenID")
+                .HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.RowDataTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_RowDataTokenID")
+                .HasColumnName("RowDataTokenID");
+            entity.Property(e => e.RowViewTokenId)
+                .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_RowViewTokenID")
+                .HasColumnName("RowViewTokenID");
+            entity.Property(e => e.SubscriptionBillingInterval).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionBillingInterval");
+            entity.Property(e => e.SubscriptionCancelAtPeriodEnd).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionCancelAtPeriodEnd");
+            entity.Property(e => e.SubscriptionCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionCode");
+            entity.Property(e => e.SubscriptionCreatedAtUtc).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionCreatedAtUtc");
+            entity.Property(e => e.SubscriptionCurrentPeriodEndUtc).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionCurrentPeriodEndUtc");
+            entity.Property(e => e.SubscriptionCurrentPeriodStartUtc).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionCurrentPeriodStartUtc");
+            entity.Property(e => e.SubscriptionEndDateText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndDateText");
+            entity.Property(e => e.SubscriptionEndDateTime).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndDateTime");
+            entity.Property(e => e.SubscriptionEndDateTimeCalendar).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndDateTimeCalendar");
+            entity.Property(e => e.SubscriptionEndDateTimeCalendarText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndDateTimeCalendarText");
+            entity.Property(e => e.SubscriptionEndDateTimeCalendarValue)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndDateTimeCalendarValue")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.SubscriptionEndDateTimeText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndDateTimeText");
+            entity.Property(e => e.SubscriptionEndDayName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndDayName");
+            entity.Property(e => e.SubscriptionEndDayText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndDayText");
+            entity.Property(e => e.SubscriptionEndHour).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndHour");
+            entity.Property(e => e.SubscriptionEndHourText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndHourText");
+            entity.Property(e => e.SubscriptionEndMilliSec).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndMilliSec");
+            entity.Property(e => e.SubscriptionEndMinute).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndMinute");
+            entity.Property(e => e.SubscriptionEndMinuteText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndMinuteText");
+            entity.Property(e => e.SubscriptionEndMonthName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionSEndMonthName");
+            entity.Property(e => e.SubscriptionEndMonthText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndMonthText");
+            entity.Property(e => e.SubscriptionEndTimeText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndTimeText");
+            entity.Property(e => e.SubscriptionEndTimeZone).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndTimeZone");
+            entity.Property(e => e.SubscriptionEndTimeZoneText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndTimeZoneText");
+            entity.Property(e => e.SubscriptionEndYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionEndYear");
+            entity.Property(e => e.SubscriptionPlan).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionPlan");
+            entity.Property(e => e.SubscriptionStartDateText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartDateText");
+            entity.Property(e => e.SubscriptionStartDateTime).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartDateTime");
+            entity.Property(e => e.SubscriptionStartDateTimeCalendar).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartDateTimeCalendar");
+            entity.Property(e => e.SubscriptionStartDateTimeCalendarText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartDateTimeCalendarText");
+            entity.Property(e => e.SubscriptionStartDateTimeCalendarValue)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartDateTimeCalendarValue")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.SubscriptionStartDateTimeText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartDateTimeText");
+            entity.Property(e => e.SubscriptionStartDayName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartDayName");
+            entity.Property(e => e.SubscriptionStartDayText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartDayText");
+            entity.Property(e => e.SubscriptionStartHour).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartHour");
+            entity.Property(e => e.SubscriptionStartHourText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartHourText");
+            entity.Property(e => e.SubscriptionStartMilliSec).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartMilliSec");
+            entity.Property(e => e.SubscriptionStartMinute).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartMinute");
+            entity.Property(e => e.SubscriptionStartMinuteText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartMinuteText");
+            entity.Property(e => e.SubscriptionStartMonthName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartMonthName");
+            entity.Property(e => e.SubscriptionStartMonthText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartMonthText");
+            entity.Property(e => e.SubscriptionStartTimeText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartTimeText");
+            entity.Property(e => e.SubscriptionStartTimeZone).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartTimeZone");
+            entity.Property(e => e.SubscriptionStartTimeZoneText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartTimeZoneText");
+            entity.Property(e => e.SubscriptionStartYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStartYear");
+            entity.Property(e => e.SubscriptionStatus).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionStatus");
+            entity.Property(e => e.SubscriptionText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionText");
+            entity.Property(e => e.SubscriptionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionTokenID")
+                .HasColumnName("SubscriptionTokenID");
+            entity.Property(e => e.SubscriptionTokenId2)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionTokenID2_1")
+                .HasColumnName("SubscriptionTokenID2");
+            entity.Property(e => e.SubscriptionTokenId3)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionTokenID3_1")
+                .HasColumnName("SubscriptionTokenID3");
+            entity.Property(e => e.SubscriptionType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionType");
+            entity.Property(e => e.SubscriptionUpdatedAtUtc).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionUpdatedAtUtc");
+            entity.Property(e => e.UpdatedAtUtc)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_SubscriptionTokenID4_1")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UploadDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_UploadDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UploadDateTimeMilliSec).HasDefaultValue("0", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_UploadDateTimeMilliSec");
+            entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_UploadDay");
+            entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_UploadMonth");
+            entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_MEMBERSHIP_LIST_UploadYear");
         });
 
         modelBuilder.Entity<AskpearlsPortalUserPaymentEarnTokenList>(entity =>
@@ -10775,7 +10918,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadDay");
             entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadMonth");
             entity.Property(e => e.UploadTime)
-                .HasDefaultValue(new DateTime(2026, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadTime")
+                .HasDefaultValue(new DateTime(2026, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadTime")
                 .HasColumnType("smalldatetime");
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_POST_COMMENT_LIST_UploadYear");
             entity.Property(e => e.UpostId).HasColumnName("UPostID");
@@ -12094,17 +12237,28 @@ public partial class DBContextModel : DbContext
 
         modelBuilder.Entity<AskpearlsPortalUserProfileList>(entity =>
         {
-            entity.HasKey(e => e.UprofileId).HasName("PK_ASKPEARLS_PORTAL_PROFILE");
+            entity
+                .HasNoKey()
+                .ToTable("ASKPEARLS_PORTAL_USER_PROFILE_LIST");
 
-            entity.ToTable("ASKPEARLS_PORTAL_USER_PROFILE_LIST");
-
-            entity.Property(e => e.UprofileId).HasColumnName("UProfileID");
+            entity.Property(e => e.AboutMe).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_AboutMe");
+            entity.Property(e => e.AnywhereNow).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_AnywhereNow");
             entity.Property(e => e.AutoClick).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_PROFILE_AutoClick");
-            entity.Property(e => e.BirthDate).HasColumnType("smalldatetime");
+            entity.Property(e => e.BestKnowMe).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_BestKnowMe");
+            entity.Property(e => e.BirthDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_BirthDate")
+                .HasColumnType("smalldatetime");
             entity.Property(e => e.BirthDateDay).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_PROFILE_BirthDateDay");
             entity.Property(e => e.BirthDateMonth).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_PROFILE_BirthDateMonth");
             entity.Property(e => e.BirthDateYear).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_PROFILE_BirthDateYear");
-            entity.Property(e => e.BodyId).HasColumnName("BodyID");
+            entity.Property(e => e.BodyId)
+                .HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_BodyID")
+                .HasColumnName("BodyID");
+            entity.Property(e => e.Car).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_Car");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_CompanyTokenID")
+                .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CrazyDone).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_CrazyDone");
             entity.Property(e => e.DatingAvatarColorCode).HasDefaultValue("#c0c0c0", "DF_ASKPEARLS_PORTAL_PROFILE_DatingAvatarColorCode");
             entity.Property(e => e.DatingFor).HasDefaultValue("friendship", "DF_ASKPEARLS_PORTAL_PROFILE_DatingOrientation2");
             entity.Property(e => e.DatingJoinDate)
@@ -12115,36 +12269,101 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.DatingJoinYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_PROFILE_UploadYear1");
             entity.Property(e => e.DatingOrientation).HasDefaultValue("straight", "DF_ASKPEARLS_PORTAL_PROFILE_Orientation");
             entity.Property(e => e.DatingWith).HasDefaultValue("anyone", "DF_ASKPEARLS_PORTAL_PROFILE_DatingOrientation1");
-            entity.Property(e => e.DrinkId).HasColumnName("DrinkID");
-            entity.Property(e => e.DrugId).HasColumnName("DrugID");
-            entity.Property(e => e.EthnicityId).HasColumnName("EthnicityID");
-            entity.Property(e => e.EyeId).HasColumnName("EyeID");
-            entity.Property(e => e.GenderId).HasColumnName("GenderID");
-            entity.Property(e => e.HairId).HasColumnName("HairID");
+            entity.Property(e => e.DoForFun).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_DoForFun");
+            entity.Property(e => e.DrinkId)
+                .HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_DrinkID")
+                .HasColumnName("DrinkID");
+            entity.Property(e => e.DrugId)
+                .HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_DrugID")
+                .HasColumnName("DrugID");
+            entity.Property(e => e.EthnicityId)
+                .HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_EthnicityID")
+                .HasColumnName("EthnicityID");
+            entity.Property(e => e.EyeId)
+                .HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_EyeID")
+                .HasColumnName("EyeID");
+            entity.Property(e => e.FavoriteBooks).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_FavoriteBooks");
+            entity.Property(e => e.FavoriteFood).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_FavoriteFood");
+            entity.Property(e => e.FavoriteMovies).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_FavoriteMovies");
+            entity.Property(e => e.FavoriteSongs).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_FavoriteSongs");
+            entity.Property(e => e.Gender).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_Gender");
+            entity.Property(e => e.GenderId)
+                .HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_GenderID")
+                .HasColumnName("GenderID");
+            entity.Property(e => e.HairId)
+                .HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_HairID")
+                .HasColumnName("HairID");
             entity.Property(e => e.HeightMeasureText).HasDefaultValue("inches", "DF_ASKPEARLS_PORTAL_PROFILE_HeightMeasureText");
+            entity.Property(e => e.HeightValue).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_HeightValue");
+            entity.Property(e => e.Hobbies).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_Hobbies");
+            entity.Property(e => e.Horoscope).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_Horoscope");
+            entity.Property(e => e.InterestIn).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_InterestIn");
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_PROFILE_IsActive");
             entity.Property(e => e.IsBusiness).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_PROFILE_IsBusiness");
+            entity.Property(e => e.IsDating).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_IsDating");
             entity.Property(e => e.IsSystemUser).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_PROFILE_IsSystemUser");
-            entity.Property(e => e.MaritalStatusId).HasColumnName("MaritalStatusID");
-            entity.Property(e => e.OwnerMobileNumberTokenId).HasColumnName("OwnerMobileNumberTokenID");
-            entity.Property(e => e.OwnerUserTokenId).HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_IsActive1");
+            entity.Property(e => e.ListenTo).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_ListenTo");
+            entity.Property(e => e.MaritalStatusId)
+                .HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_MaritalStatusID")
+                .HasColumnName("MaritalStatusID");
+            entity.Property(e => e.MeaningLife).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_MeaningLife");
+            entity.Property(e => e.NotLiveWithout).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_NotLiveWithout");
+            entity.Property(e => e.Occupation).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_Occupation");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_OrganizationTokenID")
+                .HasColumnName("OrganizationTokenID");
+            entity.Property(e => e.OwnerMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_OwnerMobileNumberTokenID")
+                .HasColumnName("OwnerMobileNumberTokenID");
+            entity.Property(e => e.OwnerUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_OwnerUserTokenID")
+                .HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.PerfectDate).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_PerfectDate");
+            entity.Property(e => e.PerfectMate).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_PerfectMate");
             entity.Property(e => e.PersonalAvatarColorCode).HasDefaultValue("#c0c0c0", "DF_ASKPEARLS_PORTAL_PROFILE_PersonalAvatarColorCode");
+            entity.Property(e => e.Pets).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_Pets");
+            entity.Property(e => e.Profession).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_Profession");
             entity.Property(e => e.RowDataTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_PROFILE_RowDataTokenID")
                 .HasColumnName("RowDataTokenID");
             entity.Property(e => e.RowViewTokenId)
                 .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_PROFILE_RowViewTokenID")
                 .HasColumnName("RowViewTokenID");
-            entity.Property(e => e.SexualId).HasColumnName("SexualID");
-            entity.Property(e => e.SmokeId).HasColumnName("SmokeID");
+            entity.Property(e => e.School).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_School");
+            entity.Property(e => e.SexualId)
+                .HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_SexualID")
+                .HasColumnName("SexualID");
+            entity.Property(e => e.SmokeId)
+                .HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_SmokeID")
+                .HasColumnName("SmokeID");
+            entity.Property(e => e.Talent).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_Talent");
+            entity.Property(e => e.ThingLike).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_ThingLike");
+            entity.Property(e => e.TurnOnOff).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_TurnOnOff");
             entity.Property(e => e.UploadDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_PROFILE_UploadDate")
                 .HasColumnType("smalldatetime");
             entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_PROFILE_UploadDay");
             entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_PROFILE_UploadMonth");
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_PROFILE_UploadYear");
+            entity.Property(e => e.UprofileId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("UProfileID");
+            entity.Property(e => e.UserDoingNow).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_UserDoingNow");
+            entity.Property(e => e.UserMoan).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_UserMoan");
+            entity.Property(e => e.UserMood).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_UserMood");
+            entity.Property(e => e.UserStatus).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_UserStatus");
+            entity.Property(e => e.VideoDescription).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_VideoDescription");
+            entity.Property(e => e.VideoIsActive).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_VideoIsActive");
             entity.Property(e => e.VideoIsSubmit).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_PROFILE_VideoIsSubmit");
-            entity.Property(e => e.VideoYouTubeUrl).HasColumnName("VideoYouTubeURL");
+            entity.Property(e => e.VideoIsValidate).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_VideoIsValidate");
+            entity.Property(e => e.VideoTitle).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_VideoTitle");
+            entity.Property(e => e.VideoYouTubeUrl)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_VideoYouTubeURL")
+                .HasColumnName("VideoYouTubeURL");
+            entity.Property(e => e.WeightMeasureText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_WeightMeasureText");
+            entity.Property(e => e.WeightValue).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_WeightValue");
+            entity.Property(e => e.ZodiacSign).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_PROFILE_LIST_ZodiacSign");
         });
 
         modelBuilder.Entity<AskpearlsPortalUserProfilePrivacyList>(entity =>
@@ -16271,7 +16490,19 @@ public partial class DBContextModel : DbContext
             entity.ToTable("ASKPEARLS_PORTAL_USER_SETTING_LIST");
 
             entity.Property(e => e.SettingId).HasColumnName("SettingID");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SETTING_LIST_CompanyTokenID")
+                .HasColumnName("CompanyTokenID");
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_SETTING_IsActive");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SETTING_LIST_OrganizationTokenID")
+                .HasColumnName("OrganizationTokenID");
+            entity.Property(e => e.OwnerMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SETTING_LIST_OwnerMobileNumberTokenID")
+                .HasColumnName("OwnerMobileNumberTokenID");
+            entity.Property(e => e.OwnerUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SETTING_LIST_OwnerUserTokenID")
+                .HasColumnName("OwnerUserTokenID");
             entity.Property(e => e.RowDataTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_SETTING_RowDataTokenID")
                 .HasColumnName("RowDataTokenID");
@@ -17808,48 +18039,87 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UsubscribeId).HasColumnName("USubscribeID");
             entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_AccountType");
             entity.Property(e => e.ActiveStatus).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActiveStatus");
-            entity.Property(e => e.CompanyAddress).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_BuildingAddress");
-            entity.Property(e => e.CompanyAddressLine).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_BuildingAddressLine");
-            entity.Property(e => e.CompanyCity).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_BuildingCity");
-            entity.Property(e => e.CompanyCountry).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_BuildingCountry");
-            entity.Property(e => e.CompanyName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_CompanyTokenID1");
-            entity.Property(e => e.CompanyStreetName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_BuildingStreetName");
             entity.Property(e => e.CompanyTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_CompanyTokenID")
                 .HasColumnName("CompanyTokenID");
-            entity.Property(e => e.CompanyZipCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_BuildingZipCode");
-            entity.Property(e => e.CountryCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_MobileNumber2");
-            entity.Property(e => e.CountryName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_MobileNumber3");
-            entity.Property(e => e.EmailAddress).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_MobileNumber1_1");
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_IsActive");
-            entity.Property(e => e.IsValidateMobileNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_IsValidateMobileNumber");
-            entity.Property(e => e.IsValidateMobileNumberE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_IsValidateMobileNumberE164");
-            entity.Property(e => e.IsValidateMobileNumberWhatsappE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_IsValidateMobileNumberWhatsappE164");
-            entity.Property(e => e.IsValidatePhoneNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_IsValidatePhoneNumber");
-            entity.Property(e => e.IsVerifiedMobileNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_IsVerifiedMobileNumber");
-            entity.Property(e => e.IsVerifiedMobileNumberE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_IsVerifiedMobileNumberE164");
-            entity.Property(e => e.IsVerifiedMobileNumberWhatsappE164).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_IsVerifiedMobileNumberWhatsappE164");
-            entity.Property(e => e.IsVerifiedPhoneNumber).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_IsVerifiedPhoneNumber");
             entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_IsVisible");
             entity.Property(e => e.ItemOrder).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_CompanyName1");
-            entity.Property(e => e.MobileNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_CompanyZipCode1");
-            entity.Property(e => e.MobileNumberCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_MobileNumber1_2");
-            entity.Property(e => e.MobileNumberE164).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_MobileNumber1");
-            entity.Property(e => e.MobileNumberWhatsappE164).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_MobileNumberE1641");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_CompanyTokenID1_1")
+                .HasColumnName("OrganizationTokenID");
             entity.Property(e => e.OwnerMobileNumberTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_OwnerMobileNumberTokenID")
                 .HasColumnName("OwnerMobileNumberTokenID");
             entity.Property(e => e.OwnerUserTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_OwnerUserTokenID")
                 .HasColumnName("OwnerUserTokenID");
-            entity.Property(e => e.PhoneNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_PhoneNumber");
             entity.Property(e => e.RowDataTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_RowDataTokenID")
                 .HasColumnName("RowDataTokenID");
             entity.Property(e => e.RowViewTokenId)
                 .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_RowViewTokenID")
                 .HasColumnName("RowViewTokenID");
-            entity.Property(e => e.SubscriptionTokenId).HasColumnName("SubscriptionTokenID");
+            entity.Property(e => e.SubscriptionBillingInterval).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionEndMilliSec1_1");
+            entity.Property(e => e.SubscriptionCancelAtPeriodEnd).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionEndMilliSec2_1");
+            entity.Property(e => e.SubscriptionCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionPlan2");
+            entity.Property(e => e.SubscriptionCreatedAtUtc).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionCancelAtPeriodEnd1");
+            entity.Property(e => e.SubscriptionCurrentPeriodEndUtc).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionCancelAtPeriodEnd2");
+            entity.Property(e => e.SubscriptionCurrentPeriodStartUtc).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionCancelAtPeriodEnd3");
+            entity.Property(e => e.SubscriptionEndDateText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartDateText1");
+            entity.Property(e => e.SubscriptionEndDateTime)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionEndMilliSec2")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.SubscriptionEndDateTimeCalendar).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartDateTimeCalendar1_1");
+            entity.Property(e => e.SubscriptionEndDateTimeCalendarText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartDateTimeCalendarText1");
+            entity.Property(e => e.SubscriptionEndDateTimeCalendarValue)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartDateTimeCalendarValue1")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.SubscriptionEndDateTimeText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartDateTimeText1");
+            entity.Property(e => e.SubscriptionEndDayName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartDayName1");
+            entity.Property(e => e.SubscriptionEndDayText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartDayText1");
+            entity.Property(e => e.SubscriptionEndHour).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartHour1");
+            entity.Property(e => e.SubscriptionEndHourText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartHourText1");
+            entity.Property(e => e.SubscriptionEndMilliSec).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartMilliSec1");
+            entity.Property(e => e.SubscriptionEndMinute).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartMinute1");
+            entity.Property(e => e.SubscriptionEndMinuteText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartMinuteText1");
+            entity.Property(e => e.SubscriptionEndMonthName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartMonthName1");
+            entity.Property(e => e.SubscriptionEndMonthText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartMonthText1");
+            entity.Property(e => e.SubscriptionEndTimeText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartTimeText1");
+            entity.Property(e => e.SubscriptionEndTimeZone).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartTimeZone1");
+            entity.Property(e => e.SubscriptionEndTimeZoneText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartTimeZoneText1");
+            entity.Property(e => e.SubscriptionEndYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartYear1");
+            entity.Property(e => e.SubscriptionPlan).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionPlan");
+            entity.Property(e => e.SubscriptionStartDateText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartDateText");
+            entity.Property(e => e.SubscriptionStartDateTime)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionEndMilliSec1")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.SubscriptionStartDateTimeCalendar).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartDateTimeCalendar");
+            entity.Property(e => e.SubscriptionStartDateTimeCalendarText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartDateTimeCalendarText");
+            entity.Property(e => e.SubscriptionStartDateTimeCalendarValue)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartDateTimeCalendarValue")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.SubscriptionStartDateTimeText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartDateTimeText");
+            entity.Property(e => e.SubscriptionStartDayName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartDayName");
+            entity.Property(e => e.SubscriptionStartDayText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartDayText");
+            entity.Property(e => e.SubscriptionStartHour).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartHour");
+            entity.Property(e => e.SubscriptionStartHourText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartHourText");
+            entity.Property(e => e.SubscriptionStartMilliSec).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartDateTimeCalendar1");
+            entity.Property(e => e.SubscriptionStartMinute).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartMinute");
+            entity.Property(e => e.SubscriptionStartMinuteText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartMinuteText");
+            entity.Property(e => e.SubscriptionStartMonthName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartMonthName");
+            entity.Property(e => e.SubscriptionStartMonthText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartMonthText");
+            entity.Property(e => e.SubscriptionStartTimeText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartTimeText");
+            entity.Property(e => e.SubscriptionStartTimeZone).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartTimeZone");
+            entity.Property(e => e.SubscriptionStartTimeZoneText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_ActivityLogUserStartTimeZoneText");
+            entity.Property(e => e.SubscriptionStartYear).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStartDay7");
+            entity.Property(e => e.SubscriptionStatus).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionStatus");
+            entity.Property(e => e.SubscriptionText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionType1");
+            entity.Property(e => e.SubscriptionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionTokenID")
+                .HasColumnName("SubscriptionTokenID");
+            entity.Property(e => e.SubscriptionType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionPlan1");
+            entity.Property(e => e.SubscriptionUpdatedAtUtc).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_SubscriptionCreatedAtUtc1");
             entity.Property(e => e.UploadDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_LIST_UploadDate")
                 .HasColumnType("smalldatetime");
@@ -21334,19 +21604,51 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.OwnerUserTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_OwnerUserTokenID")
                 .HasColumnName("OwnerUserTokenID");
-            entity.Property(e => e.RecommendationCta).HasColumnName("RecommendationCTA");
-            entity.Property(e => e.RecommendationCtacode).HasColumnName("RecommendationCTACode");
-            entity.Property(e => e.RecommendationCtaimageTokenId).HasColumnName("RecommendationCTAImageTokenID");
-            entity.Property(e => e.RecommendationCtaimageUrl).HasColumnName("RecommendationCTAImageURL");
-            entity.Property(e => e.RecommendationCtatext).HasColumnName("RecommendationCTAText");
-            entity.Property(e => e.RecommendationCtatype).HasColumnName("RecommendationCTAType");
-            entity.Property(e => e.RecommendationCtaurl).HasColumnName("RecommendationCTAURL");
-            entity.Property(e => e.RecommendationHighlightsJson).HasColumnName("RecommendationHighlightsJSON");
-            entity.Property(e => e.RecommendationImageTokenId).HasColumnName("RecommendationImageTokenID");
-            entity.Property(e => e.RecommendationImageUrl).HasColumnName("RecommendationImageURL");
+            entity.Property(e => e.RecommendationCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationCode");
+            entity.Property(e => e.RecommendationCta)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationCTA")
+                .HasColumnName("RecommendationCTA");
+            entity.Property(e => e.RecommendationCtacode)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationCTACode")
+                .HasColumnName("RecommendationCTACode");
+            entity.Property(e => e.RecommendationCtaimageTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationCTAImageTokenID")
+                .HasColumnName("RecommendationCTAImageTokenID");
+            entity.Property(e => e.RecommendationCtaimageUrl)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationCTAImageURL")
+                .HasColumnName("RecommendationCTAImageURL");
+            entity.Property(e => e.RecommendationCtatext)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationCTAText")
+                .HasColumnName("RecommendationCTAText");
+            entity.Property(e => e.RecommendationCtatype)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationCTAType")
+                .HasColumnName("RecommendationCTAType");
+            entity.Property(e => e.RecommendationCtaurl)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationCTAURL")
+                .HasColumnName("RecommendationCTAURL");
+            entity.Property(e => e.RecommendationDescription).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationDescription");
+            entity.Property(e => e.RecommendationHighlightsJson)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationHighlightsJSON")
+                .HasColumnName("RecommendationHighlightsJSON");
+            entity.Property(e => e.RecommendationImageTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationImageTokenID")
+                .HasColumnName("RecommendationImageTokenID");
+            entity.Property(e => e.RecommendationImageUrl)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationImageURL")
+                .HasColumnName("RecommendationImageURL");
+            entity.Property(e => e.RecommendationKey).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationKey");
+            entity.Property(e => e.RecommendationName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationName");
+            entity.Property(e => e.RecommendationShortDescription).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationShortDescription");
             entity.Property(e => e.RecommendationSortOrder).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationSortOrder");
-            entity.Property(e => e.RecommendationTokenId).HasColumnName("RecommendationTokenID");
-            entity.Property(e => e.RecommendationUrl).HasColumnName("RecommendationURL");
+            entity.Property(e => e.RecommendationText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationText");
+            entity.Property(e => e.RecommendationTitle).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationTitle");
+            entity.Property(e => e.RecommendationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationTokenID")
+                .HasColumnName("RecommendationTokenID");
+            entity.Property(e => e.RecommendationType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationType");
+            entity.Property(e => e.RecommendationUrl)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RecommendationURL")
+                .HasColumnName("RecommendationURL");
             entity.Property(e => e.RowDataTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_RowDataTokenID")
                 .HasColumnName("RowDataTokenID");
@@ -21368,8 +21670,13 @@ public partial class DBContextModel : DbContext
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_WebsiteTokenID")
                 .HasColumnName("WebsiteTokenID");
             entity.Property(e => e.WidgetPublicKey).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_WidgetPublicKey");
-            entity.Property(e => e.WidgetTokenId).HasColumnName("WidgetTokenID");
-            entity.Property(e => e.WidgetVersionTokenId).HasColumnName("WidgetVersionTokenID");
+            entity.Property(e => e.WidgetTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_WidgetTokenID")
+                .HasColumnName("WidgetTokenID");
+            entity.Property(e => e.WidgetVersionNumber).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_WidgetVersionNumber");
+            entity.Property(e => e.WidgetVersionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_WEBSITE_WIDGET_RECOMMENDATION_LIST_WidgetVersionTokenID")
+                .HasColumnName("WidgetVersionTokenID");
         });
 
         modelBuilder.Entity<AskpearlsPortalUserWebsiteWidgetSessionActivityList>(entity =>
@@ -21880,6 +22187,72 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UserSessionId).HasColumnName("UserSessionID");
         });
 
+        modelBuilder.Entity<AspNetRole1>(entity =>
+        {
+            entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
+                .IsUnique()
+                .HasFilter("([NormalizedName] IS NOT NULL)");
+
+            entity.Property(e => e.Name).HasMaxLength(256);
+            entity.Property(e => e.NormalizedName).HasMaxLength(256);
+        });
+
+        modelBuilder.Entity<AspNetRoleClaim>(entity =>
+        {
+            entity.HasIndex(e => e.RoleId, "IX_AspNetRoleClaims_RoleId");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.AspNetRoleClaims).HasForeignKey(d => d.RoleId);
+        });
+
+        modelBuilder.Entity<AspNetUser1>(entity =>
+        {
+            entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
+
+            entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
+                .IsUnique()
+                .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+            entity.Property(e => e.Email).HasMaxLength(256);
+            entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+            entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+            entity.Property(e => e.UserName).HasMaxLength(256);
+
+            entity.HasMany(d => d.Roles).WithMany(p => p.Users)
+                .UsingEntity<Dictionary<string, object>>(
+                    "AspNetUserRole",
+                    r => r.HasOne<AspNetRole1>().WithMany().HasForeignKey("RoleId"),
+                    l => l.HasOne<AspNetUser1>().WithMany().HasForeignKey("UserId"),
+                    j =>
+                    {
+                        j.HasKey("UserId", "RoleId");
+                        j.ToTable("AspNetUserRoles");
+                        j.HasIndex(new[] { "RoleId" }, "IX_AspNetUserRoles_RoleId");
+                    });
+        });
+
+        modelBuilder.Entity<AspNetUserClaim>(entity =>
+        {
+            entity.HasIndex(e => e.UserId, "IX_AspNetUserClaims_UserId");
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserClaims).HasForeignKey(d => d.UserId);
+        });
+
+        modelBuilder.Entity<AspNetUserLogin>(entity =>
+        {
+            entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+
+            entity.HasIndex(e => e.UserId, "IX_AspNetUserLogins_UserId");
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserLogins).HasForeignKey(d => d.UserId);
+        });
+
+        modelBuilder.Entity<AspNetUserToken>(entity =>
+        {
+            entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserTokens).HasForeignKey(d => d.UserId);
+        });
+
         modelBuilder.Entity<AspnetApplication>(entity =>
         {
             entity.HasKey(e => e.ApplicationId)
@@ -22110,8 +22483,8 @@ public partial class DBContextModel : DbContext
             entity.HasKey(e => new { e.UserId, e.MailId }).HasName("PK__UserLogi__54C6CB550CBAE877");
 
             entity.ToTable("UserLogin");
-            entity.Property(e => e.UserId).HasColumnName("userID");
 
+            entity.Property(e => e.UserId).HasColumnName("userID");
             entity.Property(e => e.MailId)
                 .HasMaxLength(45)
                 .IsUnicode(false)

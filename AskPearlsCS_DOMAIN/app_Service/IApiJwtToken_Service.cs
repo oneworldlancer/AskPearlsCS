@@ -29,7 +29,7 @@ namespace AskPearlsCS_DOMAIN.app_Service
 
         public string CreateForCurrentUser()
         {
-            var id = _user.RequireUserId().ToString(CultureInfo.InvariantCulture);
+            var id = _user.RequireOwnerUserTokenID().ToString(CultureInfo.InvariantCulture);
             var section = _configuration.GetSection("ApiJwt");
             var issuer = section["Issuer"];
             var audience = section["Audience"];

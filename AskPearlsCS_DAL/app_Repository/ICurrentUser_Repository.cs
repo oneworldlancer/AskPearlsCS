@@ -20,5 +20,7 @@ namespace AskPearlsCS_DAL.app_Repository
 
         Task<AskpearlsPortalUserList?> GetAccountByOwnerUserTokenIdAsync(
             string ownerUserTokenId, CancellationToken cancellationToken);
+      
+        Task<AskpearlsPortalUserList> Get_UserByEmailAddressAsync(string? email, CancellationToken cancellationToken);
     }
 }

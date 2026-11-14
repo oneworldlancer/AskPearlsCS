@@ -15,6 +15,10 @@ public partial class AskpearlsPortalUserProfileList
 
     public string? OwnerMobileNumberTokenId { get; set; }
 
+    public string? OrganizationTokenId { get; set; }
+
+    public string? CompanyTokenId { get; set; }
+
     public string? Gender { get; set; }
 
     public DateTime? BirthDate { get; set; }
@@ -150,6 +154,8 @@ public partial class AskpearlsPortalUserProfileList
     public int? DatingJoinYear { get; set; }
 
     public DateTime? DatingJoinDate { get; set; }
+
+    public bool? IsVisible { get; set; }
 
     public bool? IsActive { get; set; }
 

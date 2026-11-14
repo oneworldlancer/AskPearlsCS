@@ -452,7 +452,7 @@
 
             <div class="user-menu-info">
                 <div class="user-menu-name">
-                    @(User.FindFirst(AskPearlsClaimTypes.ASKPEARLS_USER_NAME)?.Value ?? email)
+                    @(User.FindFirst(AskPearlsClaimTypes.ASKPEARLS_USER_FULL_NAME)?.Value ?? email)
                 </div>
                 <div class="user-menu-email" title="@email">@email</div>
             </div>

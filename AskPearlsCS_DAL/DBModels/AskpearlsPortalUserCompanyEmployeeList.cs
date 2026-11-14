@@ -17,6 +17,8 @@ public partial class AskpearlsPortalUserCompanyEmployeeList
 
     public string? OwnerMobileNumberTokenId { get; set; }
 
+    public string? CompanyTokenId1 { get; set; }
+
     public string? CompanyTokenId { get; set; }
 
     public string? CompanyName { get; set; }

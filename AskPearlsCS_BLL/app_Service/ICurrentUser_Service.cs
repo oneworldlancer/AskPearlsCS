@@ -11,6 +11,11 @@ namespace AskPearlsCS_BLL.app_Service
             string? googleId,
             string? email,
             CancellationToken cancellationToken);
+   
+
+        Task<CurrentUserDto?> Get_UserByEmailAddressAsync(
+           string? email,
+            CancellationToken cancellationToken);
     }
 
     public sealed record CurrentUserDto(

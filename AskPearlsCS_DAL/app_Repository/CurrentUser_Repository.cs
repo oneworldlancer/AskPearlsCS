@@ -54,6 +54,26 @@ namespace AskPearlsCS_DAL.app_Repository
             //    x => x.OwnerUserTokenId == ownerUserTokenId,
             //    cancellationToken);
         }
+
+        public Task<AskpearlsPortalUserList?>
+            Get_UserByEmailAddressAsync(
+                string email,
+                CancellationToken cancellationToken)
+        {
+            return _db.AskpearlsPortalUserLists.FirstOrDefaultAsync(
+                x => x.EmailAddress == email,
+                cancellationToken);
+           
+            
+            //return _db.AskpearlsPortalUserAccountLists.FirstOrDefaultAsync(
+            //    x => x.OwnerUserTokenId == ownerUserTokenId,
+            //    cancellationToken);
+        }
+
+
+
+
+
     }
 
 }

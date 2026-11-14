@@ -9,15 +9,15 @@ public sealed class AccountSettings_Service : IAccountSettings_Service
     private readonly IAccountSettings_Repository _repository;
     public AccountSettings_Service(IAccountSettings_Repository repository) => _repository = repository;
 
-    public Task<AccountSettingsResponse?> GetAsync(long userId, CancellationToken ct = default)
+    public Task<AccountSettingsResponse?> GetAsync(string userId, CancellationToken ct = default)
     {
-        if (userId <= 0) throw new ArgumentOutOfRangeException(nameof(userId));
+        if (userId == "0") throw new ArgumentOutOfRangeException(nameof(userId));
         return _repository.GetAsync(userId, ct);
     }
 
-    public Task<AccountSettingsResponse?> SaveAsync(long userId, AccountSettingsUpdateRequest? request, CancellationToken ct = default)
+    public Task<AccountSettingsResponse?> SaveAsync(string userId, AccountSettingsUpdateRequest? request, CancellationToken ct = default)
     {
-        if (userId <= 0) throw new ArgumentOutOfRangeException(nameof(userId));
+        if (userId == "0") throw new ArgumentOutOfRangeException(nameof(userId));
         if (request is null) throw new ArgumentException("Account settings are required.", nameof(request));
         if (string.IsNullOrWhiteSpace(request.FirstName) || request.FirstName.Trim().Length > 60 ||
             string.IsNullOrWhiteSpace(request.LastName) || request.LastName.Trim().Length > 60 ||

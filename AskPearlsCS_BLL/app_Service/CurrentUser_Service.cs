@@ -50,6 +50,28 @@ namespace AskPearlsCS_BLL.app_Service
             //    userModel?.UserId,
             //    userModel?.AccountType
         }
+  
+    
+    
+
+public async Task<CurrentUserDto?> Get_UserByEmailAddressAsync(
+          string? email,
+            CancellationToken cancellationToken)
+        {
+           
+            var userModel = await _repository.Get_UserByEmailAddressAsync(
+                email, cancellationToken);
+
+            return new CurrentUserDto(
+                userModel?.OwnerUserTokenId,
+                userModel?.FirstName ,
+                userModel?.LastName ,
+                userModel?.EmailAddress);
+            
+            //,
+            //    userModel?.UserId,
+            //    userModel?.AccountType
+        }
     }
 
 }

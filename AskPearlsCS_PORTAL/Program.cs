@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Authentication.Google;
 
 using AskPearlsCS_PORTAL.app_Utility;
 using AskPearlsCS_DOMAIN.app_Service;
+using AskPearlsCS_BLL.app_Service;
+using AskPearlsCS_DAL.app_Repository;
+using AskPearlsCS_DAL.DBContext;
 
 
 
@@ -16,6 +19,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 #region Identity
+
+
+// Application database for DAL repositories
+builder.Services.AddDbContext<DBContextModel>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("ASKPEARLSDB")));
+
 
 builder.Services.AddDbContext<AppCore_DBContext>(options =>
     options.UseSqlServer(
@@ -41,6 +51,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserContext_Service, CurrentUserContext_Service>();
+builder.Services.AddScoped<ICurrentUser_Service, CurrentUser_Service>();
+builder.Services.AddScoped<ICurrentUser_Repository, CurrentUser_Repository>();
 builder.Services.AddScoped<IApiJwtToken_Service, ApiJwtToken_Service>();
 
 builder.Services.AddScoped<ApiAccessTokenService>();

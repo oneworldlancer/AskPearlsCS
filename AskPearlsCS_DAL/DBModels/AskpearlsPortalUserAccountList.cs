@@ -15,6 +15,10 @@ public partial class AskpearlsPortalUserAccountList
 
     public string? OwnerUserTokenId { get; set; }
 
+    public string? OrganizationTokenId { get; set; }
+
+    public string? CompanyTokenId { get; set; }
+
     public string? OwnerMobileNumberTokenId { get; set; }
 
     public string? AccountType { get; set; }
@@ -76,6 +80,8 @@ public partial class AskpearlsPortalUserAccountList
     public string? RoleTitle { get; set; }
 
     public string? ActiveStatus { get; set; }
+
+    public bool? IsVisible { get; set; }
 
     public bool? IsActive { get; set; }
 

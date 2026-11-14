@@ -178,7 +178,7 @@ public class WidgetController : ControllerBase
 
     private bool TryGetAuthenticatedOwner(out string ownerUserTokenId, out IActionResult? error)
     {
-        ownerUserTokenId = _currentUser.OwnerUserTokenId ?? string.Empty;
+        ownerUserTokenId = _currentUser.OwnerUserTokenID ?? string.Empty;
         error = null;
 
         if (!string.IsNullOrEmpty(ownerUserTokenId))

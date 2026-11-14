@@ -17,7 +17,7 @@ public partial class AskpearlsPortalUserOrganizationCompanyMemberList
 
     public string? OwnerMobileNumberTokenId { get; set; }
 
-    public string? CompanyTokenId1 { get; set; }
+    public string? OrganizationTokenId { get; set; }
 
     public string? CompanyTokenId { get; set; }
 

@@ -11,6 +11,14 @@ public partial class AskpearlsPortalUserSettingList
 
     public string? RowDataTokenId { get; set; }
 
+    public string? OwnerUserTokenId { get; set; }
+
+    public string? OwnerMobileNumberTokenId { get; set; }
+
+    public string? OrganizationTokenId { get; set; }
+
+    public string? CompanyTokenId { get; set; }
+
     public string? SettingCode { get; set; }
 
     public string? SettingText { get; set; }

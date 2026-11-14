@@ -93,7 +93,7 @@ public sealed class WidgetProxyController : Controller
 
     private async Task<IActionResult> Forward(HttpMethod method, string relativePath, CancellationToken ct)
     {
-        if (!_currentUser.IsAuthenticated || _currentUser.UserId is null)
+        if (!_currentUser.IsAuthenticated || _currentUser.OwnerUserTokenID is null)
             return Unauthorized(new { success = false, message = "Missing or invalid AskPearlsUserId claim." });
 
         if (method != HttpMethod.Get && method != HttpMethod.Head)

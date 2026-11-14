@@ -17,56 +17,83 @@ public sealed class AccountSettings_Repository : IAccountSettings_Repository
 
     public AccountSettings_Repository(DBContextModel db) => _db = db;
 
-    public async Task<AccountSettingsResponse?> GetAsync(long userId, CancellationToken ct = default)
+    public async Task<AccountSettingsResponse?> GetAsync(string userId, CancellationToken ct = default)
     {
         var owner = userId.ToString(CultureInfo.InvariantCulture);
         // Google registration uses the numeric primary key as the authenticated user ID.
         // Do not require OwnerUserTokenId on the user row; older Google registrations may leave it null.
         var user = await _db.AskpearlsPortalUserLists.AsNoTracking()
-            .FirstOrDefaultAsync(x => x.UserId == userId && x.IsActive != false && x.IsVisible != false, ct);
+            .FirstOrDefaultAsync(x => 
+            x.OwnerUserTokenId == userId && 
+            x.IsActive == true && 
+            x.IsVisible == true, ct);
         if (user is null) return null;
 
         var profile = await _db.AskpearlsPortalUserProfileLists.AsNoTracking()
-            .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false)
+            .Where(x => x.OwnerUserTokenId == owner &&
+            x.IsActive == true &&
+            x.IsVisible == true)
             .OrderByDescending(x => x.UprofileId).FirstOrDefaultAsync(ct);
+       
         var organization = await _db.AskpearlsPortalUserOrganizationLists.AsNoTracking()
-            .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false && x.IsVisible != false)
+            .Where(x => x.OwnerUserTokenId == owner &&
+            x.IsActive == true &&
+            x.IsVisible == true)
             .OrderByDescending(x => x.UorganizationId).FirstOrDefaultAsync(ct);
+        
         var subscription = await _db.AskpearlsPortalUserSubscriptionLists.AsNoTracking()
-            .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false && x.IsVisible != false)
+            .Where(x => x.OwnerUserTokenId == owner &&
+            x.IsActive == true &&
+            x.IsVisible == true)
             .OrderByDescending(x => x.UploadDate).FirstOrDefaultAsync(ct);
+         //&&
+         //   x.IsVisible == true
         var raw = await _db.AskpearlsPortalUserSettingLists.AsNoTracking()
-            .Where(x => x.SettingCode == SettingsCode(owner) && x.IsActive == true)
+            .Where(x => x.SettingCode == SettingsCode(owner) && 
+            x.IsActive == true)
             .OrderByDescending(x => x.SettingId).Select(x => x.SettingValue).FirstOrDefaultAsync(ct);
+        
         var preferences = Deserialize(raw);
         var widgetCount = await _db.AskpearlsPortalUserWebsiteWidgetLists.AsNoTracking()
-            .CountAsync(x => x.OwnerUserTokenId == owner && x.IsActive == true && x.IsVisible == true, ct);
+            .CountAsync(x => x.OwnerUserTokenId == owner && 
+            x.IsActive == true && 
+            x.IsVisible == true, ct);
 
         var plan = string.IsNullOrWhiteSpace(subscription?.SubscriptionPlan) ? "Free" : subscription.SubscriptionPlan.Trim();
+        
         var limit = WidgetLimit(plan);
+        
         return new AccountSettingsResponse(true,
             Merge(preferences, user, profile, organization),
             new AccountSubscriptionDto(plan, subscription?.SubscriptionStatus ?? "preview", subscription is null,
                 widgetCount, limit, limit.HasValue ? Math.Max(0, limit.Value - widgetCount) : null));
     }
 
-    public async Task<AccountSettingsResponse?> SaveAsync(long userId, AccountSettingsUpdateRequest request, CancellationToken ct = default)
+    public async Task<AccountSettingsResponse?> SaveAsync(string userId, AccountSettingsUpdateRequest request, CancellationToken ct = default)
     {
         var owner = userId.ToString(CultureInfo.InvariantCulture);
         await using var transaction = await _db.Database.BeginTransactionAsync(ct);
+     
         var user = await _db.AskpearlsPortalUserLists
-            .FirstOrDefaultAsync(x => x.UserId == userId && x.IsActive != false && x.IsVisible != false, ct);
+            .FirstOrDefaultAsync(x => 
+            x.OwnerUserTokenId == userId && 
+            x.IsActive != false && 
+            x.IsVisible != false,
+            ct);
+     
         if (user is null) return null;
 
         user.FirstName = request.FirstName;
         user.FirstNameLower = request.FirstName.ToLowerInvariant();
         user.LastName = request.LastName;
         user.LastNameLower = request.LastName.ToLowerInvariant();
+      
         // IMPORTANT: never modify Email, EmailAddress or email verification flags.
 
         var profile = await _db.AskpearlsPortalUserProfileLists
             .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false)
             .OrderByDescending(x => x.UprofileId).FirstOrDefaultAsync(ct);
+       
         if (profile is null)
         {
             profile = new AskpearlsPortalUserProfileList
@@ -186,4 +213,49 @@ public sealed class AccountSettings_Repository : IAccountSettings_Repository
         "premium" or "enterprise" => null,
         _ => 5
     };
+
+
+
+    private async Task<AskpearlsPortalUserList?> FindUserAsync(
+    string ownerUserTokenId,
+    CancellationToken ct)
+    {
+        if (string.IsNullOrWhiteSpace(ownerUserTokenId))
+            return null;
+
+        var token = ownerUserTokenId.Trim();
+
+        // Preferred lookup when OwnerUserTokenId is populated.
+        var user = await _db.AskpearlsPortalUserLists
+            .FirstOrDefaultAsync(
+                x => x.OwnerUserTokenId == token &&
+                     x.IsActive != false &&
+                     x.IsVisible != false,
+                ct);
+
+        if (user is not null)
+            return user;
+
+        // Compatibility for older Google registrations where
+        // OwnerUserTokenId was not populated.
+        if (!long.TryParse(
+                token,
+                NumberStyles.None,
+                CultureInfo.InvariantCulture,
+                out var numericUserId))
+            return null;
+
+        return await _db.AskpearlsPortalUserLists
+            .FirstOrDefaultAsync(
+                x => x.UserId == numericUserId &&
+                     x.IsActive != false &&
+                     x.IsVisible != false &&
+                     (x.OwnerUserTokenId == null ||
+                      x.OwnerUserTokenId == ""),
+                ct);
+    }
+
+
+
+
 }

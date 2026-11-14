@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AskPearlsCS_BLL\AskPearlsCS_BLL.csproj" />
     <ProjectReference Include="..\AskPearlsCS_DOMAIN\AskPearlsCS_DOMAIN.csproj" />
   </ItemGroup>
 

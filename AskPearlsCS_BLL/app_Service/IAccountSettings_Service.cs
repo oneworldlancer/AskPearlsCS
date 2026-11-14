@@ -8,7 +8,7 @@ namespace AskPearlsCS_BLL.app_Service
 {
     public interface IAccountSettings_Service
     {
-        Task<AccountSettingsResponse?> GetAsync(long userId, CancellationToken ct = default);
-        Task<AccountSettingsResponse?> SaveAsync(long userId, AccountSettingsUpdateRequest? request, CancellationToken ct = default);
+        Task<AccountSettingsResponse?> GetAsync(string userId, CancellationToken ct = default);
+        Task<AccountSettingsResponse?> SaveAsync(string userId, AccountSettingsUpdateRequest? request, CancellationToken ct = default);
     }
 }

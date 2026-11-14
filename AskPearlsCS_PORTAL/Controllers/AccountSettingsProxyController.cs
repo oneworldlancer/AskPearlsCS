@@ -19,8 +19,10 @@ public sealed class AccountSettingsProxyController : Controller
     private readonly IApiJwtToken_Service _jwt;
 
     public AccountSettingsProxyController(
-        IHttpClientFactory clients, IConfiguration configuration,
-        IAntiforgery antiforgery, ICurrentUserContext_Service currentUser,
+        IHttpClientFactory clients,
+        IConfiguration configuration,
+        IAntiforgery antiforgery,
+        ICurrentUserContext_Service currentUser,
         IApiJwtToken_Service jwt)
     {
         _clients = clients;
@@ -38,7 +40,7 @@ public sealed class AccountSettingsProxyController : Controller
 
     private async Task<IActionResult> Forward(HttpMethod method, CancellationToken ct)
     {
-        if (!_currentUser.IsAuthenticated || _currentUser.UserId is null)
+        if (!_currentUser.IsAuthenticated || _currentUser.OwnerUserTokenID is null)
             return Unauthorized(new { success = false, message = "Sign in to continue." });
 
         if (method != HttpMethod.Get)

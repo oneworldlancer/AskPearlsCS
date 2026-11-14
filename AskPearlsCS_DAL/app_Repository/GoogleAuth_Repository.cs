@@ -39,9 +39,11 @@ public sealed class GoogleAuth_Repository : IGoogleAuth_Repository
         var portalUser = new AskpearlsPortalUserList
         {
             RowViewTokenId = Guid.NewGuid(),
+            OwnerUserTokenId = Guid.NewGuid().ToString("N"),
             Email = email,
             EmailAddress = email,
             FirstName = safeName,
+            LastName = safeName,
             LoginType = "Google"
         };
 
@@ -64,7 +66,7 @@ public sealed class GoogleAuth_Repository : IGoogleAuth_Repository
         var account = new AskpearlsPortalUserAccountList
         {
             RowViewTokenId = Guid.NewGuid(),
-            OwnerUserTokenId = portalUser.UserId.ToString(),
+            OwnerUserTokenId = portalUser.OwnerUserTokenId,
             AccountType = "personal",
             AccountIsEnable = true,
             AccountIsVisible = true,
