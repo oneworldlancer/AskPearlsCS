@@ -515,7 +515,7 @@
 
     // ============================================================
     // SECTION NAVIGATION
-    // Profile / Organization / Notifications
+    // Profile / Organization / Companies / Notifications
     // Security and Preferences removed for MVP.
     // ============================================================
 

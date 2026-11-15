@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace AskPearlsCS_DAL.DBModels;
 
@@ -21,16 +20,6 @@ public partial class AskpearlsPortalUserOrganizationList
 
     public string? OrganizationName { get; set; }
 
-    public string? OrganizationLogoUrl { get; set; }
-
-    public string? OrganizationWebsiteUrl { get; set; }
-
-    public string? OrganizationIndustry { get; set; }
-
-    public string? OrganizationCompanySize { get; set; }
-
-
-
     public string? OrganizationCountry { get; set; }
 
     public string? OrganizationCity { get; set; }
@@ -42,6 +31,14 @@ public partial class AskpearlsPortalUserOrganizationList
     public string? OrganizationAddress { get; set; }
 
     public string? OrganizationZipCode { get; set; }
+
+    public string OrganizationLogoUrl { get; set; } = "0";
+
+    public string OrganizationWebsiteUrl { get; set; } = "0";
+
+    public string OrganizationIndustry { get; set; } = "0";
+
+    public string OrganizationSize { get; set; } = "0";
 
     public string? EmailAddress { get; set; }
 

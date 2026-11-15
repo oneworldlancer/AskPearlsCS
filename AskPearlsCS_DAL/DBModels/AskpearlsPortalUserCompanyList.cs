@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace AskPearlsCS_DAL.DBModels;
 
@@ -17,6 +16,8 @@ public partial class AskpearlsPortalUserCompanyList
 
     public string? OwnerMobileNumberTokenId { get; set; }
 
+    public string? OrganizationTokenId { get; set; }
+
     public string? CompanyTokenId { get; set; }
 
     public string? CompanyName { get; set; }
@@ -33,9 +34,17 @@ public partial class AskpearlsPortalUserCompanyList
 
     public string? CompanyZipCode { get; set; }
 
+    public string CompanyLogoUrl { get; set; } = "0";
+
+    public string CompanyWebsiteUrl { get; set; } = "0";
+
+    public string CompanyIndustry { get; set; } = "0";
+
+    public string CompanySize { get; set; } = "0";
+
     public string? EmailAddress { get; set; }
 
-     public string? PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
     public string? CountryName { get; set; }
 

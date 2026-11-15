@@ -2265,3 +2265,22 @@ body[data-bs-theme="dark"] .account-settings-page .as-session-item {
     .account-settings-page .as-switch input:disabled:checked + .as-switch-track {
         opacity: .75;
     }
+
+    /* Companies panel additions - compatible with the existing account settings theme */
+    .account-settings-page [data-as-panel="companies"] .as-field > label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 11px;
+        font-weight: 750;
+    }
+
+    .account-settings-page [data-as-panel="companies"] #asBusinessStatus {
+        color: var(--ap-muted, var(--bs-secondary-color, #718096));
+        font-size: 11px;
+        min-height: 20px;
+    }
+
+    .account-settings-page [data-as-panel="companies"] .as-btn:disabled {
+        opacity: .6;
+        cursor: wait;
+    }

@@ -114,7 +114,7 @@ public sealed class AccountSettings_Repository : IAccountSettings_Repository
         organization.OrganizationIndustry =
             AppInputValueHelper.ToDatabaseValue(request.Industry);
 
-        organization.OrganizationCompanySize =
+        organization.OrganizationSize =
             AppInputValueHelper.ToDatabaseValue(request.CompanySize);
 
         organization.CountryCode = request.Country;
@@ -184,7 +184,7 @@ public sealed class AccountSettings_Repository : IAccountSettings_Repository
             organization?.OrganizationIndustry ?? extra.Industry),
 
             CompanySize = AppInputValueHelper.Clean(
-            organization?.OrganizationCompanySize ?? extra.CompanySize),
+            organization?.OrganizationSize ?? extra.CompanySize),
 
             Country = organization?.CountryCode ?? extra.Country,
 

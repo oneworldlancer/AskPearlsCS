@@ -4814,6 +4814,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.CompanyCountry).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_LIST_BuildingCountry");
             entity.Property(e => e.CompanyName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_LIST_CompanyTokenID1");
             entity.Property(e => e.CompanyStreetName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_LIST_BuildingStreetName");
+            entity.Property(e => e.OrganizationTokenId).HasColumnName("OrganizationTokenID").HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_LIST_CompanyTokenID1_1");
             entity.Property(e => e.CompanyTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_LIST_CompanyTokenID")
                 .HasColumnName("CompanyTokenID");
@@ -4856,6 +4857,10 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_LIST_UploadDay");
             entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_LIST_UploadMonth");
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_COMPANY_LIST_UploadYear");
+            entity.Property(e => e.CompanyLogoUrl).HasColumnName("CompanyLogoURL").HasDefaultValue("0", "DF_Organization_LogoUrl");
+            entity.Property(e => e.CompanyWebsiteUrl).HasColumnName("CompanyWebsiteURL").HasDefaultValue("0", "DF_Organization_WebsiteUrl");
+            entity.Property(e => e.CompanyIndustry).HasColumnName("CompanyIndustry").HasDefaultValue("0", "DF_Organization_Industry");
+            entity.Property(e => e.CompanySize).HasColumnName("CompanySize").HasDefaultValue("0", "DF_Organization_CompanySize");
         });
 
         modelBuilder.Entity<AskpearlsPortalUserCompanyMemberList>(entity =>
@@ -9700,6 +9705,10 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_UploadDay");
             entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_UploadMonth");
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_UploadYear");
+            entity.Property(e => e.OrganizationLogoUrl).HasColumnName("OrganizationLogoURL").HasDefaultValue("0", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_OrganizationLogoURL");
+            entity.Property(e => e.OrganizationWebsiteUrl).HasColumnName("OrganizationWebsiteURL").HasDefaultValue("0", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_OrganizationWebsiteURL");
+            entity.Property(e => e.OrganizationIndustry).HasColumnName("OrganizationIndustry").HasDefaultValue("0", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_OrganizationIndustry");
+            entity.Property(e => e.OrganizationSize).HasColumnName("OrganizationSize").HasDefaultValue("0", "DF_ASKPEARLS_PORTAL_USER_ORGANIZATION_LIST_OrganizationSize");
         });
 
         modelBuilder.Entity<AskpearlsPortalUserOrganizationMembershipList>(entity =>

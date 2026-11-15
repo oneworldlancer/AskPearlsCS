@@ -46,9 +46,14 @@ builder.Services.AddScoped<IRecommendationItem_Service, RecommendationItem_Servi
 builder.Services.AddScoped<ICurrentUser_Repository, CurrentUser_Repository>();
 builder.Services.AddScoped<ICurrentUser_Service, CurrentUser_Service>();
 
-builder.Services.AddScoped<    INotification_Repository,    Notification_Repository>();
+builder.Services.AddScoped<INotification_Repository, Notification_Repository>();
 
-builder.Services.AddScoped<    INotification_Service,    Notification_Service>();
+builder.Services.AddScoped<INotification_Service, Notification_Service>();
+
+
+builder.Services.AddScoped<AskPearlsCS_DAL.app_Repository.ICompany_Repository, AskPearlsCS_DAL.app_Repository.Company_Repository>();
+builder.Services.AddScoped<AskPearlsCS_BLL.app_Service.ICompany_Service, AskPearlsCS_BLL.app_Service.Company_Service>();
+
 
 // ========================================
 // ACCOUNT & SETTINGS - BLL / DAL
