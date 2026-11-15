@@ -10,8 +10,14 @@
     const settingsUrl = "/Account/Api/settings";
     const notificationPreferencesUrl = "/Account/Api/notifications/preferences";
     const notificationKeys = [ "nonEssentialNotifications", "emailNotifications", "activityReports", "productUpdates", "securityAlerts" ];
-    const profileKeys = [ "firstName", "lastName", "email", "jobTitle", "bio", "companyName", "website", "organizationLogoUrl", "industry", "companySize", "country" ];
+    const profileKeys = [ "firstName", "lastName", "email", "jobTitle", "bio", "companyName", "website", "organizationLogoUrl", "industry" ];
     let preferencesLoaded = false;
+    let activeSection = "profile";
+    const sectionKeys = {
+        profile: [ "firstName", "lastName", "jobTitle", "bio" ],
+        organization: [ "companyName", "website", "organizationLogoUrl", "industry" ],
+        notifications: notificationKeys
+    };
     const pickKeys = (obj, keys) => Object.fromEntries(keys.map(k => [ k, obj[ k ] ]));
 
     const defaults = {
@@ -25,8 +31,6 @@
         website: "",
         organizationLogoUrl: "",
         industry: "technology",
-        companySize: "2-10",
-        country: "EG",
         emailNotifications: true,
         activityReports: true,
         productUpdates: false,
@@ -44,8 +48,6 @@
         website: "asWebsite",
         organizationLogoUrl: "asOrgLogoInput",
         industry: "asIndustry",
-        companySize: "asCompanySize",
-        country: "asCountry",
         emailNotifications: "asEmailNotifications",
         activityReports: "asActivityReports",
         productUpdates: "asProductUpdates",
@@ -118,10 +120,13 @@
             ((first[ 0 ] || "") + (last[ 0 ] || "")).toUpperCase() || "?";
 
         const sidebarName = $("asSidebarName");
+        const sidebarJobTitle = $("asSidebarJobTitle");
+        const jobTitle = cleanValue($("asJobTitle")?.value);
         const avatar = $("asAvatar");
         const largeAvatar = $("asLargeAvatar");
 
         if (sidebarName) sidebarName.textContent = fullName;
+        if (sidebarJobTitle) sidebarJobTitle.textContent = jobTitle || "AskPearls Member";
         if (avatar) avatar.textContent = initials;
         if (largeAvatar) largeAvatar.textContent = initials;
     }
@@ -280,9 +285,9 @@
     // ============================================================
 
     function updateDirtyState () {
-        const changed =
-            JSON.stringify(currentSettings()) !==
-            JSON.stringify(savedSettings);
+        const current = currentSettings();
+        const keys = sectionKeys[ activeSection ] || [];
+        const changed = keys.some(k => current[ k ] !== savedSettings[ k ]);
 
         const status = $("asSaveStatus");
         if (!status) return;
@@ -333,7 +338,7 @@
     }
 
     async function apiRequest (url, options) {
-        const response = await fetch(url, options);
+        const response = await fetch(url, { cache: "no-store", ...options });
 
         const body = await response.json().catch(() => ({}));
 
@@ -520,6 +525,7 @@
     // ============================================================
 
     function showSection (section) {
+        activeSection = section;
         root.querySelectorAll(
             "[data-as-section]"
         ).forEach(button => {
@@ -576,99 +582,84 @@
     // ============================================================
 
     $("asSave")?.addEventListener("click", async () => {
-        if (!settingsLoaded) {
-            showToast(
-                "Account settings are still loading."
-            );
+        if (!settingsLoaded) { showToast("Account settings are still loading."); return; }
+        if (activeSection === "companies") {
+            showToast("Use the Save company button on the Companies tab.");
             return;
         }
-
-        const firstName =
-            cleanValue($("asFirstName")?.value);
-
-        const lastName =
-            cleanValue($("asLastName")?.value);
-
-        const company =
-            cleanValue($("asCompanyName")?.value);
-
-        if (!firstName || !lastName || !company) {
-            showToast(
-                "Please complete all required fields."
-            );
-
-            const firstInvalid = !firstName
-                ? $("asFirstName")
-                : !lastName
-                    ? $("asLastName")
-                    : $("asCompanyName");
-
-            firstInvalid?.focus();
-            return;
+        const keys = sectionKeys[ activeSection ] || [];
+        const current = currentSettings();
+        if (!keys.some(k => current[ k ] !== savedSettings[ k ])) {
+            showToast("No changes to save in this section."); return;
         }
-
-        const websiteInput = $("asWebsite");
-        const website = cleanValue(websiteInput?.value);
-
-        if (website && websiteInput &&
-            !websiteInput.checkValidity()) {
-            showToast(
-                "Please enter a valid website URL."
-            );
-
-            websiteInput.focus();
-            return;
+        if (activeSection === "profile") {
+            if (!cleanValue(current.firstName) || !cleanValue(current.lastName)) {
+                showToast("First and last name are required for your profile.");
+                (!cleanValue(current.firstName) ? $("asFirstName") : $("asLastName"))?.focus();
+                return;
+            }
         }
-
-        const logoUrl = cleanValue(
-            orgLogoInput?.value
-        );
-
-        if (logoUrl && !isValidLogoUrl(logoUrl)) {
-            showToast(
-                "Please enter a valid HTTPS logo URL."
-            );
-
-            orgLogoInput?.focus();
-            return;
+        if (activeSection === "organization") {
+            // An organization can be completed later; save the supplied fields only.
+            const website = cleanValue(current.website);
+            if (website && !$("asWebsite").checkValidity()) {
+                showToast("Please enter a valid organization website URL.");
+                $("asWebsite").focus(); return;
+            }
+            const logo = cleanValue(current.organizationLogoUrl);
+            if (logo && !isValidLogoUrl(logo)) {
+                showToast("Please enter a valid HTTPS logo URL.");
+                orgLogoInput?.focus(); return;
+            }
         }
-
         const button = $("asSave");
         if (button) button.disabled = true;
-        const current = currentSettings();
-        const profileChanged = profileKeys.some(k => current[ k ] !== savedSettings[ k ]);
-        const notificationsChanged = notificationKeys.some(k => current[ k ] !== savedSettings[ k ]);
-        let failures = [];
         try {
-            if (profileChanged) {
-                try {
-                    const data = await apiRequest(settingsUrl, {
-                        method: "PUT", headers: apiHeaders(true),
-                        body: JSON.stringify(pickKeys(current, profileKeys))
-                    });
-                    const result = { ...current, ...(data.settings || {}) };
-                    profileKeys.forEach(k => { savedSettings[ k ] = result[ k ]; });
-                    setSettings({ ...currentSettings(), ...pickKeys(result, profileKeys) });
-                } catch (error) { failures.push("Profile/organization: " + error.message); }
-            }
-            if (notificationsChanged) {
-                if (!preferencesLoaded) {
-                    failures.push("Notification preferences are not loaded.");
-                } else {
-                    try {
-                        const payload = { ...pickKeys(current, notificationKeys), securityAlerts: true };
-                        const result = await apiRequest(notificationPreferencesUrl, {
-                            method: "PUT", headers: apiHeaders(true), body: JSON.stringify(payload)
-                        });
-                        const persisted = { ...payload, ...result, securityAlerts: true };
-                        notificationKeys.forEach(k => { savedSettings[ k ] = persisted[ k ]; });
-                        setSettings({ ...currentSettings(), ...pickKeys(persisted, notificationKeys) });
-                        updateNonEssentialNotifications();
-                    } catch (error) { failures.push("Notifications: " + error.message); }
+            if (activeSection === "notifications") {
+                if (!preferencesLoaded) throw new Error("Notification preferences have not loaded.");
+                const payload = { ...pickKeys(current, notificationKeys), securityAlerts: true };
+                const result = await apiRequest(notificationPreferencesUrl, {
+                    method: "PUT", headers: apiHeaders(true), body: JSON.stringify(payload)
+                });
+                const persisted = { ...payload, ...result, securityAlerts: true };
+                keys.forEach(k => { savedSettings[ k ] = persisted[ k ]; });
+                setSettings({ ...currentSettings(), ...pickKeys(persisted, keys) });
+                updateNonEssentialNotifications();
+            } else {
+                const payload = { ...pickKeys(current, keys), saveSection: activeSection };
+                const data = await apiRequest(settingsUrl, {
+                    method: "PUT", headers: apiHeaders(true), body: JSON.stringify(payload)
+                });
+                // Never trust a PUT response alone as evidence of database persistence.
+                // A separate GET must confirm the values returned by the backend.
+                if (!data || data.success !== true) {
+                    throw new Error("The API did not confirm that this section was saved.");
                 }
+                const verified = await apiRequest(settingsUrl + "?verify=" + Date.now(), {
+                    method: "GET", headers: apiHeaders(false), cache: "no-store"
+                });
+                if (!verified || verified.success !== true || !verified.settings) {
+                    throw new Error("The API could not verify the saved settings.");
+                }
+                const matches = keys.every(k =>
+                    String(verified.settings[ k ] ?? "").trim() === String(current[ k ] ?? "").trim()
+                );
+                if (!matches) {
+                    console.error("AskPearls persistence mismatch", {
+                        section: activeSection,
+                        submitted: pickKeys(current, keys),
+                        readBack: pickKeys(verified.settings, keys)
+                    });
+                    throw new Error("Save was not verified in the database. Check the API and SQL connection.");
+                }
+                keys.forEach(k => { savedSettings[ k ] = verified.settings[ k ]; });
+                setSettings({ ...currentSettings(), ...pickKeys(verified.settings, keys) });
             }
             updateDirtyState();
-            showToast(failures.length ? failures.join(" | ") : "Account settings saved.");
+            showToast(activeSection === "profile" ? "Profile saved." :
+                activeSection === "organization" ? "Organization saved." : "Notifications saved.");
+        } catch (error) {
+            showToast(error.message || "Could not save this section.");
         } finally {
             if (button) button.disabled = !settingsLoaded;
         }
@@ -679,7 +670,8 @@
     // ============================================================
 
     $("asReset")?.addEventListener("click", () => {
-        setSettings(savedSettings);
+        const keys = sectionKeys[ activeSection ] || [];
+        setSettings({ ...currentSettings(), ...Object.fromEntries(keys.map(k => [ k, savedSettings[ k ] ])) });
         updateNonEssentialNotifications();
 
         showToast(

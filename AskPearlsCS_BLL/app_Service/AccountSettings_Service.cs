@@ -49,19 +49,18 @@ public sealed class AccountSettings_Service : IAccountSettings_Service
         var dateFormat = AppInputValueHelper.Clean(request.DateFormat);
         var weekStart = AppInputValueHelper.Clean(request.WeekStart);
 
-        if (firstName.Length is < 1 or > 60 ||
-            lastName.Length is < 1 or > 60 ||
-            companyName.Length is < 1 or > 150 ||
-            jobTitle.Length > 100 ||
-            bio.Length > 500 ||
-            industry.Length > 60 ||
-            companySize.Length > 20 ||
-            country.Length > 10 ||
+        var section = (request.SaveSection ?? "all").Trim().ToLowerInvariant();
+        if (section is not ("profile" or "organization" or "all"))
+            throw new ArgumentException("Invalid settings section.", nameof(request));
+
+        if ((section != "organization" && (firstName.Length is < 1 or > 60 || lastName.Length is < 1 or > 60)) ||
+            (section != "profile" && companyName.Length > 150) ||
+            (section != "organization" && (jobTitle.Length > 100 || bio.Length > 500)) ||
+            (section != "profile" && (industry.Length > 60 || companySize.Length > 20 || country.Length > 10)) ||
             timezone.Length > 80 ||
             dateFormat.Length > 30 ||
             weekStart.Length > 20 ||
-            !IsValidWebsite(website) ||
-            !IsValidLogoUrl(logoUrl))
+            (section != "profile" && (!IsValidWebsite(website) || !IsValidLogoUrl(logoUrl))))
         {
             throw new ArgumentException(
                 "Check the required profile and organization fields.",
@@ -70,6 +69,7 @@ public sealed class AccountSettings_Service : IAccountSettings_Service
 
         var normalized = request with
         {
+            SaveSection = section,
             FirstName = firstName,
             LastName = lastName,
             CompanyName = companyName,

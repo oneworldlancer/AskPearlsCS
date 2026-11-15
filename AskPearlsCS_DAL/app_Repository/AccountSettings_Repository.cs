@@ -55,72 +55,64 @@ public sealed class AccountSettings_Repository : IAccountSettings_Repository
         var user = await FindUserAsync(owner, ct);
         if (user is null) return null;
 
-        user.FirstName = AppInputValueHelper.ToDatabaseValue(request.FirstName);
-        user.FirstNameLower = user.FirstName.ToLowerInvariant();
-        user.LastName = AppInputValueHelper.ToDatabaseValue(request.LastName);
-        user.LastNameLower = user.LastName.ToLowerInvariant();
-        // IMPORTANT: never modify Email, EmailAddress or email verification flags.
-
-        var profile = await _db.AskpearlsPortalUserProfileLists
-            .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false)
-            .OrderByDescending(x => x.UprofileId).FirstOrDefaultAsync(ct);
-        if (profile is null)
+        var section = (request.SaveSection ?? "all").ToLowerInvariant();
+        if (section is "profile" or "all")
         {
-            profile = new AskpearlsPortalUserProfileList
-            {
-                RowViewTokenId = Guid.NewGuid(),
-                RowDataTokenId = Guid.NewGuid().ToString("N"),
-                OwnerUserTokenId = owner,
-                IsActive = true,
-                IsDisplayToken = true,
-                UploadDate = DateTime.UtcNow
-            };
-            _db.AskpearlsPortalUserProfileLists.Add(profile);
-        }
-        profile.Occupation = AppInputValueHelper.ToDatabaseValue(request.JobTitle);
-        profile.AboutMe = AppInputValueHelper.ToDatabaseValue(request.Bio);
+            user.FirstName = AppInputValueHelper.ToDatabaseValue(request.FirstName);
+            user.FirstNameLower = user.FirstName.ToLowerInvariant();
+            user.LastName = AppInputValueHelper.ToDatabaseValue(request.LastName);
+            user.LastNameLower = user.LastName.ToLowerInvariant();
+            // Never change the Google-managed email address.
 
-        var organization = await _db.AskpearlsPortalUserOrganizationLists
-            .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false && x.IsVisible != false)
-            .OrderByDescending(x => x.UorganizationId).FirstOrDefaultAsync(ct);
-        if (organization is null)
+            var profile = await _db.AskpearlsPortalUserProfileLists
+                .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false)
+                .OrderByDescending(x => x.UprofileId).FirstOrDefaultAsync(ct);
+            if (profile is null)
+            {
+                profile = new AskpearlsPortalUserProfileList
+                {
+                    RowViewTokenId = Guid.NewGuid(),
+                    RowDataTokenId = Guid.NewGuid().ToString("N"),
+                    OwnerUserTokenId = owner,
+                    IsActive = true,
+                    IsDisplayToken = true,
+                    UploadDate = DateTime.UtcNow
+                };
+                _db.AskpearlsPortalUserProfileLists.Add(profile);
+            }
+            profile.Occupation = AppInputValueHelper.ToDatabaseValue(request.JobTitle);
+            profile.AboutMe = AppInputValueHelper.ToDatabaseValue(request.Bio);
+        }
+
+        if (section is "organization" or "all")
         {
-            organization = new AskpearlsPortalUserOrganizationList
+            var organization = await _db.AskpearlsPortalUserOrganizationLists
+                .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false && x.IsVisible != false)
+                .OrderByDescending(x => x.UorganizationId).FirstOrDefaultAsync(ct);
+            if (organization is null)
             {
-                RowViewTokenId = Guid.NewGuid(),
-                RowDataTokenId = Guid.NewGuid().ToString("N"),
-                OwnerUserTokenId = owner,
-                AccountType = "portal",
-                OrganizationTokenId = Guid.NewGuid().ToString("N"),
-                ActiveStatus = "active",
-                IsActive = true,
-                IsVisible = true,
-                UploadDate = DateTime.UtcNow
-            };
-            _db.AskpearlsPortalUserOrganizationLists.Add(organization);
+                organization = new AskpearlsPortalUserOrganizationList
+                {
+                    RowViewTokenId = Guid.NewGuid(),
+                    RowDataTokenId = Guid.NewGuid().ToString("N"),
+                    OwnerUserTokenId = owner,
+                    AccountType = "portal",
+                    OrganizationTokenId = Guid.NewGuid().ToString("N"),
+                    ActiveStatus = "active",
+                    IsActive = true,
+                    IsVisible = true,
+                    UploadDate = DateTime.UtcNow
+                };
+                _db.AskpearlsPortalUserOrganizationLists.Add(organization);
+            }
+            organization.OrganizationName = AppInputValueHelper.ToDatabaseValue(request.CompanyName);
+            organization.OrganizationLogoUrl = AppInputValueHelper.ToDatabaseValue(request.OrganizationLogoUrl);
+            organization.OrganizationWebsiteUrl = AppInputValueHelper.ToDatabaseValue(request.Website);
+            organization.OrganizationIndustry = AppInputValueHelper.ToDatabaseValue(request.Industry);
+            organization.OrganizationSize = AppInputValueHelper.ToDatabaseValue(request.CompanySize);
+            organization.CountryCode = request.Country;
+            organization.CountryName = CountryName(request.Country);
         }
-      
-     
-
-        organization.OrganizationName =
-    AppInputValueHelper.ToDatabaseValue(request.CompanyName);
-
-        organization.OrganizationLogoUrl =
-            AppInputValueHelper.ToDatabaseValue(request.OrganizationLogoUrl);
-
-        organization.OrganizationWebsiteUrl =
-            AppInputValueHelper.ToDatabaseValue(request.Website);
-
-        organization.OrganizationIndustry =
-            AppInputValueHelper.ToDatabaseValue(request.Industry);
-
-        organization.OrganizationSize =
-            AppInputValueHelper.ToDatabaseValue(request.CompanySize);
-
-        organization.CountryCode = request.Country;
-        organization.CountryName = CountryName(request.Country);
-
-
 
         var setting = await _db.AskpearlsPortalUserSettingLists
             .Where(x => x.SettingCode == SettingsCode(owner) && x.IsActive == true)
@@ -139,7 +131,30 @@ public sealed class AccountSettings_Repository : IAccountSettings_Repository
             };
             _db.AskpearlsPortalUserSettingLists.Add(setting);
         }
-        setting.SettingValue = JsonSerializer.Serialize(request, JsonOptions);
+        // Merge with previously persisted preferences so saving one wizard step
+        // never clears data belonging to another step.
+        var previous = Deserialize(setting.SettingValue);
+        var merged = section switch
+        {
+            "profile" => previous with
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                JobTitle = request.JobTitle,
+                Bio = request.Bio
+            },
+            "organization" => previous with
+            {
+                CompanyName = request.CompanyName,
+                Website = request.Website,
+                OrganizationLogoUrl = request.OrganizationLogoUrl,
+                Industry = request.Industry,
+                CompanySize = request.CompanySize,
+                Country = request.Country
+            },
+            _ => request
+        };
+        setting.SettingValue = JsonSerializer.Serialize(merged, JsonOptions);
         setting.UploadDate = DateTime.UtcNow;
 
         await _db.SaveChangesAsync(ct);
@@ -156,53 +171,32 @@ public sealed class AccountSettings_Repository : IAccountSettings_Repository
         catch (JsonException) { return new(); }
     }
 
-
-    private static AccountSettingsDto Merge(
-        AccountSettingsUpdateRequest extra,
-        AskpearlsPortalUserList user,
-        AskpearlsPortalUserProfileList? profile,
+    private static AccountSettingsDto Merge(AccountSettingsUpdateRequest extra,
+        AskpearlsPortalUserList user, AskpearlsPortalUserProfileList? profile,
         AskpearlsPortalUserOrganizationList? organization) => new()
         {
-            FirstName = AppInputValueHelper.Clean(user.FirstName ?? extra.FirstName),
-            LastName = AppInputValueHelper.Clean(user.LastName ?? extra.LastName),
-            Email = AppInputValueHelper.Clean(user.EmailAddress ?? user.Email),
-
-            JobTitle = AppInputValueHelper.Clean(profile?.Occupation ?? extra.JobTitle),
-            Bio = AppInputValueHelper.Clean(profile?.AboutMe ?? extra.Bio),
-
-            // Organization fields
-            CompanyName = AppInputValueHelper.Clean(
-            organization?.OrganizationName ?? extra.CompanyName),
-
-            OrganizationLogoUrl = AppInputValueHelper.Clean(
-            organization?.OrganizationLogoUrl ?? extra.OrganizationLogoUrl),
-
-            Website = AppInputValueHelper.Clean(
-            organization?.OrganizationWebsiteUrl ?? extra.Website),
-
-            Industry = AppInputValueHelper.Clean(
-            organization?.OrganizationIndustry ?? extra.Industry),
-
-            CompanySize = AppInputValueHelper.Clean(
-            organization?.OrganizationSize ?? extra.CompanySize),
-
+            FirstName = !AppInputValueHelper.IsEmpty(user.FirstName) ? AppInputValueHelper.Clean(user.FirstName) : AppInputValueHelper.Clean(extra.FirstName),
+            LastName = !AppInputValueHelper.IsEmpty(user.LastName) ? AppInputValueHelper.Clean(user.LastName) : AppInputValueHelper.Clean(extra.LastName),
+            Email = user.EmailAddress ?? user.Email ?? "",
+            JobTitle = !AppInputValueHelper.IsEmpty(profile?.Occupation) ? AppInputValueHelper.Clean(profile?.Occupation) : AppInputValueHelper.Clean(extra.JobTitle),
+            Bio = !AppInputValueHelper.IsEmpty(profile?.AboutMe) ? AppInputValueHelper.Clean(profile?.AboutMe) : AppInputValueHelper.Clean(extra.Bio),
+            CompanyName = !AppInputValueHelper.IsEmpty(organization?.OrganizationName) ? AppInputValueHelper.Clean(organization?.OrganizationName) : AppInputValueHelper.Clean(extra.CompanyName),
             Country = organization?.CountryCode ?? extra.Country,
-
-            // Notifications
+            Website = AppInputValueHelper.Clean(organization?.OrganizationWebsiteUrl ?? extra.Website),
+            OrganizationLogoUrl = AppInputValueHelper.Clean(organization?.OrganizationLogoUrl ?? extra.OrganizationLogoUrl),
+            Industry = AppInputValueHelper.Clean(organization?.OrganizationIndustry ?? extra.Industry),
+            CompanySize = AppInputValueHelper.Clean(organization?.OrganizationSize ?? extra.CompanySize),
             NonEssentialNotifications = extra.NonEssentialNotifications,
             EmailNotifications = extra.EmailNotifications,
             ActivityReports = extra.ActivityReports,
             ProductUpdates = extra.ProductUpdates,
             SecurityAlerts = true,
-
-            // Existing settings
             Language = "en",
             Timezone = extra.Timezone,
             DateFormat = extra.DateFormat,
             WeekStart = extra.WeekStart,
             CompactMode = extra.CompactMode
         };
-
 
     private static string SettingsCode(string owner) => "decisionos.account.settings." + owner;
     private static string CountryName(string? code) => (code ?? "").ToUpperInvariant() switch

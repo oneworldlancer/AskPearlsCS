@@ -3,13 +3,15 @@
 // The email is deliberately absent from the write contract: Google owns it.
 public sealed record AccountSettingsUpdateRequest
 {
-    public string FirstName { get; init; } = "0";
-    public string LastName { get; init; } = "0";
-    public string JobTitle { get; init; } = "0";
-    public string Bio { get; init; } = "0";
-    public string CompanyName { get; init; } = "0";
-    public string Website { get; init; } = "0";
-    public string OrganizationLogoUrl { get; init; } = "0";
+    // "profile", "organization" or "all" (legacy callers).
+    public string SaveSection { get; init; } = "all";
+    public string FirstName { get; init; } = "";
+    public string LastName { get; init; } = "";
+    public string JobTitle { get; init; } = "";
+    public string Bio { get; init; } = "";
+    public string CompanyName { get; init; } = "";
+    public string Website { get; init; } = "";
+    public string OrganizationLogoUrl { get; init; } = "";
     public string Industry { get; init; } = "technology";
     public string CompanySize { get; init; } = "2-10";
     public string Country { get; init; } = "EG";
@@ -25,15 +27,14 @@ public sealed record AccountSettingsUpdateRequest
 
 public sealed record AccountSettingsDto
 {
-    public string FirstName { get; init; } = "0";
-    public string LastName { get; init; } = "0";
-    public string Email { get; init; } = "0";
-    public string JobTitle { get; init; } = "0";
-    public string Bio { get; init; } = "0";
-    public string CompanyName { get; init; } = "0";
-    public string Website { get; init; } = "0";
-    public string OrganizationLogoUrl { get; init; } = "0";
-
+    public string FirstName { get; init; } = "";
+    public string LastName { get; init; } = "";
+    public string Email { get; init; } = "";
+    public string JobTitle { get; init; } = "";
+    public string Bio { get; init; } = "";
+    public string CompanyName { get; init; } = "";
+    public string Website { get; init; } = "";
+    public string OrganizationLogoUrl { get; init; } = "";
     public string Industry { get; init; } = "technology";
     public string CompanySize { get; init; } = "2-10";
     public string Country { get; init; } = "EG";

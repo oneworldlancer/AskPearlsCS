@@ -31,7 +31,16 @@
         selectedToken = token;
         const c = companies.find(x => x.companyTokenId === token);
         if (!c) { reset(); return; }
-        for (const [ key, id ] of Object.entries(fields)) if (el(id)) el(id).value = c[ key ] || '';
+        for (const [ key, id ] of Object.entries(fields)) {
+            const control = el(id);
+            if (!control) continue;
+            const value = c[ key ] || '';
+            // Preserve historical SQL values even when they are not in the standard dropdown.
+            if (control.tagName === 'SELECT' && value && !Array.from(control.options).some(o => o.value === value)) {
+                control.add(new Option(value + ' (existing)', value));
+            }
+            control.value = value;
+        }
         status('Editing ' + c.companyName);
     }
     async function loadCompanies () {
