@@ -25,8 +25,9 @@ public sealed class AccountSettingsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetSettings(CancellationToken ct)
     {
-        if (_currentUser.OwnerUserTokenID is not string userId)
+        if (string.IsNullOrWhiteSpace(_currentUser.OwnerUserTokenID))
             return Unauthorized(new { success = false, message = "Invalid authenticated AskPearls user." });
+        var userId = _currentUser.OwnerUserTokenID!;
         var result = await _settings.GetAsync(userId, ct);
         return result is null
             ? NotFound(new { success = false, message = "The signed-in account was not found." })
@@ -36,10 +37,11 @@ public sealed class AccountSettingsController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> SaveSettings([FromBody] AccountSettingsUpdateRequest? request, CancellationToken ct)
     {
-        if (_currentUser.OwnerUserTokenID is not string userId)
+        if (string.IsNullOrWhiteSpace(_currentUser.OwnerUserTokenID))
             return Unauthorized(new { success = false, message = "Invalid authenticated AskPearls user." });
         try
         {
+            var userId = _currentUser.OwnerUserTokenID!;
             var result = await _settings.SaveAsync(userId, request, ct);
             return result is null
                 ? NotFound(new { success = false, message = "The signed-in account was not found." })

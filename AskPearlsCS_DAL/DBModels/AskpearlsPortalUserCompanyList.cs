@@ -35,7 +35,7 @@ public partial class AskpearlsPortalUserCompanyList
 
     public string? EmailAddress { get; set; }
 
-    public string? PhoneNumber { get; set; }
+     public string? PhoneNumber { get; set; }
 
     public string? CountryName { get; set; }
 

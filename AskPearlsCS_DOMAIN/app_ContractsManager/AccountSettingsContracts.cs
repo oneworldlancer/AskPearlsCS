@@ -9,6 +9,7 @@ public sealed record AccountSettingsUpdateRequest
     public string Bio { get; init; } = "0";
     public string CompanyName { get; init; } = "0";
     public string Website { get; init; } = "0";
+    public string OrganizationLogoUrl { get; init; } = "0";
     public string Industry { get; init; } = "technology";
     public string CompanySize { get; init; } = "2-10";
     public string Country { get; init; } = "EG";
@@ -31,6 +32,8 @@ public sealed record AccountSettingsDto
     public string Bio { get; init; } = "0";
     public string CompanyName { get; init; } = "0";
     public string Website { get; init; } = "0";
+    public string OrganizationLogoUrl { get; init; } = "0";
+
     public string Industry { get; init; } = "technology";
     public string CompanySize { get; init; } = "2-10";
     public string Country { get; init; } = "EG";

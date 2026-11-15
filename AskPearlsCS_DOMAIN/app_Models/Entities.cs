@@ -74,7 +74,7 @@ public class WidgetVersion : Entity
 {
     public Guid WidgetId { get; set; }
 
-    public string VersionTokenId { get; set; } = string.Empty;
+    public string VersionTokenId { get; set; } =  "0";
 
     public int VersionNumber { get; set; }
 
@@ -88,25 +88,25 @@ public class WidgetVersion : Entity
 
 public class Question : Entity
 {
-    public string QuestionTokenId { get; set; } = string.Empty;
+    public string QuestionTokenId { get; set; } =  "0";
 
-    public string WidgetTokenId { get; set; } = string.Empty;
+    public string WidgetTokenId { get; set; } =  "0";
 
-    public string WidgetVersionTokenId { get; set; } = string.Empty;
+    public string WidgetVersionTokenId { get; set; } =  "0";
 
-    public string Code { get; set; } = string.Empty;
+    public string Code { get; set; } =  "0";
 
-    public string Key { get; set; } = string.Empty;
+    public string Key { get; set; } =  "0";
 
-    public string Type { get; set; } = string.Empty;
+    public string Type { get; set; } =  "0";
 
-    public string Title { get; set; } = string.Empty;
+    public string Title { get; set; } =  "0";
 
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } =  "0";
 
-    public string Text { get; set; } = string.Empty;
+    public string Text { get; set; } =  "0";
 
-    public string Description { get; set; } = string.Empty;
+    public string Description { get; set; } =  "0";
 
     public int SortOrder { get; set; }
 
@@ -119,27 +119,27 @@ public class Question : Entity
 
 public class Answer : Entity
 {
-    public string AnswerTokenId { get; set; } = string.Empty;
+    public string AnswerTokenId { get; set; } =  "0";
 
-    public string WidgetTokenId { get; set; } = string.Empty;
+    public string WidgetTokenId { get; set; } =  "0";
 
-    public string QuestionTokenId { get; set; } = string.Empty;
+    public string QuestionTokenId { get; set; } =  "0";
 
-    public string WidgetVersionTokenId { get; set; } = string.Empty;
+    public string WidgetVersionTokenId { get; set; } =  "0";
 
-    public string Code { get; set; } = string.Empty;
+    public string Code { get; set; } =  "0";
 
-    public string Key { get; set; } = string.Empty;
+    public string Key { get; set; } =  "0";
 
-    public string Type { get; set; } = string.Empty;
+    public string Type { get; set; } =  "0";
 
-    public string Title { get; set; } = string.Empty;
+    public string Title { get; set; } =  "0";
 
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } =  "0";
 
-    public string Text { get; set; } = string.Empty;
+    public string Text { get; set; } =  "0";
 
-    public string Description { get; set; } = string.Empty;
+    public string Description { get; set; } =  "0";
 
     public int SortOrder { get; set; }
 
@@ -155,43 +155,43 @@ public class Answer : Entity
 public class DecisionRule : Entity
 {
     public string DecisionRuleTokenId { get; set; }
-        = string.Empty;
+        =  "0";
 
     public string WidgetTokenId { get; set; }
-        = string.Empty;
+        =  "0";
 
     public string WidgetVersionTokenId { get; set; }
-        = string.Empty;
+        =  "0";
 
     //public string WidgetVersionTokenId { get; set; }
-    //   = string.Empty;
+    //   =  "0";
 
     public string WidgetQuestionTokenId { get; set; }
-       = string.Empty;
+       =  "0";
 
     public string WidgetQuestionKey { get; set; }
-       = string.Empty;
+       =  "0";
 
     public string WidgetAnswerTokenId { get; set; }
-       = string.Empty;
+       =  "0";
 
     public string WidgetAnswerKey { get; set; }
-       = string.Empty;
+       =  "0";
 
     public string QuestionTokenId { get; set; }
-        = string.Empty;
+        =  "0";
 
     public string AnswerTokenId { get; set; }
-        = string.Empty;
+        =  "0";
 
     public string RecommendationTokenId { get; set; }
-        = string.Empty;
+        =  "0";
 
     public string AnswerValue { get; set; }
-        = string.Empty;
+        =  "0";
 
     public string RecommendationKey { get; set; }
-        = string.Empty;
+        =  "0";
 
     public int Score { get; set; }
 

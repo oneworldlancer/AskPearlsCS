@@ -1,4 +1,5 @@
-﻿(function () {
+﻿
+(function () {
     "use strict";
 
     const root = document.querySelector(".account-settings-page");
@@ -17,19 +18,14 @@
         bio: "",
         companyName: "",
         website: "",
+        organizationLogoUrl: "",
         industry: "technology",
         companySize: "2-10",
         country: "EG",
-        twoFactor: false,
         emailNotifications: true,
         activityReports: true,
         productUpdates: false,
-        securityAlerts: true,
-        language: "en",
-        timezone: "Africa/Cairo",
-        dateFormat: "dd/mm/yyyy",
-        weekStart: "monday",
-        compactMode: false
+        securityAlerts: true
     };
 
     const fieldIds = {
@@ -41,72 +37,101 @@
         bio: "asBio",
         companyName: "asCompanyName",
         website: "asWebsite",
+        organizationLogoUrl: "asOrgLogoInput",
         industry: "asIndustry",
         companySize: "asCompanySize",
         country: "asCountry",
-        twoFactor: "asTwoFactor",
         emailNotifications: "asEmailNotifications",
         activityReports: "asActivityReports",
         productUpdates: "asProductUpdates",
-        securityAlerts: "asSecurityAlerts",
-        language: "asLanguage",
-        timezone: "asTimezone",
-        dateFormat: "asDateFormat",
-        weekStart: "asWeekStart",
-        compactMode: "asCompactMode"
+        securityAlerts: "asSecurityAlerts"
     };
 
     let savedSettings = { ...defaults };
     let toastTimer = null;
     let settingsLoaded = false;
 
+    // Shared global input-value helper.
+    // Uses AppInputValue.clean() when available.
+    function cleanValue (value) {
+        if (window.AppInputValue &&
+            typeof window.AppInputValue.clean === "function") {
+            return window.AppInputValue.clean(value);
+        }
+
+        if (value === null || value === undefined) return "";
+
+        const text = String(value).trim();
+        return text === "0" ? "" : text;
+    }
+
     function currentSettings () {
         const result = {};
+
         Object.entries(fieldIds).forEach(([ key, id ]) => {
             const element = $(id);
-            result[ key ] = element.type === "checkbox" ? element.checked : element.value;
+            if (!element) return;
+
+            result[ key ] = element.type === "checkbox"
+                ? element.checked
+                : element.tagName === "SELECT"
+                    ? element.value
+                    : cleanValue(element.value);
         });
-        result.language = "en";
+
         return result;
     }
 
     function setSettings (settings) {
         Object.entries(fieldIds).forEach(([ key, id ]) => {
             const element = $(id);
+            if (!element) return;
+
             if (element.type === "checkbox") {
                 element.checked = Boolean(settings[ key ]);
+            } else if (element.tagName === "SELECT") {
+                const value = settings[ key ];
+                element.value = value == null ? "" : String(value);
             } else {
-                element.value = settings[ key ];
+                element.value = cleanValue(settings[ key ]);
             }
         });
+
         updateProfileDisplay();
+        renderOrganizationLogo();
         updateDirtyState();
     }
 
     function updateProfileDisplay () {
-        const first = $("asFirstName").value.trim();
-        const last = $("asLastName").value.trim();
-        const fullName = [ first, last ].filter(Boolean).join(" ") || "Your name";
-        const initials = ((first[ 0 ] || "") + (last[ 0 ] || "")).toUpperCase() || "?";
+        const first = cleanValue($("asFirstName")?.value);
+        const last = cleanValue($("asLastName")?.value);
 
-        $("asSidebarName").textContent = fullName;
-        $("asAvatar").textContent = initials;
-        $("asLargeAvatar").textContent = initials;
+        const fullName =
+            [ first, last ].filter(Boolean).join(" ") || "Your name";
+
+        const initials =
+            ((first[ 0 ] || "") + (last[ 0 ] || "")).toUpperCase() || "?";
+
+        const sidebarName = $("asSidebarName");
+        const avatar = $("asAvatar");
+        const largeAvatar = $("asLargeAvatar");
+
+        if (sidebarName) sidebarName.textContent = fullName;
+        if (avatar) avatar.textContent = initials;
+        if (largeAvatar) largeAvatar.textContent = initials;
     }
 
+    // ============================================================
+    // ORGANIZATION BRANDING
+    // Save a public HTTPS URL only. No file upload.
+    // ============================================================
 
-
-
-    // Organization branding — local preview only
     const orgLogoInput = $("asOrgLogoInput");
     const orgLogoImage = $("asOrgLogoImage");
     const orgLogoInitials = $("asOrgLogoInitials");
-    const orgLogoPreview = $("asOrgLogoPreview");
     const orgMiniLogo = $("asOrgMiniLogo");
     const orgLogoMessage = $("asOrgLogoMessage");
     const orgPreviewName = $("asOrgPreviewName");
-
-    let orgLogoObjectUrl = null;
 
     function getOrganizationInitials (name) {
         const words = name.trim().split(/\s+/).filter(Boolean);
@@ -115,776 +140,741 @@
 
         return words.length === 1
             ? words[ 0 ].slice(0, 2).toUpperCase()
-            : (words[ 0 ][ 0 ] + words[ words.length - 1 ][ 0 ]).toUpperCase();
+            : (words[ 0 ][ 0 ] +
+                words[ words.length - 1 ][ 0 ]).toUpperCase();
     }
 
-    function updateOrganizationPreview () {
-        const companyName = $("asCompanyName").value.trim()
-            || "Your organization";
+    function isValidLogoUrl (value) {
+        try {
+            const url = new URL(value);
 
-        const initials = getOrganizationInitials(companyName);
+            return url.protocol === "https:" &&
+                !url.username &&
+                !url.password &&
+                value.length <= 500;
+        } catch {
+            return false;
+        }
+    }
 
-        orgPreviewName.textContent = companyName;
+    function renderOrganizationLogo () {
+        if (!orgLogoInput) return;
 
-        if (!orgLogoObjectUrl) {
+        const company =
+            cleanValue($("asCompanyName")?.value) ||
+            "Your organization";
+
+        const initials = getOrganizationInitials(company);
+
+        if (orgPreviewName) {
+            orgPreviewName.textContent = company;
+        }
+
+        const url = cleanValue(orgLogoInput.value);
+
+        if (orgLogoImage) {
+            orgLogoImage.hidden = true;
+            orgLogoImage.removeAttribute("src");
+        }
+
+        if (orgLogoInitials) {
+            orgLogoInitials.hidden = false;
             orgLogoInitials.textContent = initials;
-            orgMiniLogo.textContent = initials;
-        }
-    }
-
-    function removeOrganizationLogo () {
-        if (orgLogoObjectUrl) {
-            URL.revokeObjectURL(orgLogoObjectUrl);
-            orgLogoObjectUrl = null;
         }
 
-        orgLogoImage.removeAttribute("src");
-        orgLogoImage.hidden = true;
-        orgLogoInitials.hidden = false;
+        if (orgMiniLogo) {
+            orgMiniLogo.replaceChildren(
+                document.createTextNode(initials)
+            );
+        }
 
-        orgMiniLogo.replaceChildren(
-            document.createTextNode(getOrganizationInitials(
-                $("asCompanyName").value.trim() || "Organization"
-            ))
-        );
+        if (orgLogoMessage) {
+            orgLogoMessage.textContent = "";
+        }
 
-        orgLogoInput.value = "";
-        orgLogoMessage.textContent = "Logo preview removed.";
-    }
+        if (!url) return;
 
-    orgLogoInput.addEventListener("change", () => {
-        const file = orgLogoInput.files && orgLogoInput.files[ 0 ];
-
-        orgLogoMessage.textContent = "";
-
-        if (!file) return;
-
-        const allowedTypes = [
-            "image/png",
-            "image/jpeg",
-            "image/webp",
-            "image/svg+xml"
-        ];
-
-        if (!allowedTypes.includes(file.type)) {
-            orgLogoInput.value = "";
-            orgLogoMessage.textContent =
-                "Choose a PNG, JPG, WebP, or SVG image.";
+        if (!isValidLogoUrl(url)) {
+            if (orgLogoMessage) {
+                orgLogoMessage.textContent =
+                    "Enter a valid public HTTPS image URL.";
+            }
             return;
         }
 
-        if (file.size > 2 * 1024 * 1024) {
-            orgLogoInput.value = "";
-            orgLogoMessage.textContent =
-                "The logo must be no larger than 2 MB.";
-            return;
+        if (orgLogoMessage) {
+            orgLogoMessage.textContent = "Loading preview...";
         }
 
-        const nextUrl = URL.createObjectURL(file);
-        const testImage = new Image();
+        const img = new Image();
 
-        testImage.onload = () => {
-            if (orgLogoObjectUrl) {
-                URL.revokeObjectURL(orgLogoObjectUrl);
+        img.onload = () => {
+            if (cleanValue(orgLogoInput.value) !== url) return;
+
+            if (orgLogoImage) {
+                orgLogoImage.src = url;
+                orgLogoImage.hidden = false;
             }
 
-            orgLogoObjectUrl = nextUrl;
+            if (orgLogoInitials) {
+                orgLogoInitials.hidden = true;
+            }
 
-            orgLogoImage.src = nextUrl;
-            orgLogoImage.hidden = false;
-            orgLogoInitials.hidden = true;
+            if (orgMiniLogo) {
+                const mini = document.createElement("img");
+                mini.src = url;
+                mini.alt = "";
+                orgMiniLogo.replaceChildren(mini);
+            }
 
-            const miniImage = document.createElement("img");
-            miniImage.src = nextUrl;
-            miniImage.alt = "";
-
-            orgMiniLogo.replaceChildren(miniImage);
-
-            orgLogoMessage.textContent =
-                "Logo preview updated. Changes are not uploaded or saved.";
+            if (orgLogoMessage) {
+                orgLogoMessage.textContent =
+                    "Logo preview ready.";
+            }
         };
 
-        testImage.onerror = () => {
-            URL.revokeObjectURL(nextUrl);
-            orgLogoInput.value = "";
-            orgLogoMessage.textContent =
-                "This image could not be previewed. Choose another file.";
+        img.onerror = () => {
+            if (cleanValue(orgLogoInput.value) !== url) return;
+
+            if (orgLogoMessage) {
+                orgLogoMessage.textContent =
+                    "Image could not be loaded from this URL.";
+            }
         };
 
-        testImage.src = nextUrl;
+        img.src = url;
+    }
+
+    if (orgLogoInput) {
+        orgLogoInput.addEventListener(
+            "input",
+            renderOrganizationLogo
+        );
+
+        orgLogoInput.addEventListener(
+            "change",
+            renderOrganizationLogo
+        );
+    }
+
+    $("asOrgLogoRemove")?.addEventListener("click", () => {
+        if (!orgLogoInput) return;
+
+        orgLogoInput.value = "";
+        renderOrganizationLogo();
+        updateDirtyState();
     });
 
-    $("asOrgLogoRemove").addEventListener("click", removeOrganizationLogo);
+    $("asCompanyName")?.addEventListener(
+        "input",
+        renderOrganizationLogo
+    );
 
-    $("asCompanyName").addEventListener("input", updateOrganizationPreview);
-
-    updateOrganizationPreview();
-
-
-
+    // ============================================================
+    // SAVE STATUS AND TOAST
+    // ============================================================
 
     function updateDirtyState () {
-        const changed = JSON.stringify(currentSettings()) !== JSON.stringify(savedSettings);
+        const changed =
+            JSON.stringify(currentSettings()) !==
+            JSON.stringify(savedSettings);
+
         const status = $("asSaveStatus");
+        if (!status) return;
+
         status.innerHTML = changed
             ? '<i class="bi bi-circle-fill"></i> Unsaved changes'
             : '<i class="bi bi-check-circle-fill"></i> All changes saved';
+
         status.style.color = changed ? "" : "#0d9278";
     }
 
     function showToast (message) {
         const toast = $("asToast");
+        if (!toast) return;
+
         toast.textContent = message;
         toast.classList.add("is-visible");
+
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2800);
+
+        toastTimer = setTimeout(() => {
+            toast.classList.remove("is-visible");
+        }, 2800);
     }
 
+    // ============================================================
+    // API REQUESTS
+    // ============================================================
+
     function apiHeaders (json) {
-        const result = { Accept: "application/json" };
-        if (json) result[ "Content-Type" ] = "application/json";
+        const result = {
+            Accept: "application/json"
+        };
+
         if (json) {
-            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
-            if (token) result[ "RequestVerificationToken" ] = token;
+            result[ "Content-Type" ] = "application/json";
+
+            const token = document.querySelector(
+                'input[name="__RequestVerificationToken"]'
+            )?.value;
+
+            if (token) {
+                result[ "RequestVerificationToken" ] = token;
+            }
         }
+
         return result;
     }
 
     async function apiRequest (url, options) {
         const response = await fetch(url, options);
+
         const body = await response.json().catch(() => ({}));
+
         if (!response.ok || body.success === false) {
-            throw new Error(body.message || "Account settings could not be saved.");
+            throw new Error(
+                body.message ||
+                "Account settings request failed."
+            );
         }
+
         return body;
     }
 
+    // ============================================================
+    // SUBSCRIPTION SUMMARY
+    // ============================================================
+
     function applySubscription (subscription) {
         if (!subscription) return;
+
         const plan = subscription.plan || "Free";
         const limit = subscription.widgetLimit;
         const used = Number(subscription.widgetsCreated || 0);
-        const remaining = limit == null ? null : Math.max(0, Number(subscription.widgetsRemaining ?? limit - used));
-        const percent = limit == null || !Number(limit) ? 0 : Math.min(100, Math.round((used / Number(limit)) * 100));
-        $("asCurrentPlanName").textContent = plan + " Plan";
-        $("asWidgetsUsed").textContent = String(used);
-        $("asWidgetsLimit").textContent = limit == null ? "No limit" : String(limit);
-        $("asUsageFill").style.width = percent + "%";
-        $("asUsageSummary").textContent = subscription.isIllustrative
-            ? "No active paid plan is recorded. Showing the Free plan allowance."
-            : percent + "% of your plan allowance used";
-        $("asWidgetsRemaining").textContent = remaining == null ? "Unlimited remaining" : remaining + " remaining";
-        $("asSubscriptionNote").textContent = subscription.isIllustrative
-            ? "No paid subscription is recorded for this account. Plan changes require billing integration."
-            : "Plan and widget usage loaded from your account records. Billing changes are not available here.";
-    }
 
-    async function loadSettings () {
-        const saveButton = $("asSave");
-        saveButton.disabled = true;
-        $("asSaveStatus").textContent = "Loading account settings";
-        try {
-            const data = await apiRequest(settingsUrl, { headers: apiHeaders(false) });
-            const settings = { ...defaults, ...(data.settings || {}) };
-            setSettings(settings);
-            savedSettings = currentSettings();
-            settingsLoaded = true;
-            applySubscription(data.subscription);
-            updateNonEssentialNotifications();
-            updateDirtyState();
-            $("asNavBottomMessage").textContent = "Changes are saved to your account.";
-        } catch (error) {
-            settingsLoaded = false;
-            saveButton.disabled = true;
-            $("asSaveStatus").textContent = "Could not load account settings";
-            showToast(error.message || "Could not load your account settings.");
-            console.error("Account settings API load failed.", error);
-        } finally {
-            saveButton.disabled = !settingsLoaded;
+        const remaining = limit == null
+            ? null
+            : Math.max(
+                0,
+                Number(
+                    subscription.widgetsRemaining ??
+                    limit - used
+                )
+            );
+
+        const percent =
+            limit == null || !Number(limit)
+                ? 0
+                : Math.min(
+                    100,
+                    Math.round(
+                        (used / Number(limit)) * 100
+                    )
+                );
+
+        if ($("asCurrentPlanName")) {
+            $("asCurrentPlanName").textContent =
+                plan + " Plan";
+        }
+
+        if ($("asWidgetsUsed")) {
+            $("asWidgetsUsed").textContent = String(used);
+        }
+
+        if ($("asWidgetsLimit")) {
+            $("asWidgetsLimit").textContent =
+                limit == null ? "No limit" : String(limit);
+        }
+
+        if ($("asUsageFill")) {
+            $("asUsageFill").style.width = percent + "%";
+        }
+
+        if ($("asUsageSummary")) {
+            $("asUsageSummary").textContent =
+                subscription.isIllustrative
+                    ? "No active paid plan is recorded. Showing the Free plan allowance."
+                    : percent + "% of your plan allowance used";
+        }
+
+        if ($("asWidgetsRemaining")) {
+            $("asWidgetsRemaining").textContent =
+                remaining == null
+                    ? "Unlimited remaining"
+                    : remaining + " remaining";
+        }
+
+        if ($("asSubscriptionNote")) {
+            $("asSubscriptionNote").textContent =
+                subscription.isIllustrative
+                    ? "No paid subscription is recorded for this account. Plan changes require billing integration."
+                    : "Plan and widget usage loaded from your account records. Billing changes are not available here.";
         }
     }
 
+    // ============================================================
+    // NOTIFICATIONS
+    // ============================================================
+
     function updateNonEssentialNotifications () {
         const master = $("asNonEssentialNotifications");
+        if (!master) return;
+
         const enabled = master.checked;
 
-        root.querySelectorAll("[data-nonessential='true']").forEach(row => {
-            const input = row.querySelector('input[type="checkbox"]');
+        root.querySelectorAll(
+            "[data-nonessential='true']"
+        ).forEach(row => {
+            const input = row.querySelector(
+                'input[type="checkbox"]'
+            );
 
             if (!input) return;
 
             input.disabled = !enabled;
-            row.classList.toggle("as-notification-disabled", !enabled);
+
+            row.classList.toggle(
+                "as-notification-disabled",
+                !enabled
+            );
 
             if (!enabled) {
                 input.checked = false;
             }
         });
 
-        $("asNotificationMasterStatus").textContent = enabled
-            ? "Optional notifications are enabled."
-            : "Optional notifications are disabled.";
+        const status = $("asNotificationMasterStatus");
+
+        if (status) {
+            status.textContent = enabled
+                ? "Optional notifications are enabled."
+                : "Optional notifications are disabled.";
+        }
 
         updateDirtyState();
     }
 
-    $("asNonEssentialNotifications").addEventListener("change", () => {
-        updateNonEssentialNotifications();
-        showToast("Notification preference updated. Save changes to keep it.");
-    });
+    $("asNonEssentialNotifications")?.addEventListener(
+        "change",
+        () => {
+            updateNonEssentialNotifications();
 
-    // Apply the correct initial state.
-    updateNonEssentialNotifications();
+            showToast(
+                "Notification preference updated. Save changes to keep it."
+            );
+        }
+    );
 
-    // Security interactions — frontend demo only
-    const twoFactor = $("asTwoFactor");
-    const twoFactorModal = $("asTwoFactorModal");
-    const sessionsModal = $("asSessionsModal");
-    const signOutModal = $("asSignOutModal");
+    // ============================================================
+    // LOAD SETTINGS
+    // ============================================================
 
-    let twoFactorPendingValue = false;
-    let lastSecurityTrigger = null;
-    let lastSessionTrigger = null;
+    async function loadSettings () {
+        const saveButton = $("asSave");
 
-    function openSecurityModal (modal, trigger) {
-        lastSecurityTrigger = trigger || document.activeElement;
-        modal.hidden = false;
-        document.body.style.overflow = "hidden";
+        if (saveButton) saveButton.disabled = true;
 
-        const firstButton = modal.querySelector(
-            ".as-modal-close, button"
-        );
-
-        if (firstButton) firstButton.focus();
-    }
-
-    function closeSecurityModal (modal, trigger) {
-        modal.hidden = true;
-
-        if (sessionsModal.hidden &&
-            twoFactorModal.hidden &&
-            signOutModal.hidden) {
-            document.body.style.overflow = "";
+        if ($("asSaveStatus")) {
+            $("asSaveStatus").textContent =
+                "Loading account settings";
         }
 
-        const target = trigger || lastSecurityTrigger;
-        if (target && typeof target.focus === "function") {
-            target.focus();
-        }
-    }
+        try {
+            const data = await apiRequest(settingsUrl, {
+                headers: apiHeaders(false)
+            });
 
-    function updateSecuritySummary () {
-        const enabled = twoFactor.checked;
+            const settings = {
+                ...defaults,
+                ...(data.settings || {})
+            };
 
-        $("asTwoFactorDescription").textContent = enabled
-            ? "Enabled in this demo only; real sign-in security is unchanged."
-            : "Currently disabled in this demo.";
+            setSettings(settings);
 
-        $("asSecuritySummary").textContent = enabled
-            ? "Two-factor authentication is marked as enabled in this demo."
-            : "Two-factor authentication is currently marked as disabled.";
+            // Update notification controls before taking the
+            // saved snapshot, so dirty-state comparison is correct.
+            updateNonEssentialNotifications();
 
-        $("asSecurityStatus").classList.toggle("is-enabled", enabled);
-        $("asSecurityStatus").innerHTML = enabled
-            ? '<i class="bi bi-shield-check"></i> Demo enabled'
-            : '<i class="bi bi-info-circle"></i> Review settings';
-    }
+            savedSettings = currentSettings();
+            settingsLoaded = true;
 
-    // Two-factor confirmation
-    twoFactor.addEventListener("change", () => {
-        twoFactorPendingValue = twoFactor.checked;
+            applySubscription(data.subscription);
+            updateDirtyState();
 
-        // Wait for confirmation before updating the displayed setting.
-        twoFactor.checked = !twoFactorPendingValue;
-
-        $("asTwoFactorActionTitle").textContent = twoFactorPendingValue
-            ? "Enable two-factor authentication?"
-            : "Disable two-factor authentication?";
-
-        $("asTwoFactorActionText").textContent = twoFactorPendingValue
-            ? "The demo will mark two-factor authentication as enabled."
-            : "The demo will mark two-factor authentication as disabled.";
-
-        $("asTwoFactorConfirm").textContent = twoFactorPendingValue
-            ? "Enable in demo"
-            : "Disable in demo";
-
-        openSecurityModal(twoFactorModal, twoFactor);
-    });
-
-    function cancelTwoFactor () {
-        closeSecurityModal(twoFactorModal, twoFactor);
-    }
-
-    $("asTwoFactorClose").addEventListener("click", cancelTwoFactor);
-    $("asTwoFactorCancel").addEventListener("click", cancelTwoFactor);
-
-    $("asTwoFactorConfirm").addEventListener("click", () => {
-        twoFactor.checked = twoFactorPendingValue;
-        updateSecuritySummary();
-        closeSecurityModal(twoFactorModal, twoFactor);
-        showToast(
-            twoFactor.checked
-                ? "2FA enabled in the demo only."
-                : "2FA disabled in the demo only."
-        );
-    });
-
-    // Active sessions
-    function getVisibleDemoSessions () {
-        return Array.from(
-            root.querySelectorAll(".as-session-item")
-        ).filter(item => !item.classList.contains("is-revoked"));
-    }
-
-    function updateSessionCount () {
-        const count = getVisibleDemoSessions().length;
-        const label = count + (count === 1 ? " demo session" : " demo sessions");
-
-        $("asSessionCount").textContent = label;
-        $("asSessionsSummaryCount").textContent = label;
-    }
-
-    function showSessionFeedback (message) {
-        const feedback = $("asSessionFeedback");
-        feedback.textContent = message;
-        feedback.hidden = false;
-    }
-
-    $("asViewSessions").addEventListener("click", () => {
-        lastSessionTrigger = $("asViewSessions");
-        $("asSessionFeedback").hidden = true;
-        openSecurityModal(sessionsModal, $("asViewSessions"));
-        updateSessionCount();
-    });
-
-    function closeSessionsModal () {
-        closeSecurityModal(sessionsModal, lastSessionTrigger);
-    }
-
-    $("asSessionsClose").addEventListener("click", closeSessionsModal);
-    $("asSessionsDone").addEventListener("click", closeSessionsModal);
-
-    // Revoke one mock session
-    root.querySelectorAll("[data-revoke-session]").forEach(button => {
-        button.addEventListener("click", () => {
-            const sessionId = button.dataset.revokeSession;
-            const item = root.querySelector(
-                '[data-session-id="' + sessionId + '"]'
-            );
-
-            if (!item || item.classList.contains("is-revoked")) return;
-
-            item.classList.add("is-revoked");
-            button.disabled = true;
-            button.textContent = "Revoked";
-
-            showSessionFeedback(
-                "Demo session marked as revoked. No real device was signed out."
-            );
-
-            updateSessionCount();
-            showToast("Demo session revoked. No real session was affected.");
-        });
-    });
-
-    // Sign out other mock sessions
-    $("asSignOutOthers").addEventListener("click", () => {
-        openSecurityModal(signOutModal, $("asSignOutOthers"));
-    });
-
-    function closeSignOutModal () {
-        closeSecurityModal(signOutModal, $("asSignOutOthers"));
-    }
-
-    $("asSignOutClose").addEventListener("click", closeSignOutModal);
-    $("asSignOutCancel").addEventListener("click", closeSignOutModal);
-
-    $("asSignOutConfirm").addEventListener("click", () => {
-        root.querySelectorAll(".as-session-item").forEach(item => {
-            if (item.dataset.sessionId === "session-current") return;
-
-            item.classList.add("is-revoked");
-
-            const revokeButton = item.querySelector("[data-revoke-session]");
-            if (revokeButton) {
-                revokeButton.disabled = true;
-                revokeButton.textContent = "Signed out";
+            if ($("asNavBottomMessage")) {
+                $("asNavBottomMessage").textContent =
+                    "Changes are saved to your account.";
             }
-        });
+        } catch (error) {
+            settingsLoaded = false;
 
-        updateSessionCount();
-        closeSignOutModal();
+            if ($("asSaveStatus")) {
+                $("asSaveStatus").textContent =
+                    "Could not load account settings";
+            }
 
-        showSessionFeedback(
-            "Other demo sessions have been marked as signed out. " +
-            "Your current session remains active."
-        );
+            showToast(
+                error.message ||
+                "Could not load your account settings."
+            );
 
-        showToast("Other demo sessions signed out. No real sessions were affected.");
-    });
+            console.error(
+                "Account settings API load failed.",
+                error
+            );
+        } finally {
+            if (saveButton) {
+                saveButton.disabled = !settingsLoaded;
+            }
+        }
+    }
 
-    // Close security dialogs by clicking outside
-    [ twoFactorModal, sessionsModal, signOutModal ].forEach(modal => {
-        modal.addEventListener("click", event => {
-            if (event.target !== modal) return;
-
-            if (modal === twoFactorModal) cancelTwoFactor();
-            else if (modal === sessionsModal) closeSessionsModal();
-            else closeSignOutModal();
-        });
-    });
-
-    // Escape closes the topmost security modal
-    document.addEventListener("keydown", event => {
-        if (event.key !== "Escape") return;
-
-        if (!signOutModal.hidden) closeSignOutModal();
-        else if (!sessionsModal.hidden) closeSessionsModal();
-        else if (!twoFactorModal.hidden) cancelTwoFactor();
-    });
-
-    updateSecuritySummary();
-    updateSessionCount();
-
-
+    // ============================================================
+    // SECTION NAVIGATION
+    // Profile / Organization / Notifications
+    // Security and Preferences removed for MVP.
+    // ============================================================
 
     function showSection (section) {
-        root.querySelectorAll("[data-as-section]").forEach(button => {
-            button.classList.toggle("active", button.dataset.asSection === section);
+        root.querySelectorAll(
+            "[data-as-section]"
+        ).forEach(button => {
+            button.classList.toggle(
+                "active",
+                button.dataset.asSection === section
+            );
         });
 
-        root.querySelectorAll("[data-as-panel]").forEach(panel => {
-            const active = panel.dataset.asPanel === section;
+        root.querySelectorAll(
+            "[data-as-panel]"
+        ).forEach(panel => {
+            const active =
+                panel.dataset.asPanel === section;
+
             panel.hidden = !active;
-            panel.classList.toggle("active", active);
+
+            panel.classList.toggle(
+                "active",
+                active
+            );
         });
     }
 
-    root.querySelectorAll("[data-as-section]").forEach(button => {
-        button.addEventListener("click", () => showSection(button.dataset.asSection));
+    root.querySelectorAll(
+        "[data-as-section]"
+    ).forEach(button => {
+        button.addEventListener("click", () => {
+            showSection(button.dataset.asSection);
+        });
     });
+
+    // ============================================================
+    // FIELD CHANGE TRACKING
+    // ============================================================
 
     Object.values(fieldIds).forEach(id => {
         const element = $(id);
+        if (!element) return;
+
         element.addEventListener("input", () => {
             updateProfileDisplay();
             updateDirtyState();
         });
+
         element.addEventListener("change", () => {
             updateProfileDisplay();
             updateDirtyState();
         });
     });
 
-    $("asSave").addEventListener("click", async () => {
-        const firstName = $("asFirstName").value.trim();
-        const lastName = $("asLastName").value.trim();
+    // ============================================================
+    // SAVE SETTINGS
+    // ============================================================
 
-        const company = $("asCompanyName").value.trim();
-
-        if (!firstName || !lastName || !company) {
-            showToast("Please complete all required fields.");
-            const firstInvalid = !firstName ? $("asFirstName")
-                : !lastName ? $("asLastName")
-                    : $("asCompanyName");
-            firstInvalid.focus();
+    $("asSave")?.addEventListener("click", async () => {
+        if (!settingsLoaded) {
+            showToast(
+                "Account settings are still loading."
+            );
             return;
         }
 
+        const firstName =
+            cleanValue($("asFirstName")?.value);
 
-        if ($("asWebsite").value.trim() && !$("asWebsite").checkValidity()) {
-            showToast("Please enter a valid website URL.");
-            $("asWebsite").focus();
+        const lastName =
+            cleanValue($("asLastName")?.value);
+
+        const company =
+            cleanValue($("asCompanyName")?.value);
+
+        if (!firstName || !lastName || !company) {
+            showToast(
+                "Please complete all required fields."
+            );
+
+            const firstInvalid = !firstName
+                ? $("asFirstName")
+                : !lastName
+                    ? $("asLastName")
+                    : $("asCompanyName");
+
+            firstInvalid?.focus();
+            return;
+        }
+
+        const websiteInput = $("asWebsite");
+        const website = cleanValue(websiteInput?.value);
+
+        if (website && websiteInput &&
+            !websiteInput.checkValidity()) {
+            showToast(
+                "Please enter a valid website URL."
+            );
+
+            websiteInput.focus();
+            return;
+        }
+
+        const logoUrl = cleanValue(
+            orgLogoInput?.value
+        );
+
+        if (logoUrl && !isValidLogoUrl(logoUrl)) {
+            showToast(
+                "Please enter a valid HTTPS logo URL."
+            );
+
+            orgLogoInput?.focus();
             return;
         }
 
         const button = $("asSave");
-        button.disabled = true;
+        if (button) button.disabled = true;
+
         try {
             const data = await apiRequest(settingsUrl, {
                 method: "PUT",
                 headers: apiHeaders(true),
                 body: JSON.stringify(currentSettings())
             });
-            setSettings({ ...defaults, ...(data.settings || currentSettings()) });
+
+            setSettings({
+                ...defaults,
+                ...(data.settings || currentSettings())
+            });
+
+            updateNonEssentialNotifications();
+
             savedSettings = currentSettings();
             settingsLoaded = true;
+
             updateDirtyState();
-            showToast(data.message || "Account settings saved.");
-        } catch (error) {
-            showToast(error.message || "Account settings could not be saved.");
-            console.error("Account settings API save failed.", error);
-        } finally {
-            button.disabled = !settingsLoaded;
-        }
-    });
 
-    $("asReset").addEventListener("click", () => {
-        setSettings(savedSettings);
-        showToast("Settings reset to the last saved values.");
-    });
-
-    // $("asChangePassword").addEventListener("click", () => {
-    //     showToast("Password changes will be enabled when authentication integration is implemented.");
-    // });
-
-
-    const passwordModal = $("asPasswordModal");
-    const passwordForm = $("asPasswordForm");
-    const passwordIds = [
-        "asCurrentPassword",
-        "asNewPassword",
-        "asConfirmPassword"
-    ];
-
-    function clearPasswordErrors () {
-        root.querySelectorAll(".as-password-error").forEach(el => {
-            el.textContent = "";
-        });
-
-        $("asPasswordFormMessage").textContent = "";
-    }
-
-    function resetPasswordForm () {
-        passwordForm.reset();
-        clearPasswordErrors();
-        updatePasswordStrength();
-        root.querySelectorAll("[data-password-toggle]").forEach(button => {
-            const input = $(button.dataset.passwordToggle);
-            input.type = "password";
-            button.innerHTML = '<i class="bi bi-eye"></i>';
-            button.setAttribute("aria-label", "Show password");
-        });
-    }
-
-    function openPasswordModal () {
-        resetPasswordForm();
-        passwordModal.hidden = false;
-        document.body.style.overflow = "hidden";
-        $("asCurrentPassword").focus();
-    }
-
-    function closePasswordModal () {
-        passwordModal.hidden = true;
-        document.body.style.overflow = "";
-        $("asChangePassword").focus();
-    }
-
-    function updatePasswordStrength () {
-        const password = $("asNewPassword").value;
-        const checks = {
-            length: password.length >= 8,
-            upper: /[A-Z]/.test(password),
-            lower: /[a-z]/.test(password),
-            number: /\d/.test(password)
-        };
-
-        Object.entries(checks).forEach(([ rule, passed ]) => {
-            const item = root.querySelector('[data-rule="' + rule + '"]');
-            item.classList.toggle("met", passed);
-        });
-
-        const score = Object.values(checks).filter(Boolean).length;
-        const bar = $("asPasswordStrengthBar");
-        const label = $("asPasswordStrengthText");
-
-        bar.style.width = (score * 25) + "%";
-        bar.style.background = score <= 1 ? "#d94d58"
-            : score <= 2 ? "#e0a23c"
-                : score === 3 ? "#4c91d9" : "#0da88b";
-
-        label.textContent = !password ? "Enter a new password"
-            : score <= 1 ? "Weak"
-                : score === 2 ? "Fair"
-                    : score === 3 ? "Good" : "Meets demo requirements";
-    }
-
-    $("asChangePassword").addEventListener("click", openPasswordModal);
-    $("asPasswordClose").addEventListener("click", closePasswordModal);
-    $("asPasswordCancel").addEventListener("click", closePasswordModal);
-    $("asPasswordReset").addEventListener("click", resetPasswordForm);
-
-    $("asNewPassword").addEventListener("input", () => {
-        updatePasswordStrength();
-        $("asPasswordFormMessage").textContent = "";
-    });
-
-    root.querySelectorAll("[data-password-toggle]").forEach(button => {
-        button.addEventListener("click", () => {
-            const input = $(button.dataset.passwordToggle);
-            const showing = input.type === "password";
-
-            input.type = showing ? "text" : "password";
-            button.innerHTML = showing
-                ? '<i class="bi bi-eye-slash"></i>'
-                : '<i class="bi bi-eye"></i>';
-
-            button.setAttribute(
-                "aria-label",
-                showing ? "Hide password" : "Show password"
+            showToast(
+                data.message ||
+                "Account settings saved."
             );
-        });
-    });
+        } catch (error) {
+            showToast(
+                error.message ||
+                "Account settings could not be saved."
+            );
 
-    passwordModal.addEventListener("click", event => {
-        if (event.target === passwordModal) closePasswordModal();
-    });
-
-    document.addEventListener("keydown", event => {
-        if (event.key === "Escape" && !passwordModal.hidden) {
-            closePasswordModal();
+            console.error(
+                "Account settings API save failed.",
+                error
+            );
+        } finally {
+            if (button) {
+                button.disabled = !settingsLoaded;
+            }
         }
     });
 
-    passwordForm.addEventListener("submit", event => {
-        event.preventDefault();
-        clearPasswordErrors();
+    // ============================================================
+    // RESET SETTINGS
+    // ============================================================
 
-        const current = $("asCurrentPassword").value;
-        const password = $("asNewPassword").value;
-        const confirm = $("asConfirmPassword").value;
-        let firstInvalid = null;
+    $("asReset")?.addEventListener("click", () => {
+        setSettings(savedSettings);
+        updateNonEssentialNotifications();
 
-        function error (id, message) {
-            const target = root.querySelector('[data-error-for="' + id + '"]');
-            target.textContent = message;
-            if (!firstInvalid) firstInvalid = $(id);
-        }
-
-        if (!current) {
-            error("asCurrentPassword", "Enter a current password for this demo.");
-        }
-
-        if (password.length < 8 ||
-            !/[A-Z]/.test(password) ||
-            !/[a-z]/.test(password) ||
-            !/\d/.test(password)) {
-            error("asNewPassword",
-                "Use at least 8 characters with uppercase, lowercase, and a number.");
-        }
-
-        if (!confirm) {
-            error("asConfirmPassword", "Confirm your new password.");
-        } else if (password !== confirm) {
-            error("asConfirmPassword", "The passwords do not match.");
-        }
-
-        if (firstInvalid) {
-            firstInvalid.focus();
-            return;
-        }
-
-        $("asPasswordFormMessage").style.color = "#0d9278";
-        $("asPasswordFormMessage").textContent =
-            "Demo validation passed. No password was changed or stored.";
-
-        showToast("Demo validation passed. No real password changes were made.");
+        showToast(
+            "Settings reset to the last saved values."
+        );
     });
 
+    // ============================================================
+    // SUBSCRIPTION PLANS MODAL
+    // UI prototype only; no billing changes.
+    // ============================================================
 
-    // $("asUpgradePlan").addEventListener("click", () => {
-    //     showToast("Plan selection will be available when subscription management is implemented.");
-    // });
-
-
-    // Subscription plans modal — UI prototype only
     const plansModal = $("asPlansModal");
     const plansConfirmation = $("asPlanConfirmation");
+
     let selectedPlan = null;
 
     function resetPlanSelection () {
         selectedPlan = null;
-        plansConfirmation.hidden = true;
 
-        root.querySelectorAll(".as-plan-option").forEach(card => {
-            card.classList.remove("as-plan-selected");
+        if (plansConfirmation) {
+            plansConfirmation.hidden = true;
+        }
+
+        root.querySelectorAll(
+            ".as-plan-option"
+        ).forEach(card => {
+            card.classList.remove(
+                "as-plan-selected"
+            );
         });
 
-        $("asPlanConfirmationTitle").textContent =
-            "Confirm plan selection";
-        $("asPlanConfirmationText").textContent = "";
+        if ($("asPlanConfirmationTitle")) {
+            $("asPlanConfirmationTitle").textContent =
+                "Confirm plan selection";
+        }
+
+        if ($("asPlanConfirmationText")) {
+            $("asPlanConfirmationText").textContent = "";
+        }
     }
 
     function openPlansModal () {
+        if (!plansModal) return;
+
         resetPlanSelection();
+
         plansModal.hidden = false;
         document.body.style.overflow = "hidden";
-        $("asPlansClose").focus();
+
+        $("asPlansClose")?.focus();
     }
 
     function closePlansModal () {
+        if (!plansModal) return;
+
         plansModal.hidden = true;
         document.body.style.overflow = "";
-        $("asUpgradePlan").focus();
+
+        $("asUpgradePlan")?.focus();
     }
 
-    $("asUpgradePlan").addEventListener("click", openPlansModal);
-    $("asPlansClose").addEventListener("click", closePlansModal);
-    $("asPlansDone").addEventListener("click", closePlansModal);
+    $("asUpgradePlan")?.addEventListener(
+        "click",
+        openPlansModal
+    );
 
-    $("asPlanCancel").addEventListener("click", resetPlanSelection);
+    $("asPlansClose")?.addEventListener(
+        "click",
+        closePlansModal
+    );
 
-    root.querySelectorAll("[data-select-plan]").forEach(button => {
+    $("asPlansDone")?.addEventListener(
+        "click",
+        closePlansModal
+    );
+
+    $("asPlanCancel")?.addEventListener(
+        "click",
+        resetPlanSelection
+    );
+
+    root.querySelectorAll(
+        "[data-select-plan]"
+    ).forEach(button => {
         button.addEventListener("click", () => {
-            selectedPlan = button.dataset.selectPlan;
+            selectedPlan =
+                button.dataset.selectPlan;
 
-            root.querySelectorAll(".as-plan-option").forEach(card => {
+            root.querySelectorAll(
+                ".as-plan-option"
+            ).forEach(card => {
                 card.classList.toggle(
                     "as-plan-selected",
                     card.dataset.plan === selectedPlan
                 );
             });
 
-            $("asPlanConfirmationTitle").textContent =
-                "Confirm " + selectedPlan + " plan";
+            if ($("asPlanConfirmationTitle")) {
+                $("asPlanConfirmationTitle").textContent =
+                    "Confirm " + selectedPlan + " plan";
+            }
 
-            $("asPlanConfirmationText").textContent =
-                selectedPlan === "Free"
-                    ? "You are already using the Free plan."
-                    : "You selected the " + selectedPlan +
-                    " plan. This demo will not charge you or change your subscription.";
+            if ($("asPlanConfirmationText")) {
+                $("asPlanConfirmationText").textContent =
+                    selectedPlan === "Free"
+                        ? "You are already using the Free plan."
+                        : "You selected the " +
+                        selectedPlan +
+                        " plan. This demo will not charge you or change your subscription.";
+            }
 
-            plansConfirmation.hidden = false;
+            if (plansConfirmation) {
+                plansConfirmation.hidden = false;
 
-            plansConfirmation.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest"
-            });
+                plansConfirmation.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest"
+                });
+            }
         });
     });
 
-    $("asPlanConfirm").addEventListener("click", () => {
-        if (!selectedPlan) {
-            showToast("Please select a plan first.");
-            return;
-        }
+    $("asPlanConfirm")?.addEventListener(
+        "click",
+        () => {
+            if (!selectedPlan) {
+                showToast(
+                    "Please select a plan first."
+                );
+                return;
+            }
 
-        if (selectedPlan === "Free") {
-            showToast("The Free plan is already your current plan.");
-        } else {
-            showToast(
-                selectedPlan +
-                " selected successfully in the demo. No subscription was changed."
-            );
-        }
+            if (selectedPlan === "Free") {
+                showToast(
+                    "The Free plan is already your current plan."
+                );
+            } else {
+                showToast(
+                    selectedPlan +
+                    " selected successfully in the demo. No subscription was changed."
+                );
+            }
 
-        closePlansModal();
-    });
-
-    plansModal.addEventListener("click", event => {
-        if (event.target === plansModal) {
             closePlansModal();
         }
-    });
+    );
 
-    document.addEventListener("keydown", event => {
-        if (event.key === "Escape" && !plansModal.hidden) {
-            closePlansModal();
+    plansModal?.addEventListener(
+        "click",
+        event => {
+            if (event.target === plansModal) {
+                closePlansModal();
+            }
         }
-    });
+    );
 
+    document.addEventListener(
+        "keydown",
+        event => {
+            if (
+                event.key === "Escape" &&
+                plansModal &&
+                !plansModal.hidden
+            ) {
+                closePlansModal();
+            }
+        }
+    );
+
+    // ============================================================
+    // INITIALIZATION
+    // ============================================================
 
     showSection("profile");
+    renderOrganizationLogo();
     loadSettings();
+
 })();
