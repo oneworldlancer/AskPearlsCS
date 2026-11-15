@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Microsoft.EntityFrameworkCore;
+
 using AskPearlsCS_DAL.DBModels;
 
 namespace AskPearlsCS_DAL.DBContext;
@@ -289,6 +291,8 @@ public partial class DBContextModel : DbContext
     public virtual DbSet<AskpearlsPortalUserNewsletterRequestList> AskpearlsPortalUserNewsletterRequestLists { get; set; }
 
     public virtual DbSet<AskpearlsPortalUserNotificationAlertList> AskpearlsPortalUserNotificationAlertLists { get; set; }
+
+    public virtual DbSet<AskpearlsPortalUserNotificationList> AskpearlsPortalUserNotificationLists { get; set; }
 
     public virtual DbSet<AskpearlsPortalUserNotificationOfflineMessageList> AskpearlsPortalUserNotificationOfflineMessageLists { get; set; }
 
@@ -718,9 +722,9 @@ public partial class DBContextModel : DbContext
 
     public virtual DbSet<UserLogin> UserLogins { get; set; }
 
-//////////    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//////////#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//////////        => optionsBuilder.UseSqlServer("Data Source=SHAYMAA-LAP\\SQLEXPRESS;Initial Catalog= ASKPEARLSDB;Integrated Security=True; Command Timeout=60000;Trusted_Connection=True;TrustServerCertificate=True;");
+    //////////    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //////////#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+    //////////        => optionsBuilder.UseSqlServer("Data Source=SHAYMAA-LAP\\SQLEXPRESS;Initial Catalog= ASKPEARLSDB;Integrated Security=True; Command Timeout=60000;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -22585,6 +22589,39 @@ public partial class DBContextModel : DbContext
                 .HasDefaultValue("1", "DF__UserLogin__userP__151B244E")
                 .HasColumnName("userPopular");
             entity.Property(e => e.ZipCode).HasColumnName("zipCode");
+        });
+
+        modelBuilder.Entity<AskpearlsPortalUserNotificationList>(entity =>
+        {
+            entity.HasKey(e => e.UNotificationId);
+            entity.ToTable("ASKPEARLS_PORTAL_USER_NOTIFICATION_LIST", "dbo");
+
+            entity.Property(e => e.UNotificationId).HasColumnName("UNotificationID").ValueGeneratedOnAdd();
+            entity.Property(e => e.RowViewTokenId).HasColumnName("RowViewTokenID")
+                .HasDefaultValueSql("(newid())");
+            entity.Property(e => e.RowDataTokenId).HasColumnName("RowDataTokenID").HasColumnType("nvarchar(max)").HasDefaultValue("0");
+            entity.Property(e => e.OwnerUserTokenId).HasColumnName("OwnerUserTokenID").HasColumnType("nvarchar(max)").HasDefaultValue("0");
+            entity.Property(e => e.OrganizationTokenId).HasColumnName("OrganizationTokenID").HasColumnType("nvarchar(max)").HasDefaultValue("0");
+            entity.Property(e => e.CompanyTokenId).HasColumnName("CompanyTokenID").HasColumnType("nvarchar(max)").HasDefaultValue("0");
+            entity.Property(e => e.NotificationTokenId).HasColumnName("NotificationTokenID").HasColumnType("nvarchar(max)").HasDefaultValue("0");
+            entity.Property(e => e.NotificationCode).HasColumnName("NotificationCode").HasColumnType("nvarchar(max)").HasDefaultValue("0");
+            entity.Property(e => e.NotificationValue).HasColumnName("NotificationValue").HasColumnType("nvarchar(max)").HasDefaultValue("0");
+            entity.Property(e => e.NotificationType).HasColumnName("NotificationType").HasColumnType("nvarchar(max)").HasDefaultValue("0");
+            entity.Property(e => e.NotificationText).HasColumnName("NotificationText").HasColumnType("nvarchar(max)").HasDefaultValue("0");
+            entity.Property(e => e.NotificationTitle).HasColumnName("NotificationTitle").HasColumnType("nvarchar(max)").HasDefaultValue("0");
+            entity.Property(e => e.NotificationMessage).HasColumnName("NotificationMessage").HasColumnType("nvarchar(max)").HasDefaultValue("0");
+            entity.Property(e => e.ActionUrl).HasColumnName("ActionURL").HasColumnType("nvarchar(max)").HasDefaultValue("0");
+            entity.Property(e => e.IsRead).HasColumnName("IsRead").HasDefaultValue(false);
+            entity.Property(e => e.CreatedAtUtc).HasColumnName("CreatedAtUtc").HasColumnType("smalldatetime")
+                .HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ReadAtUtc).HasColumnName("ReadAtUtc").HasColumnType("smalldatetime");
+            entity.Property(e => e.IsVisible).HasColumnName("IsVisible").HasDefaultValue(true);
+            entity.Property(e => e.IsActive).HasColumnName("IsActive").HasDefaultValue(true);
+            entity.Property(e => e.UploadDay).HasColumnName("UploadDay").HasDefaultValueSql("(datepart(day,getdate()))");
+            entity.Property(e => e.UploadMonth).HasColumnName("UploadMonth").HasDefaultValueSql("(datepart(month,getdate()))");
+            entity.Property(e => e.UploadYear).HasColumnName("UploadYear").HasDefaultValueSql("(datepart(year,getdate()))");
+            entity.Property(e => e.UploadDate).HasColumnName("UploadDate").HasColumnType("smalldatetime")
+                .HasDefaultValueSql("(getdate())");
         });
 
         OnModelCreatingPartial(modelBuilder);

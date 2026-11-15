@@ -46,6 +46,10 @@ builder.Services.AddScoped<IRecommendationItem_Service, RecommendationItem_Servi
 builder.Services.AddScoped<ICurrentUser_Repository, CurrentUser_Repository>();
 builder.Services.AddScoped<ICurrentUser_Service, CurrentUser_Service>();
 
+builder.Services.AddScoped<    INotification_Repository,    Notification_Repository>();
+
+builder.Services.AddScoped<    INotification_Service,    Notification_Service>();
+
 // ========================================
 // ACCOUNT & SETTINGS - BLL / DAL
 // ========================================

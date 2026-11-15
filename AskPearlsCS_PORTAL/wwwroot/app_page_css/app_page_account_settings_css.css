@@ -2252,3 +2252,16 @@ body[data-bs-theme="dark"] .account-settings-page .as-session-item {
         height: 100%;
         object-fit: contain;
     }
+
+    /* Persisted notification preferences */
+    .account-settings-page .as-setting-row.as-notification-disabled {
+        opacity: .58;
+    }
+
+    .account-settings-page .as-switch input:disabled + .as-switch-track {
+        cursor: not-allowed;
+    }
+
+    .account-settings-page .as-switch input:disabled:checked + .as-switch-track {
+        opacity: .75;
+    }

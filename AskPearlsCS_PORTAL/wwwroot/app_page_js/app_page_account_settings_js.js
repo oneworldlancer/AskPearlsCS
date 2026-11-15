@@ -8,6 +8,11 @@
 
     const $ = id => root.querySelector("#" + id);
     const settingsUrl = "/Account/Api/settings";
+    const notificationPreferencesUrl = "/Account/Api/notifications/preferences";
+    const notificationKeys = [ "nonEssentialNotifications", "emailNotifications", "activityReports", "productUpdates", "securityAlerts" ];
+    const profileKeys = [ "firstName", "lastName", "email", "jobTitle", "bio", "companyName", "website", "organizationLogoUrl", "industry", "companySize", "country" ];
+    let preferencesLoaded = false;
+    const pickKeys = (obj, keys) => Object.fromEntries(keys.map(k => [ k, obj[ k ] ]));
 
     const defaults = {
         nonEssentialNotifications: true,
@@ -439,9 +444,6 @@
                 !enabled
             );
 
-            if (!enabled) {
-                input.checked = false;
-            }
         });
 
         const status = $("asNotificationMasterStatus");
@@ -472,61 +474,42 @@
 
     async function loadSettings () {
         const saveButton = $("asSave");
-
         if (saveButton) saveButton.disabled = true;
-
-        if ($("asSaveStatus")) {
-            $("asSaveStatus").textContent =
-                "Loading account settings";
-        }
-
+        if ($("asSaveStatus")) $("asSaveStatus").textContent = "Loading account settings";
         try {
-            const data = await apiRequest(settingsUrl, {
-                headers: apiHeaders(false)
-            });
-
-            const settings = {
-                ...defaults,
-                ...(data.settings || {})
-            };
-
+            const [ accountResult, prefsResult ] = await Promise.allSettled([
+                apiRequest(settingsUrl, { headers: apiHeaders(false) }),
+                apiRequest(notificationPreferencesUrl, { headers: apiHeaders(false) })
+            ]);
+            if (accountResult.status !== "fulfilled") throw accountResult.reason;
+            const data = accountResult.value;
+            const settings = { ...defaults, ...(data.settings || {}) };
+            preferencesLoaded = prefsResult.status === "fulfilled";
+            if (preferencesLoaded) {
+                Object.assign(settings, pickKeys(prefsResult.value, notificationKeys));
+            } else {
+                console.error("Notification preferences could not be loaded", prefsResult.reason);
+            }
+            settings.securityAlerts = true;
             setSettings(settings);
-
-            // Update notification controls before taking the
-            // saved snapshot, so dirty-state comparison is correct.
             updateNonEssentialNotifications();
-
             savedSettings = currentSettings();
             settingsLoaded = true;
-
             applySubscription(data.subscription);
             updateDirtyState();
-
-            if ($("asNavBottomMessage")) {
-                $("asNavBottomMessage").textContent =
-                    "Changes are saved to your account.";
+            if ($("asNavBottomMessage")) $("asNavBottomMessage").textContent =
+                preferencesLoaded ? "Changes are saved to your account." : "Notification preferences could not be loaded. Retry before saving them.";
+            if (!preferencesLoaded) {
+                notificationKeys.forEach(k => { const el = $(fieldIds[ k ]); if (el) el.disabled = true; });
+                showToast("Notification preferences could not be loaded. Reload this page to retry.");
             }
         } catch (error) {
             settingsLoaded = false;
-
-            if ($("asSaveStatus")) {
-                $("asSaveStatus").textContent =
-                    "Could not load account settings";
-            }
-
-            showToast(
-                error.message ||
-                "Could not load your account settings."
-            );
-
-            console.error(
-                "Account settings API load failed.",
-                error
-            );
+            if ($("asSaveStatus")) $("asSaveStatus").textContent = "Could not load account settings";
+            showToast(error.message || "Could not load your account settings.");
+            console.error("Account settings API load failed.", error);
         } finally {
-            if (saveButton) {
-                saveButton.disabled = !settingsLoaded;
-            }
+            if (saveButton) saveButton.disabled = !settingsLoaded;
         }
     }
 
@@ -652,44 +635,42 @@
 
         const button = $("asSave");
         if (button) button.disabled = true;
-
+        const current = currentSettings();
+        const profileChanged = profileKeys.some(k => current[ k ] !== savedSettings[ k ]);
+        const notificationsChanged = notificationKeys.some(k => current[ k ] !== savedSettings[ k ]);
+        let failures = [];
         try {
-            const data = await apiRequest(settingsUrl, {
-                method: "PUT",
-                headers: apiHeaders(true),
-                body: JSON.stringify(currentSettings())
-            });
-
-            setSettings({
-                ...defaults,
-                ...(data.settings || currentSettings())
-            });
-
-            updateNonEssentialNotifications();
-
-            savedSettings = currentSettings();
-            settingsLoaded = true;
-
-            updateDirtyState();
-
-            showToast(
-                data.message ||
-                "Account settings saved."
-            );
-        } catch (error) {
-            showToast(
-                error.message ||
-                "Account settings could not be saved."
-            );
-
-            console.error(
-                "Account settings API save failed.",
-                error
-            );
-        } finally {
-            if (button) {
-                button.disabled = !settingsLoaded;
+            if (profileChanged) {
+                try {
+                    const data = await apiRequest(settingsUrl, {
+                        method: "PUT", headers: apiHeaders(true),
+                        body: JSON.stringify(pickKeys(current, profileKeys))
+                    });
+                    const result = { ...current, ...(data.settings || {}) };
+                    profileKeys.forEach(k => { savedSettings[ k ] = result[ k ]; });
+                    setSettings({ ...currentSettings(), ...pickKeys(result, profileKeys) });
+                } catch (error) { failures.push("Profile/organization: " + error.message); }
             }
+            if (notificationsChanged) {
+                if (!preferencesLoaded) {
+                    failures.push("Notification preferences are not loaded.");
+                } else {
+                    try {
+                        const payload = { ...pickKeys(current, notificationKeys), securityAlerts: true };
+                        const result = await apiRequest(notificationPreferencesUrl, {
+                            method: "PUT", headers: apiHeaders(true), body: JSON.stringify(payload)
+                        });
+                        const persisted = { ...payload, ...result, securityAlerts: true };
+                        notificationKeys.forEach(k => { savedSettings[ k ] = persisted[ k ]; });
+                        setSettings({ ...currentSettings(), ...pickKeys(persisted, notificationKeys) });
+                        updateNonEssentialNotifications();
+                    } catch (error) { failures.push("Notifications: " + error.message); }
+                }
+            }
+            updateDirtyState();
+            showToast(failures.length ? failures.join(" | ") : "Account settings saved.");
+        } finally {
+            if (button) button.disabled = !settingsLoaded;
         }
     });
 

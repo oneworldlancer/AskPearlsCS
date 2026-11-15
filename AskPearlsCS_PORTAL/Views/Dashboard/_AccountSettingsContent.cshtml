@@ -12,7 +12,7 @@
     <header class="ap-page-header as-page-header">
         <div>
             <h1 class="ap-page-title">Account &amp; Settings</h1>
-            <p class="ap-page-description">Manage your profile, organization, security, and notifications.</p>
+            <p class="ap-page-description">Manage your profile, organization, and notification preferences.</p>
         </div>
         <div class="ap-page-actions as-header-actions">
             <span class="as-save-status" id="asSaveStatus">
@@ -53,7 +53,7 @@
                 <i class="bi bi-chevron-right as-nav-chevron"></i>
             </button>
 
-            <div class="as-nav-label">PREFERENCES</div>
+            <div class="as-nav-label">NOTIFICATIONS</div>
 
             <button type="button" class="as-nav-item" data-as-section="notifications">
                 <i class="bi bi-bell"></i>
@@ -136,7 +136,7 @@
 
                     <div class="as-info-banner">
                         <i class="bi bi-info-circle"></i>
-                        <span>Organization name and country are saved to your account. Branding, industry, team size, and website are saved as account preferences.</span>
+                        <span>Your organization details are saved to your AskPearls account.</span>
                     </div>
 
                  
@@ -300,17 +300,17 @@
                         <div class="as-setting-copy">
                             <strong>Security alerts</strong>
                             <p>Get notified about important security-related events.</p>
-                            <span class="as-muted-note">Recommended notification preference.</span>
+                            <span class="as-muted-note">Security alerts remain enabled to protect your account.</span>
                         </div>
                         <label class="as-switch">
-                            <input type="checkbox" id="asSecurityAlerts" checked>
+                            <input type="checkbox" id="asSecurityAlerts" checked disabled>
                             <span class="as-switch-track"></span>
                         </label>
                     </div>
 
                     <div class="as-info-banner">
                         <i class="bi bi-info-circle"></i>
-                        <span>These switches only update the prototype's local UI state. No emails or notifications are sent.</span>
+                        <span>Your preferences are saved to your account. In-app alerts appear when supported AskPearls events occur. Email delivery requires a configured notification sender.</span>
                     </div>
                 </div>
             </section>
