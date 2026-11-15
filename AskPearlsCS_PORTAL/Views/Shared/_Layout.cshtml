@@ -49,7 +49,8 @@
 
     <link href="~/app_css/app_portal_chat_crm_css.css" rel="stylesheet" />
      <link href="~/app_css/app_page_widget_selector_shared_css.css?v=20261021-2" rel="stylesheet" />
-    
+    <link href="~/app_page_css/app_page_notifications_css.css" rel="stylesheet" asp-append-version="true" />
+
     <!-- Vendor CSS Files -->
     <link href="MemberView/vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="MemberView/vendors/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -293,75 +294,20 @@
                 </div>
 
                 <div class="header-action-wrap dropdown notification-dropdown">
-                    <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
-                        <i class="bi bi-bell"></i>
-                        <span class="header-badge">4</span>
+                    @Html.AntiForgeryToken()
+                    <button type="button" class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications" aria-label="Notifications">
+                        <i class="bi bi-bell"></i><span class="header-badge" hidden>0</span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end notification-menu">
                         <div class="notification-header">
-                            <div>
-                                <h6>Notifications</h6>
-                                <span>4 unread</span>
-                            </div>
+                            <div><h6>Notifications</h6><span>0 unread</span></div>
                             <a href="#" data-notification-action="mark-all-read">Mark all read</a>
                         </div>
-                        <div class="notification-summary">
-                            <a href="activity.html" class="notification-summary-item">
-                                <strong>7</strong>
-                                <span>Today</span>
-                            </a>
-                            <a href="notifications.html" class="notification-summary-item">
-                                <strong>23</strong>
-                                <span>This week</span>
-                            </a>
-                            <a href="roles.html" class="notification-summary-item">
-                                <strong>3</strong>
-                                <span>Approvals</span>
-                            </a>
-                        </div>
-                        <div class="notification-list">
-                            <div class="notification-item unread">
-                                <span class="notification-dot"></span>
-                                <div class="notification-icon info"><i class="bi bi-rocket-takeoff"></i></div>
-                                <div class="notification-content">
-                                    <div class="notification-title">Deploy ready</div>
-                                    <div class="notification-text">Sprint release passed QA validation.</div>
-                                    <span class="notification-time">5m ago</span>
-                                </div>
-                            </div>
-                            <div class="notification-item unread">
-                                <span class="notification-dot"></span>
-                                <img src="../MemberView/assets/img/avatars/avatar-2.webp" alt="" class="notification-avatar">
-                                <div class="notification-content">
-                                    <div class="notification-title">Mia sent feedback</div>
-                                    <div class="notification-text">Please review updated dashboard spacing.</div>
-                                    <span class="notification-time">21m ago</span>
-                                </div>
-                            </div>
-                            <div class="notification-item unread">
-                                <span class="notification-dot"></span>
-                                <div class="notification-icon warning"><i class="bi bi-exclamation-triangle"></i></div>
-                                <div class="notification-content">
-                                    <div class="notification-title">Storage alert</div>
-                                    <div class="notification-text">Media bucket reached 81% usage.</div>
-                                    <span class="notification-time">58m ago</span>
-                                </div>
-                            </div>
-                            <div class="notification-item unread">
-                                <span class="notification-dot"></span>
-                                <div class="notification-icon success"><i class="bi bi-check2-circle"></i></div>
-                                <div class="notification-content">
-                                    <div class="notification-title">Payment received</div>
-                                    <div class="notification-text">Invoice #INV-3921 settled successfully.</div>
-                                    <span class="notification-time">2h ago</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="notification-footer">
-                            <a href="notifications.html">Open notification center <i class="bi bi-arrow-right"></i></a>
-                        </div>
+                        <div class="notification-list"><div class="ap-n-empty">Loading…</div></div>
+                        <div class="notification-footer"><a href="#">Open notification center <i class="bi bi-arrow-right"></i></a></div>
                     </div>
                 </div>
+
 
                 <div class="header-action-wrap dropdown messages-dropdown d-none">
                     <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Messages">
@@ -518,11 +464,19 @@
                 <span class="mobile-menu-label">Theme</span>
             </button>
 
-            <a href="notifications.html" class="mobile-menu-item">
+         
+            <a href="#" class="mobile-menu-item" data-ap-notifications-link>
+                <i class="bi bi-bell"></i>
+                <span class="badge" data-ap-notifications-count hidden>0</span>
+                <span class="mobile-menu-label">Notifications</span>
+            </a>
+
+            
+            @*  <a href="notifications.html" class="mobile-menu-item">
                 <i class="bi bi-bell"></i>
                 <span class="badge">4</span>
                 <span class="mobile-menu-label">Alerts</span>
-            </a>
+            </a> *@
 
             <a href="apps-chat.html" class="mobile-menu-item d-none">
                 <i class="bi bi-chat-left-text"></i>
@@ -555,10 +509,11 @@
     @* width:90px !important; *@
 
   
-    <!-- AskPearls Agent Sidebar -->
     <!-- ==========================================
      AskPearls Merchant Portal - Left Sidebar
      ========================================== -->
+    <!-- AskPearls Agent Sidebar -->
+
     <style>
             /* The sidebar stays dark in both portal themes, so keep its future-agent
                    headings and descriptions readable when the main portal is in light mode. */
@@ -582,7 +537,56 @@
                 line-height: 1.2;
                 text-transform: uppercase;
             }
-    </style>
+        #askPearlsSidebar .ap-global-heading { margin-top: 20px; }
+        #askPearlsSidebar .ap-global-navigation { padding: 4px 10px 10px; }
+        #askPearlsSidebar .ap-global-navigation .ap-nav-link {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 14px; border-radius: 7px;
+        }
+        #askPearlsSidebar .ap-global-navigation .ap-global-unread {
+            margin-left: auto; border-radius: 99px; padding: 1px 7px;
+            background: #e24b5b; color: #fff; font-size: 11px; font-weight: 700;
+        }
+        #askPearlsSidebar .ap-global-unread[hidden] { display: none !important; }
+ 
+        
+        
+/* Fix spacing between global navigation and Account & Settings */
+
+#askPearlsSidebar .ap-global-navigation {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+#askPearlsSidebar .ap-global-navigation + * {
+    margin-top: 0 !important;
+}
+
+#askPearlsSidebar .ap-global-navigation .ap-nav-link {
+    margin-bottom: 0 !important;
+}
+
+    /* Separate Notifications from Account & Settings */
+#askPearlsSidebar .ap-nav-link[data-page="notifications"] {
+    margin-bottom: 12px;
+}
+
+#askPearlsSidebar .ap-nav-link[data-page="account-settings"] {
+    position: relative;
+    margin-top: 12px;
+}
+
+#askPearlsSidebar .ap-nav-link[data-page="account-settings"]::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -13px;
+    height: 1px;
+    background: rgba(160, 190, 185, 0.20);
+}    
+        
+        </style>
 
     <aside id="askPearlsSidebar" class="sidebar ap-sidebar" style="margin-bottom:66px;-ms-overflow-style: none;scrollbar-width: none;border-bottom-right-radius:10px;border-top-right-radius:10px;">
 
@@ -633,7 +637,7 @@
                                     <span>Dashboard</span>
                                 </a>
 
-                                <!-- Widget selection and creation -->
+<!-- Widget selection and creation -->
                                 <a href="#" class="ap-nav-link" data-page="widgets">
                                     <i class="bi bi-grid"></i>
                                     <span>My Widgets</span>
@@ -770,6 +774,24 @@
                 </div>
             </div>
             <!-- End agent accordion -->
+            <!-- Global, shared across every AI agent -->
+            <div class="ap-sidebar-heading ap-global-heading">COMMUNICATION &amp; SUPPORT</div>
+            <nav class="ap-global-navigation" aria-label="Workspace communication">
+                <a href="#" class="ap-nav-link" data-page="notifications">
+                    <i class="bi bi-bell"></i>
+                    <span>My Notifications</span>
+                    <span class="ap-global-unread" data-ap-notifications-count hidden></span>
+                </a>
+                @* Enable when the authenticated user messaging API and page are implemented.
+                <a href="#" class="ap-nav-link" data-page="my-support-messages">
+                    <i class="bi bi-chat-left-text"></i><span>My Support Messages</span>
+                </a>
+                *@
+            </nav>
+            @* STAFF ONLY: Render the Support Inbox link only after a server-validated
+               Webmaster/Support authorization policy and staff page are implemented.
+               Do not rely on CSS or client-side role checks for access control. *@
+
             <!-- Account settings -->
             <div class="ap-sidebar-bottom">
                 <a href="#" class="ap-nav-link ap-settings-link" data-page="account-settings">
@@ -788,6 +810,7 @@
             </a>
         </div>
     </aside>
+  
     <!-- End AskPearls Merchant Portal sidebar -->
 
     <div id="apSidebarBackdrop"
@@ -1412,7 +1435,7 @@
 <script>
 
 
-        function setActiveSidebarItem (section) {
+        function setActiveSidebarItem_xxx1 (section) {
             const $links = $("#askPearlsSidebar .ap-nav-link");
 
             const $matchingLink = $links.filter(function () {
@@ -1428,7 +1451,7 @@
             $matchingLink.addClass("active").attr("aria-current", "page");
         }
 
-        function loadPortalSection (section) {
+        function loadPortalSection_xxx1 (section) {
             if (!section) {
                 console.warn("No data-page attribute found.");
                 return;
@@ -1485,96 +1508,6 @@
 
             loadPortalSection(section);
         });
-
-        // // // // // // Buttons and links inside the loaded page
-        // // // // // $(document).on("click", "#apMainContent [data-page]", function (e) {
-        // // // // //     e.preventDefault();
-        // // // // //     loadPortalSection($(this).attr("data-page"));
-        // // // // // });
-
-
-        // // // // // $(document).on("click", "#askPearlsSidebar .ap-nav-link", function(e) {
-        // // // // //     e.preventDefault();
-
-        // // // // //     const section = $(this).data("page");
-
-        // // // // //     if (!section) {
-        // // // // //         console.warn("No data-page attribute found.");
-        // // // // //         return;
-        // // // // //     }
-
-        // // // // //     console.log("Loading portal section:", section);
-
-        // // // // //     $("#askPearlsSidebar .ap-nav-link").removeClass("active");
-        // // // // //     $(this).addClass("active");
-
-        // // // // //     $.ajax({
-        // // // // //         url: "/Dashboard/LoadSection",
-        // // // // //         type: "GET",
-        // // // // //         data: { section: section },
-
-        // // // // //         success: function(html) {
-        // // // // //             $("#apMainContent").html(html);
-             
-             
-        // // // // //             // Smoothly scroll the right content wrapper to the top
-        // // // // //             $("#apMainContent").stop().animate(
-        // // // // //                 { scrollTop: 0 },
-        // // // // //                 1000
-        // // // // //             );
-
-        // // // // //         },
-
-        // // // // //         error: function(xhr) {
-        // // // // //             console.error(
-        // // // // //                 "Section loading failed:",
-        // // // // //                 xhr.status,
-        // // // // //                 xhr.responseText
-        // // // // //             );
-
-        // // // // //             alert("Unable to load the Dashboard section. Check the browser console.");
-        // // // // //         }
-        // // // // //     });
-        // // // // // });
-
-
-
-
-
-        // // // // // $(document).on(
-        // // // // //     "click",
-        // // // // //     //"#apMainContent [data-page='widget-builder']",
-        // // // // //     "#apMainContent [data-page]",
-        // // // // //    function(e) {
-        // // // // //         e.preventDefault();
-
-        // // // // //         const section = $(this).data("page");
-
-        // // // // //         $.ajax({
-        // // // // //             url: "/Dashboard/LoadSection",
-        // // // // //             type: "GET",
-        // // // // //             data: { section: section },
-
-        // // // // //             success: function(html) {
-                      
-        // // // // //                 $("#apMainContent").html(html);
-
-        // // // // //                 // Smoothly scroll the right content wrapper to the top
-        // // // // //                 $("#apMainContent").stop().animate(
-        // // // // //                     { scrollTop: 0 },
-        // // // // //                     1000
-        // // // // //                 );
-  
-        // // // // //             },
-
-        // // // // //             error: function() {
-        // // // // //                 console.error("Failed to load page:", section);
-        // // // // //             }
-        // // // // //         });
-        // // // // //     }
-        // // // // // );
-
-
 
         
         (function() {
@@ -1688,6 +1621,11 @@
 <script src="MemberView/assets/js/theme.js"></script>
 <script src="MemberView/assets/js/main.js"></script>
 <script src="~/app_js/askpearls-sidebar-toggle.js"></script>
+
+<script src="~/app_page_js/app_page_notifications_js.js" asp-append-version="true"></script>
+<script src="~/app_js/askpearls_global_navigation.js" asp-append-version="true"></script>
+
+
 </body>
 
 </html>

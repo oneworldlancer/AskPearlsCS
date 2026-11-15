@@ -59,6 +59,10 @@ namespace AskPearlsCS_PORTAL.Controllers
                     return PartialView("_ScoringPreviewContent");
 
 
+                case "notifications":
+                    return PartialView("_NotificationsContent");
+
+
                 default:
                     return NotFound("Portal section not found.");
             }

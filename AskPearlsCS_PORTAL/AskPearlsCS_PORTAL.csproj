@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="app_Manager\" />
     <Folder Include="wwwroot\app_crmx\assets\avatars\" />
     <Folder Include="wwwroot\app_crmx\assets\icons\" />
     <Folder Include="wwwroot\app_crmx\assets\illustrations\" />
