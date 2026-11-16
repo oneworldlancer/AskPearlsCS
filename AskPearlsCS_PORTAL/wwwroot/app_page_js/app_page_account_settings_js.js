@@ -530,40 +530,111 @@
 
     function showSection (section) {
         activeSection = section;
-        // Companies use their own Save company action, not the general step button.
-        if ($("asSave")) $("asSave").style.display = section === "companies" ? "none" : "";
-        if ($("asReset")) $("asReset").style.display = section === "companies" ? "none" : "";
-        root.querySelectorAll(
-            "[data-as-section]"
-        ).forEach(button => {
-            button.classList.toggle(
-                "active",
-                button.dataset.asSection === section
-            );
-        });
 
-        root.querySelectorAll(
-            "[data-as-panel]"
-        ).forEach(panel => {
-            const active =
-                panel.dataset.asPanel === section;
+        // Companies use their own Save company action,
+        // not the general step button.
+        if ($("asSave")) {
+            $("asSave").style.display =
+                section === "companies" ? "none" : "";
+        }
 
-            panel.hidden = !active;
+        if ($("asReset")) {
+            $("asReset").style.display =
+                section === "companies" ? "none" : "";
+        }
 
-            panel.classList.toggle(
-                "active",
-                active
-            );
+        // Update the active navigation item.
+        root.querySelectorAll("[data-as-section]")
+            .forEach(button => {
+                button.classList.toggle(
+                    "active",
+                    button.dataset.asSection === section
+                );
+            });
+
+        // Display only the selected content panel.
+        root.querySelectorAll("[data-as-panel]")
+            .forEach(panel => {
+                const active =
+                    panel.dataset.asPanel === section;
+
+                panel.hidden = !active;
+
+                panel.classList.toggle("active", active);
+            });
+
+        updateDirtyState();
+    }
+
+    // ============================================================
+    // SCROLL SELECTED SECTION TO TOP
+    // ============================================================
+
+    function scrollSelectedSectionToTop (section) {
+
+        const panel = Array.from(
+            root.querySelectorAll("[data-as-panel]")
+        ).find(item =>
+            item.dataset.asPanel === section && !item.hidden
+        );
+
+        if (!panel) return;
+
+        // Reset scrollable parent containers.
+        // Preserve the left navigation scroll position.
+        for (
+            let element = panel.parentElement;
+            element;
+            element = element.parentElement
+        ) {
+            const style = window.getComputedStyle(element);
+
+            const isScrollable =
+                /^(auto|scroll|overlay)$/.test(style.overflowY);
+
+            if (
+                isScrollable &&
+                element.scrollHeight > element.clientHeight
+            ) {
+                element.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+        // Also handle normal document scrolling.
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
         });
     }
 
-    root.querySelectorAll(
-        "[data-as-section]"
-    ).forEach(button => {
-        button.addEventListener("click", () => {
-            showSection(button.dataset.asSection);
+    // ============================================================
+    // SECTION NAVIGATION CLICK EVENTS
+    // ============================================================
+
+    root.querySelectorAll("[data-as-section]")
+        .forEach(button => {
+
+            button.addEventListener("click", () => {
+
+                const section = button.dataset.asSection;
+
+                if (!section) return;
+
+                // Change the visible content.
+                showSection(section);
+
+                // Wait until the browser applies the panel changes.
+                requestAnimationFrame(() => {
+                    scrollSelectedSectionToTop(section);
+                });
+
+            });
+
         });
-    });
+
 
     // ============================================================
     // FIELD CHANGE TRACKING
