@@ -17,17 +17,20 @@ namespace AskPearlsCS_API.Controllers;
 public class WidgetController : ControllerBase
 {
     private readonly IWidget_Service _widgetService;
+    private readonly IWidgetDomain_Service _widgetDomains;
     private readonly IWidgetVersion_Service _widgetVersionService;
     private readonly IQuestion_Service _questionService;
     private readonly ICurrentUserContext_Service _currentUser;
 
     public WidgetController(
         IWidget_Service widgetService,
+        IWidgetDomain_Service widgetDomains,
         IWidgetVersion_Service widgetVersionService,
         IQuestion_Service questionService,
         ICurrentUserContext_Service currentUser)
     {
         _widgetService = widgetService;
+        _widgetDomains = widgetDomains;
         _widgetVersionService = widgetVersionService;
         _questionService = questionService;
         _currentUser = currentUser;
@@ -174,6 +177,28 @@ public class WidgetController : ControllerBase
 
         var result = await _widgetService.SaveDecisionRuleDraftAsync(ownerUserTokenId, publicKey, request);
         return FromOperation(result);
+    }
+
+
+    [HttpGet("{publicKey}/domains")]
+    public async Task<IActionResult> GetAllowedDomains(string publicKey)
+    {
+        if (!TryGetAuthenticatedOwner(out var owner, out var error)) return error!;
+        return FromOperation(await _widgetDomains.GetDomainsAsync(owner, publicKey));
+    }
+
+    [HttpPost("{publicKey}/domains")]
+    public async Task<IActionResult> AddAllowedDomain(string publicKey, [FromBody] WidgetAllowedDomainRequest? request)
+    {
+        if (!TryGetAuthenticatedOwner(out var owner, out var error)) return error!;
+        return FromOperation(await _widgetDomains.AddDomainAsync(owner, publicKey, request?.Domain));
+    }
+
+    [HttpDelete("{publicKey}/domains/{domain}")]
+    public async Task<IActionResult> DeleteAllowedDomain(string publicKey, string domain)
+    {
+        if (!TryGetAuthenticatedOwner(out var owner, out var error)) return error!;
+        return FromOperation(await _widgetDomains.DeleteDomainAsync(owner, publicKey, domain));
     }
 
     private bool TryGetAuthenticatedOwner(out string ownerUserTokenId, out IActionResult? error)
