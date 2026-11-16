@@ -51,13 +51,13 @@ public sealed class AccountSettings_Repository : IAccountSettings_Repository
         var limit = WidgetLimit(effectivePlan);
         var settings = new AccountSettingsDto
         {
-            FirstName = user.FirstName is not null ? Clean(user.FirstName) : Pick(profileJson?.FirstName, legacy?.FirstName),
-            LastName = user.LastName is not null ? Clean(user.LastName) : Pick(profileJson?.LastName, legacy?.LastName),
+            FirstName = Clean(user.FirstName),
+            LastName = Clean(user.LastName),
             Email = user.EmailAddress ?? user.Email ?? "",
-            JobTitle = profile?.Occupation is not null ? Clean(profile.Occupation) : Pick(profileJson?.JobTitle, legacy?.JobTitle),
-            Bio = profile?.AboutMe is not null ? Clean(profile.AboutMe) : Pick(profileJson?.Bio, legacy?.Bio),
-            CompanyName = organization?.OrganizationName is not null ? Clean(organization.OrganizationName) : Pick(orgJson?.OrganizationName, legacy?.CompanyName),
-            OrganizationLogoUrl = organization?.OrganizationLogoUrl is not null ? Clean(organization.OrganizationLogoUrl) : Pick(orgJson?.OrganizationLogoUrl, legacy?.OrganizationLogoUrl)
+            JobTitle = profile is not null ? Clean(profile.Occupation) : Pick(profileJson?.JobTitle, legacy?.JobTitle),
+            Bio = profile is not null ? Clean(profile.AboutMe) : Pick(profileJson?.Bio, legacy?.Bio),
+            CompanyName = organization is not null ? Clean(organization.OrganizationName) : Pick(orgJson?.OrganizationName, legacy?.CompanyName),
+            OrganizationLogoUrl = organization is not null ? Clean(organization.OrganizationLogoUrl) : Pick(orgJson?.OrganizationLogoUrl, legacy?.OrganizationLogoUrl)
         };
         return new AccountSettingsResponse(true, settings,
             new AccountSubscriptionDto(effectivePlan, status, subscription is null,

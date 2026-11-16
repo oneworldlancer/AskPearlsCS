@@ -643,16 +643,24 @@
                 if (!verified || verified.success !== true || !verified.settings) {
                     throw new Error("The API could not verify the saved settings.");
                 }
-                const matches = keys.every(k =>
-                    String(verified.settings[ k ] ?? "").trim() === String(current[ k ] ?? "").trim()
+                // SQL uses "0" for empty text. Compare normalized form values,
+                // not raw SQL placeholders or incidental line-ending differences.
+                const normalized = value => cleanValue(value).replace(/\r\n?/g, "\n");
+                const mismatches = keys.filter(k =>
+                    normalized(verified.settings[ k ]) !== normalized(current[ k ])
                 );
-                if (!matches) {
+                if (mismatches.length) {
                     console.error("AskPearls persistence mismatch", {
                         section: activeSection,
+                        fields: mismatches,
                         submitted: pickKeys(current, keys),
-                        readBack: pickKeys(verified.settings, keys)
+                        readBack: pickKeys(verified.settings, keys),
+                        putResponse: data.settings ? pickKeys(data.settings, keys) : null
                     });
-                    throw new Error("Save was not verified in the database. Check the API and SQL connection.");
+                    throw new Error(
+                        "Profile save could not be verified for: " +
+                        mismatches.join(", ") + ". Check the Console and API response."
+                    );
                 }
                 keys.forEach(k => { savedSettings[ k ] = verified.settings[ k ]; });
                 setSettings({ ...currentSettings(), ...pickKeys(verified.settings, keys) });
