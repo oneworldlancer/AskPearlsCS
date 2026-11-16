@@ -1,0 +1,38 @@
+name: Package changed replacement files
+on:
+  push:
+    branches:
+      - feature/publish-embed-domain-persistence-20261116
+  workflow_dispatch:
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build replacement files ZIP
+        run: |
+          python3 - <<'PY'
+          import zipfile
+          paths = [
+              "AskPearlsCS_API/Controllers/WidgetController.cs",
+              "AskPearlsCS_API/Program.cs",
+              "AskPearlsCS_BLL/app_Service/WidgetDomain_Service.cs",
+              "AskPearlsCS_CDN/wwwroot/app.widgets/widget.js",
+              "AskPearlsCS_DAL/app_Repository/WidgetDomain_Repository.cs",
+              "AskPearlsCS_DOMAIN/app_ContractsManager/WidgetAllowedDomainRequest.cs",
+              "AskPearlsCS_PORTAL/Controllers/WidgetProxyController.cs",
+              "AskPearlsCS_PORTAL/Views/Dashboard/_PublishEmbedContent.cshtml",
+              "AskPearlsCS_PORTAL/wwwroot/app_page_js/app_page_publish_embed_js.js",
+              "Database/Scripts/20261116_WidgetAllowedDomains.sql",
+          ]
+          with zipfile.ZipFile("AskPearlsCS_10_Replacement_Files.zip", "w", zipfile.ZIP_DEFLATED) as archive:
+              for path in paths:
+                  archive.write(path, path)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AskPearlsCS_10_Replacement_Files
+          path: AskPearlsCS_10_Replacement_Files.zip
+          retention-days: 30
