@@ -9,13 +9,14 @@
     const $ = id => root.querySelector("#" + id);
     const settingsUrl = "/Account/Api/settings";
     const notificationPreferencesUrl = "/Account/Api/notifications/preferences";
+    const subscriptionEnsureUrl = "/Account/Api/subscription/ensure-free";
     const notificationKeys = [ "nonEssentialNotifications", "emailNotifications", "activityReports", "productUpdates", "securityAlerts" ];
-    const profileKeys = [ "firstName", "lastName", "email", "jobTitle", "bio", "companyName", "website", "organizationLogoUrl", "industry" ];
+
     let preferencesLoaded = false;
     let activeSection = "profile";
     const sectionKeys = {
         profile: [ "firstName", "lastName", "jobTitle", "bio" ],
-        organization: [ "companyName", "website", "organizationLogoUrl", "industry" ],
+        organization: [ "companyName", "organizationLogoUrl" ],
         notifications: notificationKeys
     };
     const pickKeys = (obj, keys) => Object.fromEntries(keys.map(k => [ k, obj[ k ] ]));
@@ -28,9 +29,7 @@
         jobTitle: "",
         bio: "",
         companyName: "",
-        website: "",
         organizationLogoUrl: "",
-        industry: "technology",
         emailNotifications: true,
         activityReports: true,
         productUpdates: false,
@@ -45,9 +44,7 @@
         jobTitle: "asJobTitle",
         bio: "asBio",
         companyName: "asCompanyName",
-        website: "asWebsite",
         organizationLogoUrl: "asOrgLogoInput",
-        industry: "asIndustry",
         emailNotifications: "asEmailNotifications",
         activityReports: "asActivityReports",
         productUpdates: "asProductUpdates",
@@ -482,6 +479,13 @@
         if (saveButton) saveButton.disabled = true;
         if ($("asSaveStatus")) $("asSaveStatus").textContent = "Loading account settings";
         try {
+            // Provision an actual Free subscription for authenticated accounts without subscription history.
+            // This endpoint never changes existing plans or payment state.
+            try {
+                await apiRequest(subscriptionEnsureUrl, { method: "POST", credentials: "same-origin", headers: apiHeaders(true) });
+            } catch (provisionError) {
+                console.warn("Subscription provisioning unavailable; loading existing account data.", provisionError);
+            }
             const [ accountResult, prefsResult ] = await Promise.allSettled([
                 apiRequest(settingsUrl, { headers: apiHeaders(false) }),
                 apiRequest(notificationPreferencesUrl, { headers: apiHeaders(false) })
@@ -526,6 +530,9 @@
 
     function showSection (section) {
         activeSection = section;
+        // Companies use their own Save company action, not the general step button.
+        if ($("asSave")) $("asSave").style.display = section === "companies" ? "none" : "";
+        if ($("asReset")) $("asReset").style.display = section === "companies" ? "none" : "";
         root.querySelectorAll(
             "[data-as-section]"
         ).forEach(button => {
@@ -601,11 +608,6 @@
         }
         if (activeSection === "organization") {
             // An organization can be completed later; save the supplied fields only.
-            const website = cleanValue(current.website);
-            if (website && !$("asWebsite").checkValidity()) {
-                showToast("Please enter a valid organization website URL.");
-                $("asWebsite").focus(); return;
-            }
             const logo = cleanValue(current.organizationLogoUrl);
             if (logo && !isValidLogoUrl(logo)) {
                 showToast("Please enter a valid HTTPS logo URL.");

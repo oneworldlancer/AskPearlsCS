@@ -133,7 +133,7 @@
                 <div class="as-panel-heading">
                     <div>
                         <h4>Organization details</h4>
-                        <p>Manage the company information associated with your workspace.</p>
+                        <p>Manage your workspace name and branding. Company details are managed separately.</p>
                     </div>
                     <span class="as-heading-icon"><i class="bi bi-building"></i></span>
                 </div>
@@ -156,7 +156,7 @@
 
                         <div class="as-org-branding-details">
                             <strong>Organization branding</strong>
-                            <p>Personalize your workspace with your company logo.</p>
+                            <p>Personalize your workspace with its logo.</p>
 
                             <div class="as-org-branding-actions">
                                 <input type="url" id="asOrgLogoInput" class="as-logo-url-input"
@@ -192,24 +192,8 @@
 
                     <div class="as-form-grid">
                         <div class="as-field as-field-full">
-                            <label for="asCompanyName">Organization name <span>*</span></label>
-                            <input type="text" id="asCompanyName" value="" maxlength="150" required>
-                        </div>
-                        <div class="as-field">
-                            <label for="asWebsite">Organization website</label>
-                            <input type="url" id="asWebsite" value="" maxlength="200">
-                        </div>
-                        <div class="as-field">
-                            <label for="asIndustry">Industry</label>
-                            <select id="asIndustry">
-                                <option value="technology" selected>Technology / SaaS</option>
-                                <option value="ecommerce">E-commerce &amp; Retail</option>
-                                <option value="real-estate">Real Estate</option>
-                                <option value="healthcare">Healthcare</option>
-                                <option value="education">Education</option>
-                                <option value="professional">Professional Services</option>
-                                <option value="other">Other</option>
-                            </select>
+                            <label for="asCompanyName">Organization name</label>
+                            <input type="text" id="asCompanyName" value="" maxlength="150">
                         </div>
                     </div>
                 </div>
@@ -217,29 +201,29 @@
 
 
             <!-- COMPANIES: fully integrated, no separate partial required -->
-<section class="as-panel" data-as-panel="companies" hidden>
-    <div class="as-panel-heading"><div><h4>Companies</h4><p>Manage businesses belonging to your organization.</p></div><span class="as-heading-icon"><i class="bi bi-buildings"></i></span></div>
-    <div class="as-panel-body">
-        <div class="as-field"><label for="asCompanyOrganization">Organization</label><select id="asCompanyOrganization"></select></div>
-        <div class="as-field" style="margin-top:18px"><label for="asCompanySelect">Companies</label><select id="asCompanySelect"><option value="">New company</option></select></div>
-        <div class="as-form-grid" style="margin-top:20px">
-            <div class="as-field as-field-full"><label for="asBusinessName">Company name *</label><input id="asBusinessName" maxlength="150" required></div>
-            <div class="as-field"><label for="asBusinessWebsite">Website</label><input id="asBusinessWebsite" type="url" maxlength="200" placeholder="https://example.com"></div>
-            <div class="as-field"><label for="asBusinessLogo">Logo HTTPS URL</label><input id="asBusinessLogo" type="url" maxlength="500"></div>
-            <div class="as-field"><label for="asBusinessIndustry">Industry</label><select id="asBusinessIndustry"><option value="">Select</option><option value="technology">Technology / SaaS</option><option value="ecommerce">E-commerce &amp; Retail</option><option value="real-estate">Real Estate</option><option value="healthcare">Healthcare</option><option value="education">Education</option><option value="professional">Professional Services</option><option value="finance">Finance &amp; Insurance</option><option value="manufacturing">Manufacturing</option><option value="logistics">Logistics &amp; Transportation</option><option value="hospitality">Hospitality &amp; Tourism</option><option value="construction">Construction</option><option value="media">Media &amp; Entertainment</option><option value="agriculture">Agriculture</option><option value="nonprofit">Nonprofit</option><option value="other">Other</option></select></div>
-            <div class="as-field"><label for="asBusinessSize">Company size</label><select id="asBusinessSize"><option value="">Select</option><option value="1">Just me</option><option value="2-10">2–10</option><option value="11-50">11–50</option><option value="51-200">51–200</option><option value="201+">201+</option></select></div>
-            <div class="as-field"><label for="asBusinessCountry">Country</label><select id="asBusinessCountry"><option value="">Select</option><option value="EG">Egypt</option><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option><option value="DE">Germany</option><option value="FR">France</option><option value="NL">Netherlands</option><option value="SE">Sweden</option><option value="NO">Norway</option><option value="DK">Denmark</option><option value="CH">Switzerland</option><option value="BE">Belgium</option><option value="AE">United Arab Emirates</option><option value="SA">Saudi Arabia</option><option value="AU">Australia</option><option value="IN">India</option><option value="other">Other</option></select></div>
-            <div class="as-field"><label for="asBusinessCity">City</label><input id="asBusinessCity" maxlength="100"></div>
-            <div class="as-field"><label for="asBusinessEmail">Business email</label><input id="asBusinessEmail" maxlength="150"></div>
-            <div class="as-field"><label for="asBusinessPhone">Business phone</label><input id="asBusinessPhone" maxlength="50"></div>
-        </div>
-        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:22px">
-            <button type="button" class="as-btn as-btn-outline" id="asBusinessNew"><i class="bi bi-plus"></i> New company</button>
-            <button type="button" class="as-btn as-btn-primary" id="asBusinessSave"><i class="bi bi-check-lg"></i> Save company</button>
-        </div>
-        <div id="asBusinessStatus" role="status" aria-live="polite" style="margin-top:12px"></div>
-    </div>
-</section>
+            <section class="as-panel" data-as-panel="companies" hidden>
+                <div class="as-panel-heading"><div><h4>Companies</h4><p>Manage businesses belonging to your organization.</p></div><span class="as-heading-icon"><i class="bi bi-buildings"></i></span></div>
+                <div class="as-panel-body">
+                    <div class="as-field"><label for="asCompanyOrganization">Organization</label><select id="asCompanyOrganization"></select></div>
+                    <div class="as-field" style="margin-top:18px"><label for="asCompanySelect">Companies</label><select id="asCompanySelect"><option value="">New company</option></select></div>
+                    <div class="as-form-grid" style="margin-top:20px">
+                        <div class="as-field as-field-full"><label for="asBusinessName">Company name *</label><input id="asBusinessName" maxlength="150" required></div>
+                        <div class="as-field"><label for="asBusinessWebsite">Website</label><input id="asBusinessWebsite" type="url" maxlength="200" placeholder="https://example.com"></div>
+                        <div class="as-field"><label for="asBusinessLogo">Logo HTTPS URL</label><input id="asBusinessLogo" type="url" maxlength="500"></div>
+                        <div class="as-field"><label for="asBusinessIndustry">Industry</label><select id="asBusinessIndustry"><option value="">Select</option><option value="technology">Technology / SaaS</option><option value="ecommerce">E-commerce &amp; Retail</option><option value="real-estate">Real Estate</option><option value="healthcare">Healthcare</option><option value="education">Education</option><option value="professional">Professional Services</option><option value="finance">Finance &amp; Insurance</option><option value="manufacturing">Manufacturing</option><option value="logistics">Logistics &amp; Transportation</option><option value="hospitality">Hospitality &amp; Tourism</option><option value="construction">Construction</option><option value="media">Media &amp; Entertainment</option><option value="agriculture">Agriculture</option><option value="nonprofit">Nonprofit</option><option value="other">Other</option></select></div>
+                        <div class="as-field"><label for="asBusinessSize">Company size</label><select id="asBusinessSize"><option value="">Select</option><option value="1">Just me</option><option value="2-10">2–10</option><option value="11-50">11–50</option><option value="51-200">51–200</option><option value="201+">201+</option></select></div>
+                        <div class="as-field"><label for="asBusinessCountry">Country</label><select id="asBusinessCountry"><option value="">Select</option><option value="EG">Egypt</option><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option><option value="DE">Germany</option><option value="FR">France</option><option value="NL">Netherlands</option><option value="SE">Sweden</option><option value="NO">Norway</option><option value="DK">Denmark</option><option value="CH">Switzerland</option><option value="BE">Belgium</option><option value="AE">United Arab Emirates</option><option value="SA">Saudi Arabia</option><option value="AU">Australia</option><option value="IN">India</option><option value="other">Other</option></select></div>
+                        <div class="as-field"><label for="asBusinessCity">City</label><input id="asBusinessCity" maxlength="100"></div>
+                        <div class="as-field"><label for="asBusinessEmail">Business email</label><input id="asBusinessEmail" maxlength="150"></div>
+                        <div class="as-field"><label for="asBusinessPhone">Business phone</label><input id="asBusinessPhone" maxlength="50"></div>
+                    </div>
+                    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:22px">
+                        <button type="button" class="as-btn as-btn-outline" id="asBusinessNew"><i class="bi bi-plus"></i> New company</button>
+                        <button type="button" class="as-btn as-btn-primary" id="asBusinessSave"><i class="bi bi-check-lg"></i> Save company</button>
+                    </div>
+                    <div id="asBusinessStatus" role="status" aria-live="polite" style="margin-top:12px"></div>
+                </div>
+            </section>
 
             <!-- NOTIFICATIONS -->
             <section class="as-panel" data-as-panel="notifications" hidden>
@@ -331,7 +315,7 @@
                     <div class="as-plan-title">
                         <span>YOUR SUBSCRIPTION</span>
                         <h4><span id="asCurrentPlanName">Free Plan</span> <span class="as-plan-badge" id="asCurrentPlanBadge">Current</span></h4>
-                        <p>A preview of your plan and resource usage.</p>
+                        <p>Your plan and resource usage from your account.</p>
                     </div>
                 </div>
 
@@ -542,5 +526,5 @@
 </div>
 <link href="~/app_page_css/app_page_account_settings_css.css?v=20261115-2" rel="stylesheet" />
 <script src="~/app_js/app_input_value_helper.js?v=20261115-1"></script>
-<script src="~/app_page_js/app_page_account_settings_js.js?v=20261115-2"></script>
-<script src="~/app_page_js/app_page_account_companies_js.js?v=20261115-4"></script>
+<script src="~/app_page_js/app_page_account_settings_js.js?v=20261116-1"></script>
+<script src="~/app_page_js/app_page_account_companies_js.js?v=20261116-1"></script>

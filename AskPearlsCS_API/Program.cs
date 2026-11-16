@@ -51,8 +51,12 @@ builder.Services.AddScoped<INotification_Repository, Notification_Repository>();
 builder.Services.AddScoped<INotification_Service, Notification_Service>();
 
 
-builder.Services.AddScoped<AskPearlsCS_DAL.app_Repository.ICompany_Repository, AskPearlsCS_DAL.app_Repository.Company_Repository>();
-builder.Services.AddScoped<AskPearlsCS_BLL.app_Service.ICompany_Service, AskPearlsCS_BLL.app_Service.Company_Service>();
+builder.Services.AddScoped<ICompany_Repository, Company_Repository>();
+builder.Services.AddScoped<ICompany_Service, Company_Service>();
+
+builder.Services.AddScoped<ISubscription_Repository, Subscription_Repository>();
+
+builder.Services.AddScoped<ISubscription_Service, Subscription_Service>();
 
 
 // ========================================

@@ -1,4 +1,7 @@
-﻿using AskPearlsCS_DAL.DBContext;
+﻿using System.Data;
+using System.Text.Json;
+
+using AskPearlsCS_DAL.DBContext;
 using AskPearlsCS_DAL.DBModels;
 
 using AskPearlsCS_DOMAIN.app_ContractsManager;
@@ -32,7 +35,6 @@ public sealed class Notification_Repository : INotification_Repository
     }
     public Task<int> UnreadCountAsync(string owner, CancellationToken ct) =>
         ForOwner(owner).CountAsync(x => x.IsRead != true, ct);
-
     public async Task<bool> MarkReadAsync(string owner, long id, CancellationToken ct)
     {
         var row = await ForOwner(owner).FirstOrDefaultAsync(x => x.UNotificationId == id, ct);
@@ -80,46 +82,61 @@ public sealed class Notification_Repository : INotification_Repository
         return Map(row);
     }
 
-    private static readonly string[] Codes = {
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
+    private static string JsonCode(string owner) => "decisionos.account.notifications." + owner;
+    private static readonly string[] LegacyCodes = {
         "notifications.enabled", "notifications.email.enabled", "notifications.activity.enabled",
         "notifications.product.enabled", "notifications.security.enabled" };
     private IQueryable<AskpearlsPortalUserSettingList> Settings(string owner) =>
-        _db.AskpearlsPortalUserSettingLists.Where(x => x.OwnerUserTokenId == owner &&
-            x.SettingCategory == "notifications" && x.IsActive != false);
+        _db.AskpearlsPortalUserSettingLists.Where(x => x.OwnerUserTokenId == owner && x.IsActive != false);
+
     public async Task<NotificationPreferencesDto> GetPreferencesAsync(string owner, CancellationToken ct)
     {
         var rows = await Settings(owner).AsNoTracking().ToListAsync(ct);
+        var json = rows.Where(x => x.SettingCode == JsonCode(owner)).OrderByDescending(x => x.SettingId)
+            .Select(x => x.SettingValue).FirstOrDefault();
+        if (!string.IsNullOrWhiteSpace(json))
+        {
+            try
+            {
+                var parsed = JsonSerializer.Deserialize<NotificationPreferencesDto>(json, JsonOptions);
+                if (parsed is not null) return parsed with { SecurityAlerts = true };
+            }
+            catch (JsonException) { /* Fall back to legacy Boolean rows. */ }
+        }
         bool Get(int i, bool fallback)
         {
-            var value = rows.LastOrDefault(x => x.SettingCode == Codes[i])?.SettingValue;
+            var value = rows.Where(x => x.SettingCode == LegacyCodes[i]).OrderByDescending(x => x.SettingId)
+                .Select(x => x.SettingValue).FirstOrDefault();
             return value is null ? fallback : value == "1" || value.Equals("true", StringComparison.OrdinalIgnoreCase);
         }
         return new(Get(0, true), Get(1, true), Get(2, true), Get(3, false), true);
     }
+
     public async Task SavePreferencesAsync(string owner, NotificationPreferencesDto p, CancellationToken ct)
     {
-        var rows = await Settings(owner).ToListAsync(ct);
-        bool[] values = { p.NonEssentialNotifications, p.EmailNotifications, p.ActivityReports, p.ProductUpdates, true };
-        for (var i = 0; i < Codes.Length; i++)
+        await using var tx = await _db.Database.BeginTransactionAsync(IsolationLevel.Serializable, ct);
+        var code = JsonCode(owner);
+        var row = await Settings(owner).Where(x => x.SettingCode == code)
+            .OrderByDescending(x => x.SettingId).FirstOrDefaultAsync(ct);
+        if (row is null)
         {
-            var row = rows.FirstOrDefault(x => x.SettingCode == Codes[i]);
-            if (row is null)
+            row = new AskpearlsPortalUserSettingList
             {
-                row = new AskpearlsPortalUserSettingList
-                {
-                    RowViewTokenId = Guid.NewGuid(),
-                    RowDataTokenId = "0",
-                    OwnerUserTokenId = owner,
-                    SettingCode = Codes[i],
-                    SettingCategory = "notifications",
-                    SettingType = "boolean",
-                    IsActive = true,
-                    UploadDate = DateTime.UtcNow
-                };
-                _db.AskpearlsPortalUserSettingLists.Add(row);
-            }
-            row.SettingValue = values[i] ? "1" : "0";
+                RowViewTokenId = Guid.NewGuid(),
+                RowDataTokenId = "0",
+                OwnerUserTokenId = owner,
+                SettingCode = code,
+                SettingCategory = "decisionos.account.notifications",
+                SettingType = "json",
+                SettingText = "AskPearls notification preferences",
+                IsActive = true
+            };
+            _db.AskpearlsPortalUserSettingLists.Add(row);
         }
+        row.SettingValue = JsonSerializer.Serialize(p with { SecurityAlerts = true }, JsonOptions);
+        row.UploadDate = DateTime.UtcNow;
         await _db.SaveChangesAsync(ct);
+        await tx.CommitAsync(ct);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Data;
+using System.Globalization;
 using System.Text.Json;
 
 using AskPearlsCS_DAL.DBContext;
@@ -15,55 +16,68 @@ public sealed class AccountSettings_Repository : IAccountSettings_Repository
 {
     private readonly DBContextModel _db;
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
-
     public AccountSettings_Repository(DBContextModel db) => _db = db;
+    private static string Store(string? s) => AppInputValueHelper.ToDatabaseValue(s);
+    private static string Clean(string? s) => AppInputValueHelper.Clean(s);
+    private static string Code(string owner, string section) => $"decisionos.account.{section}.{owner}";
+    private static string LegacyCode(string owner) => "decisionos.account.settings." + owner;
 
     public async Task<AccountSettingsResponse?> GetAsync(string userId, CancellationToken ct = default)
     {
         var owner = userId.Trim();
         var user = await FindUserAsync(owner, ct);
         if (user is null) return null;
-
         var profile = await _db.AskpearlsPortalUserProfileLists.AsNoTracking()
             .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false)
             .OrderByDescending(x => x.UprofileId).FirstOrDefaultAsync(ct);
         var organization = await _db.AskpearlsPortalUserOrganizationLists.AsNoTracking()
             .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false && x.IsVisible != false)
             .OrderByDescending(x => x.UorganizationId).FirstOrDefaultAsync(ct);
+        var legacy = await ReadJsonAsync<AccountSettingsUpdateRequest>(owner, LegacyCode(owner), ct);
+        var profileJson = await ReadJsonAsync<ProfileJson>(owner, Code(owner, "profile"), ct);
+        var orgJson = await ReadJsonAsync<OrganizationJson>(owner, Code(owner, "organization"), ct);
         var subscription = await _db.AskpearlsPortalUserSubscriptionLists.AsNoTracking()
             .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false && x.IsVisible != false)
-            .OrderByDescending(x => x.UploadDate).FirstOrDefaultAsync(ct);
-        var raw = await _db.AskpearlsPortalUserSettingLists.AsNoTracking()
-            .Where(x => x.SettingCode == SettingsCode(owner) && x.IsActive == true)
-            .OrderByDescending(x => x.SettingId).Select(x => x.SettingValue).FirstOrDefaultAsync(ct);
-        var preferences = Deserialize(raw);
-        var widgetCount = await _db.AskpearlsPortalUserWebsiteWidgetLists.AsNoTracking()
+            .OrderByDescending(x => x.UsubscribeId).FirstOrDefaultAsync(ct);
+        var count = await _db.AskpearlsPortalUserWebsiteWidgetLists.AsNoTracking()
             .CountAsync(x => x.OwnerUserTokenId == owner && x.IsActive == true && x.IsVisible == true, ct);
-
-        var plan = string.IsNullOrWhiteSpace(subscription?.SubscriptionPlan) ? "Free" : subscription.SubscriptionPlan.Trim();
-        var limit = WidgetLimit(plan);
-        return new AccountSettingsResponse(true,
-            Merge(preferences, user, profile, organization),
-            new AccountSubscriptionDto(plan, subscription?.SubscriptionStatus ?? "preview", subscription is null,
-                widgetCount, limit, limit.HasValue ? Math.Max(0, limit.Value - widgetCount) : null));
+        var plan = Clean(subscription?.SubscriptionPlan);
+        if (plan.Length == 0) plan = "Free";
+        var status = Clean(subscription?.SubscriptionStatus);
+        if (status.Length == 0) status = subscription is null ? "not-provisioned" : "unknown";
+        // Only an actual active subscription can grant paid entitlements.
+        var effectivePlan = subscription is not null && status.Equals("active", StringComparison.OrdinalIgnoreCase)
+            ? plan : "Free";
+        var limit = WidgetLimit(effectivePlan);
+        var settings = new AccountSettingsDto
+        {
+            FirstName = user.FirstName is not null ? Clean(user.FirstName) : Pick(profileJson?.FirstName, legacy?.FirstName),
+            LastName = user.LastName is not null ? Clean(user.LastName) : Pick(profileJson?.LastName, legacy?.LastName),
+            Email = user.EmailAddress ?? user.Email ?? "",
+            JobTitle = profile?.Occupation is not null ? Clean(profile.Occupation) : Pick(profileJson?.JobTitle, legacy?.JobTitle),
+            Bio = profile?.AboutMe is not null ? Clean(profile.AboutMe) : Pick(profileJson?.Bio, legacy?.Bio),
+            CompanyName = organization?.OrganizationName is not null ? Clean(organization.OrganizationName) : Pick(orgJson?.OrganizationName, legacy?.CompanyName),
+            OrganizationLogoUrl = organization?.OrganizationLogoUrl is not null ? Clean(organization.OrganizationLogoUrl) : Pick(orgJson?.OrganizationLogoUrl, legacy?.OrganizationLogoUrl)
+        };
+        return new AccountSettingsResponse(true, settings,
+            new AccountSubscriptionDto(effectivePlan, status, subscription is null,
+                count, limit, limit.HasValue ? Math.Max(0, limit.Value - count) : null));
     }
 
     public async Task<AccountSettingsResponse?> SaveAsync(string userId, AccountSettingsUpdateRequest request, CancellationToken ct = default)
     {
         var owner = userId.Trim();
-        await using var transaction = await _db.Database.BeginTransactionAsync(ct);
+        await using var tx = await _db.Database.BeginTransactionAsync(IsolationLevel.Serializable, ct);
         var user = await FindUserAsync(owner, ct);
         if (user is null) return null;
-
-        var section = (request.SaveSection ?? "all").ToLowerInvariant();
-        if (section is "profile" or "all")
+        var now = DateTime.UtcNow;
+        var section = request.SaveSection;
+        if (section == "profile")
         {
-            user.FirstName = AppInputValueHelper.ToDatabaseValue(request.FirstName);
+            user.FirstName = Store(request.FirstName);
             user.FirstNameLower = user.FirstName.ToLowerInvariant();
-            user.LastName = AppInputValueHelper.ToDatabaseValue(request.LastName);
+            user.LastName = Store(request.LastName);
             user.LastNameLower = user.LastName.ToLowerInvariant();
-            // Never change the Google-managed email address.
-
             var profile = await _db.AskpearlsPortalUserProfileLists
                 .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false)
                 .OrderByDescending(x => x.UprofileId).FirstOrDefaultAsync(ct);
@@ -76,15 +90,16 @@ public sealed class AccountSettings_Repository : IAccountSettings_Repository
                     OwnerUserTokenId = owner,
                     IsActive = true,
                     IsDisplayToken = true,
-                    UploadDate = DateTime.UtcNow
+                    UploadDate = now
                 };
                 _db.AskpearlsPortalUserProfileLists.Add(profile);
             }
-            profile.Occupation = AppInputValueHelper.ToDatabaseValue(request.JobTitle);
-            profile.AboutMe = AppInputValueHelper.ToDatabaseValue(request.Bio);
+            profile.Occupation = Store(request.JobTitle);
+            profile.AboutMe = Store(request.Bio);
+            await WriteJsonAsync(owner, section, new ProfileJson(
+                Store(request.FirstName), Store(request.LastName), Store(request.JobTitle), Store(request.Bio)), ct);
         }
-
-        if (section is "organization" or "all")
+        else if (section == "organization")
         {
             var organization = await _db.AskpearlsPortalUserOrganizationLists
                 .Where(x => x.OwnerUserTokenId == owner && x.IsActive != false && x.IsVisible != false)
@@ -96,120 +111,70 @@ public sealed class AccountSettings_Repository : IAccountSettings_Repository
                     RowViewTokenId = Guid.NewGuid(),
                     RowDataTokenId = Guid.NewGuid().ToString("N"),
                     OwnerUserTokenId = owner,
-                    AccountType = "portal",
                     OrganizationTokenId = Guid.NewGuid().ToString("N"),
+                    AccountType = "portal",
                     ActiveStatus = "active",
                     IsActive = true,
                     IsVisible = true,
-                    UploadDate = DateTime.UtcNow
+                    UploadDate = now
                 };
                 _db.AskpearlsPortalUserOrganizationLists.Add(organization);
             }
-            organization.OrganizationName = AppInputValueHelper.ToDatabaseValue(request.CompanyName);
-            organization.OrganizationLogoUrl = AppInputValueHelper.ToDatabaseValue(request.OrganizationLogoUrl);
-            organization.OrganizationWebsiteUrl = AppInputValueHelper.ToDatabaseValue(request.Website);
-            organization.OrganizationIndustry = AppInputValueHelper.ToDatabaseValue(request.Industry);
-            organization.OrganizationSize = AppInputValueHelper.ToDatabaseValue(request.CompanySize);
-            organization.CountryCode = request.Country;
-            organization.CountryName = CountryName(request.Country);
+            organization.OrganizationName = Store(request.CompanyName);
+            organization.OrganizationLogoUrl = Store(request.OrganizationLogoUrl);
+            // Company industry, size, country and website are intentionally NOT written here.
+            await WriteJsonAsync(owner, section, new OrganizationJson(
+                Store(request.CompanyName), Store(request.OrganizationLogoUrl)), ct);
         }
+        else throw new ArgumentException("Unsupported account settings section.");
+        await _db.SaveChangesAsync(ct);
+        await tx.CommitAsync(ct);
+        var response = await GetAsync(owner, ct);
+        return response is null ? null : response with { Message = section + " saved." };
+    }
 
-        var setting = await _db.AskpearlsPortalUserSettingLists
-            .Where(x => x.SettingCode == SettingsCode(owner) && x.IsActive == true)
+    private async Task WriteJsonAsync<T>(string owner, string section, T payload, CancellationToken ct)
+    {
+        var code = Code(owner, section);
+        var row = await _db.AskpearlsPortalUserSettingLists
+            .Where(x => x.OwnerUserTokenId == owner && x.SettingCode == code && x.IsActive != false)
             .OrderByDescending(x => x.SettingId).FirstOrDefaultAsync(ct);
-        if (setting is null)
+        if (row is null)
         {
-            setting = new AskpearlsPortalUserSettingList
+            row = new AskpearlsPortalUserSettingList
             {
                 RowViewTokenId = Guid.NewGuid(),
-                RowDataTokenId = Guid.NewGuid().ToString("N"),
-                SettingCode = SettingsCode(owner),
-                SettingText = "AskPearls account settings",
+                RowDataTokenId = "0",
+                OwnerUserTokenId = owner,
+                SettingCode = code,
+                SettingText = "AskPearls " + section + " settings",
                 SettingType = "json",
-                SettingCategory = "decisionos.account",
+                SettingCategory = "decisionos.account." + section,
                 IsActive = true
             };
-            _db.AskpearlsPortalUserSettingLists.Add(setting);
+            _db.AskpearlsPortalUserSettingLists.Add(row);
         }
-        // Merge with previously persisted preferences so saving one wizard step
-        // never clears data belonging to another step.
-        var previous = Deserialize(setting.SettingValue);
-        var merged = section switch
-        {
-            "profile" => previous with
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                JobTitle = request.JobTitle,
-                Bio = request.Bio
-            },
-            "organization" => previous with
-            {
-                CompanyName = request.CompanyName,
-                Website = request.Website,
-                OrganizationLogoUrl = request.OrganizationLogoUrl,
-                Industry = request.Industry,
-                CompanySize = request.CompanySize,
-                Country = request.Country
-            },
-            _ => request
-        };
-        setting.SettingValue = JsonSerializer.Serialize(merged, JsonOptions);
-        setting.UploadDate = DateTime.UtcNow;
-
-        await _db.SaveChangesAsync(ct);
-        await transaction.CommitAsync(ct);
-        // Read after commit so the subscription display is populated consistently.
-        var refreshed = await GetAsync(userId, ct);
-        return refreshed is null ? null : refreshed with { Message = "Account settings saved." };
+        row.SettingValue = JsonSerializer.Serialize(payload, JsonOptions);
+        row.UploadDate = DateTime.UtcNow;
     }
 
-    private static AccountSettingsUpdateRequest Deserialize(string? raw)
+    private async Task<T?> ReadJsonAsync<T>(string owner, string code, CancellationToken ct) where T : class
     {
-        if (string.IsNullOrWhiteSpace(raw)) return new AccountSettingsUpdateRequest();
-        try { return JsonSerializer.Deserialize<AccountSettingsUpdateRequest>(raw, JsonOptions) ?? new(); }
-        catch (JsonException) { return new(); }
+        var raw = await _db.AskpearlsPortalUserSettingLists.AsNoTracking()
+            .Where(x => (x.OwnerUserTokenId == owner || x.OwnerUserTokenId == null || x.OwnerUserTokenId == "0") &&
+                        x.SettingCode == code && x.IsActive != false)
+            .OrderByDescending(x => x.SettingId).Select(x => x.SettingValue).FirstOrDefaultAsync(ct);
+        if (string.IsNullOrWhiteSpace(raw)) return null;
+        try { return JsonSerializer.Deserialize<T>(raw, JsonOptions); }
+        catch (JsonException) { return null; }
     }
-
-    private static AccountSettingsDto Merge(AccountSettingsUpdateRequest extra,
-        AskpearlsPortalUserList user, AskpearlsPortalUserProfileList? profile,
-        AskpearlsPortalUserOrganizationList? organization) => new()
-        {
-            FirstName = !AppInputValueHelper.IsEmpty(user.FirstName) ? AppInputValueHelper.Clean(user.FirstName) : AppInputValueHelper.Clean(extra.FirstName),
-            LastName = !AppInputValueHelper.IsEmpty(user.LastName) ? AppInputValueHelper.Clean(user.LastName) : AppInputValueHelper.Clean(extra.LastName),
-            Email = user.EmailAddress ?? user.Email ?? "",
-            JobTitle = !AppInputValueHelper.IsEmpty(profile?.Occupation) ? AppInputValueHelper.Clean(profile?.Occupation) : AppInputValueHelper.Clean(extra.JobTitle),
-            Bio = !AppInputValueHelper.IsEmpty(profile?.AboutMe) ? AppInputValueHelper.Clean(profile?.AboutMe) : AppInputValueHelper.Clean(extra.Bio),
-            CompanyName = !AppInputValueHelper.IsEmpty(organization?.OrganizationName) ? AppInputValueHelper.Clean(organization?.OrganizationName) : AppInputValueHelper.Clean(extra.CompanyName),
-            Country = organization?.CountryCode ?? extra.Country,
-            Website = AppInputValueHelper.Clean(organization?.OrganizationWebsiteUrl ?? extra.Website),
-            OrganizationLogoUrl = AppInputValueHelper.Clean(organization?.OrganizationLogoUrl ?? extra.OrganizationLogoUrl),
-            Industry = AppInputValueHelper.Clean(organization?.OrganizationIndustry ?? extra.Industry),
-            CompanySize = AppInputValueHelper.Clean(organization?.OrganizationSize ?? extra.CompanySize),
-            NonEssentialNotifications = extra.NonEssentialNotifications,
-            EmailNotifications = extra.EmailNotifications,
-            ActivityReports = extra.ActivityReports,
-            ProductUpdates = extra.ProductUpdates,
-            SecurityAlerts = true,
-            Language = "en",
-            Timezone = extra.Timezone,
-            DateFormat = extra.DateFormat,
-            WeekStart = extra.WeekStart,
-            CompactMode = extra.CompactMode
-        };
-
-    private static string SettingsCode(string owner) => "decisionos.account.settings." + owner;
-    private static string CountryName(string? code) => (code ?? "").ToUpperInvariant() switch
+    private static string Pick(params string?[] values)
     {
-        "EG" => "Egypt",
-        "US" => "United States",
-        "GB" => "United Kingdom",
-        "DE" => "Germany",
-        "FR" => "France",
-        "CA" => "Canada",
-        _ => code ?? ""
-    };
-    // UI estimate only. Actual entitlements must be enforced in widget creation service/repository.
+        foreach (var value in values) if (!string.IsNullOrWhiteSpace(value) && value.Trim() != "0") return Clean(value);
+        return "";
+    }
+    private sealed record ProfileJson(string FirstName, string LastName, string JobTitle, string Bio);
+    private sealed record OrganizationJson(string OrganizationName, string OrganizationLogoUrl);
     private static int? WidgetLimit(string plan) => plan.ToLowerInvariant() switch
     {
         "free" => 5,
@@ -222,10 +187,10 @@ public sealed class AccountSettings_Repository : IAccountSettings_Repository
     {
         var user = await _db.AskpearlsPortalUserLists.FirstOrDefaultAsync(
             x => x.OwnerUserTokenId == token && x.IsActive != false && x.IsVisible != false, ct);
-        if (user != null) return user;
-        if (!long.TryParse(token, NumberStyles.None, CultureInfo.InvariantCulture, out var numericId)) return null;
+        if (user is not null) return user;
+        if (!long.TryParse(token, NumberStyles.None, CultureInfo.InvariantCulture, out var id)) return null;
         return await _db.AskpearlsPortalUserLists.FirstOrDefaultAsync(
-            x => x.UserId == numericId && x.IsActive != false && x.IsVisible != false &&
-            (x.OwnerUserTokenId == null || x.OwnerUserTokenId == ""), ct);
+            x => x.UserId == id && x.IsActive != false && x.IsVisible != false &&
+                (x.OwnerUserTokenId == null || x.OwnerUserTokenId == ""), ct);
     }
 }

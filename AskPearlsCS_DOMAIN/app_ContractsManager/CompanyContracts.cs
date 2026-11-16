@@ -3,14 +3,14 @@
 public sealed record CompanySaveRequest(
     string OrganizationTokenId,
     string CompanyName,
-    string? CompanyWebsiteUrl = null,
-    string? CompanyLogoUrl = null,
-    string? CompanyIndustry = null,
-    string? CompanySize = null,
-    string? CompanyCountry = null,
-    string? CompanyCity = null,
-    string? EmailAddress = null,
-    string? PhoneNumber = null);
+    string? CompanyWebsiteUrl = "0",
+    string? CompanyLogoUrl = "0",
+    string? CompanyIndustry = "0",
+    string? CompanySize = "0",
+    string? CompanyCountry = "0",
+    string? CompanyCity = "0",
+    string? EmailAddress = "0",
+    string? PhoneNumber = "0");
 
 public sealed record CompanyDto(
     string CompanyTokenId,
