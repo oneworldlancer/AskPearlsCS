@@ -7,10 +7,10 @@
     const endpoint = '/Widget/Api/widgets';
     // Public installation endpoints; never use these for authenticated Portal requests.
     // Replace these development URLs when deploying to production.
-    const scriptUrl = 'https://localhost:7087/app.widgets/widget.js';
-    const apiOrigin = 'https://localhost:7139';
+    const scriptUrl = root.dataset.peScriptUrl || 'https://cdn.askpearls.com/app.widgets/widget.js';
+    const apiOrigin = root.dataset.peApiOrigin || 'https://api.askpearls.com';
     const widgetBuilderUrl = '/Dashboard/WidgetBuilder';
-    const state = { widgets: [], selected: null, platform: 'html', publishing: false, loading: false, domains: [] };
+    const state = { widgets: [], selected: null, platform: 'html', publishing: false, loading: false, domains: [], domainBusy: false };
     const platformInfo = {
         html: [ 'Custom HTML', 'HTML embed snippet', 'Copy your embed code', 'Copy the snippet below and add it to your website.', 'Paste the code into your website', 'Place the snippet before the closing body tag, then save your page.', 'Add the snippet once per website.' ],
         wordpress: [ 'WordPress', 'WordPress embed snippet', 'Copy your widget snippet', 'Use the standard embed snippet on WordPress.', 'Add the snippet to WordPress', 'Use a trusted custom-code plugin or your theme footer.', 'Back up your site before changing theme files.' ],
@@ -79,8 +79,8 @@
             if (data.success === false) throw new Error(data.message || 'Unable to load widgets.');
             state.widgets = Array.isArray(data.widgets) ? data.widgets : Array.isArray(data.data?.widgets) ? data.data.widgets : [];
             state.selected = preferredKey ? state.widgets.find(w => keyOf(w) === preferredKey) || null : null;
-            renderSelector(); renderStatus(); renderCode();
-        } catch (e) { state.widgets = []; state.selected = null; renderSelector(); toast(e.message || 'Unable to load widgets.'); }
+            renderSelector(); renderStatus(); renderCode(); await loadDomains();
+        } catch (e) { state.widgets = []; state.selected = null; state.domains = []; renderDomains(); renderSelector(); toast(e.message || 'Unable to load widgets.'); }
         finally { state.loading = false; renderStatus(); renderCode(); }
     }
     async function publish () {
@@ -105,9 +105,56 @@
     function normalizeDomain (value) {
         let s = String(value || '').trim().toLowerCase();
         if (!s) return null;
-        try { if (/^https?:\/\//.test(s)) { const u = new URL(s); if (u.username || u.password) return null; s = u.hostname; } } catch { return null; }
+        try {
+            if (/^https?:\/\//i.test(s)) {
+                const url = new URL(s);
+                if (url.username || url.password || url.pathname !== '/' || url.search || url.hash || url.port) return null;
+                s = url.hostname;
+            }
+        } catch { return null; }
         s = s.replace(/\.$/, '');
-        return s.length <= 253 && s.split('.').length >= 2 && s.split('.').every(x => /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(x)) ? s : null;
+        return s.length <= 253 && s.includes('.') && s.split('.').every(part =>
+            /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(part)) ? s : null;
+    }
+    function domainUrl () {
+        return state.selected ? endpoint + '/' + encodeURIComponent(keyOf(state.selected)) + '/domains' : null;
+    }
+    async function loadDomains () {
+        const url = domainUrl();
+        state.domains = [];
+        renderDomains();
+        if (!url) return;
+        const selectedKey = keyOf(state.selected);
+        try {
+            const data = await request(url);
+            if (keyOf(state.selected) !== selectedKey) return;
+            state.domains = Array.isArray(data.domains) ? data.domains : [];
+        } catch (error) {
+            if (keyOf(state.selected) === selectedKey) toast(error.message || 'Failed to load domains.');
+        }
+        renderDomains();
+    }
+    async function saveDomain (domain) {
+        const url = domainUrl();
+        if (!url || state.domainBusy) return;
+        state.domainBusy = true;
+        try {
+            await request(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ domain }) });
+            await loadDomains();
+            toast('Domain saved.');
+        } catch (error) { text('peDomainError', error.message || 'Failed to save domain.'); }
+        finally { state.domainBusy = false; }
+    }
+    async function deleteDomain (domain) {
+        const url = domainUrl();
+        if (!url || state.domainBusy) return;
+        state.domainBusy = true;
+        try {
+            await request(url + '/' + encodeURIComponent(domain), { method: 'DELETE' });
+            await loadDomains();
+            toast('Domain removed.');
+        } catch (error) { toast(error.message || 'Failed to remove domain.'); }
+        finally { state.domainBusy = false; }
     }
     function renderDomains () {
         const list = $('peDomainList'); if (!list) return;
@@ -115,14 +162,20 @@
         for (const domain of state.domains) {
             const row = document.createElement('div'); row.className = 'pe-domain-row';
             const name = document.createElement('strong'); name.textContent = domain;
-            const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'pe-domain-remove'; remove.setAttribute('aria-label', 'Remove ' + domain); remove.innerHTML = '<i class="bi bi-trash3"></i>';
-            remove.addEventListener('click', () => { state.domains = state.domains.filter(x => x !== domain); renderDomains(); toast('Domain removed from demo allowlist.'); });
+            const remove = document.createElement('button'); remove.type = 'button';
+            remove.className = 'pe-domain-remove'; remove.setAttribute('aria-label', 'Remove ' + domain);
+            remove.innerHTML = '<i class="bi bi-trash3"></i>';
+            remove.addEventListener('click', () => deleteDomain(domain));
             row.append(name, remove); list.append(row);
         }
-        text('peDomainCount', `${ state.domains.length } domain${ state.domains.length === 1 ? '' : 's' }`);
+        text('peDomainCount', state.domains.length + ' domain' + (state.domains.length === 1 ? '' : 's'));
         text('peDomainListCount', String(state.domains.length));
         if ($('peDomainEmpty')) $('peDomainEmpty').hidden = state.domains.length !== 0;
         list.hidden = state.domains.length === 0;
+        const input = $('peDomainInput');
+        if (input) input.disabled = !state.selected;
+        const add = root.querySelector('.pe-add-domain');
+        if (add) add.disabled = !state.selected;
     }
     const checkboxes = [ ...root.querySelectorAll('.pe-checklist-checkbox') ];
     function updateChecklist () {
@@ -134,16 +187,19 @@
     root.querySelectorAll('[data-pe-platform]').forEach(btn => btn.addEventListener('click', () => renderPlatform(btn.dataset.pePlatform)));
     $('peWidgetSelect')?.addEventListener('change', e => {
         state.selected = state.widgets.find(w => keyOf(w) === e.target.value) || null;
-        renderStatus(); renderCode(); checkboxes.forEach(x => x.checked = false); updateChecklist();
+        renderStatus(); renderCode(); loadDomains(); checkboxes.forEach(x => x.checked = false); updateChecklist();
     });
     $('pePublishBtn')?.addEventListener('click', publish);
     $('peCopyCode')?.addEventListener('click', copy);
     $('peNewWidgetBtn')?.addEventListener('click', () => { window.location.href = widgetBuilderUrl; });
-    $('peDomainForm')?.addEventListener('submit', e => {
-        e.preventDefault(); const input = $('peDomainInput'); const domain = normalizeDomain(input.value);
-        text('peDomainError', !domain ? 'Enter a valid domain, such as example.com.' : state.domains.includes(domain) ? 'This domain is already listed.' : '');
-        if (!domain || state.domains.includes(domain)) return;
-        state.domains.push(domain); input.value = ''; renderDomains(); toast('Domain added to demo allowlist (not enforced).');
+    $('peDomainForm')?.addEventListener('submit', async e => {
+        e.preventDefault();
+        const input = $('peDomainInput');
+        const domain = normalizeDomain(input.value);
+        text('peDomainError', !state.selected ? 'Select a widget first.' : !domain ? 'Enter a valid hostname, such as example.com.' : state.domains.includes(domain) ? 'Domain already configured.' : '');
+        if (!state.selected || !domain || state.domains.includes(domain)) return;
+        await saveDomain(domain);
+        if (!state.domainBusy && state.domains.includes(domain)) input.value = '';
     });
     checkboxes.forEach(x => x.addEventListener('change', updateChecklist));
     $('peChecklistNext')?.addEventListener('click', () => { $('pePublishBtn')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); $('pePublishBtn')?.focus({ preventScroll: true }); });
