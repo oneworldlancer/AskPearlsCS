@@ -2365,3 +2365,186 @@ body[data-bs-theme="dark"] .ap-page .ap-widget-selector-version > strong {
         grid-column: 1 !important;
     }
 }
+
+
+/* Load AFTER app_page_publish_embed_css.css */
+.publish-embed-page .pe-widget-info {
+    min-width: 0;
+}
+
+.publish-embed-page .pe-selector-row {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+    min-width: 0;
+}
+
+    .publish-embed-page .pe-selector-row select {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: 100%;
+    }
+
+.publish-embed-page .pe-selector-add {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    max-width: 42px;
+    max-height: 42px;
+    border: 0;
+    border-radius: 50%;
+    background: #0bce78;
+    color: #fff;
+    font-size: 20px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+    .publish-embed-page .pe-selector-add:hover {
+        background: #08b969;
+    }
+
+    .publish-embed-page .pe-selector-add:focus-visible {
+        outline: 3px solid #78f0c4;
+        outline-offset: 3px;
+    }
+
+.publish-embed-page #peVersion {
+    white-space: nowrap;
+}
+
+@media (max-width: 575px) {
+    .publish-embed-page .pe-widget-selector {
+        grid-template-columns: 1fr !important;
+    }
+
+    .publish-embed-page .pe-selector-row {
+        gap: 8px;
+    }
+}
+
+
+/* Publish & Embed selector: same positioning as Design & Customize. */
+.publish-embed-page .pe-widget-selector {
+    position: relative;
+}
+
+.publish-embed-page .pe-widget-info {
+    min-width: 0;
+}
+
+    .publish-embed-page .pe-widget-info > .ap-widget-selector-control {
+        display: block;
+        width: 100%;
+        min-width: 0;
+    }
+
+.publish-embed-page .pe-selector-add {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    max-width: 42px;
+    max-height: 42px;
+    flex: 0 0 42px;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #0bce78;
+    color: #fff;
+    font-size: 21px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+    .publish-embed-page .pe-selector-add:hover {
+        background: #08b969;
+    }
+
+    .publish-embed-page .pe-selector-add:focus-visible {
+        outline: 3px solid #78f0c4;
+        outline-offset: 3px;
+    }
+
+.publish-embed-page #peVersion {
+    white-space: nowrap;
+}
+
+@media (max-width: 575px) {
+    .publish-embed-page .pe-widget-selector {
+        padding-top: 48px;
+    }
+
+    .publish-embed-page .pe-selector-add {
+        top: 8px;
+        right: 8px;
+    }
+}
+
+
+/* Match the Design & Customize create-widget button exactly (34px). */
+.publish-embed-page .pe-widget-selector #peNewWidgetBtn.pe-selector-add {
+    box-sizing: border-box !important;
+    position: absolute;
+    z-index: 3;
+    top: 12px;
+    right: 12px;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 34px !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    max-width: 34px !important;
+    max-height: 34px !important;
+    aspect-ratio: 1 / 1 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 1px solid #0fa779 !important;
+    border-radius: 50% !important;
+    background: #18c964 !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.16);
+    font-size: 17px !important;
+    line-height: 1 !important;
+    cursor: pointer;
+    transition: background .15s ease, transform .15s ease;
+}
+
+    .publish-embed-page .pe-widget-selector #peNewWidgetBtn.pe-selector-add > i {
+        display: inline-block;
+        font-size: 17px !important;
+        line-height: 1 !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    .publish-embed-page .pe-widget-selector #peNewWidgetBtn.pe-selector-add:hover {
+        background: #0fa978 !important;
+        transform: scale(1.07);
+    }
+
+    .publish-embed-page .pe-widget-selector #peNewWidgetBtn.pe-selector-add:focus-visible {
+        outline: 3px solid #65d9b0;
+        outline-offset: 3px;
+    }
+
+@media (max-width: 575.98px) {
+    .publish-embed-page .pe-widget-selector #peNewWidgetBtn.pe-selector-add {
+        top: 8px;
+        right: 8px;
+    }
+}

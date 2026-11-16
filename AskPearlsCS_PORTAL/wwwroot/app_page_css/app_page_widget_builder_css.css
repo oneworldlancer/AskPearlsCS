@@ -584,19 +584,9 @@ body.dark-mode .page-widget-builder .wb-theme-option input:checked + span {
 
 /* DecisionOS preview — maintain contrast in portal dark mode */
 .page-widget-builder #wbPreviewWidget[data-theme="light"] {
-    background-color: #ffffff !important;
-    color: #20313b !important;
-    border-color: #dfe5e8 !important;
+    /* Preserve the saved background/text colors set by JavaScript. */
+    border-color: #dfe5e8;
 }
-
-    .page-widget-builder #wbPreviewWidget[data-theme="light"] #wbPreviewTitle {
-        color: #20313b !important;
-    }
-
-    .page-widget-builder #wbPreviewWidget[data-theme="light"] #wbPreviewDescription {
-        color: #526579 !important;
-        opacity: 1 !important;
-    }
 
 /* Wizard footer: shared save action below all steps */
 .page-widget-builder .wb-wizard-footer {

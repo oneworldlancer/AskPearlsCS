@@ -391,8 +391,8 @@
     }
 
     function setTheme (newTheme) {
-        const selected = newTheme === "dark"
-            ? "dark"
+        const selected = [ "light", "dark", "custom" ].includes(newTheme)
+            ? newTheme
             : "light";
 
         const radio = root.querySelector(
@@ -430,7 +430,7 @@
                 "Get Started"
             ),
             footer: state.loadedDesign?.footer || "Powered by AskPearls",
-            theme: state.loadedDesign?.theme === "custom" ? "custom" : theme(),
+            theme: theme(),
 
             showTitle: value(el.showTitle, true),
             showDescription: value(
@@ -507,8 +507,8 @@
 
         if (el.previewWidget) {
             el.previewWidget.style.setProperty("--wb-primary", settings.primary);
-            el.previewWidget.style.backgroundColor = settings.background || '#ffffff';
-            el.previewWidget.style.color = settings.text || '#17212B';
+            el.previewWidget.style.setProperty("background-color", settings.background || '#ffffff', "important");
+            el.previewWidget.style.setProperty("color", settings.text || '#17212B', "important");
 
             el.previewWidget.dataset.theme =
                 settings.theme;
