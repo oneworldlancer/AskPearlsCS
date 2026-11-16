@@ -22,17 +22,18 @@ public sealed class Notification_Service : INotification_Service
         _repository.GetPreferencesAsync(Owner(owner), ct);
     public async Task<NotificationPreferencesDto> SavePreferencesAsync(string owner, NotificationPreferencesDto preferences, CancellationToken ct = default)
     {
-        var normalized = preferences with { SecurityAlerts = true };
-        await _repository.SavePreferencesAsync(Owner(owner), normalized, ct);
-        return normalized;
+        ArgumentNullException.ThrowIfNull(preferences);
+        await _repository.SavePreferencesAsync(Owner(owner), preferences, ct);
+        return preferences;
     }
     public async Task<NotificationDto?> CreateAsync(NotificationCreateRequest request, CancellationToken ct = default)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var recipient = Owner(request.RecipientOwnerUserTokenId);
         if (string.IsNullOrWhiteSpace(request.Title) || request.Title.Trim() == "0" || request.Title.Length > 200 ||
             string.IsNullOrWhiteSpace(request.Message) || request.Message.Trim() == "0" || request.Message.Length > 4000 ||
-            string.IsNullOrWhiteSpace(request.Code) || request.Code.Length > 100 ||
-            string.IsNullOrWhiteSpace(request.Type) || request.Type.Length > 100)
+            string.IsNullOrWhiteSpace(request.Code) || request.Code.Trim() == "0" || request.Code.Length > 100 ||
+            string.IsNullOrWhiteSpace(request.Type) || request.Type.Trim() == "0" || request.Type.Length > 100)
             throw new ArgumentException("Invalid notification content.");
         var url = request.ActionUrl?.Trim();
         if (!string.IsNullOrEmpty(url) && url != "0" &&
@@ -40,9 +41,21 @@ public sealed class Notification_Service : INotification_Service
             throw new ArgumentException("ActionUrl must be a relative internal Portal path.");
         var preferences = await _repository.GetPreferencesAsync(recipient, ct);
         var type = request.Type.Trim().ToLowerInvariant();
-        if (type != "security" && (!preferences.NonEssentialNotifications ||
-            (type == "activity" && !preferences.ActivityReports) ||
-            (type == "product" && !preferences.ProductUpdates))) return null;
-        return await _repository.CreateAsync(request with { RecipientOwnerUserTokenId = recipient }, ct);
+
+        // Master switch applies to optional messages only.
+        // Trusted server-side callers must assign essential categories.
+        // Critical mandatory security notices should have a separate delivery path.
+        bool shouldCreate = type switch
+        {
+            "security" => preferences.SecurityAlerts,
+            "billing" => true,
+            "account" => true,
+            "activity" => preferences.NonEssentialNotifications && preferences.ActivityReports,
+            "product" => preferences.NonEssentialNotifications && preferences.ProductUpdates,
+            _ => false
+        };
+        if (!shouldCreate) return null;
+
+        return await _repository.CreateAsync(request with { RecipientOwnerUserTokenId = recipient, Type = type }, ct);
     }
 }

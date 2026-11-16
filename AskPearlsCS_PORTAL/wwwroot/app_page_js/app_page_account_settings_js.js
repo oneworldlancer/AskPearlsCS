@@ -439,6 +439,8 @@
 
             if (!input) return;
 
+            // Security alerts are controlled separately from the optional master switch.
+            if (input.id === "asSecurityAlerts") return;
             input.disabled = !enabled;
 
             row.classList.toggle(
@@ -448,12 +450,20 @@
 
         });
 
+        // Keep this switch interactive when preferences have been loaded.
+        // If preferences failed to load, preserve the failure-state protection.
+        const security = $("asSecurityAlerts");
+        if (security && preferencesLoaded) {
+            security.disabled = false;
+            security.closest(".as-setting-row")?.classList.remove("as-notification-disabled");
+        }
+
         const status = $("asNotificationMasterStatus");
 
         if (status) {
             status.textContent = enabled
                 ? "Optional notifications are enabled."
-                : "Optional notifications are disabled.";
+                : "Optional notifications are disabled. Security alerts remain independent.";
         }
 
         updateDirtyState();
@@ -499,7 +509,6 @@
             } else {
                 console.error("Notification preferences could not be loaded", prefsResult.reason);
             }
-            settings.securityAlerts = true;
             setSettings(settings);
             updateNonEssentialNotifications();
             savedSettings = currentSettings();
@@ -690,11 +699,20 @@
         try {
             if (activeSection === "notifications") {
                 if (!preferencesLoaded) throw new Error("Notification preferences have not loaded.");
-                const payload = { ...pickKeys(current, notificationKeys), securityAlerts: true };
+                const payload = { ...pickKeys(current, notificationKeys) };
                 const result = await apiRequest(notificationPreferencesUrl, {
                     method: "PUT", headers: apiHeaders(true), body: JSON.stringify(payload)
                 });
-                const persisted = { ...payload, ...result, securityAlerts: true };
+                // Verify persistence using a fresh read, including Security Alerts = false.
+                const verifiedPrefs = await apiRequest(notificationPreferencesUrl + "?verify=" + Date.now(), {
+                    method: "GET", headers: apiHeaders(false), cache: "no-store"
+                });
+                const mismatches = notificationKeys.filter(k => verifiedPrefs[ k ] !== payload[ k ]);
+                if (mismatches.length) {
+                    console.error("Notification preference persistence mismatch", { payload, verifiedPrefs, mismatches });
+                    throw new Error("Notification preferences could not be verified: " + mismatches.join(", "));
+                }
+                const persisted = { ...payload, ...verifiedPrefs };
                 keys.forEach(k => { savedSettings[ k ] = persisted[ k ]; });
                 setSettings({ ...currentSettings(), ...pickKeys(persisted, keys) });
                 updateNonEssentialNotifications();

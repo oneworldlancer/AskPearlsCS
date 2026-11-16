@@ -100,7 +100,7 @@ public sealed class Notification_Repository : INotification_Repository
             try
             {
                 var parsed = JsonSerializer.Deserialize<NotificationPreferencesDto>(json, JsonOptions);
-                if (parsed is not null) return parsed with { SecurityAlerts = true };
+                if (parsed is not null) return parsed;
             }
             catch (JsonException) { /* Fall back to legacy Boolean rows. */ }
         }
@@ -110,7 +110,7 @@ public sealed class Notification_Repository : INotification_Repository
                 .Select(x => x.SettingValue).FirstOrDefault();
             return value is null ? fallback : value == "1" || value.Equals("true", StringComparison.OrdinalIgnoreCase);
         }
-        return new(Get(0, true), Get(1, true), Get(2, true), Get(3, false), true);
+        return new(Get(0, true), Get(1, true), Get(2, true), Get(3, false), Get(4, true));
     }
 
     public async Task SavePreferencesAsync(string owner, NotificationPreferencesDto p, CancellationToken ct)
@@ -134,7 +134,7 @@ public sealed class Notification_Repository : INotification_Repository
             };
             _db.AskpearlsPortalUserSettingLists.Add(row);
         }
-        row.SettingValue = JsonSerializer.Serialize(p with { SecurityAlerts = true }, JsonOptions);
+        row.SettingValue = JsonSerializer.Serialize(p, JsonOptions);
         row.UploadDate = DateTime.UtcNow;
         await _db.SaveChangesAsync(ct);
         await tx.CommitAsync(ct);

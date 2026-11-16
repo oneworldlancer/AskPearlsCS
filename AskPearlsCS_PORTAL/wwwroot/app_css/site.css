@@ -1,6 +1,7 @@
 html {
     position: relative;
     min-height: 100%;
+    font-family: Arial !important;
     font-size: 14px;
     background-color: #f6f9ff;
    /* scroll-behavior: smooth;*/
