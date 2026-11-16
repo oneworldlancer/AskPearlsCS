@@ -28,6 +28,7 @@ public sealed class WidgetDomain_Repository : IWidgetDomain_Repository
     {
         if (string.IsNullOrWhiteSpace(value)) return null;
         var s = value.Trim().TrimEnd('.').ToLowerInvariant();
+        if (s.Contains("://") && !Uri.TryCreate(s, UriKind.Absolute, out _)) return null;
         if (Uri.TryCreate(s, UriKind.Absolute, out var url))
         {
             if (url.Scheme is not ("http" or "https") || url.UserInfo.Length > 0 ||
@@ -40,8 +41,7 @@ public sealed class WidgetDomain_Repository : IWidgetDomain_Repository
         var parts = s.Split('.');
         return parts.All(part => part.Length is >= 1 and <= 63 &&
             Regex.IsMatch(part, @"^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$") &&
-            !part.Contains("--") || part.StartsWith("xn--", StringComparison.Ordinal) &&
-            part.Length <= 63 && Regex.IsMatch(part, @"^[a-z0-9-]+$")) ? s : null;
+            !part.StartsWith("-") && !part.EndsWith("-")) ? s : null;
     }
 
     private static WidgetOperationResult Result(WidgetOperationOutcome outcome, object body) => new(outcome, body);
