@@ -78,6 +78,18 @@ public sealed class WidgetProxyController : Controller
     [HttpPut("Api/widgets/{publicKey}/draft/rules")]
     public Task<IActionResult> SaveDecisionRuleDraft(string publicKey, CancellationToken ct) => Forward(HttpMethod.Put, KeyPath(publicKey, "draft/rules"), ct);
 
+    [HttpGet("Api/widgets/{publicKey}/domains")]
+    public Task<IActionResult> GetAllowedDomains(string publicKey, CancellationToken ct) =>
+        Forward(HttpMethod.Get, KeyPath(publicKey, "domains"), ct);
+
+    [HttpPost("Api/widgets/{publicKey}/domains")]
+    public Task<IActionResult> AddAllowedDomain(string publicKey, CancellationToken ct) =>
+        Forward(HttpMethod.Post, KeyPath(publicKey, "domains"), ct);
+
+    [HttpDelete("Api/widgets/{publicKey}/domains/{domain}")]
+    public Task<IActionResult> DeleteAllowedDomain(string publicKey, string domain, CancellationToken ct) =>
+        Forward(HttpMethod.Delete, KeyPath(publicKey, "domains/" + Uri.EscapeDataString(domain)), ct);
+
     private static string KeyPath(string key, string suffix = "") =>
         "widgets/" + Uri.EscapeDataString(key) + (suffix.Length == 0 ? "" : "/" + suffix);
 

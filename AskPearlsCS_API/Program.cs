@@ -25,6 +25,8 @@ builder.Services.AddScoped<IDecisionEngine, DecisionEngine>();
 
 builder.Services.AddScoped<IWidgetDecisionService, WidgetDecisionService>();
 builder.Services.AddScoped<IWidget_Repository, Widget_Repository>();
+builder.Services.AddScoped<IWidgetDomain_Repository, WidgetDomain_Repository>();
+builder.Services.AddScoped<IWidgetDomain_Service, WidgetDomain_Service>();
 builder.Services.AddScoped<IWidget_Service, Widget_Service>();
 
 builder.Services.AddScoped<IAnswer_Repository, Answer_Repository>();

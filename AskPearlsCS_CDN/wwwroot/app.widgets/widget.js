@@ -423,7 +423,7 @@
 
     async function loadPublishedDesign () {
         const response = await fetch(
-            `${ apiUrl }/api/widgets/${ encodeURIComponent(publicKey) }/version`,
+            `${ apiUrl }/api/widgets/${ encodeURIComponent(publicKey) }/design`,
             { method: "GET", headers: { "Accept": "application/json" } }
         );
         if (!response.ok) {
