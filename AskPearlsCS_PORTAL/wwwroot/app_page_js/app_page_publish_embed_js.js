@@ -10,7 +10,7 @@
     const scriptUrl = root.dataset.peScriptUrl || 'https://cdn.askpearls.com/app.widgets/widget.js';
     const apiOrigin = root.dataset.peApiOrigin || 'https://api.askpearls.com';
     const widgetBuilderUrl = '/Dashboard/WidgetBuilder';
-    const state = { widgets: [], selected: null, platform: 'html', publishing: false, loading: false, domains: [], domainBusy: false };
+    const state = { widgets: [], selected: null, platform: 'html', publishing: false, loading: false, domains: [], domainBusy: false, quota: null };
     const platformInfo = {
         html: [ 'Custom HTML', 'HTML embed snippet', 'Copy your embed code', 'Copy the snippet below and add it to your website.', 'Paste the code into your website', 'Place the snippet before the closing body tag, then save your page.', 'Add the snippet once per website.' ],
         wordpress: [ 'WordPress', 'WordPress embed snippet', 'Copy your widget snippet', 'Use the standard embed snippet on WordPress.', 'Add the snippet to WordPress', 'Use a trusted custom-code plugin or your theme footer.', 'Back up your site before changing theme files.' ],
@@ -129,6 +129,7 @@
             const data = await request(url);
             if (keyOf(state.selected) !== selectedKey) return;
             state.domains = Array.isArray(data.domains) ? data.domains : [];
+            state.quota = data.quota || null;
         } catch (error) {
             if (keyOf(state.selected) === selectedKey) toast(error.message || 'Failed to load domains.');
         }
@@ -156,28 +157,52 @@
         } catch (error) { toast(error.message || 'Failed to remove domain.'); }
         finally { state.domainBusy = false; }
     }
+    async function domainAction (domain, action) {
+        const url = domainUrl(); if (!url || state.domainBusy) return;
+        state.domainBusy = true;
+        try {
+            const result = await request(url + '/' + encodeURIComponent(domain) + '/' + action, { method: 'POST' });
+            if (action === 'verification' && result.dns) {
+                const instructions = `Create a DNS ${ result.dns.type } record:\nHost: ${ result.dns.host }\nValue: ${ result.dns.value }\nExpires: ${ result.expiresAtUtc }`;
+                try { await navigator.clipboard.writeText(instructions); toast('DNS instructions copied.'); }
+                catch { window.prompt('Copy these DNS verification instructions:', instructions); }
+            } else toast(result.message || 'Verification checked.');
+            await loadDomains();
+        } catch (error) { toast(error.message || 'Verification request failed.'); }
+        finally { state.domainBusy = false; }
+    }
     function renderDomains () {
         const list = $('peDomainList'); if (!list) return;
         list.replaceChildren();
-        for (const domain of state.domains) {
+        for (const entry of state.domains) {
+            const domain = typeof entry === 'string' ? entry : entry.domain;
+            if (!domain) continue;
+            const verified = entry.verificationStatus === 'verified';
             const row = document.createElement('div'); row.className = 'pe-domain-row';
             const name = document.createElement('strong'); name.textContent = domain;
+            const status = document.createElement('span'); status.textContent = verified ? 'Verified' : 'Pending verification';
+            status.className = 'pe-domain-verification-status';
+            const controls = document.createElement('div'); controls.className = 'pe-domain-actions';
+            if (!verified) {
+                for (const [ label, action ] of [ [ 'Get DNS record', 'verification' ], [ 'Check DNS', 'verify' ] ]) {
+                    const button = document.createElement('button'); button.type = 'button'; button.textContent = label;
+                    button.className = 'pe-domain-action'; button.addEventListener('click', () => domainAction(domain, action));
+                    controls.append(button);
+                }
+            }
             const remove = document.createElement('button'); remove.type = 'button';
             remove.className = 'pe-domain-remove'; remove.setAttribute('aria-label', 'Remove ' + domain);
-            remove.innerHTML = '<i class="bi bi-trash3"></i>';
-            remove.addEventListener('click', () => deleteDomain(domain));
-            row.append(name, remove); list.append(row);
+            remove.textContent = 'Remove'; remove.addEventListener('click', () => deleteDomain(domain));
+            controls.append(remove); row.append(name, status, controls); list.append(row);
         }
-        text('peDomainCount', state.domains.length + ' domain' + (state.domains.length === 1 ? '' : 's'));
-        text('peDomainListCount', String(state.domains.length));
-        if ($('peDomainEmpty')) $('peDomainEmpty').hidden = state.domains.length !== 0;
-        list.hidden = state.domains.length === 0;
-        const input = $('peDomainInput');
-        if (input) input.disabled = !state.selected;
+        const count = state.domains.length;
+        text('peDomainCount', count + ' domain' + (count === 1 ? '' : 's'));
+        text('peDomainListCount', state.quota ? `${ state.quota.used } / ${ state.quota.limit ?? 'Unlimited' } account domains` : String(count));
+        if ($('peDomainEmpty')) $('peDomainEmpty').hidden = count !== 0;
+        list.hidden = count === 0;
         const add = root.querySelector('.pe-add-domain');
-        if (add) add.disabled = !state.selected;
+        if (add) add.disabled = !state.selected || state.domainBusy || (state.quota && state.quota.remaining === 0);
     }
-    const checkboxes = [ ...root.querySelectorAll('.pe-checklist-checkbox') ];
     function updateChecklist () {
         const done = checkboxes.filter(x => x.checked).length;
         text('peChecklistStatus', `${ done } of ${ checkboxes.length } steps completed`);
@@ -196,10 +221,10 @@
         e.preventDefault();
         const input = $('peDomainInput');
         const domain = normalizeDomain(input.value);
-        text('peDomainError', !state.selected ? 'Select a widget first.' : !domain ? 'Enter a valid hostname, such as example.com.' : state.domains.includes(domain) ? 'Domain already configured.' : '');
-        if (!state.selected || !domain || state.domains.includes(domain)) return;
+        text('peDomainError', !state.selected ? 'Select a widget first.' : !domain ? 'Enter a valid hostname, such as example.com.' : state.domains.some(x => (typeof x === "string" ? x : x.domain) === domain) ? 'Domain already configured.' : '');
+        if (!state.selected || !domain || state.domains.some(x => (typeof x === "string" ? x : x.domain) === domain)) return;
         await saveDomain(domain);
-        if (!state.domainBusy && state.domains.includes(domain)) input.value = '';
+        if (!state.domainBusy && state.domains.some(x => (typeof x === "string" ? x : x.domain) === domain)) input.value = '';
     });
     checkboxes.forEach(x => x.addEventListener('change', updateChecklist));
     $('peChecklistNext')?.addEventListener('click', () => { $('pePublishBtn')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); $('pePublishBtn')?.focus({ preventScroll: true }); });

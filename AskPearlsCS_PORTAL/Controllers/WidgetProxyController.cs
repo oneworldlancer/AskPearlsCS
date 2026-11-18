@@ -90,6 +90,14 @@ public sealed class WidgetProxyController : Controller
     public Task<IActionResult> DeleteAllowedDomain(string publicKey, string domain, CancellationToken ct) =>
         Forward(HttpMethod.Delete, KeyPath(publicKey, "domains/" + Uri.EscapeDataString(domain)), ct);
 
+    [HttpPost("Api/widgets/{publicKey}/domains/{domain}/verification")]
+    public Task<IActionResult> BeginDomainVerification(string publicKey, string domain, CancellationToken ct) =>
+        Forward(HttpMethod.Post, KeyPath(publicKey, "domains/" + Uri.EscapeDataString(domain) + "/verification"), ct);
+
+    [HttpPost("Api/widgets/{publicKey}/domains/{domain}/verify")]
+    public Task<IActionResult> VerifyDomain(string publicKey, string domain, CancellationToken ct) =>
+        Forward(HttpMethod.Post, KeyPath(publicKey, "domains/" + Uri.EscapeDataString(domain) + "/verify"), ct);
+
     private static string KeyPath(string key, string suffix = "") =>
         "widgets/" + Uri.EscapeDataString(key) + (suffix.Length == 0 ? "" : "/" + suffix);
 

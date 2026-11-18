@@ -40,7 +40,7 @@
         </section>
         <section class="pe-card pe-domain-card">
             <div class="pe-card-heading"><div><h5>Allowed domains</h5><p>Manage the websites that may host this widget.</p></div><i class="bi bi-shield-lock"></i></div>
-            <div class="pe-security-note"><i class="bi bi-info-circle"></i><span>Domains are saved to your account. Public API domain enforcement is not enabled yet.</span></div>
+            <div class="pe-security-note"><i class="bi bi-info-circle"></i><span>Domains belong to your account. Verify ownership using a DNS TXT record before installing a widget.</span></div>
             <form id="peDomainForm" class="pe-domain-form"><label for="peDomainInput">Add a website domain</label><div class="pe-domain-input-row"><input type="text" id="peDomainInput" placeholder="example.com" maxlength="253" autocomplete="off" /><button type="submit" class="pe-btn-primary pe-add-domain"><i class="bi bi-plus-lg"></i> Add</button></div><small>Enter a domain such as example.com, without a URL path.</small><div class="pe-domain-error" id="peDomainError" role="alert"></div></form>
             <div class="pe-domain-list-heading"><strong>Configured domains</strong><span id="peDomainListCount">0</span></div><div class="pe-domain-list" id="peDomainList"></div>
             <div class="pe-domain-empty" id="peDomainEmpty"><i class="bi bi-globe"></i><strong>No domains configured</strong><span>Add a domain authorized to host this widget.</span></div>
@@ -60,4 +60,5 @@
 </div>
 <link href="~/app_page_css/app_page_publish_embed_css.css" rel="stylesheet" asp-append-version="true" />
 <link href="~/app_page_css/app_page_publish_embed_selector_update.css" rel="stylesheet" asp-append-version="true" />
+<link href="~/app_page_css/app_page_publish_embed_verification_css.css" rel="stylesheet" asp-append-version="true" />
 <script src="~/app_page_js/app_page_publish_embed_js.js" asp-append-version="true"></script>

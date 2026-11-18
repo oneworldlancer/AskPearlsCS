@@ -27,6 +27,12 @@ builder.Services.AddScoped<IWidgetDecisionService, WidgetDecisionService>();
 builder.Services.AddScoped<IWidget_Repository, Widget_Repository>();
 builder.Services.AddScoped<IWidgetDomain_Repository, WidgetDomain_Repository>();
 builder.Services.AddScoped<IWidgetDomain_Service, WidgetDomain_Service>();
+// DNS TXT ownership verification uses a fixed trusted DNS-over-HTTPS resolver.
+builder.Services.AddHttpClient("AskPearlsDnsVerification", client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(8);
+    client.DefaultRequestHeaders.Accept.ParseAdd("application/dns-json");
+});
 builder.Services.AddScoped<IWidget_Service, Widget_Service>();
 
 builder.Services.AddScoped<IAnswer_Repository, Answer_Repository>();

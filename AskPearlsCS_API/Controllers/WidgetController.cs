@@ -201,6 +201,20 @@ public class WidgetController : ControllerBase
         return FromOperation(await _widgetDomains.DeleteDomainAsync(owner, publicKey, domain));
     }
 
+    [HttpPost("{publicKey}/domains/{domain}/verification")]
+    public async Task<IActionResult> BeginDomainVerification(string publicKey, string domain)
+    {
+        if (!TryGetAuthenticatedOwner(out var owner, out var error)) return error!;
+        return FromOperation(await _widgetDomains.BeginVerificationAsync(owner, publicKey, domain));
+    }
+
+    [HttpPost("{publicKey}/domains/{domain}/verify")]
+    public async Task<IActionResult> VerifyDomain(string publicKey, string domain)
+    {
+        if (!TryGetAuthenticatedOwner(out var owner, out var error)) return error!;
+        return FromOperation(await _widgetDomains.VerifyDomainAsync(owner, publicKey, domain));
+    }
+
     private bool TryGetAuthenticatedOwner(out string ownerUserTokenId, out IActionResult? error)
     {
         ownerUserTokenId = _currentUser.OwnerUserTokenID ?? string.Empty;
