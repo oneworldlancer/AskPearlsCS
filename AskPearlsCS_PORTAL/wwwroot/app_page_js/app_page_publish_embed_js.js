@@ -4,6 +4,8 @@
     if (!root || root.dataset.peInitialized === 'true') return;
     root.dataset.peInitialized = 'true';
     const $ = id => root.querySelector('#' + id);
+    const checkboxes = Array.from(root.querySelectorAll('.pe-checklist-checkbox'));
+    const isActive = () => root.isConnected;
     const endpoint = '/Widget/Api/widgets';
     // Public installation endpoints; never use these for authenticated Portal requests.
     // Replace these development URLs when deploying to production.
@@ -31,11 +33,13 @@
     function toast (message) { const el = $('peToast'); if (!el) return; el.textContent = message; el.classList.add('is-visible'); clearTimeout(toastTimeout); toastTimeout = setTimeout(() => el.classList.remove('is-visible'), 3200); }
     async function request (url, options = {}) {
         const headers = { Accept: 'application/json', ...(options.headers || {}) };
-        if (options.method && options.method.toUpperCase() !== 'GET') { const token = csrf(); if (token) headers.RequestVerificationToken = token; }
+        if (options.method && options.method.toUpperCase() !== 'GET') { const token = root.querySelector('input[name="__RequestVerificationToken"]')?.value || csrf(); if (token) headers.RequestVerificationToken = token; }
         const response = await fetch(url, { credentials: 'same-origin', ...options, headers });
+        if (response.redirected && /login|signin|account\/login/i.test(response.url)) throw new Error('Session expired. Please sign in again.');
         const body = await response.text(); let result;
         try { result = body ? JSON.parse(body) : {}; } catch { result = {}; }
         if (!response.ok) throw new Error(result.message || `Request failed (HTTP ${ response.status }).`);
+        if (body && !body.trimStart().startsWith('{') && !body.trimStart().startsWith('[')) throw new Error('Expected JSON from ' + url + '. Check authentication and endpoint routing.');
         return result;
     }
     function renderStatus () {
@@ -77,11 +81,13 @@
         try {
             const data = await request(endpoint);
             if (data.success === false) throw new Error(data.message || 'Unable to load widgets.');
-            state.widgets = Array.isArray(data.widgets) ? data.widgets : Array.isArray(data.data?.widgets) ? data.data.widgets : [];
+            const payload = data.data ?? data;
+            state.widgets = Array.isArray(payload) ? payload : Array.isArray(payload.widgets) ? payload.widgets : Array.isArray(payload.items) ? payload.items : Array.isArray(payload.jsonlist) ? payload.jsonlist : [];
+            if (!isActive()) return;
             state.selected = preferredKey ? state.widgets.find(w => keyOf(w) === preferredKey) || null : null;
             renderSelector(); renderStatus(); renderCode(); await loadDomains();
-        } catch (e) { state.widgets = []; state.selected = null; state.domains = []; renderDomains(); renderSelector(); toast(e.message || 'Unable to load widgets.'); }
-        finally { state.loading = false; renderStatus(); renderCode(); }
+        } catch (e) { console.error('[AskPearls Publish] Widget load failed:', e); if (!isActive()) return; state.widgets = []; state.selected = null; state.domains = []; renderDomains(); renderSelector(); toast(e.message || 'Unable to load widgets.'); }
+        finally { if (isActive()) { state.loading = false; renderStatus(); renderCode(); } }
     }
     async function publish () {
         const selected = state.selected;
@@ -121,9 +127,7 @@
     }
     async function loadDomains () {
         const url = domainUrl();
-        state.domains = [];
-        renderDomains();
-        if (!url) return;
+        if (!url) { state.domains = []; dnsPanels.clear(); renderDomains(); return; }
         const selectedKey = keyOf(state.selected);
         try {
             const data = await request(url);
@@ -152,24 +156,63 @@
         state.domainBusy = true;
         try {
             await request(url + '/' + encodeURIComponent(domain), { method: 'DELETE' });
+            dnsPanels.delete(domain);
             await loadDomains();
             toast('Domain removed.');
         } catch (error) { toast(error.message || 'Failed to remove domain.'); }
         finally { state.domainBusy = false; }
     }
-    async function domainAction (domain, action) {
+    const dnsPanels = new Map();
+    function dnsPanel (domain, dns, expires) {
+        const panel = document.createElement('section');
+        panel.className = 'pe-dns-panel';
+        panel.setAttribute('aria-label', 'DNS verification for ' + domain);
+        const heading = document.createElement('strong'); heading.textContent = 'DNS TXT record for ' + domain;
+        panel.append(heading);
+        const fields = [ [ 'Type', dns.type || 'TXT' ], [ 'Host / Name', dns.host || '' ], [ 'Value / Content', dns.value || '' ], [ 'Expires (UTC)', expires || 'Not provided' ] ];
+        for (const [ label, value ] of fields) {
+            const line = document.createElement('div'); line.className = 'pe-dns-field';
+            const caption = document.createElement('span'); caption.textContent = label;
+            const code = document.createElement('code'); code.textContent = String(value);
+            line.append(caption, code);
+            if (label === 'Host / Name' || label === 'Value / Content') {
+                const copy = document.createElement('button'); copy.type = 'button'; copy.className = 'pe-domain-action'; copy.textContent = 'Copy';
+                copy.addEventListener('click', async () => {
+                    try { await navigator.clipboard.writeText(String(value)); toast(label + ' copied.'); }
+                    catch { toast('Clipboard unavailable. Select the value to copy.'); }
+                });
+                line.append(copy);
+            }
+            panel.append(line);
+        }
+        const help = document.createElement('small');
+        help.textContent = 'Add this TXT record at your DNS provider. Some providers append the domain automatically; use _askpearls as the Host in that case. Then click Check DNS.';
+        panel.append(help);
+        return panel;
+    }
+    async function domainAction (domain, action, button) {
         const url = domainUrl(); if (!url || state.domainBusy) return;
+        if (action === 'verification' && dnsPanels.has(domain)) {
+            const info = dnsPanels.get(domain);
+            info.open = !info.open;
+            const panel = document.querySelector('[data-pe-dns-panel-for="' + CSS.escape(domain) + '"]');
+            if (panel) { panel.hidden = !info.open; button?.setAttribute('aria-expanded', String(info.open)); }
+            return;
+        }
         state.domainBusy = true;
+        if (button) { button.disabled = true; button.dataset.originalText = button.textContent; button.textContent = action === 'verify' ? 'Checking…' : 'Loading…'; }
         try {
             const result = await request(url + '/' + encodeURIComponent(domain) + '/' + action, { method: 'POST' });
-            if (action === 'verification' && result.dns) {
-                const instructions = `Create a DNS ${ result.dns.type } record:\nHost: ${ result.dns.host }\nValue: ${ result.dns.value }\nExpires: ${ result.expiresAtUtc }`;
-                try { await navigator.clipboard.writeText(instructions); toast('DNS instructions copied.'); }
-                catch { window.prompt('Copy these DNS verification instructions:', instructions); }
-            } else toast(result.message || 'Verification checked.');
-            await loadDomains();
+            if (action === 'verification') {
+                if (!result.dns) throw new Error('The server did not return a DNS TXT record.');
+                dnsPanels.set(domain, { dns: result.dns, expires: result.expiresAtUtc, open: true });
+                renderDomains();
+            } else {
+                await loadDomains();
+                toast(result.message || 'DNS verification checked.');
+            }
         } catch (error) { toast(error.message || 'Verification request failed.'); }
-        finally { state.domainBusy = false; }
+        finally { state.domainBusy = false; if (button?.isConnected) { button.disabled = false; button.textContent = button.dataset.originalText; } }
     }
     function renderDomains () {
         const list = $('peDomainList'); if (!list) return;
@@ -186,7 +229,8 @@
             if (!verified) {
                 for (const [ label, action ] of [ [ 'Get DNS record', 'verification' ], [ 'Check DNS', 'verify' ] ]) {
                     const button = document.createElement('button'); button.type = 'button'; button.textContent = label;
-                    button.className = 'pe-domain-action'; button.addEventListener('click', () => domainAction(domain, action));
+                    button.className = 'pe-domain-action'; button.addEventListener('click', () => domainAction(domain, action, button));
+                    if (action === 'verification') button.setAttribute('aria-expanded', String(dnsPanels.get(domain)?.open || false));
                     controls.append(button);
                 }
             }
@@ -194,6 +238,14 @@
             remove.className = 'pe-domain-remove'; remove.setAttribute('aria-label', 'Remove ' + domain);
             remove.textContent = 'Remove'; remove.addEventListener('click', () => deleteDomain(domain));
             controls.append(remove); row.append(name, status, controls); list.append(row);
+            if (verified) dnsPanels.delete(domain);
+            const info = dnsPanels.get(domain);
+            if (info && !verified) {
+                const panel = dnsPanel(domain, info.dns, info.expires);
+                panel.dataset.peDnsPanelFor = domain;
+                panel.hidden = !info.open;
+                list.append(panel);
+            }
         }
         const count = state.domains.length;
         text('peDomainCount', count + ' domain' + (count === 1 ? '' : 's'));
@@ -212,7 +264,7 @@
     root.querySelectorAll('[data-pe-platform]').forEach(btn => btn.addEventListener('click', () => renderPlatform(btn.dataset.pePlatform)));
     $('peWidgetSelect')?.addEventListener('change', e => {
         state.selected = state.widgets.find(w => keyOf(w) === e.target.value) || null;
-        renderStatus(); renderCode(); loadDomains(); checkboxes.forEach(x => x.checked = false); updateChecklist();
+        dnsPanels.clear(); renderStatus(); renderCode(); loadDomains(); checkboxes.forEach(x => x.checked = false); updateChecklist();
     });
     $('pePublishBtn')?.addEventListener('click', publish);
     $('peCopyCode')?.addEventListener('click', copy);
@@ -228,5 +280,7 @@
     });
     checkboxes.forEach(x => x.addEventListener('change', updateChecklist));
     $('peChecklistNext')?.addEventListener('click', () => { $('pePublishBtn')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); $('pePublishBtn')?.focus({ preventScroll: true }); });
-    renderPlatform('html'); renderDomains(); updateChecklist(); renderStatus(); loadWidgets();
+    renderPlatform('html'); renderDomains(); updateChecklist(); renderStatus();
+    console.info('[AskPearls Publish] Initializing widget list:', endpoint);
+    loadWidgets();
 })();

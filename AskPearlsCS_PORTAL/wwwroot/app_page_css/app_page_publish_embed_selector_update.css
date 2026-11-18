@@ -1,0 +1,91 @@
+﻿/* Publish selector refinements — load after base CSS. */
+.publish-embed-page .pe-widget-selector {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    position: relative;
+    padding-right: 70px
+}
+
+.publish-embed-page .pe-widget-info {
+    flex: 1 1 auto;
+    min-width: 0
+}
+
+.publish-embed-page #peWidgetSelect {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-height: 44px;
+    padding: 10px 42px 10px 14px;
+    border: 1px solid var(--ap-border,#344d44);
+    border-radius: 10px;
+    background-color: #10221c;
+    color: #f0f5f3;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color-scheme: dark
+}
+
+    .publish-embed-page #peWidgetSelect option {
+        background: #10221c;
+        color: #f0f5f3
+    }
+
+    .publish-embed-page #peWidgetSelect:focus-visible {
+        outline: 2px solid #0da88b;
+        outline-offset: 2px
+    }
+
+    .publish-embed-page #peWidgetSelect:disabled {
+        opacity: .65;
+        cursor: not-allowed
+    }
+
+.publish-embed-page .pe-version {
+    flex: 0 0 auto;
+    min-width: 105px
+}
+
+.publish-embed-page .pe-selector-add {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: #0bc68e;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1;
+    aspect-ratio: 1
+}
+
+    .publish-embed-page .pe-selector-add i {
+        font-size: 18px;
+        line-height: 1
+    }
+
+@media(max-width:600px) {
+    .publish-embed-page .pe-widget-selector {
+        flex-wrap: wrap;
+        padding: 16px 60px 16px 16px
+    }
+
+    .publish-embed-page .pe-widget-info {
+        flex-basis: calc(100% - 65px)
+    }
+
+    .publish-embed-page .pe-version {
+        flex-basis: 100%;
+        padding: 12px 0 0;
+        border-left: 0;
+        border-top: 1px solid var(--ap-border,#344d44)
+    }
+}
