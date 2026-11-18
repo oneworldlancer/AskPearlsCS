@@ -20,7 +20,7 @@ public sealed class Notification_Repository : INotification_Repository
     private static string Clean(string? s) => string.IsNullOrWhiteSpace(s) || s.Trim() == "0" ? "" : s.Trim();
     private static string DbText(string? s) => Clean(s) is { Length: > 0 } v ? v : "0";
     private static NotificationDto Map(AskpearlsPortalUserNotificationList x) => new(
-        x.UNotificationId, Clean(x.NotificationTokenId), Clean(x.NotificationCode),
+        x.UnotificationId, Clean(x.NotificationTokenId), Clean(x.NotificationCode),
         Clean(x.NotificationType), Clean(x.NotificationTitle), Clean(x.NotificationMessage),
         Clean(x.ActionUrl), x.IsRead == true, x.CreatedAtUtc, x.ReadAtUtc);
 
@@ -30,14 +30,14 @@ public sealed class Notification_Repository : INotification_Repository
         var total = await query.CountAsync(ct);
         var unread = await query.CountAsync(x => x.IsRead != true, ct);
         var rows = await query.OrderByDescending(x => x.CreatedAtUtc)
-            .ThenByDescending(x => x.UNotificationId).Skip(skip).Take(take).ToListAsync(ct);
+            .ThenByDescending(x => x.UnotificationId).Skip(skip).Take(take).ToListAsync(ct);
         return new(rows.Select(Map).ToArray(), unread, total);
     }
     public Task<int> UnreadCountAsync(string owner, CancellationToken ct) =>
         ForOwner(owner).CountAsync(x => x.IsRead != true, ct);
     public async Task<bool> MarkReadAsync(string owner, long id, CancellationToken ct)
     {
-        var row = await ForOwner(owner).FirstOrDefaultAsync(x => x.UNotificationId == id, ct);
+        var row = await ForOwner(owner).FirstOrDefaultAsync(x => x.UnotificationId == id, ct);
         if (row is null) return false;
         if (row.IsRead != true) { row.IsRead = true; row.ReadAtUtc = DateTime.UtcNow; await _db.SaveChangesAsync(ct); }
         return true;
