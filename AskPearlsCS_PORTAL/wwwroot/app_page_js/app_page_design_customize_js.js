@@ -307,7 +307,12 @@
         // Prevent an observer from persisting indefinitely if navigation fails.
         window.setTimeout(() => observer.disconnect(), 10000);
     }
-    el('dcCreateWidget').addEventListener('click', createWidgetFromDesigner);
+    // The New Widget button is now in the global dashboard header.
+    // Bind the legacy page button only when it exists.
+    const createWidgetButton = el('dcCreateWidget');
+    if (createWidgetButton) {
+        createWidgetButton.addEventListener('click', createWidgetFromDesigner);
+    }
 
     el('dcSave').addEventListener('click', save);
     el('dcReset').addEventListener('click', () => { applySettings(savedSettings); toast('Restored the last loaded or saved settings.'); });

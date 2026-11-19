@@ -1,4 +1,6 @@
-<div class="qna-page ap-page" data-ap-page="questions" data-api-base="/Widget/Api">
+<div class="qna-page ap-page" data-ap-page="questions" >
+    @* data-api-base="/Widget/Api" *@ 
+    
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
         <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
@@ -24,11 +26,7 @@
     </header>
 
     <section class="ap-widget-selector qna-widget-selector" aria-label="Widget selection">
-        <a href="#" class="qna-widget-selector-create ap-widget-builder-link"
-           data-page="widget-builder" data-widget-builder-create
-           title="Create New Widget" aria-label="Create New Widget">
-            <i class="bi bi-plus-lg" aria-hidden="true"></i>
-        </a>
+      
         <div class="ap-widget-selector-icon" aria-hidden="true"><i class="bi bi-grid-1x2"></i></div>
         <div class="ap-widget-selector-info">
             <label for="qnaWidgetSelect">Select widget</label>
@@ -208,3 +206,7 @@
 
 <link href="~/app_page_css/app_page_questions_answers_css.css?v=20261107-qa2" rel="stylesheet" />
 <script src="~/app_page_js/app_page_questions_answers_js.js?v=20261107-qa2"></script>
+
+                    
+<link href="~/app_page_css/app_widget_selector_unified.css" rel="stylesheet" asp-append-version="true" />
+<script src="~/app_page_js/app_widget_selector_unified.js" asp-append-version="true"></script>

@@ -1,5 +1,5 @@
-<div class="ap-page decision-rules-page" data-ap-page="decision-rules" data-api-base="/Widget/Api">
-    <!-- Shared AskPearls breadcrumb -->
+<div class="ap-page decision-rules-page" data-ap-page="decision-rules" >
+    @* data-api-base="/Widget/Api" *@  <!-- Shared AskPearls breadcrumb -->
     <nav class="ap-breadcrumb" aria-label="Breadcrumb">
         <a href="/Dashboard">AskPearls</a>
         <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
@@ -25,7 +25,7 @@
             <select id="drWidgetSelect" class="ap-widget-selector-control" disabled><option value="">Loading widgets…</option></select>
             <small class="ap-widget-selector-help">Choose the widget whose decision rules you want to manage.</small>
         </div>
-        <button type="button" class="dr-selector-add" data-dr-action="add" aria-label="Create decision rule" title="Create decision rule"><i class="bi bi-plus-lg"></i></button>
+
         <div class="ap-widget-selector-version" aria-live="polite"><span>Draft / live</span><strong id="drWidgetVersion">—</strong></div>
     </section>
     <div class="dr-api-message" data-dr-api-message role="status" aria-live="polite" hidden></div>
@@ -324,3 +324,7 @@
 
 <script src="~/app_page_js/app_page_decision_rules_js.js"></script>
 
+
+                    
+<link href="~/app_page_css/app_widget_selector_unified.css" rel="stylesheet" asp-append-version="true" />
+<script src="~/app_page_js/app_widget_selector_unified.js" asp-append-version="true"></script>

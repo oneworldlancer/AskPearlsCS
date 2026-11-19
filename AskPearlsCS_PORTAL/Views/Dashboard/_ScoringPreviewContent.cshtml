@@ -1,7 +1,10 @@
 <div class="ap-page sp-page" data-ap-page="scoring-preview" data-api-base="/Widget/Api">
     <nav class="ap-breadcrumb" aria-label="Breadcrumb"><a href="/Dashboard">AskPearls</a><span class="ap-breadcrumb-separator" aria-hidden="true"> / </span><span aria-current="page">Scoring &amp; Preview</span></nav>
     <header class="ap-page-header"><div><h1 class="ap-page-title">Scoring &amp; Preview</h1><p class="ap-page-description">Configure temporary answer scores and preview ranked recommendations for your widget.</p></div><span class="sp-demo-badge"><i class="bi bi-eye"></i> Preview only</span></header>
-    <section class="sp-widget-selector ap-widget-selector" aria-label="Active widget"><button type="button" id="spCreateWidgetButton" class="sp-create-widget-button" title="Create new widget" aria-label="Create new widget"><i class="bi bi-plus-lg" aria-hidden="true"></i></button><div class="sp-selector-icon"><i class="bi bi-grid-1x2"></i></div><div class="sp-selector-info"><label for="spWidgetSelect">Select widget</label><select id="spWidgetSelect" class="form-select" disabled><option value="">Loading widgets…</option></select><small id="spWidgetMessage" class="sp-selector-message" aria-live="polite">Choose a widget to preview.</small></div><div class="sp-current-version"><span>Draft / live</span><strong id="spWidgetVersion">—</strong></div></section>
+    <section class="sp-widget-selector ap-widget-selector" aria-label="Active widget">
+        
+
+        <div class="sp-selector-icon"><i class="bi bi-grid-1x2"></i></div><div class="sp-selector-info"><label for="spWidgetSelect">Select widget</label><select id="spWidgetSelect" class="form-select" disabled><option value="">Loading widgets…</option></select><small id="spWidgetMessage" class="sp-selector-message" aria-live="polite">Choose a widget to preview.</small></div><div class="sp-current-version"><span>Draft / live</span><strong id="spWidgetVersion">—</strong></div></section>
     <div id="spPageAlert" class="alert d-none" role="status" aria-live="polite"></div>
     <div id="spWorkspace" class="d-none">
         <div class="row g-3 mb-4"><div class="col-12 col-md-4"><div class="sp-stat"><span class="text-muted small">Points per answer</span><strong id="spPointsPerAnswer">50</strong><small>Distribute points across active recommendations.</small></div></div><div class="col-12 col-md-4"><div class="sp-stat"><span class="text-muted small">Questions</span><strong id="spQuestionCount">0</strong><small>From the selected widget.</small></div></div><div class="col-12 col-md-4"><div class="sp-stat"><span class="text-muted small">Maximum score</span><strong id="spMaximum">0</strong><small>Questions × 50.</small></div></div></div>
@@ -13,3 +16,8 @@
 </div>
 <link href="~/app_page_css/app_page_scoring_preview_css.css?v=20261107-3" rel="stylesheet" />
 <script src="~/app_page_js/app_page_scoring_preview_js.js?v=20261107-3"></script>
+
+
+<link href="~/app_page_css/app_widget_selector_unified.css" rel="stylesheet" asp-append-version="true" />
+<script src="~/app_page_js/app_widget_selector_unified.js" asp-append-version="true"></script>
+
