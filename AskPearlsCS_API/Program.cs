@@ -66,6 +66,9 @@ builder.Services.AddScoped<ISubscription_Repository, Subscription_Repository>();
 
 builder.Services.AddScoped<ISubscription_Service, Subscription_Service>();
 
+builder.Services.AddScoped<IAnalytics_Repository, Analytics_Repository>();
+builder.Services.AddScoped<IAnalytics_Service, Analytics_Service>();
+
 
 // ========================================
 // ACCOUNT & SETTINGS - BLL / DAL

@@ -982,3 +982,187 @@ body[data-bs-theme="dark"] .analytics-page .an-activity-type {
     background: #183D31 !important;
     color: #E5F5EE !important;
 }
+
+/* Full-width Recent activity hover; same edge-to-edge behavior as Widget comparison */
+.analytics-page .an-activity-list {
+    padding: 4px 0 !important;
+    width: 100%;
+}
+
+.analytics-page .an-activity-row {
+    width: 100%;
+    margin: 0;
+    padding: 17px 22px;
+    transition: background-color .2s ease;
+}
+
+    .analytics-page .an-activity-row:hover {
+        background-color: rgba(13,168,139,.08) !important;
+    }
+
+html[data-theme="dark"] .analytics-page .an-activity-row:hover,
+body[data-theme="dark"] .analytics-page .an-activity-row:hover {
+    background-color: #162421 !important;
+}
+
+@media(max-width:575.98px) {
+    .analytics-page .an-activity-list {
+        padding: 4px 0 !important
+    }
+
+    .analytics-page .an-activity-row {
+        padding: 15px
+    }
+}
+
+
+
+
+/* ============================================
+   ANALYTICS - RESPONSIVE WIDGET COMPARISON
+   ============================================ */
+
+/* Desktop: center numeric columns */
+.analytics-page .an-table th:nth-child(n+2):nth-child(-n+5),
+.analytics-page .an-table td:nth-child(n+2):nth-child(-n+5) {
+    text-align: center;
+}
+
+.analytics-page .an-table .an-progress-row {
+    justify-content: center;
+}
+
+/* Small screens: convert table rows into cards */
+@media (max-width: 767.98px) {
+
+    .analytics-page .an-table-scroll {
+        overflow-x: visible;
+        width: 100%;
+    }
+
+    .analytics-page .an-table {
+        display: block;
+        width: 100%;
+        min-width: 0;
+    }
+
+        .analytics-page .an-table thead {
+            display: none;
+        }
+
+        .analytics-page .an-table tbody {
+            display: grid;
+            gap: 12px;
+            padding: 12px;
+        }
+
+            .analytics-page .an-table tbody tr {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0 14px;
+                min-width: 0;
+                border: 1px solid var(--ap-border, #344d44);
+                border-radius: 12px;
+                overflow: hidden;
+            }
+
+            .analytics-page .an-table tbody td {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                min-width: 0;
+                padding: 12px;
+                white-space: normal;
+                text-align: left !important;
+                border-top: 0;
+                overflow-wrap: anywhere;
+            }
+
+                /* Widget name: full-width header */
+                .analytics-page .an-table tbody td:first-child {
+                    grid-column: 1 / -1;
+                    border-bottom: 1px solid var(--ap-border, #344d44);
+                    background: rgba(13, 168, 139, .05);
+                }
+
+                /* Labels for the four metric cells */
+                .analytics-page .an-table tbody td:nth-child(2)::before {
+                    content: "Views";
+                }
+
+                .analytics-page .an-table tbody td:nth-child(3)::before {
+                    content: "Interactions";
+                }
+
+                .analytics-page .an-table tbody td:nth-child(4)::before {
+                    content: "Completion rate";
+                }
+
+                .analytics-page .an-table tbody td:nth-child(5)::before {
+                    content: "Recommendations";
+                }
+
+                .analytics-page .an-table tbody td:nth-child(n+2):nth-child(-n+5)::before {
+                    display: block;
+                    margin-bottom: 8px;
+                    font-size: 10px;
+                    font-weight: 600;
+                    color: var(--ap-muted, #a5bdb3);
+                }
+
+                .analytics-page .an-table tbody td:nth-child(n+2):nth-child(-n+5) {
+                    align-items: center;
+                    text-align: center !important;
+                }
+
+    /* Completion progress stays centered */
+    .analytics-page .an-completion-cell {
+        min-width: 0;
+    }
+
+    .analytics-page .an-progress-row {
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .analytics-page .an-progress-track {
+        max-width: 100%;
+    }
+
+    /* Status: full-width footer */
+    .analytics-page .an-table tbody td:last-child {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--ap-border, #344d44);
+    }
+
+        .analytics-page .an-table tbody td:last-child::before {
+            content: "Status";
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--ap-muted, #a5bdb3);
+        }
+}
+
+/* Extra-small mobile screens */
+@media (max-width: 359.98px) {
+    .analytics-page .an-table tbody {
+        padding: 8px;
+    }
+
+        .analytics-page .an-table tbody tr {
+            column-gap: 4px;
+        }
+
+        .analytics-page .an-table tbody td {
+            padding: 10px 6px;
+        }
+
+    .analytics-page .an-progress-track {
+        width: 55px;
+    }
+}
