@@ -202,7 +202,8 @@
             if (seq !== requestId) return;
             applySettings(data.configuration || defaults); savedSettings = readSettings();
             const w = widgets.find(w => widgetKey(w) === key);
-            el('dcWidgetVersion').textContent = versionText(w, data);
+            AskPearlsWidgetVersion.update("dcWidgetVersion", w);
+
             el('dcWidgetMessage').textContent = (w?.name || 'Widget') + ' · ' + (data.status === 'draft' ? 'Draft loaded' : 'Published/default design loaded');
             updateDirty();
         } catch (err) {
@@ -227,7 +228,9 @@
             const w = widgets.find(w => widgetKey(w) === key);
             if (w && data.versionNumber != null) w.draftVersionNumber = data.versionNumber;
             if (w && data.publishedVersionNumber != null) w.publishedVersionNumber = data.publishedVersionNumber;
-            el('dcWidgetVersion').textContent = versionText(w, { status: 'draft', versionNumber: data.versionNumber ?? w?.draftVersionNumber });
+
+            AskPearlsWidgetVersion.update("dcWidgetVersion", w);
+
             el('dcWidgetMessage').textContent = 'Draft saved successfully.';
             toast('Draft saved' + (data.versionNumber != null ? ' as v' + data.versionNumber : '') + '.');
         } catch (err) { notice(err.message); console.error('Design & Customize: save failed', err); }

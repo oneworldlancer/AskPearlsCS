@@ -51,7 +51,9 @@
             badge.dataset.status = !w ? 'not-selected' : draft ? 'draft' : live ? 'published' : 'not-published';
             badge.innerHTML = !w ? '<i class="bi bi-circle-fill"></i> Select a widget' : draft ? '<i class="bi bi-circle-fill"></i> Draft ready to publish' : live ? '<i class="bi bi-check-circle-fill"></i> Published' : '<i class="bi bi-circle-fill"></i> Not published';
         }
-        text('peVersion', w ? `Draft v${ draftOf(w) } · Live v${ liveOf(w) }` : '—');
+
+        AskPearlsWidgetVersion.update("peVersion", w);
+
         text('peSummaryStatus', !w ? 'No widget selected' : draft ? 'Draft ready' : live ? 'Published' : 'Not published');
         text('peStatusDescription', !w ? 'Select a widget to view its publishing status.' : draft ? (live ? 'Saved draft is ready; the current published version remains live.' : 'Saved draft is ready to publish.') : live ? 'Published version is live.' : 'Save a design draft before publishing.');
         if (button) { button.disabled = !draft || state.publishing || state.loading; button.innerHTML = state.publishing ? '<i class="bi bi-arrow-repeat"></i> Publishing…' : '<i class="bi bi-rocket-takeoff"></i> Publish Widget'; }

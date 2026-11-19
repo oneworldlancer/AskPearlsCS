@@ -7,7 +7,6 @@
     );
 
     if (!root || root.dataset.wbInitialized === "true") return;
-
     root.dataset.wbInitialized = "true";
 
     const $ = id => root.querySelector("#" + id);
@@ -19,33 +18,26 @@
         save: $("wbSaveButton"),
         saveBottom: $("wbSaveBottomButton"),
         previewButton: $("wbPreviewButton"),
-
         pageTitle: $("wbPageTitle"),
         pageDescription: $("wbPageDescription"),
-
         select: $("wbWidgetSelect"),
         createButton: $("wbCreateWidgetButton"),
         version: $("wbWidgetVersion"),
-
         name: $("wbWidgetName"),
         type: $("wbWidgetType"),
         website: $("wbWebsite"),
         title: $("wbWidgetTitle"),
         description: $("wbWidgetDescription"),
-
         primary: $("wbPrimaryColor"),
         colorValue: $("wbColorValue"),
         buttonText: $("wbButtonText"),
         corners: $("wbCornerStyle"),
         position: $("wbWidgetPosition"),
-
         showTitle: $("wbShowTitle"),
         showDescription: $("wbShowDescription"),
         showIntroduction: $("wbShowIntroduction"),
-
         previous: $("wbPreviousButton"),
         next: $("wbNextButton"),
-
         previewStage: $("wbPreviewStage"),
         previewWidget: $("wbPreviewWidget"),
         previewTitle: $("wbPreviewTitle"),
@@ -59,13 +51,18 @@
     };
 
     const API_ROOT = "/Widget/Api";
-
     const STORAGE_KEY = "askpearls.activeWidgetPublicKey";
     const STORAGE_MODE = "askpearls.widgetBuilderMode";
-    // Explicit navigation intent. A normal sidebar visit must not reuse a previously edited widget.
+
     const route = new URLSearchParams(window.location.search);
-    const routeMode = (route.get("mode") || route.get("action") || "").toLowerCase();
-    const routeKey = route.get("publicKey") || route.get("widgetPublicKey") || route.get("widget") || "";
+    const routeMode = (
+        route.get("mode") || route.get("action") || ""
+    ).toLowerCase();
+
+    const routeKey =
+        route.get("publicKey") ||
+        route.get("widgetPublicKey") ||
+        route.get("widget") || "";
 
     const steps = [ "basics", "appearance", "behavior" ];
 
@@ -79,30 +76,22 @@
         loadedDesign: null
     };
 
-    const tabs = Array.from(
-        root.querySelectorAll("[data-wb-tab]")
-    );
+    const tabs = Array.from(root.querySelectorAll("[data-wb-tab]"));
+    const panels = Array.from(root.querySelectorAll("[data-wb-panel]"));
 
-    const panels = Array.from(
-        root.querySelectorAll("[data-wb-panel]")
-    );
+    // =====================================================
+    // UTILITIES
+    // =====================================================
 
     function value (element, fallback = "") {
         if (!element) return fallback;
-
-        if (element.type === "checkbox") {
-            return element.checked;
-        }
-
+        if (element.type === "checkbox") return element.checked;
         return typeof element.value === "string"
-            ? element.value.trim()
-            : fallback;
+            ? element.value.trim() : fallback;
     }
 
     function setValue (element, newValue) {
-        if (!element || newValue === undefined ||
-            newValue === null) return;
-
+        if (!element || newValue === undefined || newValue === null) return;
         if (element.type === "checkbox") {
             element.checked = Boolean(newValue);
         } else {
@@ -112,10 +101,8 @@
 
     function field (object, camel, pascal) {
         if (!object) return undefined;
-
         return object[ camel ] !== undefined
-            ? object[ camel ]
-            : object[ pascal ];
+            ? object[ camel ] : object[ pascal ];
     }
 
     function storageGet (key) {
@@ -137,20 +124,16 @@
 
     function message (text, error = false) {
         if (!el.message) return;
-
         el.message.textContent = text || "";
         el.message.hidden = !text;
-
         el.message.classList.toggle("is-error", error);
         el.message.classList.toggle(
-            "is-success",
-            Boolean(text) && !error
+            "is-success", Boolean(text) && !error
         );
     }
 
     function setIndicator (text, saved = false) {
         if (!el.indicator) return;
-
         el.indicator.textContent = text;
         el.indicator.classList.toggle("is-saved", saved);
     }
@@ -159,16 +142,19 @@
         [ el.save, el.saveBottom ].filter(Boolean).forEach(button => {
             button.disabled = state.busy;
             button.setAttribute("aria-busy", String(state.busy));
+
             const icon = button.querySelector("i");
             button.replaceChildren();
             if (icon) button.appendChild(icon);
-            button.append(document.createTextNode(state.busy ? " Saving..." : " Save Draft"));
+
+            button.append(document.createTextNode(
+                state.busy ? " Saving..." : " Save Draft"
+            ));
         });
     }
 
     function setBusy (busy) {
         state.busy = Boolean(busy);
-
         updateSaveButton();
 
         if (el.select) {
@@ -189,34 +175,26 @@
 
     function apiError (data, fallback) {
         if (!data) return fallback;
+        if (typeof data === "string") return data || fallback;
 
-        if (typeof data === "string") {
-            return data || fallback;
-        }
-
-        if (data.errors &&
-            typeof data.errors === "object") {
-            const errors = Object.values(data.errors)
-                .flat()
-                .filter(Boolean);
-
+        if (data.errors && typeof data.errors === "object") {
+            const errors = Object.values(data.errors).flat().filter(Boolean);
             if (errors.length) return errors.join(" ");
         }
 
-        return data.message ||
-            data.detail ||
-            data.title ||
-            data.error ||
-            fallback;
+        return data.message || data.detail ||
+            data.title || data.error || fallback;
     }
 
+    // =====================================================
+    // PORTAL API
+    // =====================================================
+
     async function portalRequest (path, options = {}) {
-        const method = (
-            options.method || "GET"
-        ).toUpperCase();
+        const method = (options.method || "GET").toUpperCase();
 
         const headers = new Headers({
-            "Accept": "application/json",
+            Accept: "application/json",
             "X-Requested-With": "XMLHttpRequest"
         });
 
@@ -225,22 +203,15 @@
 
             if (!token) {
                 throw new Error(
-                    "Anti-forgery token is missing. " +
-                    "Refresh the Portal page."
+                    "Anti-forgery token is missing. Refresh the Portal page."
                 );
             }
 
-            headers.set(
-                "RequestVerificationToken",
-                token
-            );
+            headers.set("RequestVerificationToken", token);
         }
 
         if (options.body !== undefined) {
-            headers.set(
-                "Content-Type",
-                "application/json"
-            );
+            headers.set("Content-Type", "application/json");
         }
 
         const response = await fetch(
@@ -252,30 +223,25 @@
                 redirect: "manual",
                 headers,
                 body: options.body === undefined
-                    ? undefined
-                    : JSON.stringify(options.body)
+                    ? undefined : JSON.stringify(options.body)
             }
         );
 
-        if (response.type === "opaqueredirect" ||
-            (response.status >= 300 &&
-                response.status < 400)) {
+        if (
+            response.type === "opaqueredirect" ||
+            (response.status >= 300 && response.status < 400)
+        ) {
             throw new Error(
-                "Your session may have expired. " +
-                "Please sign in again."
+                "Your session may have expired. Please sign in again."
             );
         }
 
         if (response.status === 401) {
-            throw new Error(
-                "Your login session has expired."
-            );
+            throw new Error("Your login session has expired.");
         }
 
         if (response.status === 403) {
-            throw new Error(
-                "Access denied to this widget."
-            );
+            throw new Error("Access denied to this widget.");
         }
 
         const contentType = (
@@ -283,7 +249,6 @@
         ).toLowerCase();
 
         const raw = await response.text();
-
         let data = null;
 
         if (raw) {
@@ -297,20 +262,14 @@
             try {
                 data = JSON.parse(raw);
             } catch {
-                throw new Error(
-                    "The API returned invalid JSON."
-                );
+                throw new Error("The API returned invalid JSON.");
             }
         }
 
         if (!response.ok || data?.success === false) {
-            throw new Error(
-                apiError(
-                    data,
-                    "API request failed: HTTP " +
-                    response.status
-                )
-            );
+            throw new Error(apiError(
+                data, "API request failed: HTTP " + response.status
+            ));
         }
 
         return data;
@@ -327,19 +286,13 @@
 
         if (Array.isArray(list)) return list;
 
-        throw new Error(
-            "The API returned an invalid widget list."
-        );
+        throw new Error("The API returned an invalid widget list.");
     }
 
     function publicKey (widget) {
         return String(
             field(widget, "publicKey", "PublicKey") ||
-            field(
-                widget,
-                "widgetPublicKey",
-                "WidgetPublicKey"
-            ) ||
+            field(widget, "widgetPublicKey", "WidgetPublicKey") ||
             ""
         );
     }
@@ -351,6 +304,53 @@
             "Untitled Widget"
         );
     }
+
+    // =====================================================
+    // GLOBAL WIDGET VERSION HELPER
+    // =====================================================
+
+    function updateWidgetVersion (widget) {
+        if (!el.version) return;
+
+        if (!widget) {
+            el.version.textContent = "—";
+            return;
+        }
+
+        if (!window.AskPearlsWidgetVersion?.update) {
+            console.error(
+                "app_widget_version_helper.js must load before Widget Builder."
+            );
+            return;
+        }
+
+        window.AskPearlsWidgetVersion.update(
+            "wbWidgetVersion",
+            widget
+        );
+    }
+
+    function selectedWidget () {
+        return state.widgets.find(
+            item => publicKey(item) === state.key
+        ) || null;
+    }
+
+    function syncDraftVersion (widget, version) {
+        if (
+            !widget ||
+            version === undefined ||
+            version === null ||
+            version === ""
+        ) return;
+
+        widget.draftVersionNumber = version;
+        widget.hasDraft = true;
+    }
+
+    // =====================================================
+    // WIDGET SELECTOR
+    // =====================================================
 
     function renderWidgetOptions () {
         if (!el.select) return;
@@ -368,12 +368,8 @@
 
         state.widgets.forEach(widget => {
             const key = publicKey(widget);
-
             if (!key) return;
-
-            el.select.add(
-                new Option(widgetName(widget), key)
-            );
+            el.select.add(new Option(widgetName(widget), key));
         });
 
         const exists = state.widgets.some(
@@ -381,8 +377,12 @@
         );
 
         el.select.value = exists ? state.key : "";
-        el.select.disabled = state.busy;
+        el.select.disabled = state.busy || state.widgets.length === 0;
     }
+
+    // =====================================================
+    // THEME AND DESIGN
+    // =====================================================
 
     function theme () {
         return root.querySelector(
@@ -392,12 +392,10 @@
 
     function setTheme (newTheme) {
         const selected = [ "light", "dark", "custom" ].includes(newTheme)
-            ? newTheme
-            : "light";
+            ? newTheme : "light";
 
         const radio = root.querySelector(
-            'input[name="wbTheme"][value="' +
-            selected + '"]'
+            'input[name="wbTheme"][value="' + selected + '"]'
         );
 
         if (radio) radio.checked = true;
@@ -409,38 +407,26 @@
         return {
             ...(state.loadedDesign || {}),
             primary: value(el.primary, "#16a085"),
-            background: state.loadedDesign?.background ?? (dark ? "#10242b" : "#ffffff"),
-            text: state.loadedDesign?.text ?? (dark ? "#edf5f7" : "#16352b"),
+            background: state.loadedDesign?.background ??
+                (dark ? "#10242b" : "#ffffff"),
+            text: state.loadedDesign?.text ??
+                (dark ? "#edf5f7" : "#16352b"),
             font: "Inter, Arial, sans-serif",
             fontSize: 16,
             radius: 16,
             shadow: true,
             width: 420,
-            position: value(
-                el.position,
-                "bottom-right"
-            ),
+            position: value(el.position, "bottom-right"),
             buttonShape: value(el.corners, "rounded") === "soft"
-                ? "rounded"
-                : value(el.corners, "rounded"),
+                ? "rounded" : value(el.corners, "rounded"),
             heading: value(el.title),
             description: value(el.description),
-            buttonText: value(
-                el.buttonText,
-                "Get Started"
-            ),
+            buttonText: value(el.buttonText, "Get Started"),
             footer: state.loadedDesign?.footer || "Powered by AskPearls",
             theme: theme(),
-
             showTitle: value(el.showTitle, true),
-            showDescription: value(
-                el.showDescription,
-                true
-            ),
-            showIntroduction: value(
-                el.showIntroduction,
-                true
-            )
+            showDescription: value(el.showDescription, true),
+            showIntroduction: value(el.showIntroduction, true)
         };
     }
 
@@ -450,74 +436,108 @@
         if (el.previewTitle) {
             el.previewTitle.textContent =
                 settings.heading || "Your widget title";
-
-            el.previewTitle.hidden =
-                !settings.showTitle;
+            el.previewTitle.hidden = !settings.showTitle;
         }
 
         if (el.previewDescription) {
             el.previewDescription.textContent =
-                settings.description ||
-                "Your description";
-
-            el.previewDescription.hidden =
-                !settings.showDescription;
+                settings.description || "Your description";
+            el.previewDescription.hidden = !settings.showDescription;
         }
 
         if (el.previewPrimary) {
             el.previewPrimary.textContent =
                 settings.buttonText || "Get Started";
-
-            el.previewPrimary.style.backgroundColor =
-                settings.primary;
-
-            el.previewPrimary.style.borderColor =
-                settings.primary;
+            el.previewPrimary.style.backgroundColor = settings.primary;
+            el.previewPrimary.style.borderColor = settings.primary;
         }
 
         if (el.colorValue) {
-            el.colorValue.textContent =
-                settings.primary;
+            el.colorValue.textContent = settings.primary;
         }
 
-        if (el.previewHeaderTitle) el.previewHeaderTitle.textContent = settings.headerTitle || 'AskPearls Assistant';
-        if (el.previewCompanyName) el.previewCompanyName.textContent =
-            settings.brandName && settings.brandName !== settings.headerTitle ? settings.brandName : '';
+        if (el.previewHeaderTitle) {
+            el.previewHeaderTitle.textContent =
+                settings.headerTitle || "AskPearls Assistant";
+        }
+
+        if (el.previewCompanyName) {
+            el.previewCompanyName.textContent =
+                settings.brandName &&
+                    settings.brandName !== settings.headerTitle
+                    ? settings.brandName : "";
+        }
+
         if (el.previewAssistantIcon) {
-            const icon = document.createElement('i');
-            icon.className = 'bi bi-' + ({ building: 'building', chat: 'chat-dots', robot: 'robot' }[ settings.brandIcon ] || 'stars');
+            const icon = document.createElement("i");
+            const icons = {
+                building: "building",
+                chat: "chat-dots",
+                robot: "robot"
+            };
+
+            icon.className =
+                "bi bi-" + (icons[ settings.brandIcon ] || "stars");
+
             el.previewAssistantIcon.replaceChildren(icon);
         }
+
         if (el.previewCompanyLogo) {
             const holder = el.previewCompanyLogo;
             holder.replaceChildren();
-            if (settings.logoUrl && /^https:\/\//i.test(settings.logoUrl)) {
-                const img = document.createElement('img');
-                img.src = settings.logoUrl; img.alt = (settings.brandName || 'Company') + ' logo';
-                img.referrerPolicy = 'no-referrer';
-                img.onerror = () => { holder.replaceChildren(); holder.hidden = true; };
-                holder.append(img); holder.hidden = false;
-            } else holder.hidden = true;
+
+            if (
+                settings.logoUrl &&
+                /^https:\/\//i.test(settings.logoUrl)
+            ) {
+                const img = document.createElement("img");
+                img.src = settings.logoUrl;
+                img.alt = (settings.brandName || "Company") + " logo";
+                img.referrerPolicy = "no-referrer";
+
+                img.onerror = () => {
+                    holder.replaceChildren();
+                    holder.hidden = true;
+                };
+
+                holder.append(img);
+                holder.hidden = false;
+            } else {
+                holder.hidden = true;
+            }
         }
+
         if (el.previewFooter) {
-            const footer = settings.footer || 'Powered by AskPearls';
-            el.previewFooter.textContent = settings.hideAskPearlsBranding ? footer :
-                (footer.toLowerCase().includes('askpearls') ? footer : footer + ' · AskPearls');
+            const footer = settings.footer || "Powered by AskPearls";
+
+            el.previewFooter.textContent =
+                settings.hideAskPearlsBranding
+                    ? footer
+                    : footer.toLowerCase().includes("askpearls")
+                        ? footer
+                        : footer + " · AskPearls";
         }
 
         if (el.previewWidget) {
-            el.previewWidget.style.setProperty("--wb-primary", settings.primary);
-            el.previewWidget.style.setProperty("background-color", settings.background || '#ffffff', "important");
-            el.previewWidget.style.setProperty("color", settings.text || '#17212B', "important");
+            el.previewWidget.style.setProperty(
+                "--wb-primary", settings.primary
+            );
 
-            el.previewWidget.dataset.theme =
-                settings.theme;
+            el.previewWidget.style.setProperty(
+                "background-color",
+                settings.background || "#ffffff",
+                "important"
+            );
 
-            el.previewWidget.dataset.corners =
-                settings.buttonShape;
+            el.previewWidget.style.setProperty(
+                "color",
+                settings.text || "#17212B",
+                "important"
+            );
 
-            el.previewWidget.dataset.position =
-                settings.position;
+            el.previewWidget.dataset.theme = settings.theme;
+            el.previewWidget.dataset.corners = settings.buttonShape;
+            el.previewWidget.dataset.position = settings.position;
         }
     }
 
@@ -532,51 +552,43 @@
         setIndicator("Draft saved", true);
     }
 
+    // =====================================================
+    // WIZARD STEPS
+    // =====================================================
+
     function setStep (index) {
         state.step = Math.max(
-            0,
-            Math.min(index, steps.length - 1)
+            0, Math.min(index, steps.length - 1)
         );
 
         const activeStep = steps[ state.step ];
 
         tabs.forEach(button => {
-            const active =
-                button.dataset.wbTab === activeStep;
-
-            button.classList.toggle(
-                "active",
-                active
-            );
-
+            const active = button.dataset.wbTab === activeStep;
+            button.classList.toggle("active", active);
             button.setAttribute(
-                "aria-current",
-                active ? "step" : "false"
+                "aria-current", active ? "step" : "false"
             );
         });
 
         panels.forEach(panel => {
-            const active =
-                panel.dataset.wbPanel === activeStep;
-
-            panel.classList.toggle(
-                "active",
-                active
-            );
-
+            const active = panel.dataset.wbPanel === activeStep;
+            panel.classList.toggle("active", active);
             panel.hidden = !active;
         });
 
         if (el.previous) {
-            el.previous.disabled =
-                state.step === 0;
+            el.previous.disabled = state.step === 0;
         }
 
         if (el.next) {
-            el.next.hidden =
-                state.step === steps.length - 1;
+            el.next.hidden = state.step === steps.length - 1;
         }
     }
+
+    // =====================================================
+    // RESET / SELECTION / CREATE MODES
+    // =====================================================
 
     function resetFields () {
         setValue(el.name, "");
@@ -584,16 +596,10 @@
         setValue(el.website, "");
         setValue(el.title, "");
         setValue(el.description, "");
-
-        setValue(
-            el.buttonText,
-            "Get Started"
-        );
-
+        setValue(el.buttonText, "Get Started");
         setValue(el.primary, "#16a085");
         setValue(el.corners, "rounded");
         setValue(el.position, "bottom-right");
-
         setValue(el.showTitle, true);
         setValue(el.showDescription, true);
         setValue(el.showIntroduction, true);
@@ -606,12 +612,26 @@
         state.creating = false;
         state.key = "";
         state.loadedDesign = null;
+
         resetFields();
-        renderWidgetOptions();
-        if (el.pageTitle) el.pageTitle.textContent = "Widget Builder";
-        if (el.pageDescription) el.pageDescription.textContent = "Create and customize your DecisionOS experience.";
-        if (el.version) el.version.textContent = "—";
-        if (el.apiNote) el.apiNote.textContent = "Choose an existing widget to edit, or click + to create a new widget.";
+
+        if (el.pageTitle) {
+            el.pageTitle.textContent = "Widget Builder";
+        }
+
+        if (el.pageDescription) {
+            el.pageDescription.textContent =
+                "Create and customize your DecisionOS experience.";
+        }
+
+        updateWidgetVersion(null);
+
+        if (el.apiNote) {
+            el.apiNote.textContent =
+                "Choose an existing widget to edit, " +
+                "or click + to create a new widget.";
+        }
+
         setStep(0);
         state.dirty = false;
         setIndicator("Select a widget", false);
@@ -624,22 +644,20 @@
 
         state.creating = true;
         state.key = "";
+        state.loadedDesign = null;
 
         storageSet(STORAGE_KEY, "");
 
-        state.loadedDesign = null;
         resetFields();
         renderWidgetOptions();
 
         if (el.pageTitle) {
-            el.pageTitle.textContent =
-                "Create a new widget";
+            el.pageTitle.textContent = "Create a new widget";
         }
 
         if (el.pageDescription) {
             el.pageDescription.textContent =
-                "Set up your widget details, " +
-                "appearance, and behavior.";
+                "Set up your widget details, appearance, and behavior.";
         }
 
         if (el.version) {
@@ -648,18 +666,19 @@
 
         if (el.apiNote) {
             el.apiNote.textContent =
-                "Create a widget by entering its " +
-                "details and clicking Save Draft.";
+                "Create a widget by entering its details " +
+                "and clicking Save Draft.";
         }
 
         setStep(0);
         markDirty();
 
-        message(
-            "Enter your widget details to create " +
-            "a new widget."
-        );
+        message("Enter your widget details to create a new widget.");
     }
+
+    // =====================================================
+    // APPLY SAVED CONFIGURATION
+    // =====================================================
 
     function applySettings (result) {
         if (!result) return;
@@ -671,6 +690,7 @@
             result;
 
         if (!source) return;
+
         state.loadedDesign = { ...source };
 
         const mappings = [
@@ -681,37 +701,19 @@
             [ "position", "position", "Position" ],
             [ "corners", "buttonShape", "ButtonShape" ],
             [ "showTitle", "showTitle", "ShowTitle" ],
-            [
-                "showDescription",
-                "showDescription",
-                "ShowDescription"
-            ],
-            [
-                "showIntroduction",
-                "showIntroduction",
-                "ShowIntroduction"
-            ]
+            [ "showDescription", "showDescription", "ShowDescription" ],
+            [ "showIntroduction", "showIntroduction", "ShowIntroduction" ]
         ];
 
         mappings.forEach(([ elementName, camel, pascal ]) => {
-            const setting = field(
-                source,
-                camel,
-                pascal
-            );
+            const setting = field(source, camel, pascal);
 
-            if (setting !== undefined &&
-                setting !== null) {
+            if (setting !== undefined && setting !== null) {
                 setValue(el[ elementName ], setting);
             }
         });
 
-        const savedTheme = field(
-            source,
-            "theme",
-            "Theme"
-        );
-
+        const savedTheme = field(source, "theme", "Theme");
         if (savedTheme) setTheme(savedTheme);
 
         updatePreview();
@@ -723,9 +725,7 @@
         const key = publicKey(widget);
 
         if (!key) {
-            throw new Error(
-                "Widget public key is missing."
-            );
+            throw new Error("Widget public key is missing.");
         }
 
         state.key = key;
@@ -735,46 +735,20 @@
 
         setValue(el.name, widgetName(widget));
 
-        const widgetType = field(
-            widget,
-            "type",
-            "Type"
-        );
-
-        if (widgetType) {
-            setValue(el.type, widgetType);
-        }
+        const widgetType = field(widget, "type", "Type");
+        if (widgetType) setValue(el.type, widgetType);
 
         const website =
-            field(
-                widget,
-                "websiteAddress",
-                "WebsiteAddress"
-            ) ||
-            field(
-                widget,
-                "targetWebsite",
-                "TargetWebsite"
-            );
+            field(widget, "websiteAddress", "WebsiteAddress") ||
+            field(widget, "targetWebsite", "TargetWebsite");
 
-        if (website) {
-            setValue(el.website, website);
-        }
+        if (website) setValue(el.website, website);
 
-        const title = field(
-            widget,
-            "title",
-            "Title"
-        );
-
-        if (title !== undefined) {
-            setValue(el.title, title);
-        }
+        const title = field(widget, "title", "Title");
+        if (title !== undefined) setValue(el.title, title);
 
         const description = field(
-            widget,
-            "description",
-            "Description"
+            widget, "description", "Description"
         );
 
         if (description !== undefined) {
@@ -782,72 +756,66 @@
         }
 
         if (el.pageTitle) {
-            el.pageTitle.textContent =
-                "Widget Builder";
+            el.pageTitle.textContent = "Widget Builder";
         }
 
-        if (el.version) {
-            el.version.textContent = "Draft";
-        }
-
+        updateWidgetVersion(widget);
         renderWidgetOptions();
         updatePreview();
     }
 
+    // =====================================================
+    // LOAD CONFIGURATION
+    // =====================================================
+
     async function loadConfiguration (key) {
         const result = await portalRequest(
-            "widgets/" +
-            encodeURIComponent(key) +
+            "widgets/" + encodeURIComponent(key) +
             "/draft/configuration"
         );
 
         applySettings(result);
 
         const version = field(
-            result,
-            "versionNumber",
-            "VersionNumber"
+            result, "versionNumber", "VersionNumber"
         );
 
-        if (version !== undefined &&
-            version !== null &&
-            el.version) {
-            el.version.textContent =
-                "Draft v" + version;
-        }
+        const widget = selectedWidget();
+
+        // Synchronize only the version returned by the
+        // configuration endpoint.
+        syncDraftVersion(widget, version);
+        updateWidgetVersion(widget);
 
         markSaved();
     }
 
     async function loadWidgets () {
         const result = await portalRequest("widgets");
-
         state.widgets = normalizeWidgets(result);
-
         renderWidgetOptions();
     }
 
     async function selectWidget (key) {
         if (state.busy) return;
-        if (!key) { selectionMode(); return; }
+
+        if (!key) {
+            selectionMode();
+            return;
+        }
 
         const widget = state.widgets.find(
             item => publicKey(item) === key
         );
 
         if (!widget) {
-            message(
-                "Selected widget was not found.",
-                true
-            );
+            message("Selected widget was not found.", true);
             return;
         }
 
         setBusy(true);
         message("Loading widget...");
 
-        // Every widget selection starts the wizard at Basics (Step 1).
-        // Reset prior widget settings before applying the selected widget.
         state.loadedDesign = null;
         setStep(0);
         resetFields();
@@ -855,7 +823,6 @@
         try {
             applyWidget(widget);
             await loadConfiguration(key);
-
             message("");
         } catch (error) {
             message(
@@ -869,14 +836,16 @@
         }
     }
 
+    // =====================================================
+    // WEBSITE VALIDATION
+    // =====================================================
+
     function normalizedWebsite () {
         const input = value(el.website);
-
         if (!input) return "";
 
         return /^https?:\/\//i.test(input)
-            ? input
-            : "https://" + input;
+            ? input : "https://" + input;
     }
 
     function validate () {
@@ -885,9 +854,7 @@
         const title = value(el.title);
         const description = value(el.description);
 
-        if (!name) {
-            return "Enter an internal widget name.";
-        }
+        if (!name) return "Enter an internal widget name.";
 
         if (name.length > 100) {
             return "Widget name must be 100 characters or fewer.";
@@ -899,21 +866,19 @@
 
         const website = normalizedWebsite();
 
-        if (!website) {
-            return "Enter the target website.";
-        }
+        if (!website) return "Enter the target website.";
 
         try {
             const url = new URL(website);
 
-            if (![ "http:", "https:" ].includes(
-                url.protocol
-            )) {
+            if (![ "http:", "https:" ].includes(url.protocol)) {
                 throw new Error();
             }
 
-            if (!url.hostname.includes(".") &&
-                url.hostname !== "localhost") {
+            if (
+                !url.hostname.includes(".") &&
+                url.hostname !== "localhost"
+            ) {
                 throw new Error();
             }
 
@@ -939,12 +904,13 @@
         return "";
     }
 
+    // =====================================================
+    // RESOLVE TARGET WEBSITE
+    // =====================================================
+
     async function resolveWebsite () {
         const address = normalizedWebsite();
-
-        const result = await portalRequest(
-            "widgets/websites"
-        );
+        const result = await portalRequest("widgets/websites");
 
         const websites =
             result?.websites ??
@@ -976,11 +942,7 @@
         const existing = websites.find(site => {
             const siteAddress =
                 field(site, "address", "Address") ||
-                field(
-                    site,
-                    "websiteAddress",
-                    "WebsiteAddress"
-                ) ||
+                field(site, "websiteAddress", "WebsiteAddress") ||
                 "";
 
             return normalizeAddress(siteAddress) === target;
@@ -1008,6 +970,10 @@
         };
     }
 
+    // =====================================================
+    // API SAVE PAYLOADS
+    // =====================================================
+
     async function createPayload () {
         const website = await resolveWebsite();
 
@@ -1024,23 +990,26 @@
 
     async function saveWidgetBasics (key) {
         const website = await resolveWebsite();
-        return portalRequest("widgets/" + encodeURIComponent(key) + "/basics", {
-            method: "PUT",
-            body: {
-                name: value(el.name),
-                title: value(el.title),
-                description: value(el.description),
-                websiteTokenId: website.websiteTokenId,
-                websiteName: website.websiteName,
-                websiteAddress: website.websiteAddress
+
+        return portalRequest(
+            "widgets/" + encodeURIComponent(key) + "/basics",
+            {
+                method: "PUT",
+                body: {
+                    name: value(el.name),
+                    title: value(el.title),
+                    description: value(el.description),
+                    websiteTokenId: website.websiteTokenId,
+                    websiteName: website.websiteName,
+                    websiteAddress: website.websiteAddress
+                }
             }
-        });
+        );
     }
 
     async function saveDesign (key) {
         return portalRequest(
-            "widgets/" +
-            encodeURIComponent(key) +
+            "widgets/" + encodeURIComponent(key) +
             "/draft/configuration",
             {
                 method: "PUT",
@@ -1048,6 +1017,10 @@
             }
         );
     }
+
+    // =====================================================
+    // SAVE DRAFT
+    // =====================================================
 
     async function saveDraft () {
         if (state.busy) return;
@@ -1104,24 +1077,43 @@
                 );
             }
 
-            // Save Basics first, including new or existing Target Website.
+            // Save widget basics first.
             const basicsResult = await saveWidgetBasics(state.key);
-            const savedWebsiteTokenId = field(basicsResult, "websiteTokenId", "WebsiteTokenId");
-            console.debug("Saved Target Website token:", savedWebsiteTokenId);
-            // Save design and receive the authoritative new draft version.
+
+            const savedWebsiteTokenId = field(
+                basicsResult,
+                "websiteTokenId",
+                "WebsiteTokenId"
+            );
+
+            console.debug(
+                "Saved Target Website token:",
+                savedWebsiteTokenId
+            );
+
+            // Save configuration and get the new draft version.
             const saveResult = await saveDesign(state.key);
 
-            // The draft has been saved at this point.
             markSaved();
 
-            const savedVersion = field(saveResult, "versionNumber", "VersionNumber") ??
-                field(saveResult?.data, "versionNumber", "VersionNumber");
-            if (el.version && savedVersion !== undefined && savedVersion !== null) {
-                el.version.textContent = "Draft v" + savedVersion;
-            }
+            const savedVersion =
+                field(
+                    saveResult,
+                    "versionNumber",
+                    "VersionNumber"
+                ) ??
+                field(
+                    saveResult?.data,
+                    "versionNumber",
+                    "VersionNumber"
+                );
 
-            // A list refresh failure must not be treated
-            // as a failure to save the draft.
+            // Update immediately from the successful save.
+            syncDraftVersion(selectedWidget(), savedVersion);
+            updateWidgetVersion(selectedWidget());
+
+            // Refresh the widget list.
+            // A refresh failure does not mean the save failed.
             try {
                 await loadWidgets();
             } catch (refreshError) {
@@ -1131,6 +1123,21 @@
                 );
             }
 
+            // Preserve the saved draft version even when
+            // the widget list is stale or unavailable.
+            let savedWidget = selectedWidget();
+
+            if (!savedWidget && state.key) {
+                savedWidget = {
+                    publicKey: state.key,
+                    name: value(el.name)
+                };
+
+                state.widgets.push(savedWidget);
+            }
+
+            syncDraftVersion(savedWidget, savedVersion);
+            updateWidgetVersion(savedWidget);
             renderWidgetOptions();
 
             message(
@@ -1161,10 +1168,7 @@
                     true
                 );
             } else {
-                setIndicator(
-                    "Unsaved changes",
-                    false
-                );
+                setIndicator("Unsaved changes", false);
 
                 message(
                     error.message ||
@@ -1177,6 +1181,10 @@
             renderWidgetOptions();
         }
     }
+
+    // =====================================================
+    // EVENTS
+    // =====================================================
 
     function bindEvents () {
         tabs.forEach(button => {
@@ -1199,15 +1207,8 @@
             () => setStep(state.step + 1)
         );
 
-        el.save?.addEventListener(
-            "click",
-            saveDraft
-        );
-
-        el.saveBottom?.addEventListener(
-            "click",
-            saveDraft
-        );
+        el.save?.addEventListener("click", saveDraft);
+        el.saveBottom?.addEventListener("click", saveDraft);
 
         el.select?.addEventListener(
             "change",
@@ -1235,24 +1236,14 @@
         ];
 
         inputs.filter(Boolean).forEach(input => {
-            input.addEventListener(
-                "input",
-                markDirty
-            );
-
-            input.addEventListener(
-                "change",
-                markDirty
-            );
+            input.addEventListener("input", markDirty);
+            input.addEventListener("change", markDirty);
         });
 
         root.querySelectorAll(
             'input[name="wbTheme"]'
         ).forEach(radio => {
-            radio.addEventListener(
-                "change",
-                markDirty
-            );
+            radio.addEventListener("change", markDirty);
         });
 
         el.previewButton?.addEventListener(
@@ -1266,6 +1257,10 @@
         );
     }
 
+    // =====================================================
+    // INITIALIZATION
+    // =====================================================
+
     async function initialize () {
         bindEvents();
         setStep(0);
@@ -1273,15 +1268,27 @@
         updateSaveButton();
 
         try {
-            // Query-string navigation is preferred. Legacy Dashboard sessionStorage
-            // intent is consumed once; sidebar navigation cannot auto-select.
             const legacyMode = storageGet(STORAGE_MODE);
             const legacyKey = storageGet(STORAGE_KEY);
+
             storageSet(STORAGE_MODE, "");
-            const explicitCreate = routeMode === "create" || route.get("new") === "1" ||
-                (!routeMode && !routeKey && legacyMode === "create");
-            const explicitEdit = routeMode === "edit" || Boolean(routeKey) ||
-                (!routeMode && legacyMode === "edit");
+
+            const explicitCreate =
+                routeMode === "create" ||
+                route.get("new") === "1" ||
+                (
+                    !routeMode &&
+                    !routeKey &&
+                    legacyMode === "create"
+                );
+
+            const explicitEdit =
+                routeMode === "edit" ||
+                Boolean(routeKey) ||
+                (
+                    !routeMode &&
+                    legacyMode === "edit"
+                );
 
             if (explicitCreate) {
                 createMode();
@@ -1289,28 +1296,54 @@
             }
 
             await loadWidgets();
+
             if (explicitEdit) {
                 const requestedKey = routeKey || legacyKey;
+
                 if (!requestedKey) {
                     selectionMode();
-                    message("No widget was specified for editing.", true);
+
+                    message(
+                        "No widget was specified for editing.",
+                        true
+                    );
+
                     return;
                 }
-                const match = state.widgets.find(w => publicKey(w) === requestedKey);
+
+                const match = state.widgets.find(
+                    widget => publicKey(widget) === requestedKey
+                );
+
                 if (!match) {
                     selectionMode();
-                    message("The requested widget was not found or is unavailable.", true);
+
+                    message(
+                        "The requested widget was not found or is unavailable.",
+                        true
+                    );
+
                     return;
                 }
+
                 await selectWidget(requestedKey);
                 return;
             }
 
-            // Direct/sidebar navigation: ALWAYS require manual selection.
+            // Sidebar navigation requires manual selection.
             selectionMode();
+
         } catch (error) {
-            message(error.message || "Could not initialize Widget Builder.", true);
-            console.error("AskPearls Widget Builder initialization error:", error);
+            message(
+                error.message ||
+                "Could not initialize Widget Builder.",
+                true
+            );
+
+            console.error(
+                "AskPearls Widget Builder initialization error:",
+                error
+            );
         }
     }
 

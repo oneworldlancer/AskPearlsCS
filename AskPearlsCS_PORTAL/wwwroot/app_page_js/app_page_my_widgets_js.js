@@ -91,7 +91,11 @@
             select.value = current ? selectedKey : "";
         }
         const active = widgets.find(widget => widget.publicKey === selectedKey);
-        if (activeVersion) activeVersion.textContent = active ? versionLabel(active) : "—";
+
+        if (activeVersion) {
+            AskPearlsWidgetVersion.update("activeWidgetVersion", active);
+        }
+
         if (activeStatus) {
             activeStatus.hidden = !active;
             activeStatus.classList.toggle("is-draft", active?.status === "draft");

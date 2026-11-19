@@ -37,7 +37,8 @@
     }
     async function loadItems () {
         const widget = currentWidget();
-        items = []; versionNumber = ""; $("riWidgetVersion").textContent = formatVersion(widget);
+        items = []; versionNumber = "";
+        AskPearlsWidgetVersion.update("riWidgetVersion", widget);
         $("riAddButton").disabled = !widget;
         const sequence = ++loadSequence;
         $("riUsedCount").textContent = "—"; $("riServedCount").textContent = "—";
@@ -52,7 +53,7 @@
         $("riUsedCount").textContent = String(data.usedInRulesCount ?? 0);
         $("riServedCount").textContent = String(data.recommendationsServedCount ?? 0);
         const live = widget.publishedVersionNumber ?? widget.PublishedVersionNumber;
-        $("riWidgetVersion").textContent = formatVersion(widget);
+        AskPearlsWidgetVersion.update("riWidgetVersion", widget);
         renderTable();
         message(data.usedLiveFallback
             ? `The draft has no saved recommendation items yet. Showing ${ items.length } item${ items.length === 1 ? "" : "s" } from the live version.`
@@ -99,7 +100,7 @@
             $("riServedCount").textContent = String(data.recommendationsServedCount ?? $("riServedCount").textContent ?? 0);
             renderTable();
             const widget = currentWidget(); if (widget) { widget.draftVersionNumber = versionNumber; widget.hasDraft = true; }
-            $("riWidgetVersion").textContent = formatVersion(widget);
+            AskPearlsWidgetVersion.update("riWidgetVersion", widget);
             message(`Draft v${ versionNumber } saved. The live version is unchanged until you publish it.`, "success");
         } finally { busy = false; $("riSave").disabled = false; }
     }

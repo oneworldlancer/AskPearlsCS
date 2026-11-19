@@ -50,13 +50,11 @@
         if (!response.ok || data.success === false) throw new Error(data.message || `API request failed (${ response.status }).`);
         return data;
     }
+
     function setVersion (widget) {
-        $('spWidgetVersion').textContent = widget ? (
-            widget.hasDraft ? `Draft v${ widget.draftVersionNumber || widget.versionNumber || '?' }` +
-                (widget.hasPublishedVersion ? ` · Live v${ widget.publishedVersionNumber }` : '') :
-                widget.hasPublishedVersion ? `Live v${ widget.publishedVersionNumber || widget.versionNumber }` : '—'
-        ) : '—';
+        AskPearlsWidgetVersion.update("spWidgetVersion", widget);
     }
+
     async function loadWidgets () {
         const select = $('spWidgetSelect'); select.disabled = true;
         try {
