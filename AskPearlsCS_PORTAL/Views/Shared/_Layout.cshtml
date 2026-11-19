@@ -35,10 +35,10 @@
     <script src="~/lib/jquery/dist/jquery.slim.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.slim.js"></script>
     <script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/app_js/app_input_value_helper.js"></script>
+    <script src="~/app_js/app_input_value_helper.js"></script>
    
 
-<!-- APP CSS Files -->
+    <!-- APP CSS Files -->
     <link href="~/app_css/app_page_shared_css.css" rel="stylesheet" />
     <link href="~/app_css/app_align_CSS.css" rel="stylesheet">
     <link href="~/app_css/app_link_CSS.css" rel="stylesheet">
@@ -48,7 +48,7 @@
     <link href="~/app_crm/css/layout.css" rel="stylesheet" />
 
     <link href="~/app_css/app_portal_chat_crm_css.css" rel="stylesheet" />
-     <link href="~/app_css/app_page_widget_selector_shared_css.css?v=20261021-2" rel="stylesheet" />
+    <link href="~/app_css/app_page_widget_selector_shared_css.css?v=20261021-2" rel="stylesheet" />
     <link href="~/app_page_css/app_page_notifications_css.css" rel="stylesheet" asp-append-version="true" />
 
     <!-- Vendor CSS Files -->
@@ -66,12 +66,12 @@
 
     <!-- Template Main CSS File -->
     <link href="MemberView/assets/css/main.css" rel="stylesheet">
-<link href="~/app_css/app_table_css.css" rel="stylesheet" />
+    <link href="~/app_css/app_table_css.css" rel="stylesheet" />
     <link href="~/app_css/app_menu_sidebar_css.css" rel="stylesheet" />
    
 
 
- <style>
+    <style>
 
 
 
@@ -79,85 +79,85 @@
 
 
 
-            .user-menu-logout {
-                font: inherit;
-                cursor: pointer;
-            }
+        .user-menu-logout {
+            font: inherit;
+            cursor: pointer;
+        }
 
         .user-trigger {
-    display: flex;
-    align-items: center;
-}
+            display: flex;
+            align-items: center;
+        }
 
-.user-brief {
-    width: 190px;
-    min-width: 190px;
-    overflow: hidden;
-    text-align: left;
-}
+        .user-brief {
+            width: 190px;
+            min-width: 190px;
+            overflow: hidden;
+            text-align: left;
+        }
 
-.user-name {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+        .user-name {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-.user-menu-email {
-    max-width: 240px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+        .user-menu-email {
+            max-width: 240px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-.user-menu-footer form {
-    margin: 0;
-}
+        .user-menu-footer form {
+            margin: 0;
+        }
 
-.user-menu-logout {
-    width: 100%;
-    border: 0;
-    background: transparent;
-    text-align: left;
-    cursor: pointer;
-}
+        .user-menu-logout {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            text-align: left;
+            cursor: pointer;
+        }
 
 
-            .form-control {
-                background-color: #ffffcc !important;
-                border: 1px solid #3c8116;
-            }
+        .form-control {
+            background-color: #ffffcc !important;
+            border: 1px solid #3c8116;
+        }
 
-            input.form-control {
-                background-color: #ffffcc !important;
-                border: 1px solid #3c8116;
-            }
+        input.form-control {
+            background-color: #ffffcc !important;
+            border: 1px solid #3c8116;
+        }
 
-            .form-control-sm {
-                background-color: #ffffcc !important;
-                border: 1px solid #3c8116;
-            }
+        .form-control-sm {
+            background-color: #ffffcc !important;
+            border: 1px solid #3c8116;
+        }
 
-            input.form-control-sm {
-                background-color: #ffffcc !important;
-                border: 1px solid #3c8116;
-            }
+        input.form-control-sm {
+            background-color: #ffffcc !important;
+            border: 1px solid #3c8116;
+        }
 
         
-            input[type=text], input[type=text]:focus, input[type=email]:focus, input[type=url]:focus, input[type=password]:focus, input[type=number]:focus, textarea, textarea:focus {
-                /*background-color: lightblue;*/
-                background-color: #ffffcc !important;
-                border: 1px solid #3c8116;
-            }
+        input[type=text], input[type=text]:focus, input[type=email]:focus, input[type=url]:focus, input[type=password]:focus, input[type=number]:focus, textarea, textarea:focus {
+            /*background-color: lightblue;*/
+            background-color: #ffffcc !important;
+            border: 1px solid #3c8116;
+        }
 
 
-            input[type=text], input[type=email], input[type=password], input[type=url], input[type=number], textarea {
-                /*background-color: lightblue;*/
-                /*background: blue;*/
-                background-color: #ffffcc !important;
-                border: 1px solid #3c8116;
-                /*   border:  1px solid lightblue ;*/
-            }
+        input[type=text], input[type=email], input[type=password], input[type=url], input[type=number], textarea {
+            /*background-color: lightblue;*/
+            /*background: blue;*/
+            background-color: #ffffcc !important;
+            border: 1px solid #3c8116;
+            /*   border:  1px solid lightblue ;*/
+        }
 
     </style>
 
@@ -206,6 +206,7 @@
 
         <div class="header-right">
             <div class="header-actions-desktop">
+                <a href="/Dashboard/WidgetBuilder" class="ap-new-widget-header" aria-label="Create New Widget" title="Create New Widget"><i class="bi bi-plus-lg" aria-hidden="true"></i><span>New Widget</span></a>
                 <div class="header-action-wrap dropdown lang-dropdown d-none">
                     <button class="header-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Language">
                         <img src="../MemberView/assets/flag/us.png" alt="EN" class="lang-flag">
@@ -370,58 +371,58 @@
              
 
                 @{
-    var email = User.FindFirst(AskPearlsClaimTypes.ASKPEARLS_USER_EMAIL)?.Value
-                ?? User.Identity?.Name
-                ?? "";
-}
+                    var email = User.FindFirst(AskPearlsClaimTypes.ASKPEARLS_USER_EMAIL)?.Value
+                                ?? User.Identity?.Name
+                                ?? "";
+                }
 
-<div class="header-action-wrap dropdown user-dropdown">
-    <button class="dropdown-toggle user-trigger"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false">
-        <img src="../MemberView/assets/img/profile-img.webp"
-             alt="User"
-             class="user-avatar">
+                <div class="header-action-wrap dropdown user-dropdown">
+                    <button class="dropdown-toggle user-trigger"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        <img src="../MemberView/assets/img/profile-img.webp"
+                             alt="User"
+                             class="user-avatar">
 
-        <div class="user-brief">
-            <span class="user-name" title="@email">@email</span>
-            <span class="user-role">
-                @(User.IsInRole("Admin") ? "Product Admin" : "AskPearls member")
-            </span>
-        </div>
-    </button>
+                        <div class="user-brief">
+                            <span class="user-name" title="@email">@email</span>
+                            <span class="user-role">
+                                @(User.IsInRole("Admin") ? "Product Admin" : "AskPearls member")
+                            </span>
+                        </div>
+                    </button>
 
-    <div class="dropdown-menu dropdown-menu-end user-menu">
-        <div class="user-menu-header d-none">
-            <img src="../MemberView/assets/img/profile-img.webp"
-                 alt="User"
-                 class="user-menu-avatar">
+                    <div class="dropdown-menu dropdown-menu-end user-menu">
+                        <div class="user-menu-header d-none">
+                            <img src="../MemberView/assets/img/profile-img.webp"
+                                 alt="User"
+                                 class="user-menu-avatar">
 
-            <div class="user-menu-info">
-                <div class="user-menu-name">
-                    @(User.FindFirst(AskPearlsClaimTypes.ASKPEARLS_USER_FULL_NAME)?.Value ?? email)
-                </div>
-                <div class="user-menu-email" title="@email">@email</div>
-            </div>
-        </div>
+                            <div class="user-menu-info">
+                                <div class="user-menu-name">
+                                    @(User.FindFirst(AskPearlsClaimTypes.ASKPEARLS_USER_FULL_NAME)?.Value ?? email)
+                                </div>
+                                <div class="user-menu-email" title="@email">@email</div>
+                            </div>
+                        </div>
 
-        <div class="user-menu-body">
-            <a class="user-menu-item" href="profile.html">
-                <i class="bi bi-person"></i><span>My Profile</span>
-            </a>
-            <a class="user-menu-item" href="settings.html">
-                <i class="bi bi-sliders"></i><span>Preferences</span>
-            </a>
-            <a class="user-menu-item" href="activity.html">
-                <i class="bi bi-activity"></i><span>Activity Log</span>
-            </a>
-            <a class="user-menu-item" href="invoice-list.html">
-                <i class="bi bi-credit-card"></i><span>Billing</span>
-            </a>
-        </div>
+                        <div class="user-menu-body">
+                            <a class="user-menu-item" href="profile.html">
+                                <i class="bi bi-person"></i><span>My Profile</span>
+                            </a>
+                            <a class="user-menu-item" href="settings.html">
+                                <i class="bi bi-sliders"></i><span>Preferences</span>
+                            </a>
+                            <a class="user-menu-item" href="activity.html">
+                                <i class="bi bi-activity"></i><span>Activity Log</span>
+                            </a>
+                            <a class="user-menu-item" href="invoice-list.html">
+                                <i class="bi bi-credit-card"></i><span>Billing</span>
+                            </a>
+                        </div>
 
-        <div class="user-menu-footer">
+                        <div class="user-menu-footer">
                             <form asp-controller="Home" asp-action="Logout" method="post">
                                 @Html.AntiForgeryToken()
                                 <button type="submit" class="user-menu-logout">
@@ -429,15 +430,16 @@
                                     <span>Sign Out</span>
                                 </button>
                             </form>
-        </div>
-    </div>
-</div>
+                        </div>
+                    </div>
+                </div>
 
          
             
             </div>
 
             <div class="header-actions-mobile">
+                <a href="/Dashboard/WidgetBuilder" class="ap-new-widget-header ap-new-widget-mobile" aria-label="Create New Widget" title="Create New Widget"><i class="bi bi-plus-lg" aria-hidden="true"></i></a>
                 <button class="header-action search-toggle" title="Search">
                     <i class="bi bi-search"></i>
                 </button>
@@ -515,78 +517,96 @@
     <!-- AskPearls Agent Sidebar -->
 
     <style>
-            /* The sidebar stays dark in both portal themes, so keep its future-agent
-                   headings and descriptions readable when the main portal is in light mode. */
-            #askPearlsSidebar .ap-agent-disabled .ap-agent-title,
-            #askPearlsSidebar .ap-agent-disabled .ap-agent-header {
-                color: #f1f5f9 !important;
+        /* The sidebar stays dark in both portal themes, so keep its future-agent
+                           headings and descriptions readable when the main portal is in light mode. */
+        #askPearlsSidebar .ap-agent-disabled .ap-agent-title,
+        #askPearlsSidebar .ap-agent-disabled .ap-agent-header {
+            color: #f1f5f9 !important;
+        }
+
+        #askPearlsSidebar .ap-agent-disabled .ap-agent-description {
+            color: #a9bec6 !important;
+        }
+
+        #askPearlsSidebar .ap-nav-group-label {
+            margin: 12px 12px 6px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(187, 211, 218, 0.16);
+            color: #91aab2;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        #askPearlsSidebar .ap-global-heading {
+            margin-top: 20px;
+        }
+
+        #askPearlsSidebar .ap-global-navigation {
+            padding: 4px 10px 10px;
+        }
+
+            #askPearlsSidebar .ap-global-navigation .ap-nav-link {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 11px 14px;
+                border-radius: 7px;
             }
 
-            #askPearlsSidebar .ap-agent-disabled .ap-agent-description {
-                color: #a9bec6 !important;
-            }
-
-            #askPearlsSidebar .ap-nav-group-label {
-                margin: 12px 12px 6px;
-                padding-top: 12px;
-                border-top: 1px solid rgba(187, 211, 218, 0.16);
-                color: #91aab2;
-                font-size: 0.68rem;
+            #askPearlsSidebar .ap-global-navigation .ap-global-unread {
+                margin-left: auto;
+                border-radius: 99px;
+                padding: 1px 7px;
+                background: #e24b5b;
+                color: #fff;
+                font-size: 11px;
                 font-weight: 700;
-                letter-spacing: 0.09em;
-                line-height: 1.2;
-                text-transform: uppercase;
             }
-        #askPearlsSidebar .ap-global-heading { margin-top: 20px; }
-        #askPearlsSidebar .ap-global-navigation { padding: 4px 10px 10px; }
-        #askPearlsSidebar .ap-global-navigation .ap-nav-link {
-            display: flex; align-items: center; gap: 12px;
-            padding: 11px 14px; border-radius: 7px;
+
+        #askPearlsSidebar .ap-global-unread[hidden] {
+            display: none !important;
         }
-        #askPearlsSidebar .ap-global-navigation .ap-global-unread {
-            margin-left: auto; border-radius: 99px; padding: 1px 7px;
-            background: #e24b5b; color: #fff; font-size: 11px; font-weight: 700;
-        }
-        #askPearlsSidebar .ap-global-unread[hidden] { display: none !important; }
  
         
         
-/* Fix spacing between global navigation and Account & Settings */
+        /* Fix spacing between global navigation and Account & Settings */
 
-#askPearlsSidebar .ap-global-navigation {
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-}
+        #askPearlsSidebar .ap-global-navigation {
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
+        }
 
-#askPearlsSidebar .ap-global-navigation + * {
-    margin-top: 0 !important;
-}
+            #askPearlsSidebar .ap-global-navigation + * {
+                margin-top: 0 !important;
+            }
 
-#askPearlsSidebar .ap-global-navigation .ap-nav-link {
-    margin-bottom: 0 !important;
-}
+            #askPearlsSidebar .ap-global-navigation .ap-nav-link {
+                margin-bottom: 0 !important;
+            }
 
-    /* Separate Notifications from Account & Settings */
-#askPearlsSidebar .ap-nav-link[data-page="notifications"] {
-    margin-bottom: 12px;
-}
+        /* Separate Notifications from Account & Settings */
+        #askPearlsSidebar .ap-nav-link[data-page="notifications"] {
+            margin-bottom: 12px;
+        }
 
-#askPearlsSidebar .ap-nav-link[data-page="account-settings"] {
-    position: relative;
-    margin-top: 12px;
-}
+        #askPearlsSidebar .ap-nav-link[data-page="account-settings"] {
+            position: relative;
+            margin-top: 12px;
+        }
 
-#askPearlsSidebar .ap-nav-link[data-page="account-settings"]::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -13px;
-    height: 1px;
-    background: rgba(160, 190, 185, 0.20);
-}    
-        
-        </style>
+            #askPearlsSidebar .ap-nav-link[data-page="account-settings"]::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: -13px;
+                height: 1px;
+                background: rgba(160, 190, 185, 0.20);
+            }
+    </style>
 
     <aside id="askPearlsSidebar" class="sidebar ap-sidebar" style="margin-bottom:66px;-ms-overflow-style: none;scrollbar-width: none;border-bottom-right-radius:10px;border-top-right-radius:10px;">
 
@@ -637,12 +657,12 @@
                                     <span>Dashboard</span>
                                 </a>
 
-<!-- Widget selection and creation -->
+                                <!-- Widget selection and creation -->
                                 <a href="#" class="ap-nav-link" data-page="widgets">
                                     <i class="bi bi-grid"></i>
                                     <span>My Widgets</span>
                                 </a>
-@*                                 data-widget-builder-create *@
+                                @*                                 data-widget-builder-create *@
                                 <a href="#" class="ap-nav-link" data-page="widget-builder">
                                     <i class="bi bi-sliders"></i>
                                     <span>Widget Builder</span>
@@ -821,12 +841,12 @@
     <div class="sidebar-overlay"></div>
 
     <!-- Main Content -->
-   @*  <div class="d-flex flex-column vh-100"> *@
-       <div class="ap-portal-shell d-flex flex-column">
+    @*  <div class="d-flex flex-column vh-100"> *@
+    <div class="ap-portal-shell d-flex flex-column">
 
         <!-- AskPearls DecisionOS Dashboard -->
         @* <main id="apMainContent" class="main vh-100"> *@
-            <main id="apMainContent" class="main ap-portal-main" style="margin-bottom:15px !important;padding-bottom:15px !important;-ms-overflow-style: none;scrollbar-width: none;">
+        <main id="apMainContent" class="main ap-portal-main" style="margin-bottom:15px !important;padding-bottom:15px !important;-ms-overflow-style: none;scrollbar-width: none;">
             @RenderBody()
 
         </main>
@@ -835,9 +855,9 @@
         <partial name="_IndexFooterModel" />
         <footer class="ap-footer ap-footer--minimal" style="display:none;flex-direction:column;">
             <a class="ap-footer__company" href="https://AskPearls.com" target="_blank">
-        AskPearls Limited
-    </a>
-    <div class="ap-footer__copyright">
+                AskPearls Limited
+            </a>
+            <div class="ap-footer__copyright">
 
                 @{
                     var _iYear = DateTime.Now.Year;
@@ -845,12 +865,12 @@
                 Patent Pending. &copy; Copyright @{
 
                 @_iYear.ToString()
-                                        ;
+                                                    ;
 
             }
             . All Rights Reserved.
-    </div>
-</footer>
+        </div>
+    </footer>
  
 
 </div>
@@ -1354,33 +1374,33 @@
 
 <!-- Modal Container with custom 'modal-bottom' class -->
 <style>
-        /* Position the modal container at the very bottom */
-        .modal-bottom .modal-dialog {
-            position: fixed;
-            margin: 0;
-            width: 100%;
-            max-width: 100%;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
+    /* Position the modal container at the very bottom */
+    .modal-bottom .modal-dialog {
+        position: fixed;
+        margin: 0;
+        width: 100%;
+        max-width: 100%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
 
-        /* Set the initial hidden position below the viewport */
-        .modal-bottom.fade .modal-dialog {
-            transform: translate3d(0, 100%, 0);
-            transition: transform 0.3s ease-out;
-        }
+    /* Set the initial hidden position below the viewport */
+    .modal-bottom.fade .modal-dialog {
+        transform: translate3d(0, 100%, 0);
+        transition: transform 0.3s ease-out;
+    }
 
-        /* Slide it up to its final position when active */
-        .modal-bottom.show .modal-dialog {
-            transform: translate3d(0, 0, 0);
-        }
+    /* Slide it up to its final position when active */
+    .modal-bottom.show .modal-dialog {
+        transform: translate3d(0, 0, 0);
+    }
 
-        /* Round only the top corners of the modal sheet */
-        .modal-bottom .modal-content {
-            border-radius: 1rem 1rem 0 0;
-            border: none;
-        }
+    /* Round only the top corners of the modal sheet */
+    .modal-bottom .modal-content {
+        border-radius: 1rem 1rem 0 0;
+        border: none;
+    }
 
 </style>
 
@@ -1425,9 +1445,9 @@
 <script src="MemberView/assets/js/apps-sidebar-toggle.js"></script>
 
 <script>
-        document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
 
-        });
+    });
 </script>
 
 
@@ -1435,157 +1455,157 @@
 <script>
 
 
-        function setActiveSidebarItem_xxx1 (section) {
-            const $links = $("#askPearlsSidebar .ap-nav-link");
+    function setActiveSidebarItem_xxx1 (section) {
+        const $links = $("#askPearlsSidebar .ap-nav-link");
 
-            const $matchingLink = $links.filter(function () {
-                return $(this).attr("data-page") === section;
-            }).first();
+        const $matchingLink = $links.filter(function () {
+            return $(this).attr("data-page") === section;
+        }).first();
 
-            if (!$matchingLink.length) {
-                console.warn("No sidebar item found for section:", section);
-                return;
-            }
-
-            $links.removeClass("active").removeAttr("aria-current");
-            $matchingLink.addClass("active").attr("aria-current", "page");
+        if (!$matchingLink.length) {
+            console.warn("No sidebar item found for section:", section);
+            return;
         }
 
-        function loadPortalSection_xxx1 (section) {
-            if (!section) {
-                console.warn("No data-page attribute found.");
-                return;
-            }
+        $links.removeClass("active").removeAttr("aria-current");
+        $matchingLink.addClass("active").attr("aria-current", "page");
+    }
 
-            console.log("Loading portal section:", section);
-
-            $.ajax({
-                url: "/Dashboard/LoadSection",
-                type: "GET",
-                data: { section: section },
-
-                success: function (html) {
-                    $("#apMainContent").html(html);
-                    setActiveSidebarItem(section);
-
-                    $("#apMainContent").stop().animate(
-                        { scrollTop: 0 },
-                        1000
-                    );
-                },
-
-                error: function (xhr) {
-                    console.error(
-                        "Section loading failed:",
-                        section,
-                        xhr.status,
-                        xhr.responseText
-                    );
-
-                    alert("Unable to load this Dashboard section. Check the browser console.");
-                }
-            });
+    function loadPortalSection_xxx1 (section) {
+        if (!section) {
+            console.warn("No data-page attribute found.");
+            return;
         }
 
-        // Sidebar menu clicks
-        $(document).on("click", "#askPearlsSidebar .ap-nav-link", function (e) {
-            e.preventDefault();
-            loadPortalSection($(this).attr("data-page"));
-        });
+        console.log("Loading portal section:", section);
 
+        $.ajax({
+            url: "/Dashboard/LoadSection",
+            type: "GET",
+            data: { section: section },
 
-        // Buttons and links inside the loaded page
-        $(document).on("click", "#apMainContent [data-page]", function(e) {
-            e.preventDefault();
+            success: function (html) {
+                $("#apMainContent").html(html);
+                setActiveSidebarItem(section);
 
-            const section = $(this).attr("data-page");
+                $("#apMainContent").stop().animate(
+                    { scrollTop: 0 },
+                    1000
+                );
+            },
 
-            if (section === "widget-builder" &&
-                $(this).is("[data-widget-builder-create]")) {
-                localStorage.setItem("askpearls.widgetBuilderMode", "create");
-                localStorage.removeItem("askpearls.activeWidgetPublicKey");
+            error: function (xhr) {
+                console.error(
+                    "Section loading failed:",
+                    section,
+                    xhr.status,
+                    xhr.responseText
+                );
+
+                alert("Unable to load this Dashboard section. Check the browser console.");
             }
-
-            loadPortalSection(section);
         });
+    }
+
+    // Sidebar menu clicks
+    $(document).on("click", "#askPearlsSidebar .ap-nav-link", function (e) {
+        e.preventDefault();
+        loadPortalSection($(this).attr("data-page"));
+    });
+
+
+    // Buttons and links inside the loaded page
+    $(document).on("click", "#apMainContent [data-page]", function (e) {
+        e.preventDefault();
+
+        const section = $(this).attr("data-page");
+
+        if (section === "widget-builder" &&
+            $(this).is("[data-widget-builder-create]")) {
+            localStorage.setItem("askpearls.widgetBuilderMode", "create");
+            localStorage.removeItem("askpearls.activeWidgetPublicKey");
+        }
+
+        loadPortalSection(section);
+    });
 
         
-        (function() {
-            'use strict';
+    (function () {
+        'use strict';
 
-            function initAskPearlsSidebar() {
-                const sidebar = document.getElementById('askPearlsSidebar');
-                const toggle = document.querySelector('.sidebar-toggle');
-                const backdrop = document.getElementById('apSidebarBackdrop');
+        function initAskPearlsSidebar () {
+            const sidebar = document.getElementById('askPearlsSidebar');
+            const toggle = document.querySelector('.sidebar-toggle');
+            const backdrop = document.getElementById('apSidebarBackdrop');
 
-                if (!sidebar || !toggle || !backdrop) {
-                    return;
-                }
+            if (!sidebar || !toggle || !backdrop) {
+                return;
+            }
 
-                const mobileQuery = window.matchMedia('(max-width: 1199.98px)');
+            const mobileQuery = window.matchMedia('(max-width: 1199.98px)');
 
-                function openSidebar() {
-                    if (!mobileQuery.matches) return;
+            function openSidebar () {
+                if (!mobileQuery.matches) return;
 
-                    document.body.classList.add('sidebar-open');
-                    toggle.setAttribute('aria-expanded', 'true');
-                    backdrop.setAttribute('aria-hidden', 'false');
-                }
+                document.body.classList.add('sidebar-open');
+                toggle.setAttribute('aria-expanded', 'true');
+                backdrop.setAttribute('aria-hidden', 'false');
+            }
 
-                function closeSidebar() {
-                    document.body.classList.remove('sidebar-open');
-                    toggle.setAttribute('aria-expanded', 'false');
-                    backdrop.setAttribute('aria-hidden', 'true');
-                }
-
-                toggle.setAttribute('aria-controls', 'askPearlsSidebar');
+            function closeSidebar () {
+                document.body.classList.remove('sidebar-open');
                 toggle.setAttribute('aria-expanded', 'false');
+                backdrop.setAttribute('aria-hidden', 'true');
+            }
 
-                toggle.addEventListener('click', function(event) {
-                    event.preventDefault();
+            toggle.setAttribute('aria-controls', 'askPearlsSidebar');
+            toggle.setAttribute('aria-expanded', 'false');
 
-                    if (!mobileQuery.matches) return;
+            toggle.addEventListener('click', function (event) {
+                event.preventDefault();
 
-                    if (document.body.classList.contains('sidebar-open')) {
-                        closeSidebar();
-                    } else {
-                        openSidebar();
-                    }
-                });
+                if (!mobileQuery.matches) return;
 
-                backdrop.addEventListener('click', closeSidebar);
+                if (document.body.classList.contains('sidebar-open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            });
 
-                document.addEventListener('keydown', function(event) {
-                    if (event.key === 'Escape') {
-                        closeSidebar();
-                    }
-                });
+            backdrop.addEventListener('click', closeSidebar);
 
-                sidebar.querySelectorAll('.ap-nav-link[data-page]').forEach(function(link) {
-                    link.addEventListener('click', function() {
-                        if (mobileQuery.matches) {
-                            closeSidebar();
-                        }
-                    });
-                });
-
-                function handleBreakpointChange() {
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
                     closeSidebar();
                 }
+            });
 
-                if (mobileQuery.addEventListener) {
-                    mobileQuery.addEventListener('change', handleBreakpointChange);
-                } else {
-                    mobileQuery.addListener(handleBreakpointChange);
-                }
+            sidebar.querySelectorAll('.ap-nav-link[data-page]').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    if (mobileQuery.matches) {
+                        closeSidebar();
+                    }
+                });
+            });
+
+            function handleBreakpointChange () {
+                closeSidebar();
             }
 
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initAskPearlsSidebar);
+            if (mobileQuery.addEventListener) {
+                mobileQuery.addEventListener('change', handleBreakpointChange);
             } else {
-                initAskPearlsSidebar();
+                mobileQuery.addListener(handleBreakpointChange);
             }
-        })();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initAskPearlsSidebar);
+        } else {
+            initAskPearlsSidebar();
+        }
+    })();
 
 
 
@@ -1594,13 +1614,13 @@
 
 
 <script>
-        const theme = localStorage.getItem("askpearls-theme");
+    const theme = localStorage.getItem("askpearls-theme");
 
-        if (theme === "dark") {
-            document.documentElement.classList.add("dark-theme");
-        } else {
-            document.documentElement.classList.remove("dark-theme");
-        }
+    if (theme === "dark") {
+        document.documentElement.classList.add("dark-theme");
+    } else {
+        document.documentElement.classList.remove("dark-theme");
+    }
 </script>
 
 
@@ -1625,6 +1645,7 @@
 <script src="~/app_page_js/app_page_notifications_js.js" asp-append-version="true"></script>
 <script src="~/app_js/askpearls_global_navigation.js" asp-append-version="true"></script>
 
+<link href="~/app_css/app_widget_selector_shared_final.css" rel="stylesheet" asp-append-version="true" />
 
 </body>
 

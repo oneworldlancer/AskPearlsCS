@@ -1,0 +1,214 @@
+﻿/* AskPearls final shared selector layout, desktop + mobile.
+   Use with the corrected markup: icon | info | version are SIBLINGS.
+   This stylesheet must load AFTER page-specific stylesheets. */
+.ap-new-widget-header {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 16px;
+    min-height: 42px;
+    border-radius: 9px;
+    background: #009e89;
+    color: #fff !important;
+    text-decoration: none !important;
+    font-weight: 700;
+    font-size: 13px;
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+    .ap-new-widget-header:hover {
+        background: #08b49a;
+        color: #fff !important
+    }
+
+    .ap-new-widget-header i {
+        font-size: 19px;
+        line-height: 1
+    }
+
+.header-actions-mobile .ap-new-widget-mobile {
+    width: 42px;
+    height: 42px;
+    min-height: 42px;
+    padding: 0
+}
+
+.header-actions-desktop .ap-new-widget-header {
+    margin-right: 8px
+}
+
+@media(max-width:575.98px) {
+    .header-actions-mobile {
+        display: flex;
+        align-items: center;
+        gap: 8px
+    }
+
+        .header-actions-mobile .ap-new-widget-mobile {
+            display: inline-flex !important
+        }
+}
+
+.publish-embed-page .pe-widget-selector.ap-widget-selector {
+    display: grid !important;
+    grid-template-columns: 56px minmax(0,1fr) minmax(160px,240px) !important;
+    align-items: center !important;
+    column-gap: 20px !important;
+    row-gap: 0 !important;
+    padding: 20px 24px !important;
+    padding-right: 24px !important;
+    margin-bottom: 20px !important;
+    position: static !important;
+}
+
+.publish-embed-page .pe-widget-selector .pe-widget-icon {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    align-self: center !important;
+    width: 54px !important;
+    height: 54px !important;
+    min-width: 54px !important;
+}
+
+.publish-embed-page .pe-widget-selector .pe-widget-info {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 9px !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+    .publish-embed-page .pe-widget-selector .pe-widget-info > label {
+        display: block !important;
+        margin: 0 !important;
+        font-size: 13px !important;
+    }
+
+.publish-embed-page .pe-widget-selector .pe-selector-inline {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.publish-embed-page .pe-widget-selector select#peWidgetSelect {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: 48px !important;
+    margin: 0 !important;
+}
+
+.publish-embed-page .pe-widget-selector .ap-widget-selector-help {
+    display: block !important;
+    margin: 0 !important;
+    line-height: 1.5 !important;
+}
+
+.publish-embed-page .pe-widget-selector .pe-version.ap-widget-selector-version {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: auto !important;
+    gap: 8px !important;
+    padding: 0 0 0 24px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-left: 1px solid var(--ap-border,#315148) !important;
+    text-align: left !important;
+    position: static !important;
+}
+
+.publish-embed-page .pe-widget-selector .pe-version > span,
+.publish-embed-page .pe-widget-selector .pe-version > strong {
+    display: block !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-self: auto !important;
+    text-align: left !important;
+    overflow-wrap: anywhere;
+}
+
+.publish-embed-page .pe-widget-selector .pe-version > span {
+    font-size: 13px !important
+}
+
+.publish-embed-page .pe-widget-selector .pe-version > strong {
+    font-size: 16px !important;
+    font-weight: 750 !important
+}
+
+.publish-embed-page .pe-widget-selector #peNewWidgetBtn,
+.publish-embed-page .pe-widget-selector .pe-selector-add {
+    display: none !important
+}
+
+@media(max-width:767.98px) {
+    .publish-embed-page .pe-widget-selector.ap-widget-selector {
+        grid-template-columns: 54px minmax(0,1fr) !important;
+        column-gap: 16px !important;
+        row-gap: 16px !important;
+        padding: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    .publish-embed-page .pe-widget-selector .pe-widget-icon {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+    }
+
+    .publish-embed-page .pe-widget-selector .pe-widget-info {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+    }
+
+    .publish-embed-page .pe-widget-selector .pe-version.ap-widget-selector-version {
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+        padding: 16px 0 0 !important;
+        border-left: 0 !important;
+        border-top: 1px solid var(--ap-border,#315148) !important;
+    }
+
+    .publish-embed-page .pe-widget-selector .pe-version > strong {
+        text-align: right !important
+    }
+}
+
+@media(max-width:380px) {
+    .publish-embed-page .pe-widget-selector.ap-widget-selector {
+        grid-template-columns: 42px minmax(0,1fr) !important;
+        column-gap: 12px !important
+    }
+
+    .publish-embed-page .pe-widget-selector .pe-widget-icon {
+        width: 42px !important;
+        height: 42px !important;
+        min-width: 42px !important
+    }
+}

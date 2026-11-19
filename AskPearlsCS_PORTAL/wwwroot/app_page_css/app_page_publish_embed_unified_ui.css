@@ -1,0 +1,150 @@
+﻿/* Publish & Embed — unified widget selector, final page-scoped layout.
+   Load AFTER existing selector and responsive styles. */
+.publish-embed-page .pe-widget-selector.ap-widget-selector {
+    display: grid !important;
+    grid-template-columns: 54px minmax(0,1fr) 190px !important;
+    grid-template-areas: 'icon picker version' !important;
+    align-items: center !important;
+    gap: 16px !important;
+    height: auto !important;
+    min-height: 132px !important;
+    max-height: none !important;
+    padding: 20px 24px !important;
+    position: relative !important;
+}
+
+.publish-embed-page .pe-widget-icon {
+    grid-area: icon !important;
+    position: static !important;
+    align-self: center !important
+}
+
+.publish-embed-page .pe-widget-info {
+    grid-area: picker !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    gap: 7px !important;
+    margin: 0 !important;
+    padding: 0 !important
+}
+
+    .publish-embed-page .pe-widget-info > label {
+        margin: 0 !important;
+        line-height: 1.4 !important
+    }
+
+.publish-embed-page #peWidgetSelect {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important
+}
+
+.publish-embed-page .pe-widget-info > small {
+    display: block !important;
+    margin: 0 !important;
+    line-height: 1.5 !important;
+    text-align: left !important
+}
+
+.publish-embed-page .pe-version {
+    grid-area: version !important;
+    position: static !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    min-width: 0 !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 8px 0 8px 20px !important;
+    border-left: 1px solid var(--ap-border,#355348) !important;
+    text-align: left !important;
+    transform: none !important
+}
+
+    .publish-embed-page .pe-version > span, .publish-embed-page .pe-version > strong {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: left !important;
+        white-space: normal !important
+    }
+/* The old page-local create button is relocated by JS to the shared header. */
+.publish-embed-page #peNewWidgetBtn {
+    display: none !important
+}
+
+@media(max-width:700px) {
+    .publish-embed-page .pe-widget-selector.ap-widget-selector {
+        grid-template-columns: 48px minmax(0,1fr) !important;
+        grid-template-areas: 'icon picker' 'version version' !important;
+        gap: 12px !important;
+        padding: 16px !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    .publish-embed-page .pe-widget-icon {
+        width: 48px !important;
+        height: 48px !important;
+        min-width: 48px !important;
+        align-self: start !important;
+        margin-top: 16px !important
+    }
+
+    .publish-embed-page .pe-version {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        margin-top: 6px !important;
+        padding: 13px 0 0 !important;
+        border-left: 0 !important;
+        border-top: 1px solid var(--ap-border,#355348) !important
+    }
+
+        .publish-embed-page .pe-version > strong {
+            text-align: right !important
+        }
+}
+/* Global header create action, visible from this page. */
+.header .ap-global-new-widget {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 10px;
+    background: #0ba886;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer
+}
+
+    .header .ap-global-new-widget:hover, .header .ap-global-new-widget:focus-visible {
+        background: #07896f;
+        color: #fff
+    }
+
+@media(max-width:850px) {
+    .header .ap-global-new-widget {
+        width: 38px;
+        height: 38px;
+        padding: 0
+    }
+
+    .header .ap-global-new-widget-label {
+        display: none
+    }
+}

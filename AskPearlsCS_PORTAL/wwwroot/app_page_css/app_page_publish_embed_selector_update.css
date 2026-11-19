@@ -89,3 +89,56 @@
         border-top: 1px solid var(--ap-border,#344d44)
     }
 }
+
+/* AskPearls: stable selector layout. Load this stylesheet LAST. */
+.publish-embed-page .pe-widget-selector .pe-widget-info {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    width: auto !important;
+}
+
+    .publish-embed-page .pe-widget-selector .pe-widget-info .pe-version {
+        /* Version now belongs to the same column as the dropdown and help text. */
+        position: static !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        flex: none !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        margin: 12px 0 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        text-align: left !important;
+        box-sizing: border-box !important;
+    }
+
+        .publish-embed-page .pe-widget-selector .pe-widget-info .pe-version > span,
+        .publish-embed-page .pe-widget-selector .pe-widget-info .pe-version > strong {
+            display: block !important;
+            width: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            text-align: left !important;
+            align-self: flex-start !important;
+        }
+
+        .publish-embed-page .pe-widget-selector .pe-widget-info .pe-version > strong {
+            margin-top: 5px !important;
+        }
+
+@media (max-width: 700px) {
+    .publish-embed-page .pe-widget-selector .pe-widget-info {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .publish-embed-page .pe-widget-selector .pe-widget-info {
+        grid-column: 1 !important;
+    }
+}
+

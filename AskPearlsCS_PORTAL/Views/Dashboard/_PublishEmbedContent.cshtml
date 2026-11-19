@@ -1,4 +1,4 @@
-@* Publish & Embed — authenticated WidgetProxyController endpoints. *@
+@* Publish & Embed — responsive selector, guarded publish UI. *@
 <div class="ap-page publish-embed-page" data-ap-page="publish-embed" data-pe-script-url="https://cdn.askpearls.com/app.widgets/widget.js" data-pe-api-origin="https://api.askpearls.com">
     @Html.AntiForgeryToken()
     <nav class="ap-breadcrumb" aria-label="Breadcrumb"><a href="/Dashboard">AskPearls</a><span class="ap-breadcrumb-separator">/</span><span class="ap-breadcrumb-current">Publish &amp; Embed</span></nav>
@@ -7,15 +7,25 @@
         <div class="pe-header-actions ap-page-actions"><span class="pe-status-badge" id="peStatusBadge"><i class="bi bi-circle-fill"></i> Select a widget</span><button type="button" class="pe-btn-primary" id="pePublishBtn" disabled><i class="bi bi-rocket-takeoff"></i> Publish Widget</button></div>
     </header>
     <section class="pe-card pe-widget-selector ap-widget-selector">
-        <button type="button" id="peNewWidgetBtn" class="pe-selector-add" title="Create New Widget" aria-label="Create New Widget"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>
-        <div class="pe-widget-icon ap-widget-selector-icon"><i class="bi bi-grid-1x2"></i></div>
+        <div class="pe-widget-icon ap-widget-selector-icon" aria-hidden="true">
+            <i class="bi bi-grid-1x2"></i>
+        </div>
         <div class="pe-widget-info ap-widget-selector-info">
             <label for="peWidgetSelect">Select widget</label>
-            <select id="peWidgetSelect" class="ap-widget-selector-control"><option value="">-- Select a widget --</option></select>
+            <div class="pe-selector-inline">
+                <select id="peWidgetSelect" class="ap-widget-selector-control">
+                    <option value="">-- Select a widget --</option>
+                </select>
+            </div>
             <small class="ap-widget-selector-help">Choose the widget you want to publish.</small>
         </div>
-        <div class="pe-version ap-widget-selector-version"><span>Draft / live</span><strong id="peVersion">—</strong></div>
+        <div class="pe-version ap-widget-selector-version">
+            <span>Draft / Live</span>
+            <strong id="peVersion">—</strong>
+        </div>
     </section>
+
+    <p class="pe-publish-reason" id="pePublishReason" role="status" aria-live="polite">Select a widget to check publishing eligibility.</p>
     <div class="pe-summary-grid">
         <div class="pe-summary-card"><div class="pe-summary-icon pe-green"><i class="bi bi-globe2"></i></div><div><span>Publishing status</span><strong id="peSummaryStatus">No widget selected</strong><small id="peStatusDescription">Select a widget to view its publishing status.</small></div></div>
         <div class="pe-summary-card"><div class="pe-summary-icon pe-blue"><i class="bi bi-code-slash"></i></div><div><span>Installation method</span><strong id="peSummaryPlatform">Custom HTML</strong><small>Copy and paste the embed code</small></div></div>
@@ -61,4 +71,7 @@
 <link href="~/app_page_css/app_page_publish_embed_css.css" rel="stylesheet" asp-append-version="true" />
 <link href="~/app_page_css/app_page_publish_embed_selector_update.css" rel="stylesheet" asp-append-version="true" />
 <link href="~/app_page_css/app_page_publish_embed_verification_css.css" rel="stylesheet" asp-append-version="true" />
+<link href="~/app_page_css/app_page_publish_embed_responsive_update.css" rel="stylesheet" asp-append-version="true" />
+<link href="~/app_page_css/app_page_publish_embed_alignment_fix.css" rel="stylesheet" asp-append-version="true" />
 <script src="~/app_page_js/app_page_publish_embed_js.js" asp-append-version="true"></script>
+<script src="~/app_page_js/app_page_publish_embed_guard_js.js" asp-append-version="true"></script>
