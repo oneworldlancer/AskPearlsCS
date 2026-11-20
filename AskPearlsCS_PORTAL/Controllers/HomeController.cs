@@ -82,6 +82,83 @@ namespace AskPearlsCS_PORTAL.Controllers
         //}
 
 
+        private async Task<IdentityResult> SyncAskPearlsClaimsAsync(
+            AppCore_IdentityUser identityUser,
+            string ownerUserTokenId,
+            string? firstName,
+            string? lastName,
+            string email)
+        {
+            if (string.IsNullOrWhiteSpace(ownerUserTokenId))
+            {
+                return IdentityResult.Failed(
+                    new IdentityError
+                    {
+                        Code = "MissingAskPearlsUserId",
+                        Description = "AskPearls user ID is missing."
+                    });
+            }
+
+            var fullName = string.Join(" ",
+                new[] { firstName, lastName }
+                    .Where(x => !string.IsNullOrWhiteSpace(x)));
+
+            var desiredClaims = new Dictionary<string, string>
+            {
+                [AskPearlsClaimTypes.ASKPEARLS_USER_ID] =
+                    ownerUserTokenId,
+
+                [AskPearlsClaimTypes.ASKPEARLS_USER_FIRST_NAME] =
+                    firstName ?? string.Empty,
+
+                [AskPearlsClaimTypes.ASKPEARLS_USER_LAST_NAME] =
+                    lastName ?? string.Empty,
+
+                [AskPearlsClaimTypes.ASKPEARLS_USER_FULL_NAME] =
+                    fullName,
+
+                [AskPearlsClaimTypes.ASKPEARLS_USER_EMAIL] =
+                    email
+            };
+
+            var existingClaims =
+                await _userManager.GetClaimsAsync(identityUser);
+
+            foreach (var item in desiredClaims)
+            {
+                var matches = existingClaims
+                    .Where(c => c.Type == item.Key)
+                    .ToList();
+
+                if (matches.Count == 1 &&
+                    matches[0].Value == item.Value)
+                {
+                    continue;
+                }
+
+                if (matches.Count > 0)
+                {
+                    var removeResult =
+                        await _userManager.RemoveClaimsAsync(
+                            identityUser,
+                            matches);
+
+                    if (!removeResult.Succeeded)
+                        return removeResult;
+                }
+
+                var addResult =
+                    await _userManager.AddClaimAsync(
+                        identityUser,
+                        new Claim(item.Key, item.Value));
+
+                if (!addResult.Succeeded)
+                    return addResult;
+            }
+
+            return IdentityResult.Success;
+        }
+
 
 
 
@@ -177,32 +254,74 @@ namespace AskPearlsCS_PORTAL.Controllers
                     return Problem("Could not link the Google account to the Portal user.");
             }
 
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-       var userModel = await _currentUser.Get_UserByEmailAddressAsync(validatedUser.Email, CancellationToken.None);
+            await HttpContext.SignOutAsync(
+                IdentityConstants.ExternalScheme);
 
-            await _signInManager.SignInWithClaimsAsync(
-      identityUser,
-      isPersistent: true,
-      new[]
-      {
-        new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_ID, userModel.OwnerUserTokenID),
-        new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_FIRST_NAME, userModel.FirstName),
-        new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_LAST_NAME, userModel.LastName),
-        new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_FULL_NAME, userModel.FirstName + " " + userModel.LastName),
-        new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_EMAIL, validatedUser.Email)
-      });
+            // Load the actual AskPearls application user.
+            var userModel =
+                await _currentUser.Get_UserByEmailAddressAsync(
+                    validatedUser.Email,
+                    cancellationToken);
+
+            if (userModel is null ||
+                string.IsNullOrWhiteSpace(userModel.OwnerUserTokenID))
+            {
+                return Problem(
+                    "The authenticated Google account does not have " +
+                    "a valid AskPearls user record.");
+            }
+
+            // Persist the claims in ASP.NET Core Identity.
+            // They will be available when Identity regenerates
+            // the authentication principal.
+            var claimsResult = await SyncAskPearlsClaimsAsync(
+                identityUser,
+                userModel.OwnerUserTokenID,
+                userModel.FirstName,
+                userModel.LastName,
+                validatedUser.Email);
+
+            if (!claimsResult.Succeeded)
+            {
+                return Problem(
+                    "Could not synchronize the AskPearls user claims.");
+            }
+
+            // Sign in using the normal Identity principal.
+            // The persisted claims are included automatically
+            // by the standard Identity claims-principal factory.
+            await _signInManager.SignInAsync(
+                identityUser,
+                isPersistent: true);
 
 
-      //      await _signInManager.SignInWithClaimsAsync(
-      //identityUser,
-      //isPersistent: true,
-      //new[]
-      //{
-      //  new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_ID, validatedUser.UserId.ToString()),
-      //  new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_NAME, validatedUser.Name ?? identityUser.UserName ?? "AskPearls user"),
-      //  new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_EMAIL, validatedUser.Email)
-      //});
+            //////////      await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            ////////// var userModel = await _currentUser.Get_UserByEmailAddressAsync(validatedUser.Email, CancellationToken.None);
+
+            //////////      await _signInManager.SignInWithClaimsAsync(
+            //////////identityUser,
+            //////////isPersistent: true,
+            //////////new[]
+            //////////{
+            //////////  new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_ID, userModel.OwnerUserTokenID),
+            //////////  new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_FIRST_NAME, userModel.FirstName),
+            //////////  new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_LAST_NAME, userModel.LastName),
+            //////////  new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_FULL_NAME, userModel.FirstName + " " + userModel.LastName),
+            //////////  new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_EMAIL, validatedUser.Email)
+            //////////});
+
+
+            //      await _signInManager.SignInWithClaimsAsync(
+            //identityUser,
+            //isPersistent: true,
+            //new[]
+            //{
+            //  new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_ID, validatedUser.UserId.ToString()),
+            //  new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_NAME, validatedUser.Name ?? identityUser.UserName ?? "AskPearls user"),
+            //  new Claim(AskPearlsClaimTypes.ASKPEARLS_USER_EMAIL, validatedUser.Email)
+            //});
 
 
             if (!string.IsNullOrWhiteSpace(returnUrl) &&
