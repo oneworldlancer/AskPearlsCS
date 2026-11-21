@@ -1,0 +1,50 @@
+@model AskPearlsCS_DEVELOPER.Models.DocumentationPage
+@{
+ var all = ViewData["Pages"] as IReadOnlyList<AskPearlsCS_DEVELOPER.Models.DocumentationPage> ?? Array.Empty<AskPearlsCS_DEVELOPER.Models.DocumentationPage>();
+ var i = all.ToList().FindIndex(x => x.Slug == Model.Slug);
+ var previous = i > 0 ? all[i - 1] : null;
+ var next = i >= 0 && i < all.Count - 1 ? all[i + 1] : null;
+ var isAgent = Model.Slug.StartsWith("agent-");
+ var isPlanned = isAgent && Model.Slug != "agent-decisionos";
+}
+<div class="article-wrap">
+ <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/docs/overview">Developer Center</a><span>/</span><span>@Model.Group</span></nav>
+ <header class="article-header">
+  <div class="eyebrow">@Model.Group.ToUpperInvariant()</div>
+  <h1>@Model.Title</h1>
+  <p>@Model.Description</p>
+  @if (isAgent) { <span class="state-pill @(isPlanned ? "state-planned" : "state-current")">@(isPlanned ? "Planned · Not available yet" : "Current MVP · In development")</span> }
+  @if (Model.Slug == "overview") { <div class="hero-actions"><a class="primary-button" href="/docs/first-widget">Build your first widget <span>→</span></a><a class="secondary-button" href="/docs/ecosystem">Explore AI agents</a></div> }
+ </header>
+ @if (Model.Slug == "overview") {
+ <div class="overview-grid">
+  <a href="/docs/widget-builder" class="feature-card"><span class="feature-symbol">◇</span><strong>Build with DecisionOS</strong><small>Design guided experiences and recommendations.</small><span class="feature-arrow">↗</span></a>
+  <a href="/docs/publish" class="feature-card"><span class="feature-symbol">↗</span><strong>Publish &amp; Embed</strong><small>Get your widget ready for your website.</small><span class="feature-arrow">↗</span></a>
+  <a href="/docs/ecosystem" class="feature-card"><span class="feature-symbol">✦</span><strong>AI Agent Ecosystem</strong><small>Discover the products we're planning next.</small><span class="feature-arrow">↗</span></a>
+ </div>
+ }
+ @if (Model.Slug == "ecosystem" || Model.Slug == "roadmap") {
+  <div class="agent-grid">
+   @foreach (var a in all.Where(x => x.Slug.StartsWith("agent-"))) {
+    <a class="agent-card" href="/docs/@a.Slug"><span class="agent-orb">✦</span><strong>@a.Title</strong><small>@a.Description</small><span class="state-pill @(a.Slug == "agent-decisionos" ? "state-current" : "state-planned")">@(a.Slug == "agent-decisionos" ? "In development" : "Planned")</span></a>
+   }
+  </div>
+ }
+ <div class="article-columns">
+  <article class="doc-article">
+   <div class="section-heading"><h2>Step-by-step guide</h2><span>@Model.Steps.Count steps</span></div>
+   <ol class="steps-list">
+   @for (var n = 0; n < Model.Steps.Count; n++) {
+     <li id="step-@(n+1)"><div class="step-marker">@(n+1)</div><div class="step-body"><h3>@Model.Steps[n].Title</h3><p>@Model.Steps[n].Body</p></div></li>
+   }
+   </ol>
+   @if (!string.IsNullOrWhiteSpace(Model.Code)) { <section class="code-section"><div class="code-title"><strong>Example / reference</strong><button type="button" class="copy-button" data-copy-code>Copy code</button></div><pre><code>@Model.Code</code></pre></section> }
+   @if (Model.Notes.Count > 0) { <section class="notes-section"><h2>Important notes</h2>@foreach (var note in Model.Notes) { <p>@note</p> }</section> }
+   @if (Model.Portal != null) { <div class="portal-callout"><div><strong>Try it in the Portal</strong><p>Follow these steps in your authenticated AskPearls workspace.</p></div><a href="https://portal.askpearls.com@Model.Portal" target="_blank" rel="noopener noreferrer">Open Portal ↗</a></div> }
+   @if (isPlanned) { <div class="portal-callout"><div><strong>Future product concept</strong><p>This agent is not available for use. Feature details and integrations will be documented when development begins.</p></div></div> }
+   <div class="article-footer"><label class="complete-label"><input type="checkbox" data-complete="@Model.Slug" /> Mark this guide complete</label><div class="page-links">@if (previous != null) { <a href="/docs/@previous.Slug">← @previous.Title</a> }@if (next != null) { <a href="/docs/@next.Slug">@next.Title →</a> }</div></div>
+  </article>
+  <aside class="on-this-page"><strong>ON THIS PAGE</strong>@for (var n = 0; n < Model.Steps.Count; n++) { <a href="#step-@(n+1)">@(n+1). @Model.Steps[n].Title</a> }<div class="progress-box"><span>Reading progress</span><div class="progress-track"><div id="readingProgress"></div></div><small id="readingProgressLabel">0%</small></div></aside>
+ </div>
+ <footer class="site-footer">© @DateTime.UtcNow.Year AskPearls · <a href="https://askpearls.com/">AskPearls.com</a> · <a href="https://portal.askpearls.com/">Portal</a></footer>
+</div>

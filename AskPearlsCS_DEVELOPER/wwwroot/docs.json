@@ -1,0 +1,1186 @@
+[
+  {
+    "slug": "overview",
+    "group": "Start Here",
+    "title": "Welcome to AskPearls Developer Center",
+    "desc": "Learn how to create, publish and maintain DecisionOS recommendation widgets, and discover the wider AskPearls ecosystem.",
+    "steps": [
+      {
+        "title": "Understand the platform",
+        "body": "DecisionOS is the current widget product. Build a guided question flow, configure recommendations, publish a version, and embed the widget on a website."
+      },
+      {
+        "title": "Choose your path",
+        "body": "Business users can follow Portal Walkthroughs. Developers can use Installation and Integration Guides to embed and troubleshoot widgets."
+      },
+      {
+        "title": "Start in the Portal",
+        "body": "Join AskPearls, create a widget, then work through the builder, decision content and publishing checklist."
+      }
+    ],
+    "notes": [
+      "The Developer Center is public documentation. Account data and editing remain in the authenticated Portal."
+    ],
+    "code": "",
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "account",
+    "group": "Start Here",
+    "title": "Create your AskPearls account",
+    "desc": "Get access to your personal AskPearls workspace through the Portal.",
+    "steps": [
+      {
+        "title": "Open the Portal",
+        "body": "Select Join AskPearls or Open Portal to visit portal.askpearls.com."
+      },
+      {
+        "title": "Authenticate",
+        "body": "Use the sign-in method provided by the Portal. The current Portal includes Google authentication."
+      },
+      {
+        "title": "Open your workspace",
+        "body": "After signing in, review the Dashboard and locate Widget Builder or My Widgets."
+      },
+      {
+        "title": "Create your first widget",
+        "body": "Use the creation flow and select the target website for the widget."
+      }
+    ],
+    "notes": [
+      "Do not enter account credentials into the Developer Center. Sign-in occurs on the Portal."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "first-widget",
+    "group": "Start Here",
+    "title": "Your first DecisionOS widget",
+    "desc": "A complete guided path from a blank widget to a published installation.",
+    "steps": [
+      {
+        "title": "Create a widget",
+        "body": "Open Widget Builder and create a new widget or choose an existing draft."
+      },
+      {
+        "title": "Configure appearance",
+        "body": "Set heading, description, primary and background colors, typography, size and position."
+      },
+      {
+        "title": "Add questions",
+        "body": "Build the visitor question sequence and test that the options make sense."
+      },
+      {
+        "title": "Add recommendations and rules",
+        "body": "Configure what the visitor should see for different answers."
+      },
+      {
+        "title": "Save drafts",
+        "body": "Save the design, question, recommendation and rule drafts as needed."
+      },
+      {
+        "title": "Publish",
+        "body": "Open Publish & Embed, complete readiness checks and publish the eligible widget."
+      },
+      {
+        "title": "Install and test",
+        "body": "Copy the generated snippet, place it on your website, and test on the allowed domain."
+      }
+    ],
+    "notes": [
+      "Publishing may be blocked until required configuration is complete.",
+      "A saved draft is not the same as a published live version."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "dashboard",
+    "group": "Portal Walkthroughs",
+    "title": "Dashboard walkthrough",
+    "desc": "Find your widgets, understand their status and move into the next action.",
+    "steps": [
+      {
+        "title": "Open Dashboard",
+        "body": "Sign in and select Dashboard in the Portal navigation."
+      },
+      {
+        "title": "Review widgets",
+        "body": "Check recent widgets, status and summary metrics. Values are tied to the authenticated account."
+      },
+      {
+        "title": "Open an existing widget",
+        "body": "Select a recent widget or use My Widgets to open it for editing."
+      },
+      {
+        "title": "Create new",
+        "body": "Use the New Widget action to begin another DecisionOS experience."
+      }
+    ],
+    "notes": [
+      "Dashboard totals should be verified against your live account; documentation contains no sample production metrics."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "my-widgets",
+    "group": "Portal Walkthroughs",
+    "title": "Manage your widgets",
+    "desc": "Find, select and maintain widgets in your account.",
+    "steps": [
+      {
+        "title": "Open My Widgets",
+        "body": "Use the Portal navigation to open your widget collection."
+      },
+      {
+        "title": "Choose a widget",
+        "body": "Review its name, target website, current status and version information."
+      },
+      {
+        "title": "Edit",
+        "body": "Open Widget Builder or Design & Customize for the selected widget."
+      },
+      {
+        "title": "Publish when ready",
+        "body": "Navigate to Publish & Embed after preparing the widget."
+      }
+    ],
+    "notes": [
+      "Published widgets and editable drafts can have different version numbers."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "widget-builder",
+    "group": "Portal Walkthroughs",
+    "title": "Widget Builder: basics, appearance and behavior",
+    "desc": "Configure the visitor-facing experience using the three builder tabs.",
+    "steps": [
+      {
+        "title": "Basics",
+        "body": "Enter the widget name and content. Choose the associated target website where applicable."
+      },
+      {
+        "title": "Appearance",
+        "body": "Adjust primary/background/text colors, font, size, corner radius, width, button shape and theme."
+      },
+      {
+        "title": "Behavior",
+        "body": "Review display preferences and position, then preview the experience."
+      },
+      {
+        "title": "Save Draft",
+        "body": "Save your changes. Check the confirmation message and updated draft version before navigating away."
+      },
+      {
+        "title": "Preview",
+        "body": "Test desktop and mobile appearance before publishing."
+      }
+    ],
+    "notes": [
+      "Portal builder includes Basics, Appearance and Behavior tabs.",
+      "Design draft settings observed in the API include fonts Inter, Arial, Georgia and Verdana, widths 300–520 and positions bottom-right, bottom-left and center."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "questions",
+    "group": "Portal Walkthroughs",
+    "title": "Questions and answers",
+    "desc": "Design a clear question flow that visitors can complete.",
+    "steps": [
+      {
+        "title": "Write the first question",
+        "body": "Use language visitors understand without specialist knowledge."
+      },
+      {
+        "title": "Add answer options",
+        "body": "Make options mutually understandable; avoid overlapping labels."
+      },
+      {
+        "title": "Order questions",
+        "body": "Put essential qualifying questions first and optional refinements later."
+      },
+      {
+        "title": "Save question draft",
+        "body": "Save the draft, then verify the flow by previewing the widget."
+      },
+      {
+        "title": "Test branches",
+        "body": "Check each relevant answer path before publishing."
+      }
+    ],
+    "notes": [
+      "Questions are saved separately from some other draft content; check the save status of each section."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "recommendations",
+    "group": "Portal Walkthroughs",
+    "title": "Recommendations",
+    "desc": "Define the outcomes DecisionOS can show visitors.",
+    "steps": [
+      {
+        "title": "Create recommendation entries",
+        "body": "Give each outcome a clear title and useful description."
+      },
+      {
+        "title": "Explain the benefit",
+        "body": "Use practical language and avoid claims you cannot support."
+      },
+      {
+        "title": "Connect outcomes to rules",
+        "body": "Ensure each relevant answer combination leads to an intended result."
+      },
+      {
+        "title": "Save and preview",
+        "body": "Save recommendation drafts and test the user-facing results."
+      }
+    ],
+    "notes": [
+      "Recommendation content should match your real products or services, not generic sample copy."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "rules",
+    "group": "Portal Walkthroughs",
+    "title": "Decision rules",
+    "desc": "Connect visitor answers to relevant recommendations.",
+    "steps": [
+      {
+        "title": "Identify conditions",
+        "body": "Choose which answers or combinations should influence the outcome."
+      },
+      {
+        "title": "Set matching behavior",
+        "body": "Define when each recommendation should be eligible."
+      },
+      {
+        "title": "Check overlaps",
+        "body": "Review conflicting or incomplete conditions."
+      },
+      {
+        "title": "Test scenarios",
+        "body": "Try positive, negative and edge-case answer paths."
+      },
+      {
+        "title": "Save draft",
+        "body": "Save decision rules before publishing."
+      }
+    ],
+    "notes": [
+      "The precise rule operators available may evolve; use the options shown in your current Portal."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "design",
+    "group": "Portal Walkthroughs",
+    "title": "Design & Customize",
+    "desc": "Edit the appearance of an existing widget without confusing draft and live versions.",
+    "steps": [
+      {
+        "title": "Select the widget",
+        "body": "Choose the widget you intend to update."
+      },
+      {
+        "title": "Review current design",
+        "body": "Check heading, description, button text, colors, font and position."
+      },
+      {
+        "title": "Adjust styling",
+        "body": "Keep colors accessible and check readability in light and dark contexts."
+      },
+      {
+        "title": "Save Draft",
+        "body": "Confirm the draft version increments or the Portal reports a successful save."
+      },
+      {
+        "title": "Republish when appropriate",
+        "body": "A new draft does not automatically replace the published version."
+      }
+    ],
+    "notes": [],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "publish",
+    "group": "Portal Walkthroughs",
+    "title": "Publish & Embed",
+    "desc": "Publish an eligible widget and obtain installation instructions.",
+    "steps": [
+      {
+        "title": "Select a widget",
+        "body": "Open Publish & Embed and choose the correct widget."
+      },
+      {
+        "title": "Review readiness",
+        "body": "Check the content, design and installation readiness indicators."
+      },
+      {
+        "title": "Review domains",
+        "body": "Add or review the website domains where the widget will be used."
+      },
+      {
+        "title": "Publish",
+        "body": "Use Publish Widget when enabled. If disabled, read the reason shown in the Portal."
+      },
+      {
+        "title": "Choose a platform",
+        "body": "Select Custom HTML, WordPress, Shopify or Wix."
+      },
+      {
+        "title": "Copy the actual embed snippet",
+        "body": "Use the Copy Code action from the selected widget. Do not substitute an example public key."
+      },
+      {
+        "title": "Verify live",
+        "body": "Load the site and test a complete visitor interaction."
+      }
+    ],
+    "notes": [
+      "The Portal contains a publish eligibility guard and a status indicator.",
+      "Domain enforcement and verification may depend on deployment readiness; do not treat a saved domain as proof of verification."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "domains",
+    "group": "Portal Walkthroughs",
+    "title": "Allowed domains",
+    "desc": "Manage the websites associated with a widget.",
+    "steps": [
+      {
+        "title": "Open Publish & Embed",
+        "body": "Select the widget whose domains you want to manage."
+      },
+      {
+        "title": "Enter the domain",
+        "body": "Use the hostname shown in the browser, for example example.com. Follow the Portal input guidance."
+      },
+      {
+        "title": "Add the domain",
+        "body": "Submit and confirm it appears in the allowed-domains list."
+      },
+      {
+        "title": "Remove an obsolete domain",
+        "body": "Delete only domains that no longer need to serve the widget."
+      },
+      {
+        "title": "Verify enforcement",
+        "body": "Test the installation on an allowed website and check the deployment status of domain enforcement."
+      }
+    ],
+    "notes": [
+      "Adding a domain is not the same as verifying DNS ownership.",
+      "The Portal has domain verification-related endpoints, but their production readiness must be confirmed before promising enforcement."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "analytics",
+    "group": "Portal Walkthroughs",
+    "title": "Analytics & Activity",
+    "desc": "Understand widget usage and visitor progress.",
+    "steps": [
+      {
+        "title": "Open Analytics & Activity",
+        "body": "Use the Portal navigation to reach the analytics page."
+      },
+      {
+        "title": "Set date range",
+        "body": "Choose the reporting period appropriate for your question."
+      },
+      {
+        "title": "Filter widgets",
+        "body": "Focus on a particular widget or compare all widgets if supported."
+      },
+      {
+        "title": "Review metrics",
+        "body": "Inspect widget views, interactions, completion rate and recommendations."
+      },
+      {
+        "title": "Export",
+        "body": "Use Export CSV when available and validate the downloaded columns before reporting."
+      }
+    ],
+    "notes": [
+      "Some current Portal markup includes demonstration figures; do not assume those figures represent live account activity."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "install-html",
+    "group": "Installation Guides",
+    "title": "Install on a custom HTML website",
+    "desc": "Add the widget to a site you control using the exact snippet generated by the Portal.",
+    "steps": [
+      {
+        "title": "Publish first",
+        "body": "Make sure the widget has a published version."
+      },
+      {
+        "title": "Copy from Portal",
+        "body": "Open Publish & Embed, select Custom HTML and click Copy Code."
+      },
+      {
+        "title": "Paste into your page",
+        "body": "Insert the snippet near the end of the body or in the location specified by the generated instructions."
+      },
+      {
+        "title": "Deploy",
+        "body": "Publish your HTML changes to the target domain."
+      },
+      {
+        "title": "Test",
+        "body": "Check browser console and network requests, then complete a full widget interaction."
+      }
+    ],
+    "notes": [
+      "The snippet below is only a placement example. Copy your real script and attributes from the Portal."
+    ],
+    "code": "<!-- Existing page content -->\n<!-- Paste the exact AskPearls snippet copied from Publish & Embed here -->\n</body>",
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "install-wordpress",
+    "group": "Installation Guides",
+    "title": "Install on WordPress",
+    "desc": "Use the generated embed code in a WordPress site.",
+    "steps": [
+      {
+        "title": "Publish and copy",
+        "body": "In Publish & Embed, choose WordPress and copy the snippet."
+      },
+      {
+        "title": "Choose insertion point",
+        "body": "Use a trusted custom-code or footer insertion method supported by your WordPress installation."
+      },
+      {
+        "title": "Paste once",
+        "body": "Avoid inserting the same widget snippet twice through both a theme and plugin."
+      },
+      {
+        "title": "Clear caches",
+        "body": "Clear any page cache or optimization layer if the script does not appear."
+      },
+      {
+        "title": "Verify",
+        "body": "Test on a public page, including mobile."
+      }
+    ],
+    "notes": [
+      "Only use WordPress plugins or theme editing tools you trust.",
+      "A native AskPearls WordPress plugin should not be claimed available until released."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "install-shopify",
+    "group": "Installation Guides",
+    "title": "Install on Shopify",
+    "desc": "Place the Portal-generated snippet into a Shopify theme where custom code is permitted.",
+    "steps": [
+      {
+        "title": "Back up the theme",
+        "body": "Duplicate your current theme before changing code."
+      },
+      {
+        "title": "Copy snippet",
+        "body": "Choose Shopify in Publish & Embed and copy the current widget snippet."
+      },
+      {
+        "title": "Insert in theme",
+        "body": "Use the theme code editor or supported custom-code section and place the snippet as instructed."
+      },
+      {
+        "title": "Save and preview",
+        "body": "Check the storefront preview before publishing the theme change."
+      },
+      {
+        "title": "Test live",
+        "body": "Confirm the widget loads on relevant pages and does not obscure checkout controls."
+      }
+    ],
+    "notes": [
+      "Shopify theme layouts vary. Check the active theme and current Shopify restrictions."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "install-wix",
+    "group": "Installation Guides",
+    "title": "Install on Wix",
+    "desc": "Embed the widget using Wix custom code where your plan and editor permit it.",
+    "steps": [
+      {
+        "title": "Copy snippet",
+        "body": "Choose Wix in Publish & Embed and copy the widget code."
+      },
+      {
+        "title": "Open custom code settings",
+        "body": "Locate Wix custom code or equivalent supported site integration settings."
+      },
+      {
+        "title": "Paste code",
+        "body": "Use the placement and scope recommended by the Portal."
+      },
+      {
+        "title": "Publish the site",
+        "body": "Changes may not appear on the public domain until the Wix site is published."
+      },
+      {
+        "title": "Test",
+        "body": "Verify desktop/mobile rendering and any domain-related restrictions."
+      }
+    ],
+    "notes": [
+      "Custom-code availability and placement rules depend on your Wix configuration."
+    ],
+    "code": null,
+    "portal": "/Dashboard"
+  },
+  {
+    "slug": "embed-reference",
+    "group": "Developer Guides",
+    "title": "Embed snippet reference",
+    "desc": "Understand the relationship between your published widget, the loader and the site.",
+    "steps": [
+      {
+        "title": "Use the generated snippet",
+        "body": "The authoritative installation snippet comes from the Portal, not from this documentation."
+      },
+      {
+        "title": "Loader location",
+        "body": "The Portal currently identifies a CDN loader at cdn.askpearls.com/app.widgets/widget.js."
+      },
+      {
+        "title": "API origin",
+        "body": "The Portal currently identifies api.askpearls.com as the widget API origin."
+      },
+      {
+        "title": "Treat keys as identifiers",
+        "body": "A public widget key identifies a widget; do not embed authenticated Portal access tokens."
+      },
+      {
+        "title": "Avoid duplicates",
+        "body": "Include a widget only as instructed and check for duplicate script injection."
+      }
+    ],
+    "notes": [
+      "CDN paths and loader attributes may change; always prefer the live snippet.",
+      "This is an integration overview, not a public API contract."
+    ],
+    "code": "<!-- Illustrative only; not a runnable widget configuration -->\n<script src=\"https://cdn.askpearls.com/app.widgets/widget.js\" defer></script>",
+    "portal": null
+  },
+  {
+    "slug": "configuration",
+    "group": "Developer Guides",
+    "title": "Widget configuration concepts",
+    "desc": "Understand drafts, versions, appearance and website targeting.",
+    "steps": [
+      {
+        "title": "Draft versus live",
+        "body": "A draft is editable; a published version is the content visitors should receive."
+      },
+      {
+        "title": "Appearance",
+        "body": "The design can include theme, typography, colors, width, radius, position and button shape."
+      },
+      {
+        "title": "Questions and recommendations",
+        "body": "Questions collect answers; decision rules select recommendations."
+      },
+      {
+        "title": "Website targeting",
+        "body": "Associate the widget with the intended website and review allowed domains."
+      },
+      {
+        "title": "Publish changes",
+        "body": "After editing a published widget, follow the Portal publish process again when required."
+      }
+    ],
+    "notes": [
+      "The exact JSON schema of internal draft APIs is not a supported public API specification."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "security",
+    "group": "Developer Guides",
+    "title": "Security and deployment checklist",
+    "desc": "Use safe practices when publishing and embedding widgets.",
+    "steps": [
+      {
+        "title": "Use HTTPS",
+        "body": "Serve the site and widget assets over HTTPS."
+      },
+      {
+        "title": "Protect Portal credentials",
+        "body": "Keep authenticated Portal sessions and tokens out of client-side snippets."
+      },
+      {
+        "title": "Review domain settings",
+        "body": "Configure allowed domains and check whether enforcement is active in your environment."
+      },
+      {
+        "title": "Test content",
+        "body": "Ensure your questions and recommendations do not request unnecessary sensitive information."
+      },
+      {
+        "title": "Monitor errors",
+        "body": "Review browser errors and the Portal analytics for unexpected behavior."
+      }
+    ],
+    "notes": [
+      "Do not treat client-side checks as a substitute for server-side authorization."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "api",
+    "group": "Developer Guides",
+    "title": "Public API availability",
+    "desc": "Separate the internal authenticated Portal proxy from any future external API.",
+    "steps": [
+      {
+        "title": "Current implementation",
+        "body": "The Portal uses authenticated routes under /Widget/Api/widgets to manage its own widgets."
+      },
+      {
+        "title": "External integration",
+        "body": "Use the generated embed snippet for supported website integration."
+      },
+      {
+        "title": "Public API documentation",
+        "body": "No stable public API contract, credentials flow or versioning guarantee has been verified for third-party developers."
+      },
+      {
+        "title": "Future release",
+        "body": "When a public API is formally released, this page can publish endpoints, authentication, schemas and examples."
+      }
+    ],
+    "notes": [
+      "Internal API route names are intentionally not presented as public integration instructions."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "troubleshooting",
+    "group": "Help & Support",
+    "title": "Troubleshooting guide",
+    "desc": "Diagnose the most common widget installation and publishing problems.",
+    "steps": [
+      {
+        "title": "Widget does not appear",
+        "body": "Confirm the widget is published, the snippet is present once and the CDN script loads successfully."
+      },
+      {
+        "title": "Publish button disabled",
+        "body": "Read the readiness reason in Publish & Embed; review content, design and installation prerequisites."
+      },
+      {
+        "title": "Widget appears on wrong site",
+        "body": "Check the target website and allowed-domains configuration."
+      },
+      {
+        "title": "Old design remains visible",
+        "body": "Confirm the latest draft was published and clear relevant caches."
+      },
+      {
+        "title": "No analytics data",
+        "body": "Check that visitors are loading and interacting with the live widget and that analytics is enabled."
+      },
+      {
+        "title": "Browser errors",
+        "body": "Inspect the Console and Network panels for blocked scripts, CSP violations or failed requests."
+      }
+    ],
+    "notes": [
+      "When contacting support, include the widget public key, page URL, approximate time and a redacted error message."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "faq",
+    "group": "Help & Support",
+    "title": "Frequently asked questions",
+    "desc": "Quick answers about accounts, widgets and the Developer Center.",
+    "steps": [
+      {
+        "title": "Is Developer Center a separate account?",
+        "body": "No. The documentation is public. Account management is handled by the Portal."
+      },
+      {
+        "title": "Can I create multiple widgets?",
+        "body": "The Portal supports multiple widgets; exact limits depend on the active plan."
+      },
+      {
+        "title": "Does Save Draft publish my changes?",
+        "body": "No. Draft saving and publishing are distinct operations."
+      },
+      {
+        "title": "Is there a free trial?",
+        "body": "The product plan includes a free tier; do not assume a time-limited free trial."
+      },
+      {
+        "title": "Are all AI agents available?",
+        "body": "No. DecisionOS is the current MVP; other agents are future plans."
+      },
+      {
+        "title": "Is there a public REST API?",
+        "body": "A supported public API contract has not been verified for release."
+      }
+    ],
+    "notes": [],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "support",
+    "group": "Help & Support",
+    "title": "Contact and support",
+    "desc": "Get help with setup, integration and unexpected behavior.",
+    "steps": [
+      {
+        "title": "Check documentation",
+        "body": "Use Search or Troubleshooting to find an existing answer."
+      },
+      {
+        "title": "Collect details",
+        "body": "Record the widget public key, site URL, steps to reproduce and browser information."
+      },
+      {
+        "title": "Use official channels",
+        "body": "Open the Portal or the published AskPearls support contact channel when available."
+      },
+      {
+        "title": "Protect secrets",
+        "body": "Never send passwords, access tokens or private customer information in a support report."
+      }
+    ],
+    "notes": [
+      "Support contact address and ticketing integration must be configured before launch; no unverified email address is displayed."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "ecosystem",
+    "group": "AI Ecosystem",
+    "title": "AskPearls AI ecosystem",
+    "desc": "Our long-term roadmap of connected AI products, developed one by one.",
+    "steps": [
+      {
+        "title": "DecisionOS first",
+        "body": "Complete, test and launch the decision widget platform."
+      },
+      {
+        "title": "Expand deliberately",
+        "body": "Build the next agent based on product readiness and user needs."
+      },
+      {
+        "title": "Shared experience",
+        "body": "Maintain consistent branding, documentation and account navigation across agents."
+      },
+      {
+        "title": "Status labels",
+        "body": "Keep upcoming products marked Planned or Exploring until development begins."
+      }
+    ],
+    "notes": [
+      "Agent concepts are plans, not released features or committed launch dates."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "agent-decisionos",
+    "group": "AI Ecosystem",
+    "title": "DecisionOS",
+    "desc": "Guided decision widgets that turn visitor answers into relevant recommendations.",
+    "steps": [
+      {
+        "title": "Purpose",
+        "body": "Guided decision widgets that turn visitor answers into relevant recommendations."
+      },
+      {
+        "title": "Current status",
+        "body": "In development. This page describes the planned direction, not an available product."
+      },
+      {
+        "title": "Development approach",
+        "body": "The AskPearls team plans to build agents sequentially after the DecisionOS MVP, with features and integrations defined during product discovery."
+      },
+      {
+        "title": "Documentation",
+        "body": "Technical integration guides, screenshots and walkthroughs will be added when the agent enters active development."
+      }
+    ],
+    "notes": [
+      "No public release date or production API is promised."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "agent-engageos",
+    "group": "AI Ecosystem",
+    "title": "EngageOS",
+    "desc": "AI-assisted conversations and visitor engagement.",
+    "steps": [
+      {
+        "title": "Purpose",
+        "body": "AI-assisted conversations and visitor engagement."
+      },
+      {
+        "title": "Current status",
+        "body": "Planned. This page describes the planned direction, not an available product."
+      },
+      {
+        "title": "Development approach",
+        "body": "The AskPearls team plans to build agents sequentially after the DecisionOS MVP, with features and integrations defined during product discovery."
+      },
+      {
+        "title": "Documentation",
+        "body": "Technical integration guides, screenshots and walkthroughs will be added when the agent enters active development."
+      }
+    ],
+    "notes": [
+      "No public release date or production API is promised."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "agent-leadlens",
+    "group": "AI Ecosystem",
+    "title": "LeadLens",
+    "desc": "Lead capture, qualification and customer insights.",
+    "steps": [
+      {
+        "title": "Purpose",
+        "body": "Lead capture, qualification and customer insights."
+      },
+      {
+        "title": "Current status",
+        "body": "Planned. This page describes the planned direction, not an available product."
+      },
+      {
+        "title": "Development approach",
+        "body": "The AskPearls team plans to build agents sequentially after the DecisionOS MVP, with features and integrations defined during product discovery."
+      },
+      {
+        "title": "Documentation",
+        "body": "Technical integration guides, screenshots and walkthroughs will be added when the agent enters active development."
+      }
+    ],
+    "notes": [
+      "No public release date or production API is promised."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "agent-automateos",
+    "group": "AI Ecosystem",
+    "title": "AutomateOS",
+    "desc": "Business workflow and process automation.",
+    "steps": [
+      {
+        "title": "Purpose",
+        "body": "Business workflow and process automation."
+      },
+      {
+        "title": "Current status",
+        "body": "Planned. This page describes the planned direction, not an available product."
+      },
+      {
+        "title": "Development approach",
+        "body": "The AskPearls team plans to build agents sequentially after the DecisionOS MVP, with features and integrations defined during product discovery."
+      },
+      {
+        "title": "Documentation",
+        "body": "Technical integration guides, screenshots and walkthroughs will be added when the agent enters active development."
+      }
+    ],
+    "notes": [
+      "No public release date or production API is promised."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "agent-insightos",
+    "group": "AI Ecosystem",
+    "title": "InsightOS",
+    "desc": "Analytics, intelligence and actionable business insights.",
+    "steps": [
+      {
+        "title": "Purpose",
+        "body": "Analytics, intelligence and actionable business insights."
+      },
+      {
+        "title": "Current status",
+        "body": "Planned. This page describes the planned direction, not an available product."
+      },
+      {
+        "title": "Development approach",
+        "body": "The AskPearls team plans to build agents sequentially after the DecisionOS MVP, with features and integrations defined during product discovery."
+      },
+      {
+        "title": "Documentation",
+        "body": "Technical integration guides, screenshots and walkthroughs will be added when the agent enters active development."
+      }
+    ],
+    "notes": [
+      "No public release date or production API is promised."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "agent-convertos",
+    "group": "AI Ecosystem",
+    "title": "ConvertOS",
+    "desc": "Conversion optimization and customer journeys.",
+    "steps": [
+      {
+        "title": "Purpose",
+        "body": "Conversion optimization and customer journeys."
+      },
+      {
+        "title": "Current status",
+        "body": "Planned. This page describes the planned direction, not an available product."
+      },
+      {
+        "title": "Development approach",
+        "body": "The AskPearls team plans to build agents sequentially after the DecisionOS MVP, with features and integrations defined during product discovery."
+      },
+      {
+        "title": "Documentation",
+        "body": "Technical integration guides, screenshots and walkthroughs will be added when the agent enters active development."
+      }
+    ],
+    "notes": [
+      "No public release date or production API is promised."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "agent-productmatch",
+    "group": "AI Ecosystem",
+    "title": "ProductMatch",
+    "desc": "Product discovery and matching experiences.",
+    "steps": [
+      {
+        "title": "Purpose",
+        "body": "Product discovery and matching experiences."
+      },
+      {
+        "title": "Current status",
+        "body": "Planned. This page describes the planned direction, not an available product."
+      },
+      {
+        "title": "Development approach",
+        "body": "The AskPearls team plans to build agents sequentially after the DecisionOS MVP, with features and integrations defined during product discovery."
+      },
+      {
+        "title": "Documentation",
+        "body": "Technical integration guides, screenshots and walkthroughs will be added when the agent enters active development."
+      }
+    ],
+    "notes": [
+      "No public release date or production API is promised."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "agent-quotepilot",
+    "group": "AI Ecosystem",
+    "title": "QuotePilot",
+    "desc": "Guided quotation and estimate experiences.",
+    "steps": [
+      {
+        "title": "Purpose",
+        "body": "Guided quotation and estimate experiences."
+      },
+      {
+        "title": "Current status",
+        "body": "Planned. This page describes the planned direction, not an available product."
+      },
+      {
+        "title": "Development approach",
+        "body": "The AskPearls team plans to build agents sequentially after the DecisionOS MVP, with features and integrations defined during product discovery."
+      },
+      {
+        "title": "Documentation",
+        "body": "Technical integration guides, screenshots and walkthroughs will be added when the agent enters active development."
+      }
+    ],
+    "notes": [
+      "No public release date or production API is promised."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "agent-servicematch",
+    "group": "AI Ecosystem",
+    "title": "ServiceMatch",
+    "desc": "Match customer needs to relevant services.",
+    "steps": [
+      {
+        "title": "Purpose",
+        "body": "Match customer needs to relevant services."
+      },
+      {
+        "title": "Current status",
+        "body": "Planned. This page describes the planned direction, not an available product."
+      },
+      {
+        "title": "Development approach",
+        "body": "The AskPearls team plans to build agents sequentially after the DecisionOS MVP, with features and integrations defined during product discovery."
+      },
+      {
+        "title": "Documentation",
+        "body": "Technical integration guides, screenshots and walkthroughs will be added when the agent enters active development."
+      }
+    ],
+    "notes": [
+      "No public release date or production API is promised."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "agent-returnshield",
+    "group": "AI Ecosystem",
+    "title": "ReturnShield",
+    "desc": "Assistance for returns and post-purchase workflows.",
+    "steps": [
+      {
+        "title": "Purpose",
+        "body": "Assistance for returns and post-purchase workflows."
+      },
+      {
+        "title": "Current status",
+        "body": "Planned. This page describes the planned direction, not an available product."
+      },
+      {
+        "title": "Development approach",
+        "body": "The AskPearls team plans to build agents sequentially after the DecisionOS MVP, with features and integrations defined during product discovery."
+      },
+      {
+        "title": "Documentation",
+        "body": "Technical integration guides, screenshots and walkthroughs will be added when the agent enters active development."
+      }
+    ],
+    "notes": [
+      "No public release date or production API is promised."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "agent-bundlebrain",
+    "group": "AI Ecosystem",
+    "title": "BundleBrain",
+    "desc": "Product and service bundle recommendations.",
+    "steps": [
+      {
+        "title": "Purpose",
+        "body": "Product and service bundle recommendations."
+      },
+      {
+        "title": "Current status",
+        "body": "Planned. This page describes the planned direction, not an available product."
+      },
+      {
+        "title": "Development approach",
+        "body": "The AskPearls team plans to build agents sequentially after the DecisionOS MVP, with features and integrations defined during product discovery."
+      },
+      {
+        "title": "Documentation",
+        "body": "Technical integration guides, screenshots and walkthroughs will be added when the agent enters active development."
+      }
+    ],
+    "notes": [
+      "No public release date or production API is promised."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "roadmap",
+    "group": "AI Ecosystem",
+    "title": "Product roadmap",
+    "desc": "A transparent overview of the AskPearls long-term development direction.",
+    "steps": [
+      {
+        "title": "Now: DecisionOS",
+        "body": "Finish the widget builder, publishing, installation, analytics and launch validation."
+      },
+      {
+        "title": "Next: prioritization",
+        "body": "Choose the next agent based on customer feedback, technical dependencies and business value."
+      },
+      {
+        "title": "Then: one by one",
+        "body": "Design, implement, test, document and release each additional agent."
+      },
+      {
+        "title": "Update statuses",
+        "body": "Change a planned agent to In Development only when implementation begins."
+      }
+    ],
+    "notes": [
+      "The ordering shown in the catalog is for organization; it is not a committed release sequence."
+    ],
+    "code": null,
+    "portal": null
+  },
+  {
+    "slug": "releases",
+    "group": "Help & Support",
+    "title": "Release notes",
+    "desc": "Track verified releases and changes once the Developer Center is deployed.",
+    "steps": [
+      {
+        "title": "Current state",
+        "body": "Developer Center documentation scaffold prepared for integration."
+      },
+      {
+        "title": "Future updates",
+        "body": "Record release date, product version, changes, migrations and known limitations for each published release."
+      }
+    ],
+    "notes": [
+      "No historical production release dates have been invented."
+    ],
+    "code": null,
+    "portal": null
+  }
+]

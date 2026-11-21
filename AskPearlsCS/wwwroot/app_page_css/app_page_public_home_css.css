@@ -1,0 +1,1153 @@
+﻿/* AskPearls public homepage — theme colors aligned with Portal shared CSS */
+:root {
+    color-scheme: light;
+    --page: #f6f8fb;
+    --surface: #fff;
+    --surface-soft: #e6f6f0;
+    --text: #243247;
+    --muted: #68778c;
+    --line: #e1e7ee;
+    --primary: #16866f;
+    --primary-hover: #116c5a;
+    --primary-soft: #e6f6f0;
+    --shadow: 0 14px 40px rgba(30,45,65,.09);
+    --glow: rgba(22,134,111,.13)
+}
+
+html[data-theme=dark] {
+    color-scheme: dark;
+    --page: #091411;
+    --surface: #10211c;
+    --surface-soft: #18392d;
+    --text: #edf5f2;
+    --muted: #b2c4bd;
+    --line: #2b443b;
+    --primary: #20c979;
+    --primary-hover: #36df91;
+    --primary-soft: #18392d;
+    --shadow: 0 16px 45px rgba(0,0,0,.25);
+    --glow: rgba(32,201,121,.13)
+}
+
+*, *::before, *::after {
+    box-sizing: border-box
+}
+
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden
+}
+
+html, body, button, input, textarea, select, a, h1, h2, h3, p, span, strong, small {
+    font-family: "Segoe UI" !important
+}
+
+body {
+    background: var(--page);
+    color: var(--text)
+}
+
+button {
+    cursor: pointer
+}
+
+button, a {
+    -webkit-tap-highlight-color: transparent
+}
+
+    button:focus-visible, a:focus-visible {
+        outline: 3px solid var(--primary);
+        outline-offset: 3px
+    }
+
+.ap-public {
+    height: 100vh;
+    height: 100dvh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 78% 40%,var(--glow),transparent 42%),var(--page)
+}
+
+.ap-header {
+    height: 76px;
+    flex: 0 0 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 0 clamp(20px,4.5vw,76px);
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    z-index: 20
+}
+
+.ap-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    text-decoration: none;
+    min-width: 0
+}
+
+    .ap-brand img {
+        width: 49px;
+        height: 49px;
+        object-fit: contain
+    }
+
+    .ap-brand strong {
+        display: block;
+        font-size: 25px;
+        letter-spacing: -1px;
+        line-height: 1.05
+    }
+
+        .ap-brand strong span {
+            color: var(--primary)
+        }
+
+    .ap-brand small {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        white-space: nowrap
+    }
+
+.ap-nav, .ap-actions {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px,2vw,28px)
+}
+
+    .ap-nav button, .ap-footer button {
+        background: none;
+        border: 0;
+        color: var(--text);
+        font-weight: 600;
+        font-size: 13px
+    }
+
+        .ap-nav button:hover, .ap-footer button:hover {
+            color: var(--primary)
+        }
+
+.ap-actions {
+    gap: 12px
+}
+
+.ap-theme {
+    height: 38px;
+    width: 38px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #f5faf7;
+    /* background: var(--surface);*/
+    color: var(--text)
+}
+
+    .ap-theme svg {
+        width: 19px;
+        height: 19px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round
+    }
+
+    .ap-theme .sun {
+        display: none
+    }
+
+html[data-theme=dark] .ap-theme .sun {
+    display: block
+}
+
+html[data-theme=dark] .ap-theme .moon {
+    display: none
+}
+
+
+
+
+/* Dark mode. */
+html[data-theme="dark"] .ap-theme {
+    background: #0c211a !important;
+    color: #f3f8f2 !important;
+    border-color: #254238 !important;
+}
+
+
+.ap-join {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    min-height: 48px;
+    padding: 0 25px;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 8px 20px var(--glow)
+}
+
+    .ap-join:hover {
+        background: var(--primary-hover)
+    }
+
+html[data-theme=dark] .ap-join {
+    color: #061b11
+}
+
+.ap-join-top {
+    min-height: 39px;
+    padding: 0 19px;
+    font-size: 13px
+}
+
+.ap-hamburger {
+    display: none;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px
+}
+
+    .ap-hamburger span {
+        height: 2px;
+        width: 18px;
+        background: var(--text);
+        border-radius: 2px
+    }
+
+.ap-stage {
+    flex: 1 1 auto;
+    min-height: 0;
+    position: relative;
+    overflow: hidden
+}
+
+.ap-home {
+    width: min(1460px,100%);
+    height: 100%;
+    margin: auto;
+    padding: clamp(12px,3vh,42px) clamp(24px,5vw,84px);
+    display: grid;
+    grid-template-columns: minmax(0,1fr) minmax(0,1.05fr);
+    gap: 2vw;
+    align-items: center
+}
+
+.ap-copy {
+    position: relative;
+    z-index: 2;
+    min-width: 0
+}
+
+.ap-eyebrow {
+    font-size: clamp(10px,.9vw,13px);
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin: 0 0:16px
+}
+
+    .ap-eyebrow span {
+        display: inline-block;
+        width: 28px;
+        height: 3px;
+        background: var(--primary);
+        vertical-align: middle;
+        margin-right: 9px
+    }
+
+.ap-copy h1 {
+    font-size: clamp(42px,5vw,83px);
+    line-height: 1.04;
+    letter-spacing: -2.6px;
+    margin: 14px 0;
+    font-weight: 800
+}
+
+    .ap-copy h1 em {
+        font-style: normal;
+        color: var(--primary)
+    }
+
+.ap-intro {
+    max-width: 550px;
+    font-size: clamp(14px,1.4vw,19px);
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 16px 0 24px
+}
+
+.ap-hero-actions {
+    display: flex;
+    gap: 13px;
+    flex-wrap: wrap
+}
+
+.ap-outline {
+    border: 1px solid var(--primary);
+    background: var(--surface);
+    color: var(--text);
+    min-height: 48px;
+    padding: 0 23px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px
+}
+
+    .ap-outline:hover {
+        background: var(--primary-soft)
+    }
+
+.ap-benefits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600
+}
+
+    .ap-benefits span::first-letter {
+        color: var(--primary)
+    }
+
+.ap-visual {
+    height: min(100%,630px);
+    min-height: 0;
+    position: relative;
+    display: grid;
+    place-items: center;
+    isolation: isolate
+}
+
+.ap-orbit {
+    position: absolute;
+    width: 82%;
+    aspect-ratio: 1;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    transform: rotate(-19deg);
+    opacity: .85
+}
+
+.orbit-two {
+    width: 62%;
+    border-style: dashed;
+    transform: rotate(20deg)
+}
+
+.ap-pearl-halo {
+    position: absolute;
+    width: min(70%,460px);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: 49% 51% 48% 52%;
+    background: radial-gradient(circle at 35% 28%,#fff9e9 0%,#d6f3e6 22%,#8ac6ae 48%,#e2b98e 72%,#f8e7c9 86%,transparent 88%);
+    box-shadow: inset 0 -24px 30px rgba(74,56,31,.16),0 30px 65px var(--glow);
+    filter: saturate(.85);
+    opacity: .85
+}
+
+.ap-pearl {
+    width: 34%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 24%,#fff,#f9f6e9 47%,#a4d3c1 100%);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 15px 38px rgba(0,0,0,.16)
+}
+
+    .ap-pearl img {
+        width: 65%;
+        height: 65%;
+        object-fit: contain
+    }
+
+.ap-chat {
+    width: min(64%,345px);
+    position: relative;
+    z-index: 3;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 13px;
+    background: color-mix(in srgb,var(--surface) 94%,transparent);
+    box-shadow: var(--shadow);
+    transform: translate(11%,4%)
+}
+
+.ap-chat-head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid var(--line)
+}
+
+.ap-avatar {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    width: 33px;
+    height: 33px;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: 12px
+}
+
+.ap-chat-head strong {
+    font-size: 13px
+}
+
+.ap-chat-head small {
+    display: block;
+    font-size: 10px;
+    color: var(--muted)
+}
+
+    .ap-chat-head small i {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--primary)
+    }
+
+.ap-chat-head > span:last-child {
+    margin-left: auto;
+    color: var(--muted)
+}
+
+.ap-bubble {
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 13px;
+    max-width: 92%
+}
+
+    .ap-bubble.visitor {
+        background: var(--page);
+        margin-left: auto
+    }
+
+    .ap-bubble.agent {
+        background: var(--primary-soft);
+        color: var(--text)
+    }
+
+.ap-chat-quick {
+    display: flex;
+    gap: 7px;
+    margin-top: 10px
+}
+
+    .ap-chat-quick span {
+        background: var(--page);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 7px 9px;
+        font-size: 10px;
+        font-weight: 700
+    }
+
+.ap-chat-input {
+    margin-top: 12px;
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 7px 8px 7px 13px;
+    color: var(--muted);
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+    .ap-chat-input b {
+        background: var(--primary);
+        color: #fff;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: grid;
+        place-items: center
+    }
+
+.ap-feature {
+    position: absolute;
+    z-index: 4;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 12px 14px;
+    box-shadow: var(--shadow);
+    font-size: 18px;
+    color: var(--primary);
+    display: flex;
+    gap: 9px;
+    align-items: center
+}
+
+    .ap-feature span {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text)
+    }
+
+.f1 {
+    left: 0;
+    top: 16%
+}
+
+.f2 {
+    right: 0;
+    top: 20%
+}
+
+.f3 {
+    left: 2%;
+    bottom: 18%
+}
+
+.f4 {
+    right: 0;
+    bottom: 16%
+}
+
+.ap-footer {
+    flex: 0 0 54px;
+    min-height: 54px;
+    padding: 8px clamp(20px,4.5vw,76px);
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 11px
+}
+
+    .ap-footer nav {
+        display: flex;
+        gap: clamp(8px,1.5vw,22px);
+        align-items: center
+    }
+
+    .ap-footer button, .ap-footer a {
+        font-size: 11px;
+        color: var(--muted);
+        text-decoration: none;
+        white-space: nowrap
+    }
+
+        .ap-footer a:hover {
+            color: var(--primary)
+        }
+
+.ap-menu-panel {
+    position: absolute;
+    top: 76px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(660px,calc(100% - 30px));
+    z-index: 40;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 0 0 20px 20px;
+    box-shadow: var(--shadow);
+    padding: 18px;
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 8px
+}
+
+    .ap-menu-panel[hidden], .ap-mobile-menu[hidden], .ap-inner[hidden], .ap-home[hidden] {
+        display: none !important
+    }
+
+    .ap-menu-panel button {
+        background: var(--page);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        text-align: left;
+        padding: 15px;
+        color: var(--text);
+        font-weight: 700
+    }
+
+        .ap-menu-panel button small {
+            display: block;
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 400;
+            margin-top: 4px
+        }
+
+        .ap-menu-panel button:hover {
+            border-color: var(--primary)
+        }
+
+.ap-inner {
+    height: 100%;
+    width: min(1120px,100%);
+    margin: auto;
+    padding: clamp(12px,2vh,25px) 28px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0
+}
+
+.ap-inner-heading {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px
+}
+
+.ap-back {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 9px 15px;
+    background: var(--surface);
+    color: var(--text)
+}
+
+.ap-inner-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--primary)
+}
+
+.ap-inner-scroll {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: clamp(20px,4vw,48px);
+    box-shadow: var(--shadow)
+}
+
+    .ap-inner-scroll h2 {
+        font-size: clamp(27px,3.5vw,44px);
+        margin: 0 0 12px
+    }
+
+    .ap-inner-scroll p {
+        font-size: 15px;
+        line-height: 1.75;
+        color: var(--muted)
+    }
+
+    .ap-inner-scroll h3 {
+        margin: 26px 0 8px
+    }
+
+    .ap-inner-scroll .ap-guide {
+        padding: 16px 20px;
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        margin: 12px 0;
+        background: var(--page)
+    }
+
+        .ap-inner-scroll .ap-guide strong {
+            color: var(--primary)
+        }
+
+.ap-mobile-menu {
+    display: none
+}
+
+@media(max-width:1050px) {
+    .ap-nav {
+        gap: 10px
+    }
+
+        .ap-nav button {
+            font-size: 12px
+        }
+
+    .ap-brand strong {
+        font-size: 21px
+    }
+
+    .ap-copy h1 {
+        font-size: clamp(37px,5vw,62px)
+    }
+
+    .ap-feature {
+        padding: 8px
+    }
+
+        .ap-feature span {
+            font-size: 10px
+        }
+}
+
+@media(max-width:780px) {
+    .ap-header {
+        height: 62px;
+        flex-basis: 62px;
+        padding: 0 15px
+    }
+
+    .ap-brand img {
+        width: 37px;
+        height: 37px
+    }
+
+    .ap-brand strong {
+        font-size: 19px
+    }
+
+    .ap-brand small {
+        font-size: 8px
+    }
+
+    .ap-nav, .ap-join-top {
+        display: none
+    }
+
+    .ap-hamburger {
+        display: flex
+    }
+
+    .ap-stage {
+        min-height: 0
+    }
+
+    .ap-home {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto minmax(0,1fr);
+        gap: 0;
+        padding: clamp(12px,2.5vh,22px) 18px 8px;
+        text-align: center
+    }
+
+    .ap-eyebrow {
+        font-size: 9px;
+        letter-spacing: 1.4px;
+        margin: 0
+    }
+
+    .ap-copy h1 {
+        font-size: clamp(29px,8vw,45px);
+        line-height: 1.05;
+        letter-spacing: -1px;
+        margin: 9px 0
+    }
+
+        .ap-copy h1 br {
+            display: none
+        }
+
+            .ap-copy h1 br::after {
+                content: ' '
+            }
+
+        .ap-copy h1 em {
+            display: block
+        }
+
+    .ap-intro {
+        font-size: clamp(11px,3vw,14px);
+        line-height: 1.4;
+        margin: 9px auto 12px;
+        max-width: 500px
+    }
+
+    .ap-hero-actions {
+        justify-content: center;
+        gap: 8px
+    }
+
+    .ap-join, .ap-outline {
+        min-height: 39px;
+        padding: 0 15px;
+        font-size: 12px
+    }
+
+    .ap-benefits {
+        justify-content: center;
+        gap: 10px;
+        margin-top: 11px;
+        font-size: 10px
+    }
+
+    .ap-visual {
+        height: 100%;
+        width: min(100%,440px);
+        margin: auto;
+        min-height: 0
+    }
+
+    .ap-pearl-halo {
+        width: min(65%,250px)
+    }
+
+    .ap-chat {
+        width: min(60%,240px);
+        padding: 8px;
+        border-radius: 14px;
+        transform: translate(10%,0)
+    }
+
+    .ap-chat-head {
+        gap: 6px;
+        padding-bottom: 6px
+    }
+
+    .ap-avatar {
+        width: 25px;
+        height: 25px;
+        font-size: 10px
+    }
+
+    .ap-chat-head strong {
+        font-size: 10px
+    }
+
+    .ap-chat-head small {
+        font-size: 8px
+    }
+
+    .ap-bubble {
+        font-size: 9px;
+        padding: 7px;
+        margin-top: 6px
+    }
+
+    .ap-chat-quick span {
+        font-size: 8px;
+        padding: 5px
+    }
+
+    .ap-chat-input {
+        font-size: 8px;
+        padding: 4px 5px 4px 8px;
+        margin-top: 7px
+    }
+
+        .ap-chat-input b {
+            width: 18px;
+            height: 18px
+        }
+
+    .ap-feature {
+        padding: 6px 8px;
+        font-size: 13px;
+        border-radius: 12px
+    }
+
+        .ap-feature span {
+            font-size: 9px
+        }
+
+    .f1 {
+        left: 0;
+        top: 11%
+    }
+
+    .f2 {
+        right: 0;
+        top: 12%
+    }
+
+    .f3 {
+        left: 0;
+        bottom: 13%
+    }
+
+    .f4 {
+        right: 0;
+        bottom: 14%
+    }
+
+    .ap-footer {
+        flex-basis: 43px;
+        min-height: 43px;
+        padding: 6px 12px;
+        justify-content: center
+    }
+
+        .ap-footer nav {
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center
+        }
+
+        .ap-footer > span {
+            display: none
+        }
+
+        .ap-footer button, .ap-footer a {
+            font-size: 9px
+        }
+
+    .ap-mobile-menu {
+        position: absolute;
+        inset: 62px 0 43px;
+        z-index: 30;
+        background: var(--surface);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        overflow-y: auto
+    }
+
+    .ap-mobile-links {
+        display: grid;
+        gap: 4px
+    }
+
+        .ap-mobile-links button {
+            text-align: left;
+            padding: 12px 15px;
+            border: 0;
+            border-bottom: 1px solid var(--line);
+            background: transparent;
+            color: var(--text);
+            font-size: 15px
+        }
+
+    .ap-mobile-menu .ap-join {
+        margin-top: auto
+    }
+
+    .ap-menu-panel {
+        top: 62px;
+        z-index: 50;
+        grid-template-columns: 1fr;
+        max-height: calc(100dvh - 125px);
+        overflow-y: auto
+    }
+
+    .ap-inner {
+        padding: 10px
+    }
+
+    .ap-inner-scroll {
+        padding: 18px
+    }
+
+        .ap-inner-scroll p {
+            font-size: 13px
+        }
+}
+
+@media(max-width:390px) {
+    .ap-brand small {
+        display: none
+    }
+
+    .ap-copy h1 {
+        font-size: clamp(27px,8vw,33px)
+    }
+
+    .ap-intro {
+        font-size: 11px
+    }
+
+    .ap-benefits {
+        font-size: 9px
+    }
+
+    .ap-feature {
+        display: none
+    }
+
+    .ap-footer nav {
+        gap: 7px
+    }
+
+    .ap-footer button, .ap-footer a {
+        font-size: 8px
+    }
+}
+
+@media(max-height:680px) and (min-width:781px) {
+    .ap-header {
+        height: 60px;
+        flex-basis: 60px
+    }
+
+    .ap-footer {
+        min-height: 40px;
+        flex-basis: 40px
+    }
+
+    .ap-home {
+        padding-top: 8px;
+        padding-bottom: 8px
+    }
+
+    .ap-copy h1 {
+        font-size: clamp(34px,4.5vw,60px)
+    }
+
+    .ap-intro {
+        margin: 10px 0
+    }
+
+    .ap-benefits {
+        margin-top: 12px
+    }
+
+    .ap-menu-panel {
+        top: 60px
+    }
+}
+
+@media(max-height:690px) and (max-width:780px) {
+    .ap-copy h1 {
+        font-size: clamp(25px,7vw,33px)
+    }
+
+    .ap-intro {
+        margin: 5px auto
+    }
+
+    .ap-benefits {
+        margin-top: 6px
+    }
+
+    .ap-pearl-halo {
+        width: min(50%,170px)
+    }
+
+    .ap-chat {
+        width: min(57%,190px)
+    }
+
+    .ap-feature {
+        display: none
+    }
+}
+
+@media(max-height:530px) and (max-width:780px) {
+    .ap-visual {
+        display: none
+    }
+
+    .ap-home {
+        display: flex;
+        flex-direction: column;
+        justify-content: center
+    }
+
+    .ap-copy h1 {
+        font-size: clamp(25px,6vw,38px)
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation: none !important;
+        transition: none !important
+    }
+}
+
+
+@media (min-width: 781px) {
+
+    .ap-benefits {
+        margin-top: 20px;
+        transform: translateY(-15px);
+    }
+}
+
+
+@media (max-width: 780px) {
+
+    /* Never display the desktop dropdown on mobile */
+    .ap-menu-panel {
+        display: none !important;
+    }
+
+    /* Keep mobile menu as the main scrolling container */
+    .ap-mobile-menu {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    /* Keep navigation buttons visible and correctly positioned */
+    .ap-mobile-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+        .ap-mobile-links > button {
+            position: relative;
+            display: block;
+            width: 100%;
+            flex-shrink: 0;
+            text-align: left;
+        }
+
+    /* Expanded submenu appears directly below its parent */
+    .ap-mobile-submenu {
+        position: static !important;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        padding: 10px 0 14px 15px;
+        margin: 0;
+        border-bottom: 1px solid var(--line);
+    }
+
+        .ap-mobile-submenu button {
+            position: static;
+            width: 100%;
+            padding: 13px 15px;
+            text-align: left;
+            background: var(--page);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            color: var(--text);
+        }
+
+        .ap-mobile-submenu small {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted);
+        }
+
+    .ap-mobile-menu .ap-join {
+        flex-shrink: 0;
+    }
+}
