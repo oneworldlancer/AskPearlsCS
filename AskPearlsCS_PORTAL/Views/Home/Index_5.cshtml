@@ -9,12 +9,16 @@
     <meta name="theme-color" content="#f8f8f0" />
     <title>AskPearls | A shared view for better work</title>
     <link rel="stylesheet" href="~/app_page_css/app_page_index_5_css.css" />
+    <link rel="stylesheet" href="~/app_page_css/app_page_index_header_css.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/app_css/app_page_signin_info_modal_css.css" />
     <script src="~/app_page_js/app_page_index_js.js" defer></script>
 </head>
 <body>
     <div class="atelier-page">
-        <header class="atelier-header">
+       
+        <partial name="_IndexHeaderModel" />
+
+        @*   <header class="atelier-header">
             <a class="atelier-brand" href="/" aria-label="AskPearls home">
                 <img src="/app_img/img_logo_color.png" alt="" />
                 <span><strong>AskPearls</strong><small>Capture. Engage. Convert.</small></span>
@@ -27,7 +31,7 @@
                     <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"></path></svg>
                 </button>
             </nav>
-        </header>
+        </header> *@
 
         <main class="atelier-main">
             <section class="atelier-story" aria-labelledby="atelier-title">

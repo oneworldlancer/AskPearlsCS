@@ -56,24 +56,82 @@ namespace AskPearlsCS_PORTAL.Controllers
             "Index_9",
             "Index_10",
             "Index_11",
-            "Index_12"//,
-            //"Index_13",
-            //"Index_14",
-            //"Index_15"
+            "Index_12",
+            "Index_13",
+            "Index_14",
+            "Index_15"
         };
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
+
+        private static readonly string[] HeaderSlogans =
+        {
+    "Capture. Engage. Convert.",
+    "Connect. Discover. Grow.",
+    "Imagine. Build. Succeed.",
+    "Explore. Decide. Achieve.",
+    "Discover. Connect. Thrive.",
+    "Create. Collaborate. Innovate.",
+    "Think. Plan. Execute.",
+    "Inspire. Empower. Transform.",
+    "Capture. Understand. Deliver.",
+    "Simplify. Connect. Succeed.",
+    "Explore. Learn. Grow.",
+    "Connect. Analyze. Decide.",
+    "Engage. Inspire. Convert.",
+    "Discover. Decide. Deliver.",
+    "Listen. Understand. Act.",
+    "Collect. Analyze. Improve.",
+    "Imagine. Connect. Create.",
+    "Understand. Decide. Grow.",
+    "Capture. Connect. Succeed.",
+    "Explore. Innovate. Transform.",
+    "Connect. Empower. Achieve.",
+    "Discover. Engage. Thrive.",
+    "Think. Create. Grow.",
+    "Simplify. Empower. Deliver.",
+    "Learn. Adapt. Succeed.",
+    "Create. Connect. Convert.",
+    "Discover. Design. Deliver.",
+    "Imagine. Explore. Achieve.",
+    "Analyze. Optimize. Grow.",
+    "Connect. Collaborate. Succeed."
+};
+
+        [ResponseCache(
+            Duration = 0,
+            Location = ResponseCacheLocation.None,
+            NoStore = true)]
         public IActionResult Index()
         {
+            // Random homepage design (1–15)
+            int designIndex = Random.Shared.Next(DesignViews.Length);
 
-            var index = Random.Shared.Next(DesignViews.Length);
-          
-          //   return View(DesignViews[index]);
-           return View("Index_7");
+            // Random three-word slogan
+            int sloganIndex = Random.Shared.Next(HeaderSlogans.Length);
 
-            //var index = (int)((uint)Interlocked.Increment(ref _nextDesign) % (uint)DesignViews.Length);
-            //return View(DesignViews[index]);
+            // Available to the shared header partial
+            ViewData["HeaderSlogan"] = HeaderSlogans[sloganIndex];
+
+            // Render the selected homepage
+           return View(DesignViews[designIndex]);
+
+          //   return View("Index_9");
+
         }
+
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Index()
+        //{
+
+        //    var index = Random.Shared.Next(DesignViews.Length);
+
+        //  return View(DesignViews[index]);
+        //   //   return View("Index_15");
+
+        //    //var index = (int)((uint)Interlocked.Increment(ref _nextDesign) % (uint)DesignViews.Length);
+        //    //return View(DesignViews[index]);
+        //}
 
 
         //public IActionResult Index()

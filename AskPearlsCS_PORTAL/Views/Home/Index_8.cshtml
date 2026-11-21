@@ -1,5 +1,6 @@
 ﻿@{
     Layout = null;
+    ViewData["HeaderSlogan"] = "Guide. Decide. Grow.";
 }
 <!doctype html>
 <html lang="en" data-theme="light">
@@ -7,21 +8,100 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f5faf7" />
-    <title>AskPearls | Your ideas, organised with you</title>
-    <link rel="stylesheet" href="~/app_css/app_page_index_concepts_shared_css.css?v=7" />
-    <link rel="stylesheet" href="~/app_page_css/app_page_index_8_css.css?v=7" />
-    <link rel="stylesheet" href="~/app_css/app_page_signin_info_modal_css.css" />
-    <script src="~/app_page_js/app_page_index_js.js" defer></script>
+    <title>AskPearls | Turn questions into confident decisions</title>
+    <link rel="stylesheet" href="~/app_page_css/app_page_index_8_css.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/app_page_css/app_page_index_header_css.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/app_css/app_page_signin_info_modal_css.css" asp-append-version="true" />
+    <script src="~/app_page_js/app_page_index_js.js" defer asp-append-version="true"></script>
 </head>
 <body>
-    <div class="concept-page concept-8">
-        <header class="concept-header"><a class="concept-brand" href="/" aria-label="AskPearls home"><img src="/app_img/img_logo_color.png" alt="" /><span><strong>AskPearls</strong><small>Capture. Engage. Convert.</small></span></a><nav class="concept-actions" aria-label="Page options"><button class="concept-help" type="button" data-info-open="help"><span class="help-ring">?</span>Help</button><button class="concept-theme" id="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch theme"><svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42 1.42" /></svg><svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z" /></svg></button></nav></header>
-        <main class="concept-main">
-            <section class="concept-story" aria-labelledby="concept-title">
-                <div class="concept-copy"><p class="concept-kicker">YOUR IDEAS, IN ONE THOUGHTFUL WORKSPACE</p><h1 id="concept-title">Your ideas.<br /><em>Organised.</em><br />With you.</h1><p class="concept-description">Ask, plan, create and get clearer answers — all in one intelligent workspace.</p></div>
-                <div class="concept-art desk-art" role="img" aria-label="A woman working at her laptop, surrounded by idea, research, plan and create cards"><div class="desk-glow"></div><div class="leaf-cluster"><i></i><i></i><i></i><i></i></div><div class="idea-card-float idea-note"><b>✦</b><span>Ideas<i></i><i></i></span></div><div class="idea-card-float plan-note"><b>✓</b><span>Plan<i></i><i></i></span></div><div class="idea-card-float research-note"><b>⌕</b><span>Research<i></i><i></i></span></div><div class="idea-card-float create-note"><b>✎</b><span>Create<i></i><i></i></span></div><div class="desk-person" aria-hidden="true"><div class="person-body"></div><div class="person-neck"></div><div class="person-hair"></div><div class="person-face"></div><div class="person-arm"></div></div><div class="desk-laptop" aria-hidden="true">✦</div><div class="desk-surface"></div><div class="desk-cup"></div><p class="art-caption">Turn ideas into plans · Work better together · Get things done faster</p></div>
+    <div class="ap8-page">
+        <partial name="_IndexHeaderModel" />
+
+        <main class="ap8-main">
+            <section class="ap8-hero" aria-labelledby="ap8-title">
+                <div class="ap8-copy">
+                    <p class="ap8-eyebrow"><span class="ap8-sparkle" aria-hidden="true">✦</span> THE SMARTER WAY TO GUIDE DECISIONS</p>
+                    <h1 id="ap8-title">From curiosity<br />to <span>clarity.</span></h1>
+                    <p class="ap8-lead">Create interactive experiences that understand what people need — and help them discover what fits.</p>
+                    <div class="ap8-points" aria-label="How AskPearls works">
+                        <span><i aria-hidden="true">01</i> Ask the right questions</span>
+                        <span><i aria-hidden="true">02</i> Understand every answer</span>
+                        <span><i aria-hidden="true">03</i> Recommend with confidence</span>
+                    </div>
+                </div>
+
+                <div class="ap8-illustration" role="img" aria-label="Illustration of an interactive decision journey, from a question through personalized choices to a glowing recommendation pearl">
+                    <svg viewBox="0 0 680 430" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <defs>
+                            <linearGradient id="ap8-shell" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#163c31" /><stop offset="1" stop-color="#0b261f" /></linearGradient>
+                            <linearGradient id="ap8-glass" x1="0" x2="1"><stop stop-color="#e6fff3" /><stop offset="1" stop-color="#a9ebd0" /></linearGradient>
+                            <radialGradient id="ap8-pearl"><stop stop-color="#ffffff" /><stop offset=".42" stop-color="#e5fff5" /><stop offset="1" stop-color="#43c997" /></radialGradient>
+                            <filter id="ap8-shadow" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="13" stdDeviation="16" flood-color="#002c1e" flood-opacity=".22" /></filter>
+                            <filter id="ap8-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="17" /></filter>
+                        </defs>
+                        <circle cx="336" cy="205" r="164" fill="none" stroke="currentColor" stroke-opacity=".08" stroke-dasharray="3 11" stroke-width="2" />
+                        <circle cx="336" cy="205" r="125" fill="none" stroke="currentColor" stroke-opacity=".07" />
+                        <path d="M168 221 C225 221 234 166 295 166 S381 166 433 166" fill="none" stroke="#30c993" stroke-width="4" stroke-linecap="round" stroke-dasharray="7 10" />
+                        <path d="M433 166 C481 166 488 219 522 219" fill="none" stroke="#30c993" stroke-width="4" stroke-linecap="round" stroke-dasharray="7 10" />
+                        <g filter="url(#ap8-shadow)">
+                            <rect x="28" y="136" width="178" height="176" rx="22" fill="url(#ap8-shell)" stroke="#418e70" stroke-opacity=".7" />
+                            <rect x="49" y="157" width="52" height="25" rx="12.5" fill="#164d3b" />
+                            <text x="75" y="174" font-family="Segoe UI,Arial,sans-serif" font-size="11" font-weight="700" text-anchor="middle" fill="#80e7b9">STEP 01</text>
+                            <text x="49" y="213" font-family="Segoe UI,Arial,sans-serif" font-size="19" font-weight="700" fill="#f2fff9">Discover</text>
+                            <text x="49" y="236" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#b5d9c9">What matters most?</text>
+                            <rect x="49" y="254" width="135" height="34" rx="10" fill="#204a3c" stroke="#497f68" />
+                            <circle cx="66" cy="271" r="6" stroke="#54d8a3" stroke-width="2" fill="none" />
+                            <text x="80" y="275" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#f2fff9">Your goals</text>
+                        </g>
+                        <g filter="url(#ap8-shadow)">
+                            <rect x="239" y="83" width="204" height="230" rx="26" fill="#ffffff" stroke="#b5dcca" />
+                            <rect x="259" y="104" width="164" height="31" rx="11" fill="#e5f8ee" />
+                            <circle cx="278" cy="119" r="8" fill="#10a875" />
+                            <path d="m274 119 3 3 5-6" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                            <text x="293" y="123" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="700" fill="#1c5742">Understand</text>
+                            <text x="260" y="163" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="700" fill="#23473b">Choose your priorities</text>
+                            <rect x="259" y="180" width="164" height="37" rx="10" fill="#e9f9f0" stroke="#1cbd85" stroke-width="1.5" />
+                            <circle cx="277" cy="198" r="8" fill="#0cb67f" />
+                            <path d="m273 198 3 3 5-6" stroke="white" stroke-width="2" fill="none" />
+                            <text x="292" y="203" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#225c44">Better experience</text>
+                            <rect x="259" y="225" width="164" height="37" rx="10" fill="#f5f8f6" stroke="#d3e5da" />
+                            <circle cx="277" cy="243" r="8" fill="none" stroke="#9cb7a9" stroke-width="1.5" />
+                            <text x="292" y="248" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#507164">Faster decisions</text>
+                            <rect x="259" y="276" width="164" height="20" rx="10" fill="#0ca976" />
+                            <text x="341" y="290" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="10" font-weight="700" fill="white">FIND MY MATCH →</text>
+                        </g>
+                        <g filter="url(#ap8-shadow)">
+                            <rect x="475" y="135" width="175" height="178" rx="23" fill="url(#ap8-shell)" stroke="#418e70" stroke-opacity=".7" />
+                            <rect x="496" y="157" width="78" height="25" rx="12" fill="#164d3b" />
+                            <text x="535" y="174" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="11" font-weight="700" fill="#80e7b9">YOUR MATCH</text>
+                            <circle cx="563" cy="222" r="43" fill="#5af2b0" opacity=".22" filter="url(#ap8-glow)" />
+                            <circle cx="563" cy="222" r="34" fill="url(#ap8-pearl)" stroke="#dcfff0" stroke-width="3" />
+                            <path d="m563 207 4 11 11 4-11 4-4 11-4-11-11-4 11-4Z" fill="#fff" />
+                            <text x="563" y="281" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="700" fill="#effff8">Clear direction</text>
+                        </g>
+                        <g fill="#0cc68a"><circle cx="217" cy="221" r="7" /><circle cx="459" cy="180" r="7" /></g>
+                        <g fill="#b2efd4" opacity=".8"><circle cx="100" cy="88" r="5" /><circle cx="520" cy="72" r="4" /><circle cx="609" cy="350" r="5" /><circle cx="204" cy="360" r="4" /></g>
+                    </svg>
+                </div>
             </section>
-            <section class="concept-auth" aria-labelledby="auth-title"><div class="concept-auth-card" id="google-auth-card" data-google-auth-url="/Home/GoogleLogin"><div class="concept-auth-mark"><img src="/app_img/img_logo_color.png" alt="" /></div><p class="concept-auth-kicker">ASKPEARLS DEVELOPMENT PORTAL</p><h2 id="auth-title">Your ideas,<br />ready to grow.</h2><p class="concept-auth-copy">Sign in to save your work and pick up where inspiration left off.</p><button class="google-button" id="google-signin" type="button" data-google-signin><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11a9.4 9.4 0 0 1-4.1 6.2v5.2h6.7c3.9-3.6 6-8.9 6-15.4Z" /><path fill="#FF3D00" d="M24 44c5.5 0 10.1-1.8 13.5-4.9l-6.7-5.2c-1.8 1.2-4.1 2-6.8 2-5.2 0-9.7-3.5-11.3-8.2H5.8v5.4A20 20 0 0 0 24 44Z" /><path fill="#4CAF50" d="M12.7 27.7a12 12 0 0 1 0-7.4v-5.4H5.8a20 20 0 0 0 0 18.2l6.9-5.4Z" /><path fill="#1976D2" d="M24 12.1c3 0 5.6 1 7.7 3.1l5.8-5.8C34 6.1 29.4 4 24 4A20 20 0 0 0 5.8 14.9l6.9 5.4c1.6-4.7 6.1-8.2 11.3-8.2Z" /></svg><span>Continue with Google</span></button><p class="auth-message" id="auth-message" data-auth-message role="status" aria-live="polite"></p><div class="concept-trust"><span class="trust-check">✓</span><span>New users are set up automatically. Your Google password stays with Google.</span></div><p class="concept-legal">By continuing, you agree to our<br /><button type="button" data-info-open="terms">Terms of Service</button> and <button type="button" data-info-open="privacy">Privacy Policy</button>.</p></div></section>
+
+            <section class="ap8-auth" aria-labelledby="auth-title">
+                <div class="ap8-auth-card" id="google-auth-card" data-google-auth-url="/Home/GoogleLogin">
+                    <div class="ap8-auth-icon" aria-hidden="true">✦</div>
+                    <p class="ap8-auth-eyebrow">ASKPEARLS DEVELOPMENT PORTAL</p>
+                    <h2 id="auth-title">Build something<br /><span>remarkable.</span></h2>
+                    <p class="ap8-auth-description">Your workspace is one secure sign-in away. Create, customize, and publish intelligent decision experiences.</p>
+                    <button class="google-button" id="google-signin" type="button" data-google-signin>
+                        <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11a9.4 9.4 0 0 1-4.1 6.2v5.2h6.7c3.9-3.6 6-8.9 6-15.4Z" /><path fill="#FF3D00" d="M24 44c5.5 0 10.1-1.8 13.5-4.9l-6.7-5.2c-1.8 1.2-4.1 2-6.8 2-5.2 0-9.7-3.5-11.3-8.2H5.8v5.4A20 20 0 0 0 24 44Z" /><path fill="#4CAF50" d="M12.7 27.7a12 12 0 0 1 0-7.4v-5.4H5.8a20 20 0 0 0 0 18.2l6.9-5.4Z" /><path fill="#1976D2" d="M24 12.1c3 0 5.6 1 7.7 3.1l5.8-5.8C34 6.1 29.4 4 24 4A20 20 0 0 0 5.8 14.9l6.9 5.4c1.6-4.7 6.1-8.2 11.3-8.2Z" /></svg>
+                        <span>Continue with Google</span>
+                        <span class="ap8-button-arrow" aria-hidden="true">→</span>
+                    </button>
+                    <p class="auth-message" id="auth-message" data-auth-message role="status" aria-live="polite"></p>
+                    <div class="ap8-security"><span aria-hidden="true">✓</span><p><strong>New here?</strong> Your account and workspace are created automatically after sign-in.</p></div>
+                    <p class="ap8-legal">By continuing, you agree to our <button type="button" data-info-open="terms">Terms of Service</button> and <button type="button" data-info-open="privacy">Privacy Policy</button>.</p>
+                </div>
+            </section>
         </main>
         <partial name="_SignInInfoModal" />
         <partial name="_IndexFooterModel" />

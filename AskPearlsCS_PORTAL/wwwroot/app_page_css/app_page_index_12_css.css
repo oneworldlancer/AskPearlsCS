@@ -1,5 +1,5 @@
 ﻿.concept-12 .concept-story h1 {
-    font-family: Inter,"Segoe UI",sans-serif;
+    font-family: "Segoe UI" !important;
     font-weight: 800;
     letter-spacing: -2.3px
 }
@@ -74,7 +74,7 @@
 }
 
     .plane-note b {
-        font-family: Georgia,serif;
+        font-family: "Segoe UI" !important;
         font-size: 9px
     }
 
@@ -115,7 +115,7 @@
 
     .next-steps h3 {
         margin: 0 0 9px;
-        font-family: Georgia,serif;
+        font-family: "Segoe UI" !important;
         font-size: 11px;
         font-weight: 500
     }
@@ -405,3 +405,184 @@ html[data-theme="dark"] .concept-12 .flight-scene {
         height: 114%
     }
 }
+
+
+
+/* ==========================================================
+   ASKPEARLS INDEX 12
+   MOBILE: BIGGER TEXT + NO ILLUSTRATION
+   ========================================================== */
+
+@media screen and (max-width: 660px) {
+
+    /* Hide the entire paper-plane illustration */
+    .concept-12 .concept-art,
+    .concept-12 .flight-world,
+    .concept-12 .flight-scene,
+    .concept-12 .art-caption {
+        display: none !important;
+    }
+
+    /* Main mobile layout */
+    .concept-12 .concept-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        gap: 24px;
+        padding: 24px 18px;
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+    }
+
+    .concept-12 .concept-story {
+        flex: 0 0 auto;
+        width: 100%;
+        text-align: center;
+    }
+
+    .concept-12 .concept-copy {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Top label */
+    .concept-12 .concept-kicker {
+        margin: 0 0 12px;
+        font-size: 11px;
+        font-weight: 800;
+        line-height: 1.5;
+        letter-spacing: 1.5px;
+    }
+
+    /* Main heading */
+    .concept-12 .concept-story h1 {
+        margin: 0;
+        font-size: clamp(36px, 9vw, 46px);
+        font-weight: 800;
+        line-height: 1.12;
+        letter-spacing: -1.2px;
+    }
+
+    /* Main description */
+    .concept-12 .concept-description {
+        margin: 15px auto 0;
+        max-width: 440px;
+        font-size: 16px;
+        line-height: 1.55;
+    }
+
+    /* Sign-in section */
+    .concept-12 .concept-auth {
+        flex: 0 0 auto;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .concept-12 .concept-auth-card {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 24px 22px;
+        border-radius: 18px;
+    }
+
+    /* Keep the card compact on mobile */
+    .concept-12 .concept-auth-mark {
+        display: none;
+    }
+
+    .concept-12 .concept-auth-kicker {
+        margin-bottom: 12px;
+        font-size: 11px;
+        font-weight: 800;
+        line-height: 1.5;
+        letter-spacing: 1.1px;
+    }
+
+    /* Sign-in heading */
+    .concept-12 .concept-auth-card h2 {
+        font-size: clamp(26px, 6.4vw, 32px);
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+    }
+
+    /* Sign-in description */
+    .concept-12 .concept-auth-copy {
+        margin: 13px 0 18px;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    /* Google sign-in button */
+    .concept-12 .google-button {
+        width: 100%;
+        min-height: 52px;
+        padding: 12px 15px;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    /* Privacy information */
+    .concept-12 .concept-trust {
+        gap: 10px;
+        margin-top: 15px;
+        padding-top: 13px;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .concept-12 .trust-check {
+        width: 21px;
+        height: 21px;
+        flex: 0 0 21px;
+    }
+
+    /* Terms and privacy links */
+    .concept-12 .concept-legal,
+    .concept-12 .concept-legal button {
+        font-size: 12px;
+        line-height: 1.65;
+    }
+
+    .concept-12 .concept-legal {
+        margin-top: 15px;
+    }
+}
+
+/* Small mobile screens: preserve readability */
+@media screen and (max-width: 660px) and (max-height: 620px) {
+
+    .concept-12 .concept-main {
+        gap: 18px;
+        padding: 18px 15px;
+    }
+
+    .concept-12 .concept-story h1 {
+        font-size: clamp(32px, 8vw, 40px);
+    }
+
+    .concept-12 .concept-auth-card {
+        padding: 19px 18px;
+    }
+}
+
+
+/* INDEX 12 — consistent typography and shared header theme control */
+.concept-12 {
+    font-family: "Segoe UI" !important;
+}
+
+
+
+/* Explicit body font family for Index 12 */
+body:has(> .concept-12) {
+    font-family: "Segoe UI" !important;
+}
+
+    body:has(> .concept-12) button,
+    body:has(> .concept-12) input,
+    body:has(> .concept-12) select,
+    body:has(> .concept-12) textarea {
+        font-family: inherit;
+    }

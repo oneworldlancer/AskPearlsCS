@@ -8,18 +8,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AskPearls | Workspace Launchpad</title>
     <link rel="stylesheet" href="~/app_page_css/app_page_index_4_css.css" />
+    <link rel="stylesheet" href="~/app_page_css/app_page_index_header_css.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/app_css/app_page_signin_info_modal_css.css" />
     <script src="~/app_page_js/app_page_index_js.js" defer></script>
 </head>
 <body>
     <div class="launch-page">
-        <header class="launch-header">
+      
+        <partial name="_IndexHeaderModel" />
+
+        @*   <header class="launch-header">
             <a class="launch-brand" href="/" aria-label="AskPearls home"><img src="/app_img/img_logo_color.png" alt="" /><span><strong>AskPearls</strong><small>Capture. Engage. Convert.</small></span></a>
             <nav class="launch-actions" aria-label="Page options">
                 <button class="help-link" type="button" data-info-open="help"><span aria-hidden="true">ⓘ</span> Help</button>
                 <button class="theme-toggle" id="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch theme"><svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42 1.42"></path></svg><svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"></path></svg></button>
             </nav>
-        </header>
+        </header> *@
         <main class="launch-main">
             <section class="launch-story" aria-labelledby="launch-title">
                 <p class="launch-eyebrow">THE ASKPEARLS WORKSPACE</p>

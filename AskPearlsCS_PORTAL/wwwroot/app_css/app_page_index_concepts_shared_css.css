@@ -101,7 +101,7 @@ button {
     .concept-brand em {
         margin-left: 14px;
         color: var(--muted);
-        font-family: Georgia,serif;
+        font-family: "Segoe UI" !important;
         font-size: 10px;
         font-weight: 400
     }
@@ -757,7 +757,7 @@ html[data-theme="dark"] .google-button {
 /* Concept 8: desk illustration fallback. Keeping these rules in the shared
    bundle also protects the page if its individual stylesheet is cached/missed. */
 .concept-8 .concept-story h1 {
-    font-family: Inter,"Segoe UI",sans-serif;
+    font-family: "Segoe UI" !important;
     font-weight: 800;
     letter-spacing: -2.6px
 }

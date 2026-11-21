@@ -44,7 +44,7 @@ body {
     margin: 0;
     min-width: 320px;
     overflow: hidden;
-    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    font-family: "Segoe UI" !important;
     color: var(--text);
     background: var(--page);
 }

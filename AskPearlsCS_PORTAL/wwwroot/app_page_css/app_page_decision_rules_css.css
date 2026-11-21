@@ -1,13 +1,13 @@
 ﻿
 .decision-rules-page {
     color: var(--ap-text, #172033);
-    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 14px;
 }
 
     .decision-rules-page,
     .decision-rules-page * {
-        font-family: Inter, "Segoe UI", Arial, sans-serif;
+        font-family: "Segoe UI" !important;
     }
 
         .decision-rules-page i[class^="bi"],

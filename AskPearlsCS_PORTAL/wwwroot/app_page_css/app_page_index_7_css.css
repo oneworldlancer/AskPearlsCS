@@ -43,8 +43,7 @@ html, body {
 body {
     color: var(--text);
     background: var(--page);
-   /* font-family: Georgia, "Times New Roman", serif;
-    font-family: Georgia, "Times New Roman", serif;*/
+    font-family: "Segoe UI" !important;
 }
 
 button {
@@ -127,7 +126,7 @@ button {
     color: var(--muted);
     border: 1px solid var(--muted);
     border-radius: 50%;
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
 }
 
 .garden-theme {
@@ -199,7 +198,7 @@ html[data-theme="dark"] .icon-moon {
 .garden-eyebrow {
     margin: 0 0 12px;
     color: var(--accent);
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 8px;
     font-weight: 800;
     letter-spacing: 2px;
@@ -356,7 +355,7 @@ html[data-theme="dark"] .icon-moon {
 .choice-card b {
     margin-top: 5px;
     color: var(--accent);
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 16px;
     font-weight: 400;
 }
@@ -380,7 +379,7 @@ html[data-theme="dark"] .icon-moon {
 }
 
 .people-icon {
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 12px;
     letter-spacing: -4px;
     padding-right: 4px;
@@ -406,7 +405,7 @@ html[data-theme="dark"] .icon-moon {
     .question-card span {
         flex: 0 0 auto;
         color: #dff1b6;
-        font-family: Arial,sans-serif;
+        font-family: "Segoe UI" !important;
         font-size: 19px;
     }
 
@@ -512,7 +511,7 @@ html[data-theme="dark"] .icon-moon {
     color: var(--muted);
     white-space: nowrap;
     transform: translateX(-50%);
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 9px;
 }
 
@@ -542,7 +541,7 @@ html[data-theme="dark"] .icon-moon {
 .auth-eyebrow {
     margin: 0 0 12px;
     color: var(--accent);
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 8px;
     font-weight: 800;
     letter-spacing: 1.7px;
@@ -576,7 +575,7 @@ html[data-theme="dark"] .icon-moon {
     border: 1px solid #dbe3db;
     border-radius: 10px;
     box-shadow: 0 3px 11px rgba(35, 55, 43, .08);
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 12px;
     font-weight: 700;
     cursor: pointer;
@@ -614,7 +613,7 @@ html[data-theme="dark"] .icon-moon {
     background: #fff0ed;
     border: 1px solid #efc5bd;
     border-radius: 8px;
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 11px;
 }
 
@@ -642,7 +641,7 @@ html[data-theme="dark"] .icon-moon {
 .new-account p {
     margin: 0;
     color: var(--muted);
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 11px;
     line-height: 1.5;
 }
@@ -672,14 +671,14 @@ html[data-theme="dark"] .icon-moon {
     color: var(--accent);
     background: color-mix(in srgb, var(--mint) 55%, transparent);
     border-radius: 9px;
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 17px;
 }
 
 .privacy-note p {
     margin: 0;
     color: var(--text);
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 10px;
     line-height: 1.5;
 }
@@ -693,7 +692,7 @@ html[data-theme="dark"] .icon-moon {
     margin: 14px 0 0;
     color: var(--muted);
     text-align: center;
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 9px;
     line-height: 1.7;
 }
@@ -713,7 +712,7 @@ html[data-theme="dark"] .icon-moon {
     margin: 11px 0 0;
     color: var(--muted);
     text-align: center;
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 9px;
 }
 
@@ -759,7 +758,7 @@ html[data-theme="dark"] .icon-moon {
     max-width: 190px;
     margin: 0 auto;
     color: var(--muted);
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 9px;
     line-height: 1.4;
 }
@@ -775,7 +774,7 @@ html[data-theme="dark"] .icon-moon {
     color: var(--muted);
     background: var(--surface);
     border-top: 1px solid var(--line);
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 8px;
 }
 
@@ -794,7 +793,7 @@ html[data-theme="dark"] .icon-moon {
     }
 
     .footer-brand strong {
-        font-family: Georgia,"Times New Roman",serif;
+        font-family: "Segoe UI" !important;
         font-size: 10px;
     }
 
@@ -1656,3 +1655,884 @@ html[data-theme="dark"] .question-card {
         overflow: visible;
     }
 }
+
+/* ==============================================================
+   INDEX 7 — FINAL RESPONSIVE READABILITY AND SPACING CORRECTIONS
+   ============================================================= */
+
+/* Desktop: reserve clear visual space between garden and benefits. */
+@media (min-width: 681px) {
+    .garden-stage {
+        padding-bottom: 30px;
+    }
+
+    .garden-story {
+        min-height: 0;
+    }
+
+    .choice-garden {
+        height: clamp(190px, 30vh, 290px);
+        margin-top: 18px;
+        overflow: hidden;
+        flex: 0 1 auto;
+    }
+
+    .garden-art-illustration {
+        overflow: hidden;
+        object-fit: contain;
+    }
+
+    .garden-benefits {
+        position: relative;
+        z-index: 2;
+        padding-top: 17px;
+        min-height: 112px;
+    }
+
+    .garden-eyebrow, .auth-eyebrow {
+        font-size: 11px;
+    }
+
+    .garden-intro, .auth-intro {
+        font-size: 15px;
+    }
+
+    .new-account p, .privacy-note p, .legal-copy {
+        font-size: 12px;
+    }
+
+    .privacy-note small, .auth-caption {
+        font-size: 11px;
+    }
+
+    .garden-benefits h3 {
+        font-size: 14px;
+    }
+
+    .garden-benefits p {
+        font-size: 11px;
+    }
+
+    .google-button {
+        font-size: 14px;
+    }
+}
+
+/* Mobile: keep the meaningful content and remove the decorative art. */
+@media (max-width: 680px) {
+    html, body {
+        height: auto;
+        min-height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .garden-page {
+        height: auto;
+        min-height: 100dvh;
+        overflow: visible;
+    }
+
+    .garden-main {
+        flex: 1 0 auto;
+        min-height: 0;
+        overflow: visible;
+        padding-inline: 18px;
+    }
+
+    .garden-stage {
+        flex: 1 0 auto;
+        min-height: 0;
+        justify-content: center;
+        gap: 24px;
+        padding: 28px 0 24px;
+    }
+
+    .garden-story {
+        flex: 0 0 auto;
+    }
+
+    .garden-copy {
+        padding-inline: 0;
+    }
+
+    .garden-eyebrow {
+        margin-bottom: 12px;
+        font-size: 10px;
+        line-height: 1.5;
+        letter-spacing: 1.2px;
+    }
+
+    .garden-story h1 {
+        font-size: clamp(29px, 7.4vw, 39px);
+        line-height: 1.12;
+        letter-spacing: -0.8px;
+    }
+
+    .garden-intro {
+        max-width: 430px;
+        margin: 14px auto 0;
+        font-size: 14px;
+        line-height: 1.55;
+    }
+
+    .choice-garden, .garden-art, .garden-art-illustration {
+        display: none !important;
+    }
+
+    .garden-auth {
+        width: 100%;
+        max-width: 460px;
+        flex: 0 0 auto;
+        margin-inline: auto;
+    }
+
+    .garden-card {
+        padding: 23px 22px;
+        border-radius: 17px;
+    }
+
+    .auth-eyebrow {
+        margin-bottom: 11px;
+        font-size: 10px;
+        line-height: 1.5;
+        letter-spacing: 1.2px;
+    }
+
+    .garden-card h2 {
+        font-size: clamp(25px, 6.5vw, 32px);
+        line-height: 1.15;
+    }
+
+    .auth-intro {
+        margin: 13px 0 19px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .google-button {
+        min-height: 48px;
+        margin-bottom: 0;
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+
+    .new-account {
+        gap: 12px;
+        margin-top: 19px;
+    }
+
+        .new-account p {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .new-account strong {
+            font-size: 14px;
+        }
+
+    .privacy-note {
+        gap: 11px;
+        margin-top: 17px;
+        padding: 12px;
+    }
+
+    .privacy-shield {
+        width: 30px;
+        height: 30px;
+        flex-basis: 30px;
+        font-size: 17px;
+    }
+
+    .privacy-note p {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .privacy-note small {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .legal-copy {
+        margin-top: 17px;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .auth-caption {
+        display: block;
+        margin-top: 12px;
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
+    .garden-benefits {
+        flex: 0 0 auto;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px 12px;
+        min-height: 0;
+        padding: 20px 0 25px;
+    }
+
+    .benefit-icon {
+        width: 36px;
+        height: 36px;
+        margin-bottom: 7px;
+        font-size: 19px;
+    }
+
+    .garden-benefits h3 {
+        font-size: 13px;
+        line-height: 1.3;
+    }
+
+    .garden-benefits p {
+        display: block;
+        max-width: 190px;
+        font-size: 11px;
+        line-height: 1.45;
+    }
+
+    .garden-footer {
+        flex: 0 0 auto;
+        min-height: 48px;
+        padding: 10px 12px;
+        font-size: 11px;
+        line-height: 1.45;
+    }
+
+    .footer-brand strong {
+        font-size: 11px;
+    }
+
+    .garden-footer nav {
+        gap: 10px;
+    }
+}
+
+/* Short screens should scroll instead of compressing text to unreadable sizes. */
+@media (max-width: 680px) and (max-height: 620px) {
+    .garden-stage {
+        gap: 22px;
+        padding: 24px 0;
+    }
+
+    .garden-card {
+        padding: 22px 20px;
+    }
+
+    .garden-story h1 {
+        font-size: clamp(28px, 7.2vw, 36px);
+    }
+
+    .garden-intro {
+        font-size: 14px;
+    }
+
+    .auth-intro {
+        margin: 13px 0 19px;
+        font-size: 14px;
+    }
+
+    .new-account {
+        margin-top: 19px;
+    }
+
+    .privacy-note {
+        margin-top: 17px;
+        padding: 12px;
+    }
+
+    .legal-copy {
+        margin-top: 17px;
+        font-size: 12px;
+    }
+
+    .garden-benefits {
+        min-height: 0;
+        padding: 20px 0 25px;
+    }
+
+    .benefit-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 19px;
+    }
+}
+
+/* Index 7 final corrections: no line across the artwork; compact, no-scroll phones. */
+.garden-benefits {
+    border-top: 0 !important;
+}
+
+@media (max-width: 680px) {
+    html, body {
+        height: 100% !important;
+        overflow: hidden !important;
+    }
+
+    .garden-page {
+        height: 100dvh !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .garden-header {
+        flex: 0 0 54px !important;
+        height: 54px !important;
+    }
+
+    .garden-main {
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .garden-stage {
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        padding: 8px 0 !important;
+    }
+
+    .garden-story {
+        flex: 0 0 auto !important;
+    }
+
+    .garden-eyebrow {
+        font-size: 9px !important;
+        margin-bottom: 7px !important;
+    }
+
+    .garden-story h1 {
+        font-size: clamp(25px, 6.2vw, 32px) !important;
+        line-height: 1.07 !important;
+    }
+
+    .garden-intro {
+        font-size: 12px !important;
+        line-height: 1.4 !important;
+        margin-top: 8px !important;
+    }
+
+    .choice-garden, .garden-art, .garden-art-illustration {
+        display: none !important;
+    }
+
+    .garden-auth {
+        flex: 0 0 auto !important;
+    }
+
+    .garden-card {
+        padding: 13px 17px !important;
+    }
+
+    .auth-eyebrow {
+        font-size: 9px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .garden-card h2 {
+        font-size: 23px !important;
+        line-height: 1.1 !important;
+    }
+
+    .auth-intro {
+        margin: 7px 0 10px !important;
+        font-size: 12px !important;
+        line-height: 1.35 !important;
+    }
+
+    .google-button {
+        min-height: 42px !important;
+        font-size: 13px !important;
+        padding: 7px 12px !important;
+    }
+
+    .new-account {
+        gap: 6px !important;
+        margin-top: 9px !important;
+    }
+
+        .new-account p {
+            font-size: 11px !important;
+            line-height: 1.35 !important;
+        }
+
+        .new-account strong {
+            font-size: 12px !important;
+        }
+
+    .privacy-note {
+        margin-top: 9px !important;
+        padding: 8px !important;
+    }
+
+        .privacy-note p {
+            font-size: 11px !important;
+            line-height: 1.3 !important;
+        }
+
+        .privacy-note small {
+            font-size: 10px !important;
+        }
+
+    .legal-copy {
+        margin-top: 8px !important;
+        font-size: 10px !important;
+        line-height: 1.4 !important;
+    }
+
+    .auth-caption {
+        display: none !important;
+    }
+
+    .garden-benefits {
+        flex: 0 0 auto !important;
+        min-height: 0 !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 4px !important;
+        padding: 8px 0 !important;
+    }
+
+    .benefit-icon {
+        width: 29px !important;
+        height: 29px !important;
+        font-size: 15px !important;
+        margin-bottom: 4px !important;
+    }
+
+    .garden-benefits h3 {
+        font-size: 10px !important;
+        line-height: 1.15 !important;
+    }
+
+    .garden-benefits p {
+        display: none !important;
+    }
+
+    .garden-footer {
+        flex: 0 0 40px !important;
+        min-height: 40px !important;
+        padding: 4px 8px !important;
+    }
+}
+
+@media (max-width: 680px) and (max-height: 700px) {
+    .garden-stage {
+        gap: 6px !important;
+        padding: 3px 0 !important;
+    }
+
+    .garden-eyebrow {
+        margin-bottom: 3px !important;
+    }
+
+    .garden-intro {
+        margin-top: 4px !important;
+    }
+
+    .garden-card {
+        padding: 8px 13px !important;
+    }
+
+        .garden-card h2 {
+            font-size: 20px !important;
+        }
+
+    .auth-intro {
+        margin: 4px 0 6px !important;
+    }
+
+    .google-button {
+        min-height: 36px !important;
+    }
+
+    .new-account {
+        margin-top: 5px !important;
+        gap: 3px !important;
+    }
+
+    .privacy-note {
+        margin-top: 5px !important;
+        padding: 5px !important;
+    }
+
+    .legal-copy {
+        margin-top: 5px !important;
+    }
+
+    .garden-benefits {
+        padding: 4px 0 !important;
+    }
+}
+
+/* Desktop bottom-area alignment: keep the sign-in note from colliding
+   with the fourth benefit, and give all four benefits their own row. */
+@media (min-width: 681px) {
+    .garden-stage {
+        padding-bottom: 22px;
+    }
+
+    .garden-auth {
+        min-height: 0;
+    }
+
+    .auth-caption {
+        display: none !important;
+    }
+
+    .garden-benefits {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        min-height: 104px;
+        padding: 12px 0 14px;
+        align-items: center;
+        border-top: 0 !important;
+    }
+
+        .garden-benefits article {
+            min-width: 0;
+            padding: 0 12px;
+        }
+
+        .garden-benefits h3 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .garden-benefits p {
+            font-size: 11px;
+            line-height: 1.35;
+        }
+}
+
+/* Index 7 — three benefits beneath the illustration only.
+   Keep the area below the Google sign-in card deliberately empty. */
+.garden-benefits article:nth-child(4) {
+    display: none !important;
+}
+
+@media (min-width: 681px) {
+    .garden-benefits {
+        width: 65% !important;
+        max-width: 920px;
+        align-self: flex-start;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 18px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+
+        .garden-benefits article {
+            padding-inline: 6px;
+        }
+}
+
+@media (max-width: 680px) {
+    .garden-benefits {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+    }
+}
+
+/* Index 7 typography — readable, consistent sizes; preserve three benefits. */
+@media (min-width: 681px) {
+    .garden-story h1 {
+        font-size: clamp(42px, 3.8vw, 56px);
+        line-height: 1.07;
+    }
+
+    .garden-intro {
+        font-size: 17px;
+        line-height: 1.5;
+    }
+
+    .garden-card h2 {
+        font-size: clamp(28px, 2.35vw, 33px);
+        line-height: 1.13;
+    }
+
+    .auth-intro {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    .garden-eyebrow, .auth-eyebrow {
+        font-size: 11px;
+    }
+
+    .google-button {
+        font-size: 14px;
+    }
+
+    .new-account p, .privacy-note p, .legal-copy {
+        font-size: 12px;
+    }
+
+    .new-account strong {
+        font-size: 13px;
+    }
+
+    .privacy-note small {
+        font-size: 11px;
+    }
+
+    .garden-benefits h3 {
+        font-size: 15px;
+        line-height: 1.3;
+    }
+
+    .garden-benefits p {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .garden-footer {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 680px) {
+    .garden-eyebrow {
+        font-size: 10px !important;
+    }
+
+    .garden-story h1 {
+        font-size: clamp(27px, 6.5vw, 34px) !important;
+        line-height: 1.1 !important;
+    }
+
+    .garden-intro {
+        font-size: 12px !important;
+        line-height: 1.4 !important;
+    }
+
+    .auth-eyebrow {
+        font-size: 10px !important;
+    }
+
+    .garden-card h2 {
+        font-size: 24px !important;
+        line-height: 1.12 !important;
+    }
+
+    .auth-intro {
+        font-size: 12px !important;
+        line-height: 1.4 !important;
+    }
+
+    .google-button {
+        font-size: 13px !important;
+    }
+
+    .new-account p {
+        font-size: 11px !important;
+        line-height: 1.4 !important;
+    }
+
+    .new-account strong {
+        font-size: 12px !important;
+    }
+
+    .privacy-note p {
+        font-size: 11px !important;
+    }
+
+    .privacy-note small {
+        font-size: 10px !important;
+    }
+
+    .legal-copy {
+        font-size: 10px !important;
+    }
+
+    .garden-benefits h3 {
+        font-size: 11px !important;
+        line-height: 1.25 !important;
+    }
+
+    .garden-benefits p {
+        display: none !important;
+    }
+
+    .garden-footer {
+        font-size: 10px !important;
+    }
+}
+
+/* Index 7 — prevent the desktop login card touching the header.
+   Align the card from the top instead of vertically centering an oversized card. */
+@media (min-width: 681px) {
+    .garden-stage {
+        align-items: start;
+        padding-top: 22px;
+        padding-bottom: 12px;
+    }
+
+    .garden-auth {
+        align-self: start;
+        margin-top: 0;
+    }
+
+    .garden-card {
+        padding: 20px 30px;
+    }
+
+        .garden-card .auth-eyebrow {
+            margin-bottom: 9px;
+        }
+
+        .garden-card .auth-intro {
+            margin: 10px 0 15px;
+        }
+
+        .garden-card .new-account {
+            margin-top: 12px;
+            gap: 8px;
+        }
+
+        .garden-card .privacy-note {
+            margin-top: 12px;
+            padding: 10px;
+        }
+
+        .garden-card .legal-copy {
+            margin-top: 12px;
+        }
+}
+
+/* Index 7 v10 — mobile readability. Keep illustration hidden and 3 benefits. */
+@media (max-width: 680px) {
+    .garden-stage {
+        gap: 9px !important;
+        padding: 4px 0 !important;
+    }
+
+    .garden-eyebrow, .auth-eyebrow {
+        font-size: 11px !important;
+        letter-spacing: .09em !important;
+    }
+
+    .garden-story h1 {
+        font-size: clamp(29px, 7vw, 36px) !important;
+        line-height: 1.08 !important;
+    }
+
+    .garden-intro {
+        font-size: 14px !important;
+        line-height: 1.35 !important;
+        margin-top: 6px !important;
+    }
+
+    .garden-card {
+        padding: 12px 17px !important;
+    }
+
+        .garden-card h2 {
+            font-size: 26px !important;
+            line-height: 1.1 !important;
+        }
+
+    .auth-intro {
+        font-size: 14px !important;
+        line-height: 1.35 !important;
+        margin: 7px 0 9px !important;
+    }
+
+    .google-button {
+        font-size: 15px !important;
+        min-height: 43px !important;
+    }
+
+    .new-account {
+        margin-top: 7px !important;
+    }
+
+        .new-account p, .privacy-note p {
+            font-size: 13px !important;
+            line-height: 1.3 !important;
+        }
+
+        .new-account strong {
+            font-size: 14px !important;
+        }
+
+    .privacy-note {
+        margin-top: 7px !important;
+        padding: 7px !important;
+    }
+
+        .privacy-note small {
+            font-size: 12px !important;
+        }
+
+    .legal-copy, .legal-copy button {
+        font-size: 12px !important;
+        line-height: 1.35 !important;
+    }
+
+    .legal-copy {
+        margin-top: 7px !important;
+    }
+
+    .garden-benefits {
+        grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+        gap: 6px !important;
+        padding: 6px 0 !important;
+    }
+
+        .garden-benefits h3 {
+            font-size: 12px !important;
+            line-height: 1.2 !important;
+        }
+
+    .garden-footer, .garden-footer * {
+        font-size: 12px !important;
+    }
+}
+/* Short mobile viewports: prioritize complete visibility over headline scale. */
+@media (max-width: 680px) and (max-height: 700px) {
+    .garden-stage {
+        gap: 4px !important;
+        padding: 2px 0 !important;
+    }
+
+    .garden-story h1 {
+        font-size: 27px !important;
+    }
+
+    .garden-intro {
+        font-size: 13px !important;
+        margin-top: 3px !important;
+    }
+
+    .garden-card {
+        padding: 8px 13px !important;
+    }
+
+        .garden-card h2 {
+            font-size: 23px !important;
+        }
+
+    .auth-intro {
+        font-size: 13px !important;
+        margin: 4px 0 6px !important;
+    }
+
+    .google-button {
+        min-height: 38px !important;
+    }
+
+    .new-account, .privacy-note, .legal-copy {
+        margin-top: 4px !important;
+    }
+
+    .garden-benefits {
+        padding: 3px 0 !important;
+    }
+}
+

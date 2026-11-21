@@ -1,711 +1,752 @@
-﻿.concept-8 .concept-art {
-    height: clamp(275px,44vh,420px)
+﻿/* AskPearls Index 8 — Clarity Journey | Standalone design */
+:root {
+    color-scheme: light;
 }
 
-.idea-orbits {
-    position: absolute;
-    inset: 4% 12% 7%;
-    border: 1px solid color-mix(in srgb,var(--accent) 24%,transparent);
-    border-radius: 50%;
-    transform: rotate(-13deg)
+html[data-theme="dark"] {
+    color-scheme: dark;
 }
 
-    .idea-orbits:before, .idea-orbits:after {
-        position: absolute;
-        inset: 17% -10%;
-        content: "";
-        border: 1px dashed color-mix(in srgb,var(--accent) 32%,transparent);
-        border-radius: 50%;
-        transform: rotate(28deg)
-    }
+*, *::before, *::after {
+    box-sizing: border-box;
+}
 
-    .idea-orbits:after {
-        inset: 31% -3%;
-        transform: rotate(-30deg)
-    }
+html, body {
+    margin: 0;
+    min-width: 320px;
+}
 
-.idea-pearl {
-    position: absolute;
-    z-index: 3;
-    top: 38%;
-    left: 49%;
-    width: 73px;
-    height: 73px;
+body {
+    font-family: "Segoe UI" !important;
+}
+
+.ap8-page {
+    --surface: #ffffff;
+    --surface-soft: #eff9f3;
+    --surface-raised: #f6fbf8;
+    --text: #12362b;
+    --muted: #547467;
+    --line: #d8e9df;
+    --accent: #079d6d;
+    --accent2: #087b56;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: radial-gradient(ellipse at 12% 52%, #dff7e9 0, transparent 39%), radial-gradient(ellipse at 85% 8%, #e7faf1 0, transparent 35%), #f6fbf8;
+    color: var(--text);
+    font-family: "Segoe UI" !important;
+}
+
+html[data-theme="dark"] .ap8-page {
+    --surface: #0b211a;
+    --surface-soft: #102e24;
+    --surface-raised: #0b211a;
+    --text: #f0fff8;
+    --muted: #a8cbbc;
+    --line: #234d3c;
+    --accent: #20d39a;
+    --accent2: #6fe7b9;
+    background: radial-gradient(ellipse at 12% 52%, #0c3828 0, transparent 39%), radial-gradient(ellipse at 85% 8%, #102b22 0, transparent 35%), #061711;
+}
+
+.ap8-page .atelier-header {
+    flex: 0 0 auto;
+}
+
+.ap8-main {
+    width: min(1440px, 100%);
+    margin: auto;
+    padding: clamp(26px, 4vh, 58px) clamp(22px, 5vw, 80px);
+    flex: 1 0 auto;
     display: grid;
-    place-items: center;
-    transform: translate(-50%,-50%);
-    color: #fff7da;
-    background: radial-gradient(circle at 32% 25%,#fff 0,#e4fff4 17%,#71e4b4 48%,#08774f 100%);
-    border: 4px solid color-mix(in srgb,var(--surface) 83%,transparent);
-    border-radius: 50%;
-    box-shadow: 0 0 0 9px color-mix(in srgb,var(--accent) 12%,transparent),0 0 38px color-mix(in srgb,var(--accent) 55%,transparent)
+    grid-template-columns: minmax(0, 1.45fr) minmax(340px, .8fr);
+    align-items: center;
+    gap: clamp(24px, 4vw, 70px);
 }
 
-.orbit-tile {
-    position: absolute;
-    z-index: 4;
-    width: 128px;
-    padding: 10px;
-    background: color-mix(in srgb,var(--surface) 93%,transparent);
-    border: 1px solid color-mix(in srgb,var(--accent) 25%,var(--line));
-    border-radius: 12px;
-    box-shadow: var(--shadow)
+.ap8-hero {
+    min-width: 0;
 }
 
-    .orbit-tile b, .orbit-tile small {
-        display: block
-    }
-
-    .orbit-tile b {
-        font-size: 10px
-    }
-
-    .orbit-tile small {
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: 8px
-    }
-
-    .orbit-tile span {
-        display: inline-grid;
-        width: 24px;
-        height: 24px;
-        float: left;
-        place-items: center;
-        margin-right: 7px;
-        color: var(--accent);
-        background: var(--surface2);
-        border-radius: 7px
-    }
-
-.ot-research {
-    top: 2%;
-    left: 35%
-}
-
-.ot-ask {
-    top: 32%;
-    left: 0
-}
-
-.ot-plan {
-    top: 17%;
-    right: 0
-}
-
-.ot-create {
-    bottom: 4%;
-    left: 20%
-}
-
-.ot-explore {
-    right: 11%;
-    bottom: 1%
-}
-
-.concept-8 .concept-story h1 {
-    font-family: Inter,"Segoe UI",sans-serif;
-    font-weight: 800;
-    letter-spacing: -2.6px
-}
-
-    .concept-8 .concept-story h1 em {
-        color: var(--accent)
-    }
-
-@media(max-width:660px) {
-    .concept-8 .concept-art {
-        height: clamp(130px,20vh,165px)
-    }
-
-    .idea-pearl {
-        top: 47%;
-        width: 43px;
-        height: 43px
-    }
-
-    .orbit-tile {
-        width: 89px;
-        padding: 6px;
-        border-radius: 8px
-    }
-
-        .orbit-tile b {
-            font-size: 7px
-        }
-
-        .orbit-tile small {
-            font-size: 6px
-        }
-
-        .orbit-tile span {
-            width: 17px;
-            height: 17px;
-            margin-right: 4px;
-            font-size: 9px
-        }
-
-    .ot-research {
-        top: 0;
-        left: 37%
-    }
-
-    .ot-ask {
-        top: 35%;
-        left: 0
-    }
-
-    .ot-plan {
-        top: 17%;
-        right: 0
-    }
-
-    .ot-create {
-        bottom: 2%;
-        left: 17%
-    }
-
-    .ot-explore {
-        right: 8%;
-        bottom: 0
-    }
-
-    .concept-8 .concept-story h1 {
-        letter-spacing: -1px
-    }
-}
-/* Idea desk illustration */
-.desk-art {
-    background: radial-gradient(ellipse at 53% 78%,color-mix(in srgb,var(--accent) 17%,transparent),transparent 58%)
-}
-
-.desk-glow {
-    position: absolute;
-    inset: 17% 13% 2%;
-    background: radial-gradient(ellipse at 58% 68%,color-mix(in srgb,var(--glow) 64%,transparent),transparent 63%);
-    border-radius: 50%;
-    filter: blur(9px)
-}
-
-.desk-surface {
-    position: absolute;
-    z-index: 3;
-    right: 5%;
-    bottom: 15%;
-    left: 5%;
-    height: 8px;
-    background: linear-gradient(90deg,transparent,#b58e63,#e3c89a,#b58e63,transparent);
-    border-radius: 50%;
-    box-shadow: 0 7px 13px color-mix(in srgb,var(--text) 18%,transparent)
-}
-
-.desk-laptop {
-    position: absolute;
-    z-index: 5;
-    bottom: 16%;
-    left: 48%;
-    width: 146px;
-    height: 91px;
-    display: grid;
-    place-items: center;
-    transform: translateX(-50%);
+.ap8-eyebrow, .ap8-auth-eyebrow {
+    margin: 0 0 17px;
     color: var(--accent2);
-    background: linear-gradient(140deg,#f7fffb,#c8e8da);
-    border: 4px solid #526b60;
-    border-bottom-width: 9px;
-    border-radius: 9px 9px 4px 4px;
-    box-shadow: 0 4px 0 #53685e;
-    font-size: 22px
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
 }
 
-    .desk-laptop:after {
-        position: absolute;
-        right: -15px;
-        bottom: -13px;
-        left: -15px;
-        height: 6px;
-        content: "";
-        background: #80938a;
-        border-radius: 0 0 10px 10px
+.ap8-sparkle {
+    font-size: 20px;
+    margin-right: 6px;
+    vertical-align: -1px;
+}
+
+.ap8-copy h1 {
+    margin: 0;
+    font-size: clamp(48px, 5vw, 82px);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -3.3px;
+}
+
+    .ap8-copy h1 span {
+        color: var(--accent);
     }
 
-.desk-cup {
-    position: absolute;
-    z-index: 4;
-    right: 10%;
-    bottom: 17%;
-    width: 27px;
-    height: 33px;
-    background: linear-gradient(90deg,#6fa783,#d9ead9);
-    border-radius: 3px 3px 8px 8px
+.ap8-lead {
+    max-width: 630px;
+    margin: 21px 0 22px;
+    color: var(--muted);
+    font-size: clamp(17px, 1.4vw, 21px);
+    line-height: 1.55;
 }
 
-    .desk-cup:after {
-        position: absolute;
-        top: 7px;
-        right: -9px;
-        width: 10px;
-        height: 13px;
-        content: "";
-        border: 3px solid #79a58a;
-        border-left: 0;
-        border-radius: 0 9px 9px 0
+.ap8-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+}
+
+    .ap8-points span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 600;
     }
 
-.desk-person {
-    position: absolute;
-    z-index: 2;
-    bottom: 15%;
-    left: 25%;
-    width: 180px;
-    height: 220px
-}
-
-.person-hair {
-    position: absolute;
-    z-index: 2;
-    top: 9px;
-    left: 57px;
-    width: 104px;
-    height: 117px;
-    background: linear-gradient(120deg,#30221f,#5a3729 62%,#211d1a);
-    border-radius: 57% 47% 48% 38%;
-    transform: rotate(5deg)
-}
-
-.person-face {
-    position: absolute;
-    z-index: 3;
-    top: 30px;
-    left: 73px;
-    width: 69px;
-    height: 82px;
-    background: linear-gradient(135deg,#f3d1ac,#cb8c67);
-    border-radius: 48% 46% 49% 47%;
-    transform: rotate(-4deg)
-}
-
-    .person-face:before {
-        position: absolute;
-        top: 39px;
-        left: 15px;
-        width: 7px;
-        height: 4px;
-        content: "";
-        background: #263a32;
-        border-radius: 50%;
-        box-shadow: 27px -1px #263a32
+    .ap8-points i {
+        display: inline-grid;
+        place-items: center;
+        width: 27px;
+        height: 27px;
+        border-radius: 9px;
+        background: var(--surface-soft);
+        color: var(--accent2);
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 800;
+        border: 1px solid var(--line);
     }
 
-    .person-face:after {
-        position: absolute;
-        top: 58px;
-        left: 27px;
-        width: 17px;
-        height: 7px;
-        content: "";
-        border-bottom: 2px solid #9f4e42;
-        border-radius: 50%
+.ap8-illustration {
+    width: 100%;
+    max-width: 710px;
+    margin: 5px auto 0;
+}
+
+    .ap8-illustration svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
     }
 
-.person-neck {
-    position: absolute;
-    z-index: 1;
-    top: 99px;
-    left: 93px;
-    width: 30px;
-    height: 30px;
-    background: #d9a17c
+.ap8-auth {
+    min-width: 0;
 }
 
-.person-body {
-    position: absolute;
-    bottom: 0;
-    left: 25px;
-    width: 145px;
-    height: 121px;
-    background: linear-gradient(135deg,#198455,#0b523e);
-    border-radius: 66px 68px 8px 8px
+.ap8-auth-card {
+    padding: clamp(25px, 3vw, 46px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 26px;
+    box-shadow: 0 22px 65px rgba(9, 67, 43, .09);
 }
 
-.person-arm {
-    position: absolute;
-    z-index: 4;
-    bottom: 36px;
-    left: 2px;
-    width: 105px;
-    height: 28px;
-    background: linear-gradient(90deg,#e2b38b,#f0caa6);
-    border-radius: 20px;
-    transform: rotate(-15deg)
+.ap8-auth-icon {
+    width: 54px;
+    height: 54px;
+    margin-bottom: 23px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    background: var(--surface-soft);
+    color: var(--accent);
+    font-size: 29px;
 }
 
-.leaf-cluster {
-    position: absolute;
-    z-index: 1;
-    right: 0;
-    bottom: 15%;
-    width: 80px;
-    height: 130px
+.ap8-auth-eyebrow {
+    margin-bottom: 13px;
 }
 
-    .leaf-cluster i {
-        position: absolute;
-        bottom: 7px;
-        left: 38px;
-        width: 22px;
-        height: 65px;
-        background: linear-gradient(100deg,#178451,#8bcf85);
-        border-radius: 100% 0 100% 0;
-        transform: rotate(-33deg);
-        transform-origin: bottom
+.ap8-auth-card h2 {
+    margin: 0;
+    font-size: clamp(32px, 2.7vw, 45px);
+    line-height: 1.12;
+    letter-spacing: -1.5px;
+}
+
+    .ap8-auth-card h2 span {
+        color: var(--accent);
     }
 
-        .leaf-cluster i:nth-child(2) {
-            transform: rotate(32deg)
-        }
+.ap8-auth-description {
+    margin: 16px 0 25px;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.55;
+}
 
-        .leaf-cluster i:nth-child(3) {
-            left: 22px;
-            height: 48px;
-            transform: rotate(-59deg)
-        }
-
-        .leaf-cluster i:nth-child(4) {
-            left: 51px;
-            height: 49px;
-            transform: rotate(58deg)
-        }
-
-.idea-card-float {
-    position: absolute;
-    z-index: 5;
-    width: 105px;
-    min-height: 63px;
+.ap8-page .google-button {
+    width: 100%;
+    min-height: 58px;
     display: flex;
     align-items: center;
-    gap: 7px;
-    padding: 8px;
-    color: var(--text);
-    background: color-mix(in srgb,var(--surface) 93%,transparent);
-    border: 1px solid color-mix(in srgb,var(--accent) 25%,var(--line));
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-    transform: rotate(-5deg)
+    justify-content: center;
+    gap: 13px;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    background: #fff;
+    color: #172f25;
+    font: 700 15px "Segoe UI", Arial, sans-serif;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
 }
 
-    .idea-card-float b {
-        width: 22px;
-        height: 22px;
+    .ap8-page .google-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(0,0,0,.08);
+    }
+
+    .ap8-page .google-button svg {
+        width: 23px;
+        height: 23px;
+        flex: 0 0 auto;
+    }
+
+.ap8-button-arrow {
+    margin-left: auto;
+    font-size: 19px;
+    color: #527063;
+}
+
+.ap8-page .auth-message:empty {
+    display: none;
+}
+
+.ap8-page .auth-message {
+    color: var(--text);
+    font-size: 13px;
+}
+
+.ap8-security {
+    display: flex;
+    gap: 11px;
+    align-items: flex-start;
+    margin-top: 24px;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+    .ap8-security > span {
+        width: 25px;
+        height: 25px;
+        flex: 0 0 25px;
         display: grid;
         place-items: center;
+        background: var(--surface-soft);
         color: var(--accent);
-        background: var(--surface2);
-        border-radius: 6px;
-        font-size: 14px
+        border-radius: 50%;
+        font-weight: 800;
     }
 
-    .idea-card-float span {
-        font-size: 9px;
-        font-weight: 700
+    .ap8-security p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
     }
 
-    .idea-card-float i {
-        display: block;
-        width: 48px;
-        height: 3px;
-        margin-top: 4px;
-        background: color-mix(in srgb,var(--accent) 24%,var(--line));
-        border-radius: 5px
+    .ap8-security strong {
+        color: var(--text);
     }
 
-.idea-note {
-    top: 5%;
-    left: 42%
+.ap8-legal {
+    margin: 20px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+    text-align: center;
 }
 
-.plan-note {
-    top: 8%;
-    right: 3%;
-    transform: rotate(5deg)
-}
-
-.research-note {
-    top: 38%;
-    left: 5%;
-    transform: rotate(-7deg)
-}
-
-.create-note {
-    top: 44%;
-    right: 0;
-    transform: rotate(7deg)
-}
-
-.desk-art .art-caption {
-    bottom: 2%;
-    font-size: 8px
-}
-
-@media(max-width:900px) {
-    .desk-person {
-        left: 24%;
-        transform: scale(.83);
-        transform-origin: bottom left
+    .ap8-legal button {
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--accent2);
+        font: inherit;
+        font-weight: 700;
+        text-decoration: underline;
+        cursor: pointer;
     }
 
-    .desk-laptop {
-        width: 120px;
-        height: 76px
+.ap8-page button:focus-visible, .ap8-page a:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+}
+
+@media (max-width: 1050px) {
+    .ap8-main {
+        grid-template-columns: minmax(0, 1fr) minmax(310px, .85fr);
+        gap: 20px;
+        padding-inline: 28px;
     }
 
-    .idea-card-float {
-        width: 92px;
-        padding: 6px
+    .ap8-copy h1 {
+        font-size: clamp(44px, 5.5vw, 66px);
     }
 
-        .idea-card-float span {
-            font-size: 8px
-        }
+    .ap8-points {
+        gap: 8px;
+    }
 
-        .idea-card-float i {
-            width: 38px
+        .ap8-points span {
+            font-size: 12px;
         }
 }
 
-@media(max-width:660px) {
-    .desk-person {
-        left: 26%;
-        transform: scale(.48);
-        transform-origin: bottom left
+@media (max-width: 760px) {
+    .ap8-main {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 15px;
+        padding: 26px 18px 34px;
+        align-items: stretch;
     }
 
-    .desk-laptop {
-        bottom: 15%;
-        left: 51%;
-        width: 83px;
-        height: 54px;
-        border-width: 3px;
-        border-bottom-width: 6px;
-        font-size: 14px
+    .ap8-copy {
+        text-align: center;
     }
 
-        .desk-laptop:after {
-            bottom: -9px;
-            height: 4px
+    .ap8-eyebrow {
+        font-size: 11px;
+        letter-spacing: 1.4px;
+        margin-bottom: 10px;
+    }
+
+    .ap8-copy h1 {
+        font-size: clamp(42px, 9.5vw, 62px);
+        letter-spacing: -2px;
+    }
+
+    .ap8-lead {
+        max-width: 550px;
+        margin: 12px auto 16px;
+        font-size: 16px;
+        line-height: 1.45;
+    }
+
+    .ap8-points {
+        justify-content: center;
+    }
+
+    .ap8-illustration {
+        max-width: 500px;
+        margin: 6px auto 0;
+    }
+
+    .ap8-auth-card {
+        max-width: 540px;
+        margin: 0 auto;
+        padding: 25px;
+        border-radius: 19px;
+    }
+
+    .ap8-auth-icon {
+        display: none;
+    }
+
+    .ap8-auth-card h2 {
+        font-size: 32px;
+    }
+
+    .ap8-auth-description {
+        font-size: 15px;
+        margin: 10px 0 17px;
+    }
+
+    .ap8-security {
+        margin-top: 15px;
+        padding: 12px 0;
+    }
+
+    .ap8-legal {
+        margin-top: 12px;
+    }
+}
+
+@media (max-width: 420px) {
+    .ap8-main {
+        padding-inline: 14px;
+    }
+
+    .ap8-copy h1 {
+        font-size: 42px;
+    }
+
+    .ap8-lead {
+        font-size: 15px;
+    }
+
+    .ap8-points span {
+        font-size: 11px;
+    }
+
+    .ap8-points i {
+        width: 23px;
+        height: 23px;
+    }
+
+    .ap8-auth-card {
+        padding: 19px;
+    }
+
+        .ap8-auth-card h2 {
+            font-size: 29px;
         }
 
-    .desk-surface {
-        bottom: 14%;
-        height: 5px
-    }
-
-    .desk-cup {
-        right: 7%;
-        bottom: 16%;
-        transform: scale(.65);
-        transform-origin: bottom
-    }
-
-    .leaf-cluster {
-        right: 2%;
-        bottom: 13%;
-        transform: scale(.63);
-        transform-origin: bottom
-    }
-
-    .idea-card-float {
-        width: 74px;
-        min-height: 43px;
-        gap: 4px;
-        padding: 4px;
-        border-radius: 7px
-    }
-
-        .idea-card-float b {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-            font-size: 10px
-        }
-
-        .idea-card-float span {
-            font-size: 6px
-        }
-
-        .idea-card-float i {
-            width: 30px;
-            height: 2px;
-            margin-top: 3px
-        }
-
-    .idea-note {
-        left: 39%
-    }
-
-    .plan-note {
-        right: 1%
-    }
-
-    .research-note {
-        top: 39%;
-        left: 0
-    }
-
-    .create-note {
-        top: 46%;
-        right: 0
-    }
-
-    .desk-art .art-caption {
-        font-size: 6px
+    .ap8-page .google-button {
+        min-height: 52px;
     }
 }
 
-/* User-reference illustration */
-.desk-portrait {
-    position: absolute;
-    z-index: 4;
-    bottom: 8%;
-    left: 15%;
-    width: 54%;
-    height: 94%;
-    object-fit: contain;
-    object-position: center bottom;
-    filter: drop-shadow(0 14px 20px color-mix(in srgb,var(--text) 13%,transparent))
-}
+/* Index 8: keep the decision-journey artwork on desktop/tablet,
+   but remove it completely from mobile layouts. */
+@media screen and (max-width: 760px) {
+    .ap8-page .ap8-illustration {
+        display: none;
+    }
 
-@media(max-width:900px) {
-    .desk-portrait {
-        left: 14%;
-        width: 57%;
-        height: 91%
+    .ap8-main {
+        gap: 18px;
     }
 }
 
-@media(max-width:660px) {
-    .desk-portrait {
-        left: 14%;
-        bottom: 6%;
-        width: 59%;
-        height: 93%
-    }
+
+/* ===============================================================
+   INDEX 8 — VIEWPORT-LOCKED RESPONSIVE LAYOUT
+   Desktop + mobile: header, content and footer in one viewport.
+   =============================================================== */
+html:has(.ap8-page), body:has(.ap8-page) {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden !important;
 }
 
-/* Keep the Ideas card clear of the portrait's face. */
-.concept-8 .idea-note {
-    top: 5%;
-    left: 5%
+.ap8-page {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
 }
 
-@media(max-width:660px) {
-    .concept-8 .idea-note {
-        top: 4%;
-        left: 4%
+    .ap8-page > .atelier-header {
+        flex: 0 0 auto;
     }
+
+    .ap8-page > footer, .ap8-page > .atelier-footer,
+    .ap8-page > .concept-footer {
+        flex: 0 0 auto;
+    }
+
+.ap8-main {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    margin: 0 auto !important;
+    padding-block: clamp(8px, 1.6dvh, 18px) !important;
+    align-content: center;
+    overflow: hidden;
 }
-/* Mobile spacing: give the sign-in panel room to breathe. */
-@media(max-width:660px) {
-    .concept-8 .concept-main {
-        gap: 10px;
-        padding: 13px 16px
+
+.ap8-hero, .ap8-auth {
+    min-height: 0;
+}
+
+.ap8-illustration {
+    max-width: 100%;
+    margin-top: clamp(0px, .6dvh, 6px);
+}
+
+    .ap8-illustration svg {
+        width: 100%;
+        height: auto;
+        max-height: min(37dvh, 310px);
+        object-fit: contain;
     }
 
-    .concept-8 .concept-kicker {
-        margin-bottom: 8px;
-        font-size: 7px;
-        letter-spacing: 1.35px
+.ap8-copy h1 {
+    font-size: clamp(35px, 4.1vw, 70px);
+}
+
+.ap8-lead {
+    margin-block: clamp(7px, 1.6dvh, 15px);
+    font-size: clamp(15px, 1.15vw, 19px);
+    line-height: 1.4;
+}
+
+.ap8-eyebrow {
+    margin-bottom: clamp(6px, 1dvh, 12px);
+}
+
+.ap8-auth-card {
+    padding: clamp(16px, 2vw, 32px);
+}
+
+.ap8-auth-icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 12px;
+}
+
+.ap8-auth-card h2 {
+    font-size: clamp(27px, 2.35vw, 40px);
+}
+
+.ap8-auth-description {
+    margin: 10px 0 15px;
+    line-height: 1.4;
+}
+
+.ap8-page .google-button {
+    min-height: 48px;
+}
+
+.ap8-security {
+    margin-top: 12px;
+    padding: 12px 0;
+}
+
+.ap8-legal {
+    margin-top: 11px;
+    line-height: 1.4;
+}
+
+@media (max-height: 740px) and (min-width: 761px) {
+    .ap8-illustration svg {
+        max-height: 30dvh;
     }
 
-    .concept-8 .concept-description {
-        margin-top: 8px;
-        font-size: 10px;
-        line-height: 1.42
+    .ap8-copy h1 {
+        font-size: clamp(33px, 3.6vw, 57px);
     }
 
-    .concept-8 .concept-art {
-        height: clamp(128px,18vh,150px);
-        margin-top: 2px
+    .ap8-lead {
+        margin-block: 7px;
     }
 
-    .concept-8 .concept-auth-card {
-        padding: 17px 19px;
-        border-radius: 16px
+    .ap8-auth-icon {
+        display: none;
     }
 
-    .concept-8 .concept-auth-kicker {
-        margin-bottom: 8px;
-        font-size: 7px;
-        letter-spacing: 1.2px
+    .ap8-auth-card {
+        padding: 16px 22px;
     }
 
-    .concept-8 .concept-auth-card h2 {
-        font-size: 20px;
-        line-height: 1.16
+    .ap8-auth-description {
+        margin: 8px 0 12px;
     }
 
-    .concept-8 .concept-auth-copy {
-        margin: 8px 0 13px;
-        font-size: 10px;
-        line-height: 1.45
-    }
-
-    .concept-8 .google-button {
-        min-height: 44px;
-        padding: 9px 12px;
-        font-size: 11px
-    }
-
-    .concept-8 .concept-trust {
-        gap: 9px;
-        margin-top: 11px;
-        padding-top: 10px;
-        font-size: 9px;
-        line-height: 1.42
-    }
-
-    .concept-8 .trust-check {
-        width: 19px;
-        height: 19px;
-        flex-basis: 19px
-    }
-
-    .concept-8 .concept-legal {
+    .ap8-security {
         margin-top: 10px;
-        font-size: 8px;
-        line-height: 1.55
-    }
-
-    .concept-8 .idea-note {
-        top: 4%;
-        left: 4%
+        padding: 9px 0;
     }
 }
 
-@media(max-width:660px) and (max-height:620px) {
-    .concept-8 .concept-main {
-        gap: 5px;
-        padding-block: 5px
+@media (max-width: 760px) {
+    .ap8-page .ap8-illustration {
+        display: none !important;
     }
 
-    .concept-8 .concept-art {
-        height: 98px
+    .ap8-main {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        width: 100%;
+        max-width: 560px;
+        gap: clamp(8px, 1.6dvh, 16px) !important;
+        padding: clamp(5px, 1.2dvh, 12px) 16px !important;
     }
 
-    .concept-8 .concept-auth-card {
-        padding: 12px 16px
+    .ap8-hero, .ap8-auth {
+        flex: 0 1 auto;
     }
 
-    .concept-8 .concept-auth-copy {
-        margin: 6px 0 9px
+    .ap8-copy h1 {
+        font-size: clamp(30px, 7.3vw, 43px);
+        line-height: 1.02;
+        letter-spacing: -1.5px;
     }
 
-    .concept-8 .concept-trust {
+    .ap8-eyebrow {
+        margin-bottom: 5px;
+        font-size: 10px;
+    }
+
+    .ap8-lead {
+        font-size: 14px;
+        line-height: 1.32;
+        margin: 7px auto 9px;
+    }
+
+    .ap8-points {
+        gap: 5px 9px;
+        justify-content: center;
+    }
+
+        .ap8-points span {
+            font-size: 11px;
+            gap: 4px;
+        }
+
+        .ap8-points i {
+            width: 23px;
+            height: 23px;
+        }
+
+    .ap8-auth-card {
+        padding: clamp(12px, 2dvh, 18px) 18px;
+        border-radius: 17px;
+    }
+
+    .ap8-auth-icon {
+        display: none;
+    }
+
+    .ap8-auth-eyebrow {
+        font-size: 10px;
+        margin-bottom: 6px;
+        letter-spacing: 1.3px;
+    }
+
+    .ap8-auth-card h2 {
+        font-size: clamp(25px, 5.5vw, 31px);
+        line-height: 1.1;
+    }
+
+    .ap8-auth-description {
+        font-size: 13px;
+        line-height: 1.35;
+        margin: 7px 0 10px;
+    }
+
+    .ap8-page .google-button {
+        min-height: 43px;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .ap8-security {
+        margin-top: 9px;
+        padding: 8px 0;
+    }
+
+        .ap8-security p {
+            font-size: 12px;
+            line-height: 1.35;
+        }
+
+    .ap8-legal {
         margin-top: 8px;
-        padding-top: 7px
+        font-size: 11px;
+        line-height: 1.4;
+    }
+}
+
+@media (max-width: 760px) and (max-height: 740px) {
+    .ap8-main {
+        gap: 7px !important;
+        padding-block: 4px !important;
     }
 
-    .concept-8 .concept-legal {
-        margin-top: 7px
+    .ap8-copy h1 {
+        font-size: clamp(27px, 6.8vw, 35px);
+    }
+
+    .ap8-lead {
+        font-size: 12px;
+        margin: 5px auto 6px;
+    }
+
+    .ap8-points span {
+        font-size: 10px;
+    }
+
+    .ap8-auth-card {
+        padding: 10px 15px;
+    }
+
+        .ap8-auth-card h2 {
+            font-size: 25px;
+        }
+
+    .ap8-auth-description {
+        font-size: 12px;
+        margin: 5px 0 8px;
+    }
+
+    .ap8-security {
+        margin-top: 7px;
+        padding: 6px 0;
+    }
+
+    .ap8-legal {
+        margin-top: 6px;
+    }
+}
+
+@media (max-width: 760px) and (max-height: 620px) {
+    .ap8-eyebrow {
+        display: none;
+    }
+
+    .ap8-points {
+        display: none;
+    }
+
+    .ap8-main {
+        gap: 5px !important;
+    }
+
+    .ap8-copy h1 {
+        font-size: 27px;
+    }
+
+    .ap8-lead {
+        font-size: 12px;
+        margin: 4px auto;
+    }
+
+    .ap8-auth-eyebrow {
+        font-size: 9px;
+    }
+
+    .ap8-auth-card h2 {
+        font-size: 23px;
+    }
+
+    .ap8-auth-description {
+        font-size: 11px;
+    }
+
+    .ap8-page .google-button {
+        min-height: 38px;
+    }
+
+    .ap8-security p {
+        font-size: 11px;
+    }
+
+    .ap8-legal {
+        font-size: 10px;
     }
 }

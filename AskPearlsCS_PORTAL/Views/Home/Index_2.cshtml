@@ -9,12 +9,16 @@
     <meta name="theme-color" content="#04110e" />
     <title>Welcome to AskPearls</title>
     <link href="~/app_page_css/app_page_index_2_css.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/app_page_css/app_page_index_header_css.css" asp-append-version="true" />
     <link href="~/app_css/app_page_signin_info_modal_css.css" rel="stylesheet" />
     <script src="~/app_page_js/app_page_index_js.js" defer></script>
 </head>
 <body>
     <div class="sign-in-page">
-        <header class="topbar">
+        
+        <partial name="_IndexHeaderModel" />
+
+        @*   <header class="topbar">
             <a class="brand" href="/" aria-label="AskPearls home">
                 <img src="/app_img/img_logo_color.png" alt="" class="brand-mark" />
                 <span class="brand-copy"><strong>AskPearls</strong><small>Capture. Engage. Convert.</small></span>
@@ -26,7 +30,7 @@
                     <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"></path></svg>
                 </button>
             </nav>
-        </header>
+        </header> *@
 
         <main class="main-content">
             <section class="brand-story" aria-labelledby="story-title">

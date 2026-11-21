@@ -1,0 +1,227 @@
+﻿/* AskPearls — shared header for all homepage layouts */
+.atelier-header {
+    width: 100%;
+    min-height: 76px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 12px clamp(20px, 5vw, 90px);
+    box-sizing: border-box;
+    background: var(--surface, #fff);
+    color: var(--text, #132b24);
+    border-bottom: 1px solid var(--line, #dce9e2);
+}
+
+    .atelier-header .atelier-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+        flex-shrink: 1;
+        color: inherit;
+        text-decoration: none;
+    }
+
+        .atelier-header .atelier-brand img {
+            display: block;
+            width: 46px;
+            height: 46px;
+            max-width: 46px;
+            object-fit: contain;
+            flex: 0 0 auto;
+        }
+
+        .atelier-header .atelier-brand > span {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+        }
+
+        .atelier-header .atelier-brand strong {
+            font-size: 19px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .atelier-header .atelier-brand small {
+            font-size: 11px;
+            line-height: 1.3;
+            color: var(--muted, #64766f);
+            overflow-wrap: anywhere;
+        }
+
+    .atelier-header .atelier-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 18px;
+        flex: 0 0 auto;
+    }
+
+    .atelier-header .atelier-help {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .atelier-header .help-mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 23px;
+        height: 23px;
+        border: 1px solid currentColor;
+        border-radius: 50%;
+        font-size: 13px;
+    }
+
+    .atelier-header .action-divider {
+        display: block;
+        width: 1px;
+        height: 24px;
+        background: currentColor;
+        opacity: .2;
+    }
+
+/* Single shared theme-button implementation.
+   The html selector and !important declarations override legacy
+   index-specific theme-button colors without altering other buttons. */
+html .atelier-header [data-theme-toggle] {
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    flex: 0 0 44px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 13px !important;
+    border: 1px solid #dce8dc !important;
+    background: #f5faf7 !important;
+    color: #12352c !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    transition: background-color .2s, border-color .2s, color .2s;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+    html .atelier-header [data-theme-toggle] svg {
+        width: 20px !important;
+        height: 20px !important;
+        min-width: 20px !important;
+        flex: 0 0 20px !important;
+        fill: none !important;
+        stroke: currentColor !important;
+        stroke-width: 1.8px !important;
+        stroke-linecap: round !important;
+        stroke-linejoin: round !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+/* Light mode (including pages without an explicit data-theme value). */
+html:not([data-theme="dark"]) .atelier-header [data-theme-toggle] {
+    background: #f5faf7 !important;
+    color: #12352c !important;
+    border-color: #dce8dc !important;
+}
+
+    html:not([data-theme="dark"]) .atelier-header [data-theme-toggle] .icon-moon {
+        display: block !important;
+    }
+
+    html:not([data-theme="dark"]) .atelier-header [data-theme-toggle] .icon-sun {
+        display: none !important;
+    }
+
+/* Dark mode. */
+html[data-theme="dark"] .atelier-header [data-theme-toggle] {
+    background: #0c211a !important;
+    color: #f3f8f2 !important;
+    border-color: #254238 !important;
+}
+
+    html[data-theme="dark"] .atelier-header [data-theme-toggle] .icon-sun {
+        display: block !important;
+    }
+
+    html[data-theme="dark"] .atelier-header [data-theme-toggle] .icon-moon {
+        display: none !important;
+    }
+
+html .atelier-header [data-theme-toggle]:hover {
+    border-color: #0b9e68 !important;
+}
+
+.atelier-header button:focus-visible,
+.atelier-header a:focus-visible {
+    outline: 3px solid var(--accent, #0b9e68);
+    outline-offset: 3px;
+}
+
+@media (max-width: 660px) {
+    .atelier-header {
+        min-height: 64px;
+        padding: 10px 16px;
+        gap: 10px;
+    }
+
+        .atelier-header .atelier-brand {
+            gap: 8px;
+        }
+
+            .atelier-header .atelier-brand img {
+                width: 36px;
+                height: 36px;
+            }
+
+            .atelier-header .atelier-brand strong {
+                font-size: 16px;
+            }
+
+            .atelier-header .atelier-brand small {
+                font-size: 9px;
+            }
+
+        .atelier-header .atelier-actions {
+            gap: 10px;
+        }
+
+        .atelier-header .atelier-help {
+            gap: 6px;
+            font-size: 13px;
+        }
+
+        .atelier-header .action-divider {
+            height: 20px;
+        }
+
+    html .atelier-header [data-theme-toggle] {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        flex-basis: 40px !important;
+    }
+}
+
+@media (max-width: 390px) {
+    .atelier-header .atelier-help > span:last-child {
+        display: none;
+    }
+
+    .atelier-header .atelier-actions {
+        gap: 8px;
+    }
+}

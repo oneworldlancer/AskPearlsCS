@@ -15,7 +15,7 @@
     min-width: 0;
     color: var(--text);
     background: var(--page);
-    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    font-family: "Segoe UI" !important;
     font-size: 14px;
 }
 
