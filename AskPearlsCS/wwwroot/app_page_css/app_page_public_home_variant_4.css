@@ -1,0 +1,20 @@
+/* Public variants: only scoped presentation overrides. Existing header, logo, navigation, menus and page JS remain shared. */
+.ap-public-variant { --variant-accent:#12a87b; }
+.ap-public-variant .ap-home { min-height: min(760px,calc(100vh - 160px)); }
+.ap-public-variant .ap-copy { position:relative; z-index:2; }
+.ap-public-variant .ap-copy h1 { letter-spacing:-.055em; line-height:1.045; }
+.ap-public-variant .ap-copy h1 em { color:var(--variant-accent); font-style:normal; }
+.ap-public-variant .ap-visual { isolation:isolate; }
+.ap-public-variant .ap-chat { box-shadow:0 24px 70px rgba(0,50,45,.14); }
+.ap-public-variant .ap-feature { backdrop-filter:blur(12px); }
+@media(max-width:900px){.ap-public-variant .ap-home{min-height:auto}.ap-public-variant .ap-copy h1{letter-spacing:-.035em}}
+/* EDITORIAL: asymmetric, warm neutral, bold type */
+.ap-public-variant-4 { --variant-accent:#ba7144; }
+.ap-public-variant-4 .ap-stage { background:linear-gradient(120deg,rgba(249,240,225,.7),transparent 65%); }
+.ap-public-variant-4 .ap-copy h1 { font-family:Georgia,'Times New Roman',serif; font-weight:650; letter-spacing:-.045em; }
+.ap-public-variant-4 .ap-visual { transform:translateY(14px); }
+.ap-public-variant-4 .ap-feature { border-radius:7px; }
+.ap-public-variant-4 .ap-chat { transform:rotate(3deg); }
+
+/* Respect user-selected dark theme across all variants. */
+html[data-theme="dark"] .ap-public-variant .ap-stage { color:inherit; }

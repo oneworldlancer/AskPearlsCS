@@ -1,0 +1,20 @@
+/* Public variants: only scoped presentation overrides. Existing header, logo, navigation, menus and page JS remain shared. */
+.ap-public-variant { --variant-accent:#12a87b; }
+.ap-public-variant .ap-home { min-height: min(760px,calc(100vh - 160px)); }
+.ap-public-variant .ap-copy { position:relative; z-index:2; }
+.ap-public-variant .ap-copy h1 { letter-spacing:-.055em; line-height:1.045; }
+.ap-public-variant .ap-copy h1 em { color:var(--variant-accent); font-style:normal; }
+.ap-public-variant .ap-visual { isolation:isolate; }
+.ap-public-variant .ap-chat { box-shadow:0 24px 70px rgba(0,50,45,.14); }
+.ap-public-variant .ap-feature { backdrop-filter:blur(12px); }
+@media(max-width:900px){.ap-public-variant .ap-home{min-height:auto}.ap-public-variant .ap-copy h1{letter-spacing:-.035em}}
+/* PRODUCT SHOWCASE: fresh aqua and elevated demo */
+.ap-public-variant-5 { --variant-accent:#087b94; }
+.ap-public-variant-5 .ap-stage { background:radial-gradient(circle at 20% 85%,rgba(36,186,181,.13),transparent 44%),radial-gradient(circle at 90% 0%,rgba(28,147,206,.1),transparent 45%); }
+.ap-public-variant-5 .ap-copy h1 { font-weight:800; }
+.ap-public-variant-5 .ap-visual { border-radius:36px; background:linear-gradient(145deg,rgba(203,245,240,.35),rgba(226,244,255,.4)); }
+.ap-public-variant-5 .ap-chat { transform:translateY(-10px) scale(1.035); }
+.ap-public-variant-5 .ap-feature { border:1px solid rgba(22,150,150,.2); }
+
+/* Respect user-selected dark theme across all variants. */
+html[data-theme="dark"] .ap-public-variant .ap-stage { color:inherit; }

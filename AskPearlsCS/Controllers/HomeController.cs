@@ -17,17 +17,17 @@ namespace AskPearlsCS.Controllers
             "Index_2",
             "Index_3",
             "Index_4",
-            "Index_5"//,
-            //"Index_6",
-            //"Index_7",
-            //"Index_8"  ,
-            //"Index_9",
-            //"Index_10",
-            //"Index_11",
-            //"Index_12",
-            //"Index_13",
-            //"Index_14",
-            //"Index_15"
+            "Index_5",
+            "Index_6",
+            "Index_7",
+            "Index_8"  ,
+            "Index_9",
+            "Index_10",
+            "Index_11",
+            "Index_12",
+            "Index_13",
+            "Index_14",
+            "Index_15"
         };
 
 
@@ -84,7 +84,10 @@ namespace AskPearlsCS.Controllers
             ViewBag.HeaderSlogan = GetRandomHeaderSlogan();
 
 
-            return View(DesignViews[designIndex]);
+          return View(DesignViews[designIndex]);
+
+            //    return View("Index_1");
+
 
             //return View();
         }

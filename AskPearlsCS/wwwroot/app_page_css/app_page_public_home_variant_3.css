@@ -1,0 +1,20 @@
+/* Public variants: only scoped presentation overrides. Existing header, logo, navigation, menus and page JS remain shared. */
+.ap-public-variant { --variant-accent:#12a87b; }
+.ap-public-variant .ap-home { min-height: min(760px,calc(100vh - 160px)); }
+.ap-public-variant .ap-copy { position:relative; z-index:2; }
+.ap-public-variant .ap-copy h1 { letter-spacing:-.055em; line-height:1.045; }
+.ap-public-variant .ap-copy h1 em { color:var(--variant-accent); font-style:normal; }
+.ap-public-variant .ap-visual { isolation:isolate; }
+.ap-public-variant .ap-chat { box-shadow:0 24px 70px rgba(0,50,45,.14); }
+.ap-public-variant .ap-feature { backdrop-filter:blur(12px); }
+@media(max-width:900px){.ap-public-variant .ap-home{min-height:auto}.ap-public-variant .ap-copy h1{letter-spacing:-.035em}}
+/* DARK TECH: luminous gradients and floating conversation */
+.ap-public-variant-3 { --variant-accent:#55e9bb; }
+.ap-public-variant-3 .ap-stage { background:radial-gradient(circle at 73% 44%,rgba(24,185,154,.22),transparent 46%),linear-gradient(135deg,#071b1b,#102f30); }
+.ap-public-variant-3 .ap-home .ap-copy h1,.ap-public-variant-3 .ap-home .ap-copy .ap-intro,.ap-public-variant-3 .ap-home .ap-copy .ap-eyebrow,.ap-public-variant-3 .ap-home .ap-benefits { color:#f0fff9; }
+.ap-public-variant-3 .ap-visual { filter:drop-shadow(0 20px 35px rgba(0,0,0,.2)); }
+.ap-public-variant-3 .ap-orbit { border-color:rgba(94,236,197,.22); }
+.ap-public-variant-3 .ap-feature { box-shadow:0 12px 38px rgba(0,0,0,.2); }
+
+/* Respect user-selected dark theme across all variants. */
+html[data-theme="dark"] .ap-public-variant .ap-stage { color:inherit; }
