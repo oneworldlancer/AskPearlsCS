@@ -1095,3 +1095,16 @@ pre {
     }
 }
 
+/* FINAL FIX: Space below the last documentation link */
+#developerShell .article-footer,
+.article-wrap .article-footer {
+    padding-bottom: 32px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Keep the footer itself at its existing height */
+#developerShell .site-footer {
+    margin-top: 0 !important;
+}

@@ -1,0 +1,22 @@
+@using AskPearlsCS_DEVELOPER.Models
+@using System.Text.Json
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    var page = ViewData.Model as DocumentationPage;
+    var baseUrl = (Configuration["Seo:DeveloperBaseUrl"] ?? "https://developer.askpearls.com").TrimEnd('/');
+    var canonical = baseUrl + (page is null ? "/docs/overview" : "/docs/" + Uri.EscapeDataString(page.Slug));
+    var title = ViewData["SeoTitle"]?.ToString() ?? (page is null ? "AskPearls Developer Center" : page.Title + " | AskPearls Developer Center");
+    var description = ViewData["SeoDescription"]?.ToString() ?? page?.Description ?? "AskPearls developer documentation and integration guides.";
+    var schema = new Dictionary<string, object?> {
+        ["@context"] = "https://schema.org",
+        ["@type"] = "TechArticle",
+        ["headline"] = title,
+        ["description"] = description,
+        ["url"] = canonical,
+        ["inLanguage"] = "en",
+        ["isPartOf"] = new { @type = "WebSite", name = "AskPearls Developer Center", url = baseUrl + "/docs/overview" },
+        ["publisher"] = new { @type = "Organization", name = "AskPearls Limited", url = "https://askpearls.com/" }
+    };
+    var json = JsonSerializer.Serialize(schema, new JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Default });
+}
+<script type="application/ld+json">@Html.Raw(json)</script>

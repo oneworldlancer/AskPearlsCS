@@ -81,7 +81,7 @@ button {
         object-fit: contain;
     }
 
-    .atelier-brand span {
+    .atelier-brand > span {
         display: grid;
         gap: 2px;
     }

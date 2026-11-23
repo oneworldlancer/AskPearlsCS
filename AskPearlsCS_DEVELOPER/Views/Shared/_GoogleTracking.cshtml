@@ -1,0 +1,33 @@
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    var ga4Id = Configuration["GoogleTracking:Ga4MeasurementId"];
+    var adsId = Configuration["GoogleTracking:GoogleAdsId"];
+    var baseUrl = (Configuration["Seo:DeveloperBaseUrl"] ?? "https://developer.askpearls.com").TrimEnd('/');
+    var isProduction = Context.Request.Host.Host.Equals(new Uri(baseUrl).Host, StringComparison.OrdinalIgnoreCase);
+    var trackingEnabled = isProduction && !string.IsNullOrWhiteSpace(ga4Id);
+}
+@if (trackingEnabled)
+{
+    @* Connect your consent banner to gtag('consent','update', ...).
+       Consent defaults to denied. Do not install a second Google tag via GTM. *@
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('consent', 'default', {
+            analytics_storage: 'denied',
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            wait_for_update: 500
+        });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=@ga4Id"></script>
+    <script>
+        gtag('js', new Date());
+        gtag('config', '@ga4Id');
+    </script>
+    @if (!string.IsNullOrWhiteSpace(adsId))
+    {
+        <script>gtag('config', '@adsId');</script>
+    }
+}

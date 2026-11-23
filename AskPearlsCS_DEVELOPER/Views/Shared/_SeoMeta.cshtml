@@ -1,0 +1,33 @@
+@using AskPearlsCS_DEVELOPER.Models
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    var page = ViewData.Model as DocumentationPage;
+    var baseUrl = (Configuration["Seo:DeveloperBaseUrl"] ?? "https://developer.askpearls.com").TrimEnd('/');
+    var path = page is null ? "/docs/overview" : "/docs/" + Uri.EscapeDataString(page.Slug);
+    var canonical = baseUrl + path;
+    var title = ViewData["SeoTitle"]?.ToString() ?? (page is null ? "AskPearls Developer Center | Documentation" : page.Title + " | AskPearls Developer Center");
+    var description = ViewData["SeoDescription"]?.ToString() ?? page?.Description ?? "Explore AskPearls developer documentation, widget installation guides, and DecisionOS integration walkthroughs.";
+    var isProduction = !Context.Request.Host.Host.Equals("localhost", StringComparison.OrdinalIgnoreCase)
+        && !Context.Request.Host.Host.Equals("127.0.0.1", StringComparison.OrdinalIgnoreCase)
+        && (Context.Request.Host.Host.Equals(new Uri(baseUrl).Host, StringComparison.OrdinalIgnoreCase));
+    var robots = isProduction ? "index,follow,max-image-preview:large" : "noindex,nofollow";
+    var socialImage = Configuration["Seo:SocialImageUrl"] ?? "https://askpearls.com/images/askpearls-og.jpg";
+}
+<title>@title</title>
+<meta name="description" content="@description" />
+<meta name="robots" content="@robots" />
+<meta name="application-name" content="AskPearls Developer Center" />
+<meta name="theme-color" content="#087b50" />
+<link rel="canonical" href="@canonical" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="AskPearls Developer Center" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:title" content="@title" />
+<meta property="og:description" content="@description" />
+<meta property="og:url" content="@canonical" />
+<meta property="og:image" content="@socialImage" />
+<meta property="og:image:alt" content="AskPearls Developer Center documentation" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="@title" />
+<meta name="twitter:description" content="@description" />
+<meta name="twitter:image" content="@socialImage" />

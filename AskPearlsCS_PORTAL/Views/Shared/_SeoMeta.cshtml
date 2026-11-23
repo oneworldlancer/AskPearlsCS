@@ -1,0 +1,27 @@
+@{
+    // Portal Index is an authentication entry point, not a public marketing landing page.
+    var seoTitle = ViewData["SeoTitle"]?.ToString() ?? "Sign In to AskPearls | Your Workspace";
+    var seoDescription = ViewData["SeoDescription"]?.ToString()
+        ?? "Sign in to AskPearls to manage your widgets, guided recommendations, and customer engagement workspace.";
+    var canonicalUrl = ViewData["SeoCanonical"]?.ToString() ?? "https://portal.askpearls.com/";
+    var socialImage = "https://askpearls.com/images/askpearls-og.jpg"; // Publish this image first.
+}
+<title>@seoTitle</title>
+<meta name="description" content="@seoDescription" />
+<meta name="robots" content="noindex, follow" />
+<meta name="googlebot" content="noindex, follow" />
+<meta name="application-name" content="AskPearls Portal" />
+<meta name="theme-color" content="#087b50" />
+<link rel="canonical" href="@canonicalUrl" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="AskPearls" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:title" content="@seoTitle" />
+<meta property="og:description" content="@seoDescription" />
+<meta property="og:url" content="@canonicalUrl" />
+<meta property="og:image" content="@socialImage" />
+<meta property="og:image:alt" content="AskPearls customer engagement platform" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="@seoTitle" />
+<meta name="twitter:description" content="@seoDescription" />
+<meta name="twitter:image" content="@socialImage" />

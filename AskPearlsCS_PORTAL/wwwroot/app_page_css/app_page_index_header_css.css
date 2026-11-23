@@ -7,52 +7,103 @@
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    padding: 12px clamp(20px, 5vw, 90px);
+    padding: 12px 20px;
     box-sizing: border-box;
     background: var(--surface, #fff);
     color: var(--text, #132b24);
     border-bottom: 1px solid var(--line, #dce9e2);
 }
 
-    .atelier-header .atelier-brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        min-width: 0;
-        flex-shrink: 1;
-        color: inherit;
-        text-decoration: none;
+    /* Brand: shared desktop proportions */
+    /* Match Developer Center wordmark typography */
+    .atelier-header .atelier-brand.ap-uniform-brand
+    .ap-uniform-name {
+        display: block !important;
+        font-family: 'Segoe UI', Arial, sans-serif !important;
+        font-size: 24px !important;
+        font-weight: 800 !important;
+        line-height: 1.05 !important;
+        letter-spacing: -0.8px !important;
+        white-space: nowrap !important;
+        width: max-content !important;
     }
 
-        .atelier-header .atelier-brand img {
-            display: block;
-            width: 46px;
-            height: 46px;
-            max-width: 46px;
-            object-fit: contain;
-            flex: 0 0 auto;
+        /* Keep Pearls inline and preserve green branding */
+        .atelier-header .atelier-brand.ap-uniform-brand
+        .ap-uniform-name > .ap-uniform-accent {
+            display: inline !important;
+            font-family: inherit !important;
+            font-size: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+            letter-spacing: inherit !important;
+            color: #20c878 !important;
+            white-space: nowrap !important;
         }
 
-        .atelier-header .atelier-brand > span {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            min-width: 0;
+        .atelier-header .atelier-brand.ap-uniform-brand > img {
+            display: block !important;
+            width: 49px !important;
+            height: 49px !important;
+            min-width: 49px !important;
+            max-width: 49px !important;
+            flex: 0 0 49px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            object-fit: contain !important;
         }
 
-        .atelier-header .atelier-brand strong {
-            font-size: 19px;
-            font-weight: 800;
-            line-height: 1.1;
+        /* Direct child only: do not turn the inner 'Pearls' span into a grid */
+        .atelier-header .atelier-brand.ap-uniform-brand > .ap-uniform-copy {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            justify-content: center !important;
+            gap: 2px !important;
+            width: max-content !important;
+            min-width: max-content !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
-        .atelier-header .atelier-brand small {
-            font-size: 11px;
-            line-height: 1.3;
+        .atelier-header .atelier-brand.ap-uniform-brand .ap-uniform-name {
+            display: block !important;
+            width: max-content !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            font-family: 'Segoe UI', Arial, sans-serif !important;
+            font-size: 23px !important;
+            font-weight: 800 !important;
+            line-height: 1.05 !important;
+            letter-spacing: -0.7px !important;
+            white-space: nowrap !important;
+            word-break: normal !important;
+            overflow-wrap: normal !important;
+        }
+
+            .atelier-header .atelier-brand.ap-uniform-brand .ap-uniform-name > .ap-uniform-accent {
+                display: inline !important;
+                color: #20c878 !important;
+                font: inherit !important;
+                letter-spacing: inherit !important;
+                white-space: nowrap !important;
+            }
+
+        .atelier-header .atelier-brand.ap-uniform-brand .ap-uniform-slogan {
+            display: block !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            font-family: 'Segoe UI', Arial, sans-serif !important;
+            font-size: 10px !important;
+            font-weight: 400 !important;
+            line-height: 1.2 !important;
+            letter-spacing: normal !important;
             color: var(--muted, #64766f);
-            overflow-wrap: anywhere;
+            white-space: nowrap !important;
+            overflow-wrap: normal !important;
         }
 
+    /* Header actions */
     .atelier-header .atelier-actions {
         display: flex;
         align-items: center;
@@ -92,9 +143,7 @@
         opacity: .2;
     }
 
-/* Single shared theme-button implementation.
-   The html selector and !important declarations override legacy
-   index-specific theme-button colors without altering other buttons. */
+/* Shared theme button, preserving existing light/dark behavior */
 html .atelier-header [data-theme-toggle] {
     box-sizing: border-box !important;
     display: inline-flex !important;
@@ -131,33 +180,31 @@ html .atelier-header [data-theme-toggle] {
         visibility: visible !important;
     }
 
-/* Light mode (including pages without an explicit data-theme value). */
-html:not([data-theme="dark"]) .atelier-header [data-theme-toggle] {
+html:not([data-theme='dark']) .atelier-header [data-theme-toggle] {
     background: #f5faf7 !important;
     color: #12352c !important;
     border-color: #dce8dc !important;
 }
 
-    html:not([data-theme="dark"]) .atelier-header [data-theme-toggle] .icon-moon {
+    html:not([data-theme='dark']) .atelier-header [data-theme-toggle] .icon-moon {
         display: block !important;
     }
 
-    html:not([data-theme="dark"]) .atelier-header [data-theme-toggle] .icon-sun {
+    html:not([data-theme='dark']) .atelier-header [data-theme-toggle] .icon-sun {
         display: none !important;
     }
 
-/* Dark mode. */
-html[data-theme="dark"] .atelier-header [data-theme-toggle] {
+html[data-theme='dark'] .atelier-header [data-theme-toggle] {
     background: #0c211a !important;
     color: #f3f8f2 !important;
     border-color: #254238 !important;
 }
 
-    html[data-theme="dark"] .atelier-header [data-theme-toggle] .icon-sun {
+    html[data-theme='dark'] .atelier-header [data-theme-toggle] .icon-sun {
         display: block !important;
     }
 
-    html[data-theme="dark"] .atelier-header [data-theme-toggle] .icon-moon {
+    html[data-theme='dark'] .atelier-header [data-theme-toggle] .icon-moon {
         display: none !important;
     }
 
@@ -178,21 +225,24 @@ html .atelier-header [data-theme-toggle]:hover {
         gap: 10px;
     }
 
-        .atelier-header .atelier-brand {
-            gap: 8px;
+        .atelier-header .atelier-brand.ap-uniform-brand {
+            gap: 8px !important;
         }
 
-            .atelier-header .atelier-brand img {
-                width: 36px;
-                height: 36px;
+            .atelier-header .atelier-brand.ap-uniform-brand > img {
+                width: 36px !important;
+                height: 36px !important;
+                min-width: 36px !important;
+                max-width: 36px !important;
+                flex-basis: 36px !important;
             }
 
-            .atelier-header .atelier-brand strong {
-                font-size: 16px;
+            .atelier-header .atelier-brand.ap-uniform-brand .ap-uniform-name {
+                font-size: 16px !important;
             }
 
-            .atelier-header .atelier-brand small {
-                font-size: 9px;
+            .atelier-header .atelier-brand.ap-uniform-brand .ap-uniform-slogan {
+                font-size: 9px !important;
             }
 
         .atelier-header .atelier-actions {

@@ -18,3 +18,31 @@ html[data-theme='light'] .ap-uniform-brand .ap-uniform-name, html[data-theme='da
 @media(max-width:650px){ :root{--ap-uniform-icon:49px;} .ap-uniform-brand .ap-uniform-name{font-size:25px!important;} .ap-uniform-brand .ap-uniform-slogan{font-size:10px!important;} }
 
 body > header.header {height:var(--ap-uniform-header-h)!important;min-height:var(--ap-uniform-header-h)!important;max-height:var(--ap-uniform-header-h)!important;padding:0 var(--ap-uniform-x)!important;box-sizing:border-box!important;background:#071713!important;} body > header.header .header-left {display:flex!important;align-items:center!important;gap:12px!important;} body > header.header .header-brand {margin:0!important;padding:0!important;} :root {--header-height:76px;}
+
+
+
+/* FIXED LOGO AREA — SAME TOGGLE POSITION IN BOTH PORTALS */
+
+/* Reserve identical space for logo + slogan */
+.ap-uniform-brand {
+    width: 185px !important;
+    min-width: 185px !important;
+    max-width: 185px !important;
+    flex: 0 0 185px !important;
+}
+
+/* Developer Center uses the same fixed brand width */
+#developerShell .header-brand-area .portal-brand {
+    width: 185px !important;
+    min-width: 185px !important;
+    max-width: 185px !important;
+    flex: 0 0 185px !important;
+}
+
+/* Keep both toggle buttons in normal flex layout */
+body > header.header .sidebar-toggle,
+#developerShell .header-brand-area .portal-sidebar-toggle {
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+}
