@@ -1,0 +1,63 @@
+/* Portal-derived MVP styling, loaded AFTER developer.css. */
+:root{--ap-page-padding:24px;--ap-breadcrumb-font-size:13px;--ap-page-title-size:clamp(23px,2vw,30px)}
+html,body,button,input{font-family:'Segoe UI',Arial,sans-serif!important}
+#developerShell .topbar{height:64px;flex-basis:64px;padding:0 20px;gap:12px;background:#071713;border-color:#24434a}
+#developerShell .header-brand-area{display:flex;align-items:center;gap:8px;min-width:0}
+#developerShell .portal-brand{display:flex;align-items:center;flex:0 0 auto;margin:0;padding:0;text-decoration:none}
+#developerShell .portal-brand img{display:block;width:auto;height:60px;max-width:205px;object-fit:contain}
+#developerShell .portal-sidebar-toggle{display:inline-flex;align-items:center;justify-content:center;width:35px;height:35px;min-width:35px;padding:8px;border:1px solid #24434a;border-radius:5px;background:transparent;color:#edf5f2;cursor:pointer}
+#developerShell .menu-lines{display:flex;flex-direction:column;justify-content:center;gap:4px;width:17px}
+#developerShell .menu-lines span{display:block;height:1px;width:100%;background:currentColor}
+#developerShell .top-actions{margin-left:auto}
+#developerShell .sidebar{width:290px;flex:0 0 290px;background:#071f25;color:#c7d8e0;border-color:#24434a;overflow:hidden}
+#developerShell .sidebar-scroll-region{flex:1 1 0;min-height:0;overflow-y:auto;overflow-x:hidden}
+#developerShell .sidebar-heading{padding:17px 20px 12px;color:#afc5d0;font-size:11px;font-weight:700;letter-spacing:1.2px}
+#developerShell .nav-group{margin:0 9px 7px;border:1px solid transparent;border-radius:9px;overflow:hidden}
+#developerShell .nav-group summary{display:flex;align-items:center;gap:12px;min-height:54px;padding:10px 12px;background:#102932;color:#d6e2e5;font-size:14px;font-weight:700;border-radius:8px;cursor:pointer}
+#developerShell .nav-group summary:hover{background:#153c3a}
+#developerShell .nav-chevron{margin-left:auto}
+#developerShell .nav-items{padding:4px 8px 8px}
+#developerShell .nav-item{display:flex;align-items:center;gap:12px;min-height:35px;padding:8px 12px;border-radius:6px;color:#c7d8e0;font-size:12px}
+#developerShell .nav-item:hover{background:rgba(255,255,255,.08);color:white}
+#developerShell .nav-item.active{background:#07543f;color:white;font-weight:600}
+#developerShell .sidebar-bottom{flex:0 0 auto;margin-top:0;min-height:46px;padding:13px 8px;text-align:center;background:#071f25;border-top:1px solid #24434a;color:#a7bdc3;font-size:11px}
+#developerShell .sidebar-bottom a{text-decoration:underline;color:inherit}
+#developerShell .article-wrap{width:100%;max-width:none;margin:0;padding:24px}
+#developerShell .breadcrumb{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:0 0 16px;padding:0;font-size:13px;font-weight:500;line-height:1.5;color:var(--ap-muted)}
+#developerShell .article-header{max-width:none;margin-bottom:24px}
+#developerShell .article-header h1{font-size:clamp(23px,2vw,30px);font-weight:700;letter-spacing:-.4px;line-height:1.3;margin:0 0 8px}
+#developerShell .article-header p{font-size:14px;line-height:1.65}
+#developerShell .feature-card{border-radius:14px;padding:22px}
+#developerShell .app-shell.sidebar-collapsed .sidebar{width:68px;flex-basis:68px}
+#developerShell.sidebar-collapsed .sidebar{width:68px;flex-basis:68px}
+#developerShell.sidebar-collapsed .sidebar-heading,#developerShell.sidebar-collapsed .nav-items,#developerShell.sidebar-collapsed .nav-chevron,#developerShell.sidebar-collapsed .sidebar-bottom{display:none}
+#developerShell.sidebar-collapsed .nav-group{margin:8px 5px;overflow:visible}
+#developerShell.sidebar-collapsed .nav-group summary{font-size:0;min-height:45px;justify-content:center;padding:8px}
+#developerShell.sidebar-collapsed .nav-group summary .nav-group-icon{font-size:20px}
+#developerShell .nav-group-icon{display:inline-flex;align-items:center;justify-content:center;min-width:24px;font-size:19px}
+#developerShell .nav-group-title{flex:1}
+#developerShell.sidebar-collapsed .nav-group-title{display:none}
+#developerShell .sidebar-backdrop{display:none}
+@media(max-width:1199.98px){#developerShell .sidebar{position:absolute;z-index:35;left:0;top:0;bottom:0;transform:translateX(-105%);transition:transform .2s;width:290px!important;flex-basis:290px!important}#developerShell.mobile-open .sidebar{transform:translateX(0)}#developerShell.mobile-open .sidebar-backdrop{display:block;position:absolute;inset:0;z-index:34;background:rgba(0,0,0,.55)}#developerShell.sidebar-collapsed .sidebar-heading,#developerShell.sidebar-collapsed .nav-items,#developerShell.sidebar-collapsed .nav-chevron,#developerShell.sidebar-collapsed .sidebar-bottom,#developerShell.sidebar-collapsed .nav-group-title{display:initial}#developerShell.sidebar-collapsed .nav-group summary{font-size:14px;justify-content:flex-start}#developerShell.sidebar-collapsed .nav-group{margin:0 9px 7px}#developerShell .article-wrap{padding:24px 18px}}
+@media(max-width:650px){#developerShell .topbar{padding:0 10px}#developerShell .portal-brand img{height:48px}#developerShell .top-link{display:none}#developerShell .search-wrap{width:140px;min-width:0}#developerShell .top-actions{gap:6px}}
+
+/* 2026-11-21: Unified MVP header and Portal page-path alignment.
+   Reference: Member Portal header 64px; index layouts currently vary. */
+:root { --ap-header-height:64px; --ap-page-padding:24px; --ap-breadcrumb-font-size:13px; --ap-page-title-size:clamp(23px,2vw,30px); }
+#developerShell > .topbar {height:var(--ap-header-height)!important;min-height:var(--ap-header-height)!important;max-height:var(--ap-header-height)!important;flex:0 0 var(--ap-header-height)!important;box-sizing:border-box;padding-block:0!important;}
+#developerShell .header-brand-area {height:100%;gap:12px;}
+#developerShell .portal-brand {display:inline-flex;align-items:center;gap:10px;height:100%;min-width:0;white-space:nowrap;}
+#developerShell .portal-brand img {display:block;width:49px;height:49px;max-width:none;object-fit:contain;flex:0 0 49px;}
+#developerShell .portal-brand-copy {display:flex;flex-direction:column;justify-content:center;line-height:1.05;gap:3px;}
+#developerShell .portal-brand-copy strong {font-family:'Segoe UI',Arial,sans-serif;font-size:25px;letter-spacing:-1px;font-weight:700;color:#edf5f2;}
+#developerShell .portal-brand-copy small {font-family:'Segoe UI',Arial,sans-serif;font-size:10px;font-weight:600;color:#b2c4bd;}
+#developerShell .portal-sidebar-toggle {align-self:center;}
+#developerShell .article-wrap {padding:var(--ap-page-padding)!important;}
+#developerShell .ap-breadcrumb {display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:0 0 16px;padding:0;font-size:13px;font-weight:500;line-height:1.5;color:var(--ap-muted);background:transparent;border:0;}
+#developerShell .ap-breadcrumb a {color:var(--ap-primary);text-decoration:none;}
+#developerShell .ap-breadcrumb-current {color:var(--ap-text);font-weight:600;}
+#developerShell .ap-breadcrumb-separator {opacity:.8;}
+#developerShell .article-header .eyebrow {margin:0 0 8px;font-size:11px;letter-spacing:1.2px;}
+#developerShell .article-header h1 {font-size:var(--ap-page-title-size);font-weight:700;line-height:1.3;letter-spacing:-.4px;margin:0 0 8px;}
+#developerShell .article-header p {font-size:14px;line-height:1.65;margin:8px 0 0;}
+@media(max-width:650px){#developerShell .portal-brand img{width:37px;height:37px;flex-basis:37px;}#developerShell .portal-brand-copy strong{font-size:19px;}#developerShell .portal-brand-copy small{font-size:9px;}#developerShell .header-brand-area{gap:7px;}#developerShell .article-wrap{padding:16px!important;}}

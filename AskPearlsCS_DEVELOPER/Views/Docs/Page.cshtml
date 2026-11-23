@@ -8,7 +8,7 @@
  var isPlanned = isAgent && Model.Slug != "agent-decisionos";
 }
 <div class="article-wrap">
- <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/docs/overview">Developer Center</a><span>/</span><span>@Model.Group</span></nav>
+ <nav class="ap-breadcrumb" aria-label="Breadcrumb"><a href="/docs/overview">Developer Center</a><span class="ap-breadcrumb-separator" aria-hidden="true">/</span><span>@Model.Group</span><span class="ap-breadcrumb-separator" aria-hidden="true">/</span><span class="ap-breadcrumb-current" aria-current="page">@Model.Title</span></nav>
  <header class="article-header">
   <div class="eyebrow">@Model.Group.ToUpperInvariant()</div>
   <h1>@Model.Title</h1>

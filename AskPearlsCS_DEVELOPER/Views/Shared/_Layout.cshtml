@@ -3,6 +3,7 @@
     var pages = ViewData["Pages"] as IReadOnlyList<DocumentationPage> ?? Array.Empty<DocumentationPage>();
     var groups = new[] { "Start Here", "Portal Walkthroughs", "Installation Guides", "Developer Guides", "AI Ecosystem", "Help & Support" };
     var currentSlug = ViewContext.RouteData.Values["slug"]?.ToString();
+    var groupIcons = new[] { "◈", "▦", "⇩", "⌘", "✦", "?" };
 }
 <!doctype html>
 <html lang="en" data-theme="light">
@@ -13,60 +14,58 @@
     <title>@ViewData["Title"] | AskPearls Developer Center</title>
     <script>try { document.documentElement.dataset.theme = localStorage.getItem('askpearls-developer-theme') === 'dark' ? 'dark' : 'light' } catch (e) { }</script>
     <link rel="stylesheet" href="~/css/developer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/portal-match.css" asp-append-version="true" />
     <script src="~/js/developer.js" defer asp-append-version="true"></script>
-    <script src="~/js/developer_sidebar.js" defer asp-append-version="true"></script>
+    <script src="~/js/portal-match.js" defer asp-append-version="true"></script>
 </head>
 <body>
-    <div class="app-shell" id="developerShell">
-        <header class="topbar">
-            <div class="header-brand-area">
-                <a class="ap-brand" href="/" aria-label="AskPearls Developer Center home">
-                    <img src="~/app_img/img_logo_color.png" asp-append-version="true" alt="" />
-                    <span><strong>Ask<span>Pearls</span></strong><small>Developer Center</small></span>
-                </a>
-                <button class="icon-button sidebar-toggle" id="menuButton" type="button"
-                        aria-label="Collapse navigation" aria-controls="sidebar" aria-expanded="true" title="Collapse / expand sidebar">
-                    <span class="hamburger-lines" aria-hidden="true"><i></i><i></i><i></i></span>
-                </button>
-            </div>
-            <div class="top-actions">
-                <a class="top-link" href="https://askpearls.com/">Home</a>
-                <a class="top-link" href="https://portal.askpearls.com/">Portal</a>
-                <label class="search-wrap"><span aria-hidden="true">⌕</span><input id="docSearch" type="search" placeholder="Search documentation…" autocomplete="off" aria-label="Search documentation" /></label>
-                <button class="icon-button" id="themeToggle" type="button" aria-label="Switch color theme" title="Switch color theme"><span id="themeGlyph">☾</span></button>
-            </div>
-        </header>
-        <div class="shell-body">
-            <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-            <aside class="sidebar" id="sidebar" aria-label="Documentation navigation">
-                <div class="sidebar-scroll-region">
-                    <div class="sidebar-heading">DOCUMENTATION <span>GUIDES &amp; RESOURCES</span></div>
-                    <nav id="docNavigation">
-                        @foreach (var group in groups)
-                        {
-                            var entries = pages.Where(p => p.Group == group).ToList();
-                            <details class="nav-group" open="@(group == "Start Here" || group == "AI Ecosystem" ? "open" : null)">
-                                <summary>@group <span class="nav-chevron">⌄</span></summary>
-                                <div class="nav-items">
-                                    @foreach (var item in entries)
-                                    {
-                                        <a class="nav-item @(item.Slug == currentSlug ? "active" : "")" href="/docs/@item.Slug" data-search="@item.Title @item.Description" title="@item.Title">
-                                            <span>@item.Title</span>
-                                            @if (item.Slug.StartsWith("agent-") && item.Slug != "agent-decisionos")
-                                            {
-                                                <span class="soon">Planned</span>
-                                            }
-                                        </a>
-                                    }
-                                </div>
-                            </details>
-                        }
-                    </nav>
-                </div>
-                <div class="sidebar-bottom"><span class="developer-credit">Developed by <a href="https://oneworldlancer.com/" target="_blank" rel="noopener noreferrer">OneWorldLancer</a></span></div>
-            </aside>
-            <main class="content-scroller" id="mainContent" tabindex="-1">@RenderBody()</main>
+<div class="app-shell" id="developerShell">
+    <header class="topbar">
+        <div class="header-brand-area">
+            <a class="portal-brand atelier-brand" href="/docs/overview" aria-label="AskPearls Developer Center home">
+                <img src="~/app_img/img_logo_color.png" asp-append-version="true" alt="AskPearls Logo" />
+                <span class="portal-brand-copy"><strong>AskPearls</strong><small>Developer Center</small></span>
+            </a>
+            <button class="portal-sidebar-toggle" id="menuButton" type="button" aria-controls="sidebar" aria-expanded="true" aria-label="Collapse navigation" title="Toggle Sidebar">
+                <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+            </button>
         </div>
+        <div class="top-actions">
+            <a class="top-link" href="https://askpearls.com/">Home</a>
+            <a class="top-link" href="https://portal.askpearls.com/">Portal</a>
+            <label class="search-wrap"><span aria-hidden="true">⌕</span><input id="docSearch" type="search" placeholder="Search documentation…" autocomplete="off" aria-label="Search documentation" /></label>
+            <button class="icon-button" id="themeToggle" type="button" aria-label="Switch color theme" title="Switch color theme"><span id="themeGlyph">☾</span></button>
+        </div>
+    </header>
+    <div class="shell-body">
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+        <aside class="sidebar" id="sidebar" aria-label="Documentation navigation">
+            <div class="sidebar-scroll-region">
+                <div class="sidebar-heading">ASKPEARLS DOCUMENTATION <span>GUIDES &amp; RESOURCES</span></div>
+                <nav id="docNavigation">
+                    @for (var i = 0; i < groups.Length; i++)
+                    {
+                        var group = groups[i];
+                        var entries = pages.Where(p => p.Group == group).ToList();
+                        <details class="nav-group" open="@(group == "Start Here" || entries.Any(p => p.Slug == currentSlug) ? "open" : null)">
+                            <summary title="@group"><span class="nav-group-icon" aria-hidden="true">@groupIcons[i]</span><span class="nav-group-title">@group</span><span class="nav-chevron">⌄</span></summary>
+                            <div class="nav-items">
+                                @foreach (var item in entries)
+                                {
+                                    <a class="nav-item @(item.Slug == currentSlug ? "active" : "")" href="/docs/@item.Slug" data-search="@item.Title @item.Description" title="@item.Title" aria-current="@(item.Slug == currentSlug ? "page" : null)">
+                                        <span>@item.Title</span>
+                                        @if (item.Slug.StartsWith("agent-") && item.Slug != "agent-decisionos") { <span class="soon">Planned</span> }
+                                    </a>
+                                }
+                            </div>
+                        </details>
+                    }
+                </nav>
+            </div>
+            <div class="sidebar-bottom">Developed by <a href="https://oneworldlancer.com/" target="_blank" rel="noopener noreferrer">OneWorldLancer</a></div>
+        </aside>
+        <main class="content-scroller" id="mainContent" tabindex="-1">@RenderBody()</main>
     </div>
+</div>
 </body>
 </html>

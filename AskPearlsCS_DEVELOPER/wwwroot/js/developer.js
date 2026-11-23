@@ -1,22 +1,7 @@
-(() => {
- 'use strict';
- const root=document.documentElement;
- const $=(s)=>document.querySelector(s);
- const menu=$('#menuButton'),side=$('#sidebar'),backdrop=$('#sidebarBackdrop');
- const close=()=>{side.classList.remove('mobile-open');backdrop.classList.remove('visible');menu?.setAttribute('aria-expanded','false')};
- menu?.addEventListener('click',()=>{let open=!side.classList.contains('mobile-open');side.classList.toggle('mobile-open',open);backdrop.classList.toggle('visible',open);menu.setAttribute('aria-expanded',String(open))});
- backdrop?.addEventListener('click',close);
- document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
- const themeButton=$('#themeToggle'),glyph=$('#themeGlyph');
- const sync=()=>{let dark=root.dataset.theme==='dark';if(glyph)glyph.textContent=dark?'☀':'☾';themeButton?.setAttribute('aria-label',dark?'Switch to light theme':'Switch to dark theme')};
- sync();themeButton?.addEventListener('click',()=>{root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';try{localStorage.setItem('askpearls-developer-theme',root.dataset.theme)}catch(e){}sync()});
- const search=$('#docSearch'),links=[...document.querySelectorAll('.nav-item')];
- search?.addEventListener('input',()=>{let q=search.value.trim().toLowerCase();links.forEach(a=>{a.hidden=!!q&&!a.dataset.search.toLowerCase().includes(q)});document.querySelectorAll('.nav-group').forEach(g=>{let any=[...g.querySelectorAll('.nav-item')].some(a=>!a.hidden);g.hidden=!any;if(q&&any)g.open=true})});
- document.querySelectorAll('.nav-item.active').forEach(a=>a.closest('details')?.setAttribute('open',''));
- document.querySelectorAll('[data-copy-code]').forEach(btn=>btn.addEventListener('click',async()=>{let code=btn.closest('.code-section')?.querySelector('code')?.textContent||'';try{await navigator.clipboard.writeText(code);btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy code',1800)}catch(e){btn.textContent='Copy failed'}}));
- document.querySelectorAll('[data-complete]').forEach(input=>{let key='ap-doc-complete-'+input.dataset.complete;try{input.checked=localStorage.getItem(key)==='1'}catch(e){}input.addEventListener('change',()=>{try{localStorage.setItem(key,input.checked?'1':'0')}catch(e){}})});
- const scroller=$('#mainContent'),progress=$('#readingProgress'),label=$('#readingProgressLabel');
- const update=()=>{if(!scroller)return;let total=scroller.scrollHeight-scroller.clientHeight;let pct=total<=0?100:Math.min(100,Math.max(0,Math.round(scroller.scrollTop/total*100)));if(progress)progress.style.width=pct+'%';if(label)label.textContent=pct+'%'};
- scroller?.addEventListener('scroll',update,{passive:true});update();
- document.querySelectorAll('.on-this-page a').forEach(a=>a.addEventListener('click',e=>{let el=$(a.getAttribute('href'));if(!el)return;e.preventDefault();scroller.scrollTo({top:el.getBoundingClientRect().top-scroller.getBoundingClientRect().top+scroller.scrollTop-24,behavior:'smooth'});history.replaceState(null,'',a.getAttribute('href'))}));
-})();
+(()=>{'use strict';const root=document.documentElement;const $=s=>document.querySelector(s);
+// Sidebar toggle lives ONLY in portal-match.js to avoid duplicate event listeners.
+const themeButton=$('#themeToggle'),glyph=$('#themeGlyph');const sync=()=>{let dark=root.dataset.theme==='dark';if(glyph)glyph.textContent=dark?'☀':'☾';themeButton?.setAttribute('aria-label',dark?'Switch to light theme':'Switch to dark theme')};sync();themeButton?.addEventListener('click',()=>{root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';try{localStorage.setItem('askpearls-developer-theme',root.dataset.theme)}catch(e){}sync()});
+const search=$('#docSearch'),links=[...document.querySelectorAll('.nav-item')];search?.addEventListener('input',()=>{let q=search.value.trim().toLowerCase();links.forEach(a=>a.hidden=!!q&&!a.dataset.search.toLowerCase().includes(q));document.querySelectorAll('.nav-group').forEach(g=>{let any=[...g.querySelectorAll('.nav-item')].some(a=>!a.hidden);g.hidden=!any;if(q&&any)g.open=true})});document.querySelectorAll('.nav-item.active').forEach(a=>a.closest('details')?.setAttribute('open',''));
+document.querySelectorAll('[data-copy-code]').forEach(btn=>btn.addEventListener('click',async()=>{let code=btn.closest('.code-section')?.querySelector('code')?.textContent||'';try{await navigator.clipboard.writeText(code);btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy code',1800)}catch(e){btn.textContent='Copy failed'}}));
+document.querySelectorAll('[data-complete]').forEach(input=>{let key='ap-doc-complete-'+input.dataset.complete;try{input.checked=localStorage.getItem(key)==='1'}catch(e){}input.addEventListener('change',()=>{try{localStorage.setItem(key,input.checked?'1':'0')}catch(e){}})});
+const scroller=$('#mainContent'),progress=$('#readingProgress'),label=$('#readingProgressLabel');const update=()=>{if(!scroller)return;let total=scroller.scrollHeight-scroller.clientHeight;let pct=total<=0?100:Math.min(100,Math.max(0,Math.round(scroller.scrollTop/total*100)));if(progress)progress.style.width=pct+'%';if(label)label.textContent=pct+'%'};scroller?.addEventListener('scroll',update,{passive:true});update();document.querySelectorAll('.on-this-page a').forEach(a=>a.addEventListener('click',e=>{let el=$(a.getAttribute('href'));if(!el)return;e.preventDefault();scroller.scrollTo({top:el.getBoundingClientRect().top-scroller.getBoundingClientRect().top+scroller.scrollTop-24,behavior:'smooth'});history.replaceState(null,'',a.getAttribute('href'))}));})();
