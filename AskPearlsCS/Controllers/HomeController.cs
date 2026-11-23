@@ -84,9 +84,9 @@ namespace AskPearlsCS.Controllers
             ViewBag.HeaderSlogan = GetRandomHeaderSlogan();
 
 
-          return View(DesignViews[designIndex]);
+          //  return View(DesignViews[designIndex]);
 
-            //    return View("Index_1");
+              return View("Index_1");
 
 
             //return View();
