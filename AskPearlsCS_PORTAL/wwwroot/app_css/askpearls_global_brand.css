@@ -1,0 +1,93 @@
+﻿/* AskPearls — one brand specification for all projects and all 15 indexes.
+   Load this file AFTER all page, header, theme and legacy brand stylesheets.
+   Controls brand geometry and typography only, not header background or actions. */
+:root {
+    --ap-brand-icon: 49px;
+    --ap-brand-gap: 10px;
+    --ap-brand-font: 'Segoe UI', Arial, sans-serif;
+    --ap-brand-name-size: 25px;
+    --ap-brand-name-weight: 700;
+    --ap-brand-name-tracking: -1px;
+    --ap-brand-slogan-size: 10px;
+    --ap-brand-name-color: #f4faf7;
+    --ap-brand-accent-color: #20c979;
+    --ap-brand-slogan-color: #b4c9c0;
+}
+/* All branded anchors. Scope carefully to header brand, never to page headings. */
+:is(.atelier-header .atelier-brand.ap-uniform-brand, .ap-public .ap-header .ap-brand, body > header.header .header-brand.ap-uniform-brand, #developerShell .portal-brand.ap-uniform-brand) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: var(--ap-brand-gap) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: auto !important;
+    flex: 0 0 auto !important;
+    font-family: var(--ap-brand-font) !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+}
+
+    :is(.atelier-header .atelier-brand.ap-uniform-brand, .ap-public .ap-header .ap-brand, body > header.header .header-brand.ap-uniform-brand, #developerShell .portal-brand.ap-uniform-brand) > img {
+        display: block !important;
+        width: var(--ap-brand-icon) !important;
+        height: var(--ap-brand-icon) !important;
+        min-width: var(--ap-brand-icon) !important;
+        max-width: var(--ap-brand-icon) !important;
+        flex: 0 0 var(--ap-brand-icon) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        object-fit: contain !important;
+    }
+
+    :is(.atelier-header .atelier-brand.ap-uniform-brand, .ap-public .ap-header .ap-brand, body > header.header .header-brand.ap-uniform-brand, #developerShell .portal-brand.ap-uniform-brand) > :is(.ap-uniform-copy, .portal-brand-copy, span) {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        gap: 3px !important;
+        width: max-content !important;
+        min-width: max-content !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-family: var(--ap-brand-font) !important;
+    }
+    /* :is() specificity intentionally wins over Index_13's weight:800 selectors. */
+    :is(.atelier-header .atelier-brand.ap-uniform-brand, .ap-public .ap-header .ap-brand, body > header.header .header-brand.ap-uniform-brand, #developerShell .portal-brand.ap-uniform-brand) :is(.ap-uniform-name, .portal-brand-copy > strong, strong) {
+        display: block !important;
+        width: max-content !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-family: var(--ap-brand-font) !important;
+        font-size: var(--ap-brand-name-size) !important;
+        font-weight: var(--ap-brand-name-weight) !important;
+        line-height: 1.05 !important;
+        letter-spacing: var(--ap-brand-name-tracking) !important;
+        color: var(--ap-brand-name-color) !important;
+        white-space: nowrap !important;
+        word-break: normal !important;
+        overflow-wrap: normal !important;
+    }
+
+    :is(.atelier-header .atelier-brand.ap-uniform-brand, .ap-public .ap-header .ap-brand, body > header.header .header-brand.ap-uniform-brand, #developerShell .portal-brand.ap-uniform-brand) strong > :is(.ap-uniform-accent, .brand-green, span) {
+        display: inline !important;
+        font: inherit !important;
+        letter-spacing: inherit !important;
+        color: var(--ap-brand-accent-color) !important;
+    }
+
+    :is(.atelier-header .atelier-brand.ap-uniform-brand, .ap-public .ap-header .ap-brand, body > header.header .header-brand.ap-uniform-brand, #developerShell .portal-brand.ap-uniform-brand) :is(.ap-uniform-slogan, .portal-brand-copy > small, small) {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-family: var(--ap-brand-font) !important;
+        font-size: var(--ap-brand-slogan-size) !important;
+        font-weight: 500 !important;
+        line-height: 1.2 !important;
+        letter-spacing: 0 !important;
+        color: var(--ap-brand-slogan-color) !important;
+        white-space: nowrap !important;
+        overflow-wrap: normal !important;
+    }
