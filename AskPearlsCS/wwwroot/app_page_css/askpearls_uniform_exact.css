@@ -18,3 +18,64 @@ html[data-theme='light'] .ap-uniform-brand .ap-uniform-name, html[data-theme='da
 @media(max-width:650px){ :root{--ap-uniform-icon:49px;} .ap-uniform-brand .ap-uniform-name{font-size:25px!important;} .ap-uniform-brand .ap-uniform-slogan{font-size:10px!important;} }
 
 #apPublic > .ap-header {height:var(--ap-uniform-header-h)!important;min-height:var(--ap-uniform-header-h)!important;max-height:var(--ap-uniform-header-h)!important;flex:0 0 var(--ap-uniform-header-h)!important;padding:0 var(--ap-uniform-x)!important;box-sizing:border-box!important;background:#071713!important;}
+
+/* ================================================================
+   PUBLIC HOME INDEX 1–16 — SLOGAN-INDEPENDENT HEADER NAVIGATION
+   Keep navigation centered in the viewport, not in remaining flex
+   space. Desktop/tablet only; preserve existing mobile menu.
+   ================================================================ */
+@media (min-width: 781px) {
+    #apPublic > .ap-header {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) max-content minmax(0, 1fr) !important;
+        align-items: center !important;
+        column-gap: clamp(8px, 1.2vw, 16px) !important;
+    }
+
+    #apPublic > .ap-header > .ap-brand {
+        grid-column: 1 !important;
+        justify-self: start !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow: hidden;
+    }
+
+    #apPublic > .ap-header > .ap-brand .ap-uniform-copy {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow: hidden;
+    }
+
+    #apPublic > .ap-header > .ap-brand .ap-uniform-slogan {
+        max-width: 100% !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    #apPublic > .ap-header > .ap-nav {
+        grid-column: 2 !important;
+        justify-self: center !important;
+        position: static !important;
+        inset: auto !important;
+        transform: none !important;
+        margin: 0 !important;
+        width: max-content !important;
+        max-width: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: clamp(10px, 1.6vw, 24px) !important;
+    }
+
+    #apPublic > .ap-header > .ap-nav button {
+        white-space: nowrap;
+    }
+
+    #apPublic > .ap-header > .ap-actions {
+        grid-column: 3 !important;
+        justify-self: end !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+    }
+}
