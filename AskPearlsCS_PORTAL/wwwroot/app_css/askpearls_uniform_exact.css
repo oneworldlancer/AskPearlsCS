@@ -1,0 +1,20 @@
+/* AskPearls unified header / brand. Load LAST among header styles. */
+:root { --ap-uniform-header-h:76px; --ap-uniform-x:20px; --ap-uniform-icon:49px; --ap-uniform-gap:10px; }
+.ap-uniform-brand { display:inline-flex!important; align-items:center!important; gap:var(--ap-uniform-gap)!important; margin:0!important; padding:0!important; border:0!important; min-width:0!important; height:auto!important; text-decoration:none!important; white-space:nowrap!important; line-height:normal!important; font-family:'Segoe UI',Arial,sans-serif!important; }
+.ap-uniform-brand img { display:block!important; width:var(--ap-uniform-icon)!important; height:var(--ap-uniform-icon)!important; min-width:var(--ap-uniform-icon)!important; max-width:var(--ap-uniform-icon)!important; flex:0 0 var(--ap-uniform-icon)!important; margin:0!important; padding:0!important; object-fit:contain!important; }
+.ap-uniform-brand .ap-uniform-copy { display:flex!important; flex-direction:column!important; justify-content:center!important; align-items:flex-start!important; gap:3px!important; margin:0!important; padding:0!important; min-width:0!important; line-height:1!important; }
+.ap-uniform-brand .ap-uniform-name { display:block!important; margin:0!important; padding:0!important; font-family:'Segoe UI',Arial,sans-serif!important; font-size:25px!important; font-weight:700!important; letter-spacing:-1px!important; line-height:1.05!important; color:#f4faf7!important; }
+.ap-uniform-brand .ap-uniform-name .ap-uniform-accent { color:#20c979!important; }
+.ap-uniform-brand .ap-uniform-slogan { display:block!important; margin:0!important; padding:0!important; font-family:'Segoe UI',Arial,sans-serif!important; font-size:10px!important; font-weight:500!important; letter-spacing:0!important; line-height:1.2!important; color:#b4c9c0!important; white-space:nowrap!important; }
+/* Keep the logo white/green and header dark teal in both themes. */
+html[data-theme='light'] .ap-uniform-brand .ap-uniform-name, html[data-theme='dark'] .ap-uniform-brand .ap-uniform-name {color:#f4faf7!important;}
+.ap-uniform-toggle { box-sizing:border-box!important; display:inline-flex!important; justify-content:center!important; align-items:center!important; flex:0 0 34px!important; width:34px!important; height:34px!important; min-width:34px!important; min-height:34px!important; max-width:34px!important; max-height:34px!important; margin:0!important; padding:0!important; border:1px solid #24434a!important; border-radius:5px!important; background:transparent!important; color:#edf5f2!important; cursor:pointer!important; vertical-align:middle!important; }
+.ap-uniform-toggle .menu-lines {display:inline-flex!important; flex-direction:column!important; justify-content:center!important; align-items:flex-start!important; width:16px!important; height:auto!important; gap:3px!important; margin:0!important; padding:0!important;}
+.ap-uniform-toggle .menu-lines span {display:block!important; flex:none!important; height:1.5px!important; min-height:1.5px!important; border:0!important; margin:0!important; padding:0!important; background:currentColor!important; transition:width .15s ease!important;}
+.ap-uniform-toggle .menu-lines span:nth-child(1) {width:16px!important;}
+.ap-uniform-toggle .menu-lines span:nth-child(2) {width:12px!important;}
+.ap-uniform-toggle .menu-lines span:nth-child(3) {width:9px!important;}
+.ap-uniform-toggle:hover .menu-lines span {width:16px!important;}
+@media(max-width:650px){ :root{--ap-uniform-icon:49px;} .ap-uniform-brand .ap-uniform-name{font-size:25px!important;} .ap-uniform-brand .ap-uniform-slogan{font-size:10px!important;} }
+
+body > header.header {height:var(--ap-uniform-header-h)!important;min-height:var(--ap-uniform-header-h)!important;max-height:var(--ap-uniform-header-h)!important;padding:0 var(--ap-uniform-x)!important;box-sizing:border-box!important;background:#071713!important;} body > header.header .header-left {display:flex!important;align-items:center!important;gap:12px!important;} body > header.header .header-brand {margin:0!important;padding:0!important;} :root {--header-height:76px;}

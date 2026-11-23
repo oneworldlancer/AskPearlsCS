@@ -7,18 +7,14 @@
 <header class="atelier-header">
 
     <!-- Logo + Brand -->
-    <a class="atelier-brand"
+    <a class="atelier-brand ap-uniform-brand"
        href="/"
        aria-label="AskPearls home">
 
         <img src="/app_img/img_logo_color.png"
              alt="AskPearls Logo" />
 
-        <span>
-            <strong>AskPearls</strong>
-         <small>@(ViewData["HeaderSlogan"] as string ?? "Capture. Engage. Convert.")</small>
-         @* <small>Capture. Engage. Convert.</small> *@
-        </span>
+        <span class="ap-uniform-copy"><strong class="ap-uniform-name">Ask<span class="ap-uniform-accent">Pearls</span></strong><small class="ap-uniform-slogan">@(ViewData["HeaderSlogan"] as string ?? "Capture. Engage. Convert.")</small></span>
 
     </a>
 
