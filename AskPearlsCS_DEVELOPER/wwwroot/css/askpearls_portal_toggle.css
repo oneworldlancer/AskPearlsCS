@@ -1,0 +1,21 @@
+/* Exact Member Portal menu-lines icon geometry. Loaded after portal-match.css. */
+#developerShell .portal-sidebar-toggle {
+  width:34px; height:34px; min-width:34px; flex:0 0 34px;
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:0; margin:0; border:1px solid #24434a;
+  border-radius:6px; background:transparent; color:#edf5f2;
+  box-sizing:border-box; cursor:pointer;
+}
+#developerShell .portal-sidebar-toggle .menu-lines {
+  width:16px; display:inline-flex; flex-direction:column;
+  align-items:flex-start; justify-content:center; gap:3px;
+}
+#developerShell .portal-sidebar-toggle .menu-lines span {
+  display:block; width:100%; height:1.5px; flex:0 0 1.5px;
+  background:currentColor; transition:width .15s ease;
+}
+#developerShell .portal-sidebar-toggle .menu-lines span:nth-child(2) {width:12px;}
+#developerShell .portal-sidebar-toggle .menu-lines span:nth-child(3) {width:9px;}
+#developerShell .portal-sidebar-toggle:hover .menu-lines span:nth-child(2),
+#developerShell .portal-sidebar-toggle:hover .menu-lines span:nth-child(3) {width:100%;}
+#developerShell .portal-sidebar-toggle:focus-visible {outline:2px solid #20c979;outline-offset:2px;}

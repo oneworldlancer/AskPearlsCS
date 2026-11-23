@@ -114,9 +114,9 @@ namespace AskPearlsCS_PORTAL.Controllers
             ViewData["HeaderSlogan"] = HeaderSlogans[sloganIndex];
 
             // Render the selected homepage
-           return View(DesignViews[designIndex]);
-
-          //   return View("Index_9");
+         
+          //    return View(DesignViews[designIndex]);
+ return View("Index_1");
 
         }
 

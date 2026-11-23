@@ -1,0 +1,47 @@
+/* AskPearls MVP universal brand: load LAST in each site's CSS stack. */
+:root { --ap-uniform-header-height:76px; --ap-uniform-padding-x:20px; --ap-uniform-logo-size:49px; --ap-uniform-logo-gap:10px; --ap-uniform-brand-color:#f4faf7; --ap-uniform-brand-accent:#20c979; --ap-uniform-brand-muted:#b4c9c0; }
+/* Header dimensions and consistent left origin */
+.ap-public > .ap-header, .atelier-header, body > .header, #developerShell > .topbar {
+  height:var(--ap-uniform-header-height)!important; min-height:var(--ap-uniform-header-height)!important; max-height:var(--ap-uniform-header-height)!important;
+  box-sizing:border-box!important; padding:0 var(--ap-uniform-padding-x)!important; align-items:center!important;
+}
+.ap-public > .ap-header, .atelier-header, #developerShell > .topbar { flex:0 0 var(--ap-uniform-header-height)!important; }
+/* One common brand geometry: all use img_logo_color.png + HTML wordmark. */
+.ap-public .ap-header .ap-brand, .atelier-header .atelier-brand, body > .header .header-brand.ap-uniform-brand, #developerShell .portal-brand {
+  display:inline-flex!important; align-items:center!important; justify-content:flex-start!important; flex:0 0 auto!important;
+  gap:var(--ap-uniform-logo-gap)!important; padding:0!important; margin:0!important; min-height:0!important;
+  height:auto!important; width:auto!important; text-decoration:none!important; white-space:nowrap!important;
+}
+.ap-public .ap-header .ap-brand img, .atelier-header .atelier-brand img, body > .header .header-brand.ap-uniform-brand img, #developerShell .portal-brand img {
+  display:block!important; width:var(--ap-uniform-logo-size)!important; height:var(--ap-uniform-logo-size)!important;
+  min-width:var(--ap-uniform-logo-size)!important; max-width:var(--ap-uniform-logo-size)!important;
+  flex:0 0 var(--ap-uniform-logo-size)!important; margin:0!important; padding:0!important; object-fit:contain!important;
+}
+.ap-public .ap-header .ap-brand > span, .atelier-header .atelier-brand > span, body > .header .header-brand.ap-uniform-brand > span, #developerShell .portal-brand > span {
+  display:flex!important; flex-direction:column!important; justify-content:center!important; gap:3px!important; margin:0!important; padding:0!important;
+  font-family:'Segoe UI',Arial,sans-serif!important; line-height:1.05!important;
+}
+.ap-public .ap-header .ap-brand strong, .atelier-header .atelier-brand strong, body > .header .header-brand.ap-uniform-brand strong, #developerShell .portal-brand strong {
+  display:block!important; font-family:'Segoe UI',Arial,sans-serif!important; font-size:25px!important; font-weight:700!important;
+  line-height:1.05!important; letter-spacing:-1px!important; margin:0!important; padding:0!important; color:var(--ap-uniform-brand-color)!important;
+}
+.ap-public .ap-header .ap-brand strong span, .atelier-header .atelier-brand strong span, body > .header .header-brand.ap-uniform-brand strong span, #developerShell .portal-brand strong span {color:var(--ap-uniform-brand-accent)!important;}
+.ap-public .ap-header .ap-brand small, .atelier-header .atelier-brand small, body > .header .header-brand.ap-uniform-brand small, #developerShell .portal-brand small {
+  display:block!important; font-family:'Segoe UI',Arial,sans-serif!important; font-size:10px!important; font-weight:500!important;
+  letter-spacing:0!important; line-height:1.2!important; color:var(--ap-uniform-brand-muted)!important; margin:0!important; padding:0!important; white-space:nowrap!important;
+}
+/* Both themes use identical branding colors and geometry, not per-page theme overrides. */
+html[data-theme='light'],html[data-theme='dark'],html[data-bs-theme='light'],html[data-bs-theme='dark'] {
+  --ap-uniform-brand-color:#f4faf7; --ap-uniform-brand-accent:#20c979; --ap-uniform-brand-muted:#b4c9c0;
+}
+/* Keep the brand legible on an identical dark header in both themes. */
+.ap-public > .ap-header,.atelier-header,body > .header,#developerShell > .topbar {background:#071713!important;border-bottom:1px solid #24434a!important;}
+/* Exact member portal three-stroke toggle for developer; member toggle already defines it. */
+#developerShell .portal-sidebar-toggle {width:34px!important;height:34px!important;min-width:34px!important;padding:0!important;border:1px solid #24434a!important;border-radius:6px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;color:#edf5f2!important;background:transparent!important;}
+#developerShell .portal-sidebar-toggle .menu-lines {width:16px!important;display:inline-flex!important;flex-direction:column!important;gap:3px!important;}
+#developerShell .portal-sidebar-toggle .menu-lines span {display:block!important;width:16px!important;height:1.5px!important;background:currentColor!important;}
+#developerShell .portal-sidebar-toggle .menu-lines span:nth-child(2){width:12px!important;}
+#developerShell .portal-sidebar-toggle .menu-lines span:nth-child(3){width:9px!important;}
+#developerShell .portal-sidebar-toggle:hover .menu-lines span{width:16px!important;}
+/* Developer sidebar header's flex-basis must track the new height. */
+#developerShell > .topbar{flex-basis:var(--ap-uniform-header-height)!important;}
