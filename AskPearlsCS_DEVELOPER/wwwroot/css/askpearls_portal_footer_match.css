@@ -1,0 +1,64 @@
+/* Developer Center footer — matches Portal index .site-footer.
+   Scoped to documentation content only; sidebar credit remains unchanged. */
+#developerShell .content-scroller .site-footer {
+    height: 64px !important;
+    min-height: 64px !important;
+    max-height: 64px !important;
+    box-sizing: border-box !important;
+    flex: 0 0 auto;
+    margin: 0 !important;
+    padding: 14px 24px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 3px !important;
+    text-align: center !important;
+    border-top: 1px solid #dce9e2 !important;
+    color: #64766f !important;
+    background: #ffffff !important;
+    font-family: "Segoe UI", sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    line-height: 1.45 !important;
+}
+#developerShell .content-scroller .site-footer > a {
+    color: #087744 !important;
+    font-weight: 700 !important;
+    text-decoration: underline;
+}
+#developerShell .content-scroller .site-footer > span {
+    display: block;
+    color: inherit !important;
+}
+html[data-theme="dark"] #developerShell .content-scroller .site-footer {
+    background: #0b1e18 !important;
+    border-top-color: #24483a !important;
+    color: #aec2b9 !important;
+}
+html[data-theme="dark"] #developerShell .content-scroller .site-footer > a {
+    color: #16d696 !important;
+}
+
+/* Remove outer bottom gutter and keep the footer flush with the content edge. */
+#developerShell .content-scroller .article-wrap {
+    padding-bottom: 0 !important;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+#developerShell .content-scroller .article-wrap > .site-footer {
+    margin-top: auto !important;
+    flex-shrink: 0 !important;
+}
+
+
+
+/* FIX: Separate documentation content from footer */
+
+#developerShell .content-scroller .site-footer,
+#developerShell .site-footer {
+    margin-top: 32px !important;
+    flex-shrink: 0 !important;
+}

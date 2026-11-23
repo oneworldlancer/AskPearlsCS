@@ -1,0 +1,55 @@
+/* Developer Center: footer is a direct child of #mainContent.
+   Load this after all existing Developer styles. */
+#developerShell #mainContent.content-scroller {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#developerShell #mainContent > .article-wrap {
+    box-sizing: border-box;
+    flex: 1 0 auto;
+    width: min(1280px, 100%);
+    max-width: 100%;
+    padding-bottom: 24px;
+}
+
+#developerShell #mainContent > .site-footer.ap-developer-footer {
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex: 0 0 64px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 64px !important;
+    height: 64px !important;
+    margin: 0 !important;
+    padding: 8px 16px !important;
+    border: 0 !important;
+    border-top: 1px solid var(--ap-border) !important;
+    border-radius: 0 !important;
+    text-align: center !important;
+    font-family: 'Segoe UI', Arial, sans-serif !important;
+    font-size: 11px !important;
+    line-height: 18px !important;
+    color: var(--ap-muted) !important;
+    background: var(--ap-surface) !important;
+}
+#developerShell #mainContent > .site-footer.ap-developer-footer a {
+    color: var(--ap-primary) !important;
+    text-decoration: underline;
+    font-weight: 600;
+}
+#developerShell #mainContent > .site-footer.ap-developer-footer span {
+    display: block;
+}
+
+
+
+
+/* Space between documentation content and footer */
+.content-scroller .site-footer {
+    margin-top: 24px !important;
+}

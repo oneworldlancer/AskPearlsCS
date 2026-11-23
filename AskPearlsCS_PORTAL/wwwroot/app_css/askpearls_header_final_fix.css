@@ -1,0 +1,73 @@
+/* AskPearls: shared geometry for the existing Member and Developer sidebar buttons.
+   Add this stylesheet AFTER the other header styles. */
+body > header.header .sidebar-toggle,
+#developerShell .header-brand-area > .portal-sidebar-toggle {
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    flex: 0 0 34px !important;
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid #24434a !important;
+    border-radius: 5px !important;
+    background: transparent !important;
+    color: #edf5f2 !important;
+    line-height: normal !important;
+    transform: none !important;
+    vertical-align: middle !important;
+}
+body > header.header .sidebar-toggle > .menu-lines,
+#developerShell .portal-sidebar-toggle > .menu-lines {
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    flex: none !important;
+    width: 16px !important;
+    min-width: 16px !important;
+    height: 10.5px !important;
+    min-height: 10.5px !important;
+    gap: 3px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+    transform: none !important;
+}
+body > header.header .sidebar-toggle > .menu-lines > span,
+#developerShell .portal-sidebar-toggle > .menu-lines > span {
+    box-sizing: border-box !important;
+    display: block !important;
+    flex: 0 0 1.5px !important;
+    height: 1.5px !important;
+    min-height: 1.5px !important;
+    max-height: 1.5px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: currentColor !important;
+    transform: none !important;
+    transition: width .15s ease !important;
+}
+body > header.header .sidebar-toggle > .menu-lines > span:nth-child(1),
+#developerShell .portal-sidebar-toggle > .menu-lines > span:nth-child(1) {width:16px !important;}
+body > header.header .sidebar-toggle > .menu-lines > span:nth-child(2),
+#developerShell .portal-sidebar-toggle > .menu-lines > span:nth-child(2) {width:12px !important;}
+body > header.header .sidebar-toggle > .menu-lines > span:nth-child(3),
+#developerShell .portal-sidebar-toggle > .menu-lines > span:nth-child(3) {width:9px !important;}
+body > header.header .sidebar-toggle:hover > .menu-lines > span,
+#developerShell .portal-sidebar-toggle:hover > .menu-lines > span {width:16px !important;}
+
+/* Developer wordmark. Requires the nested Pearls span shown in README. */
+#developerShell .portal-brand-copy > strong {color:#f4faf7 !important;}
+#developerShell .portal-brand-copy > strong > .brand-green {color:#20c979 !important;}
+#developerShell .portal-brand img {filter:none !important;opacity:1 !important;}

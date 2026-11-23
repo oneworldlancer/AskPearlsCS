@@ -7,6 +7,8 @@
 }
 <!doctype html>
 <html lang="en" data-theme="light">
+
+<link rel="stylesheet" href="~/css/askpearls_developer_footer_fullwidth.css" asp-append-version="true" />
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,6 +22,12 @@
     <script src="~/js/developer.js" defer asp-append-version="true"></script>
     <script src="~/js/portal-match.js" defer asp-append-version="true"></script>
     <link rel="stylesheet" href="~/css/askpearls_uniform_exact.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/askpearls_header_final_fix.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/askpearls_header_theme_fix.css" asp-append-version="true" />
+    <link href="~/css/app_scrollbar_css.css" rel="stylesheet" />
+
+       <link rel="stylesheet" href="~/css/askpearls_portal_footer_match.css" asp-append-version="true" />
+
 </head>
 <body>
 <div class="app-shell" id="developerShell">
@@ -27,7 +35,12 @@
         <div class="header-brand-area">
                 <a class="portal-brand atelier-brand ap-uniform-brand" href="/docs/overview" aria-label="AskPearls Developer Center home">
                 <img src="~/app_img/img_logo_color.png" asp-append-version="true" alt="AskPearls Logo" />
-                <span class="portal-brand-copy"><strong>AskPearls</strong><small>Developer Center</small></span>
+              
+                    <span class="portal-brand-copy">
+                        <strong>Ask<span class="brand-green">Pearls</span></strong>
+                        <small>Developer Center</small>
+                    </span>
+
             </a>
             <button class="portal-sidebar-toggle" id="menuButton" type="button" aria-controls="sidebar" aria-expanded="true" aria-label="Collapse navigation" title="Toggle Sidebar">
                 <span class="menu-lines" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -67,7 +80,14 @@
             </div>
             <div class="sidebar-bottom">Developed by <a href="https://oneworldlancer.com/" target="_blank" rel="noopener noreferrer">OneWorldLancer</a></div>
         </aside>
-        <main class="content-scroller" id="mainContent" tabindex="-1">@RenderBody()</main>
+            <main class="content-scroller" id="mainContent" tabindex="-1">
+                @RenderBody()
+                <footer class="site-footer ap-developer-footer" aria-label="AskPearls copyright">
+                    <a href="https://askpearls.com/" target="_blank" rel="noopener noreferrer">AskPearls Limited</a>
+                    <span>Patent Pending. © @DateTime.UtcNow.Year. All Rights Reserved.</span>
+                </footer>
+            </main>
+
     </div>
 </div>
 </body>

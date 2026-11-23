@@ -1,0 +1,45 @@
+/* Load AFTER all previous uniform-brand, uniform-exact and header CSS.
+   Changes colors only: logo dimensions, spacing and toggle geometry remain untouched. */
+:root { --ap-header-light-bg:#ffffff; --ap-header-light-text:#172e27; --ap-header-light-muted:#526b61; --ap-header-light-border:#dce9e2; }
+/* All headers: light is default unless the document explicitly requests dark. */
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .ap-public > .ap-header,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .atelier-header,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) body > header.header,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) #developerShell > .topbar {
+ background:var(--ap-header-light-bg)!important; color:var(--ap-header-light-text)!important;
+ border-bottom-color:var(--ap-header-light-border)!important;
+}
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .ap-uniform-brand .ap-uniform-name,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .ap-public .ap-header .ap-brand strong,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .atelier-header .atelier-brand strong,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) #developerShell .portal-brand-copy strong {
+ color:var(--ap-header-light-text)!important;
+}
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .ap-uniform-brand .ap-uniform-name .ap-uniform-accent,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .ap-public .ap-header .ap-brand strong span,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .atelier-header .atelier-brand strong span,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) #developerShell .portal-brand-copy .brand-green {color:#16866f!important;}
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .ap-uniform-brand .ap-uniform-slogan,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .ap-public .ap-header .ap-brand small,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .atelier-header .atelier-brand small,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) #developerShell .portal-brand-copy small {color:var(--ap-header-light-muted)!important;}
+/* Member and Developer toggles: same geometry as existing shared CSS. */
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) body > header.header .sidebar-toggle,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) #developerShell .portal-sidebar-toggle {
+ color:var(--ap-header-light-text)!important; background:#fff!important; border-color:var(--ap-header-light-border)!important;
+}
+/* Navigation and header actions must remain readable on white. */
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .atelier-header a:not(.atelier-brand),
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) .ap-public .ap-header a:not(.ap-brand),
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) #developerShell .topbar .top-link,
+html:not([data-theme="dark"]):not([data-bs-theme="dark"]) body > header.header .header-right {color:var(--ap-header-light-text)!important;}
+/* The existing theme toggle buttons can retain their native light-theme styling. */
+/* Dark theme explicitly restores the dark header even if base CSS varies. */
+html[data-theme="dark"] .ap-public > .ap-header,
+html[data-theme="dark"] .atelier-header,
+html[data-theme="dark"] body > header.header,
+html[data-theme="dark"] #developerShell > .topbar,
+html[data-bs-theme="dark"] .ap-public > .ap-header,
+html[data-bs-theme="dark"] .atelier-header,
+html[data-bs-theme="dark"] body > header.header,
+html[data-bs-theme="dark"] #developerShell > .topbar {background:#071713!important;color:#f4faf7!important;border-bottom-color:#24434a!important;}

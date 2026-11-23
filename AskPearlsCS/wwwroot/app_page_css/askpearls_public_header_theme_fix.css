@@ -1,0 +1,69 @@
+/* AskPearls public homepage: theme-aware header.
+   Load AFTER askpearls_uniform_exact.css.
+   Does not change logo geometry, 76px height, or page content. */
+html:not([data-theme="dark"]) #apPublic > .ap-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid #dce9e2 !important;
+    color: #172e27 !important;
+}
+html:not([data-theme="dark"]) #apPublic .ap-header .ap-uniform-brand .ap-uniform-name,
+html:not([data-theme="dark"]) #apPublic .ap-header .ap-brand strong {
+    color: #172e27 !important;
+}
+html:not([data-theme="dark"]) #apPublic .ap-header .ap-uniform-brand .ap-uniform-accent,
+html:not([data-theme="dark"]) #apPublic .ap-header .ap-brand strong span {
+    color: #16866f !important;
+}
+html:not([data-theme="dark"]) #apPublic .ap-header .ap-uniform-slogan,
+html:not([data-theme="dark"]) #apPublic .ap-header .ap-brand small {
+    color: #526b61 !important;
+}
+html:not([data-theme="dark"]) #apPublic .ap-header .ap-nav,
+html:not([data-theme="dark"]) #apPublic .ap-header .ap-nav button,
+html:not([data-theme="dark"]) #apPublic .ap-header .ap-nav a {
+    color: #172e27 !important;
+}
+html:not([data-theme="dark"]) #apPublic .ap-header .ap-theme {
+    background: #f5faf7 !important;
+    border-color: #dce9e2 !important;
+    color: #172e27 !important;
+}
+html:not([data-theme="dark"]) #apPublic .ap-header .ap-theme svg {
+    color: inherit !important;
+    stroke: currentColor !important;
+}
+html:not([data-theme="dark"]) #apPublic .ap-header .ap-join {
+    background: #16866f !important;
+    color: #ffffff !important;
+}
+html[data-theme="dark"] #apPublic > .ap-header {
+    background: #071713 !important;
+    border-bottom: 1px solid #24434a !important;
+    color: #f4faf7 !important;
+}
+html[data-theme="dark"] #apPublic .ap-header .ap-uniform-brand .ap-uniform-name,
+html[data-theme="dark"] #apPublic .ap-header .ap-brand strong {
+    color: #f4faf7 !important;
+}
+html[data-theme="dark"] #apPublic .ap-header .ap-uniform-brand .ap-uniform-accent,
+html[data-theme="dark"] #apPublic .ap-header .ap-brand strong span {
+    color: #20c979 !important;
+}
+html[data-theme="dark"] #apPublic .ap-header .ap-uniform-slogan,
+html[data-theme="dark"] #apPublic .ap-header .ap-brand small {
+    color: #b4c9c0 !important;
+}
+html[data-theme="dark"] #apPublic .ap-header .ap-nav,
+html[data-theme="dark"] #apPublic .ap-header .ap-nav button,
+html[data-theme="dark"] #apPublic .ap-header .ap-nav a {
+    color: #f4faf7 !important;
+}
+html[data-theme="dark"] #apPublic .ap-header .ap-theme {
+    background: #0c211a !important;
+    border-color: #24434a !important;
+    color: #f4faf7 !important;
+}
+html[data-theme="dark"] #apPublic .ap-header .ap-join {
+    background: #20c979 !important;
+    color: #071713 !important;
+}
