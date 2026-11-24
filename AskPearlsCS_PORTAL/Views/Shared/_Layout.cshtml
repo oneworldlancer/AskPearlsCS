@@ -839,6 +839,8 @@
                Webmaster/Support authorization policy and staff page are implemented.
                Do not rely on CSS or client-side role checks for access control. *@
 
+<partial name="_BillingSidebar" />
+
             <!-- Account settings -->
             <div class="ap-sidebar-bottom">
                 <a href="#" class="ap-nav-link ap-settings-link" data-page="account-settings">
@@ -1679,6 +1681,10 @@
 
 
 <script src="~/app_page_js/app_portal_keepalive_js.js"        asp-append-version="true"></script>
+
+<link rel="stylesheet" href="~/app_page_css/app_page_billing_css.css" asp-append-version="true" />
+<script src="~/app_page_js/app_page_billing_js.js" asp-append-version="true"></script>
+
 </body>
 
 </html>

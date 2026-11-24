@@ -52,6 +52,13 @@ namespace AskPearlsCS_PORTAL.Controllers
                 case "analytics":
                     return PartialView("_AnalyticsContent");
 
+                case "subscription": return PartialView("_Billing_subscription");
+                case "subscription-plans": return PartialView("_Billing_subscription_plans");
+                case "subscription-usage": return PartialView("_Billing_subscription_usage");
+                case "billing-payments": return PartialView("_Billing_billing_payments");
+                case "billing-invoices": return PartialView("_Billing_billing_invoices");
+                case "billing-settings": return PartialView("_Billing_billing_settings");
+                
                 case "account-settings":
                     return PartialView("_AccountSettingsContent");
 

@@ -70,6 +70,10 @@ builder.Services.AddScoped<IAnalytics_Repository, Analytics_Repository>();
 builder.Services.AddScoped<IAnalytics_Service, Analytics_Service>();
 
 
+
+builder.Services.AddScoped<AskPearlsCS_DAL.app_Repository.IBilling_Repository, AskPearlsCS_DAL.app_Repository.Billing_Repository>();
+builder.Services.AddScoped<AskPearlsCS_BLL.app_Service.IBilling_Service, AskPearlsCS_BLL.app_Service.Billing_Service>();
+
 // ========================================
 // ACCOUNT & SETTINGS - BLL / DAL
 // ========================================
