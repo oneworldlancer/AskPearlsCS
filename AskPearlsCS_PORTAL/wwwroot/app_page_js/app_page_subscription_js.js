@@ -1,100 +1,52 @@
-﻿// Load AFTER app_page_account_settings_js.js in the Account Settings partial.
-// Enhances the existing plan modal without changing the existing page controller.
+// Account & Settings: read-only subscription summary; billing owns plan management.
 (function () {
     'use strict';
     const root = document.querySelector('.account-settings-page');
     if (!root || root.dataset.subscriptionInitialized === 'true') return;
     root.dataset.subscriptionInitialized = 'true';
-    const byId = id => root.querySelector('#' + id);
-    const endpoint = '/Account/Api/subscription/';
-    let current = null;
-    let plans = [];
-    let chosen = null;
-
-    async function get (path) {
-        const response = await fetch(endpoint + path, {
-            method: 'GET', credentials: 'same-origin', cache: 'no-store',
-            headers: { Accept: 'application/json' }
-        });
-        const data = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(data.message || `Subscription request failed (${ response.status }).`);
-        return data;
-    }
-
-    function renderCurrent () {
-        if (!current) return;
-        const put = (id, value) => { if (byId(id)) byId(id).textContent = value; };
-        put('asCurrentPlanName', current.plan + ' Plan');
-        put('asCurrentPlanBadge', current.status === 'active' ? 'Current' : current.status);
-        put('asWidgetsUsed', current.widgetsCreated);
-        put('asWidgetsLimit', current.widgetLimit == null ? 'Unlimited' : current.widgetLimit);
-        put('asWidgetsRemaining', current.widgetsRemaining == null ? 'Unlimited' : current.widgetsRemaining + ' remaining');
-        put('asUsageSummary', current.widgetLimit == null ? 'No widget limit' :
-            `${ Math.round(100 * current.widgetsCreated / Math.max(1, current.widgetLimit)) }% of your plan allowance used`);
-        if (byId('asUsageFill')) byId('asUsageFill').style.width =
-            `${ current.widgetLimit == null ? 0 : Math.min(100, 100 * current.widgetsCreated / Math.max(1, current.widgetLimit)) }%`;
-        put('asSubscriptionNote', current.isProvisioned
-            ? 'Plan and usage loaded from your account. Paid checkout is not yet available.'
-            : 'No subscription has been provisioned. Contact support if this persists.');
-    }
-
-    function renderPlans () {
-        for (const plan of plans) {
-            const card = root.querySelector(`.as-plan-option[data-plan="${ plan.name }"]`);
-            if (!card) continue;
-            const price = card.querySelector('.as-plan-price strong');
-            if (price) price.textContent = '$' + plan.monthlyPriceUsd;
-            const isCurrent = current && current.plan.toLowerCase() === plan.code && current.status === 'active';
-            const badge = card.querySelector('.as-plan-current');
-            if (badge) badge.hidden = !isCurrent;
-            const button = card.querySelector('[data-select-plan]');
-            if (button) {
-                button.disabled = isCurrent;
-                button.textContent = isCurrent ? 'Your current plan' : `View ${ plan.name }`;
-            }
-        }
-        const note = root.querySelector('.as-plans-demo-note');
-        if (note) note.textContent = 'Preview prices only — paid checkout is not enabled.';
-    }
-
-    async function refresh () {
+    const card = root.querySelector('.as-plan-card');
+    if (!card) return;
+    root.querySelector('#asPlansModal')?.remove();
+    // Replace legacy nodes so the account settings prototype cannot overwrite billing data.
+    card.innerHTML = `<div class="as-plan-top"><div class="as-plan-icon"><i class="bi bi-stars" aria-hidden="true"></i></div><div class="as-plan-title"><small>YOUR SUBSCRIPTION</small><h4><span data-summary-plan>Loading…</span> <span class="as-plan-badge" data-summary-status></span></h4><p>Manage your plan and resource usage.</p></div></div>
+    <div class="as-billing-summary-meta"><div><small>Catalog monthly price</small><strong data-summary-price>—</strong></div><div><small>Current period ends</small><strong data-summary-period>—</strong></div></div>
+    <div class="as-plan-usage"><div class="as-usage-heading"><span>Widgets created</span><strong data-summary-count>—</strong></div><div class="as-usage-track" data-summary-track hidden><div class="as-usage-fill" data-summary-fill style="width:0%"></div></div><div class="as-usage-foot"><span data-summary-usage></span><span data-summary-remaining></span></div></div>
+    <div class="as-plan-bottom"><span>Subscription management</span><div class="as-billing-summary-actions"><button type="button" class="as-btn as-btn-outline" data-summary-page="subscription">Manage Subscription <i class="bi bi-arrow-right"></i></button><button type="button" class="as-btn as-btn-primary" data-summary-page="subscription-plans">Upgrade Plan <i class="bi bi-arrow-up-right"></i></button></div></div><div class="as-plan-disclaimer" data-summary-note role="status">Loading subscription information…</div>`;
+    const put = (key, value) => { card.querySelector('[data-summary-' + key + ']').textContent = value; };
+    card.addEventListener('click', event => {
+        const button = event.target.closest('[data-summary-page]');
+        if (button && typeof window.loadPortalSection === 'function') window.loadPortalSection(button.dataset.summaryPage);
+    });
+    async function refresh() {
         try {
-            [ current, plans ] = await Promise.all([ get('current'), get('plans') ]);
-            renderCurrent(); renderPlans();
-        } catch (error) {
-            console.error('Subscription loading failed:', error);
-            const note = byId('asSubscriptionNote');
-            if (note) note.textContent = 'Could not load subscription: ' + error.message;
-        }
+            const response = await fetch('/Account/Api/billing/overview', {credentials:'same-origin',cache:'no-store',headers:{Accept:'application/json'}});
+            if (!response.ok) throw new Error('Request failed (' + response.status + ')');
+            const data = await response.json();
+            if (!root.isConnected) return;
+            const c = data.current;
+            if (!c) throw new Error('Subscription information unavailable');
+            const name = String(c.plan || 'Unknown');
+            const plan = (data.plans || []).find(p => [p.name,p.code].some(v => String(v || '').toLowerCase() === name.toLowerCase()));
+            put('plan', name);
+            put('status', c.status || 'Unknown');
+            put('price', plan?.monthlyPriceUsd == null ? 'Not configured' : new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(plan.monthlyPriceUsd));
+            put('period', c.currentPeriodEndUtc ? new Date(c.currentPeriodEndUtc).toLocaleDateString() : 'Not scheduled');
+            const used = Number(c.widgetsCreated || 0), limit = c.widgetLimit;
+            put('count', used + ' / ' + (limit == null ? 'Unlimited' : limit));
+            put('remaining', c.widgetsRemaining == null ? 'Unlimited' : c.widgetsRemaining + ' remaining');
+            const percent = limit == null ? null : limit > 0 ? Math.round(100 * used / limit) : 0;
+            card.querySelector('[data-summary-track]').hidden = percent == null;
+            card.querySelector('[data-summary-fill]').style.width = Math.min(100,Math.max(0,percent || 0)) + '%';
+            put('usage', percent == null ? 'No widget limit' : limit === 0 ? 'No widget allowance' : percent + '% of plan allowance used');
+            put('note', c.isProvisioned ? 'Plan and usage loaded from your account. Manage changes in Subscription & Billing.' : 'No subscription has been provisioned. Contact support if this persists.');
+        } catch(error) { put('plan','Unavailable'); put('note','Could not load subscription: ' + error.message); }
     }
-
-    // Capture clicks before the original prototype handlers so we do not show a
-    // misleading "selected successfully" demo confirmation.
-    root.addEventListener('click', event => {
-        const select = event.target.closest('[data-select-plan]');
-        if (select && root.contains(select)) {
-            event.preventDefault(); event.stopPropagation();
-            chosen = plans.find(p => p.name.toLowerCase() === select.dataset.selectPlan.toLowerCase());
-            if (!chosen) return;
-            const confirmation = byId('asPlanConfirmation');
-            if (byId('asPlanConfirmationTitle')) byId('asPlanConfirmationTitle').textContent = chosen.name + ' plan';
-            if (byId('asPlanConfirmationText')) byId('asPlanConfirmationText').textContent =
-                'Paid upgrades are not available until billing is connected. No payment or plan change will occur.';
-            if (byId('asPlanConfirm')) {
-                byId('asPlanConfirm').textContent = 'Checkout unavailable';
-                byId('asPlanConfirm').disabled = true;
-            }
-            if (confirmation) confirmation.hidden = false;
-            root.querySelectorAll('.as-plan-option').forEach(card =>
-                card.classList.toggle('as-plan-selected', card.dataset.plan === chosen.name));
-            return;
-        }
-        if (event.target.closest('#asPlanConfirm')) {
-            event.preventDefault(); event.stopPropagation();
-        }
-    }, true);
-
-    // Refresh whenever the modal is opened, including after account changes.
-    byId('asUpgradePlan')?.addEventListener('click', refresh);
+    // Existing account initialization provisions Free asynchronously; refresh after it settles.
     refresh();
+    const save = root.querySelector('#asSave');
+    if (save?.disabled) {
+        const observer = new MutationObserver(() => { if (!save.disabled || !root.isConnected) { observer.disconnect(); if(root.isConnected) refresh(); } });
+        observer.observe(save,{attributes:true,attributeFilter:['disabled']});
+        setTimeout(() => observer.disconnect(),30000);
+    }
 })();
