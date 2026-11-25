@@ -1,5 +1,5 @@
 /* AskPearls MVP universal brand: load LAST in each site's CSS stack. */
-:root { --ap-uniform-header-height:76px; --ap-uniform-padding-x:20px; --ap-uniform-logo-size:49px; --ap-uniform-logo-gap:10px; --ap-uniform-brand-color:#f4faf7; --ap-uniform-brand-accent:#20c979; --ap-uniform-brand-muted:#b4c9c0; }
+:root { --ap-uniform-header-height:76px; --ap-uniform-padding-x:20px; --ap-uniform-logo-size:49px; --ap-uniform-logo-gap:10px; --ap-uniform-brand-color:#f4faf7; --ap-uniform-brand-accent:#16866F; --ap-uniform-brand-muted:#b4c9c0; }
 /* Header dimensions and consistent left origin */
 .ap-public > .ap-header, .atelier-header, body > .header, #developerShell > .topbar {
   height:var(--ap-uniform-header-height)!important; min-height:var(--ap-uniform-header-height)!important; max-height:var(--ap-uniform-header-height)!important;
@@ -32,7 +32,7 @@
 }
 /* Both themes use identical branding colors and geometry, not per-page theme overrides. */
 html[data-theme='light'],html[data-theme='dark'],html[data-bs-theme='light'],html[data-bs-theme='dark'] {
-  --ap-uniform-brand-color:#f4faf7; --ap-uniform-brand-accent:#20c979; --ap-uniform-brand-muted:#b4c9c0;
+  --ap-uniform-brand-color:#f4faf7; --ap-uniform-brand-accent:#16866F; --ap-uniform-brand-muted:#b4c9c0;
 }
 /* Keep the brand legible on an identical dark header in both themes. */
 .ap-public > .ap-header,.atelier-header,body > .header,#developerShell > .topbar {background:#071713!important;border-bottom:1px solid #24434a!important;}

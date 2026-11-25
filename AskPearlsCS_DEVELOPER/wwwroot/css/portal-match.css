@@ -71,13 +71,13 @@ html,body,button,input{font-family:'Segoe UI',Arial,sans-serif!important}
 }
 
 #developerShell .portal-brand-copy .brand-green {
-    color: #20c979 !important;
+    color: #16866F !important;
 }
 
 /* Same colors in light and dark themes */
 html[data-theme="light"] #developerShell .portal-brand-copy .brand-green,
 html[data-theme="dark"] #developerShell .portal-brand-copy .brand-green {
-    color: #20c979 !important;
+    color: #16866F !important;
 }
 
 

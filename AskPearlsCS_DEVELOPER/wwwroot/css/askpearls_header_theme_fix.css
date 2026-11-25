@@ -43,3 +43,16 @@ html[data-bs-theme="dark"] .ap-public > .ap-header,
 html[data-bs-theme="dark"] .atelier-header,
 html[data-bs-theme="dark"] body > header.header,
 html[data-bs-theme="dark"] #developerShell > .topbar {background:#071713!important;color:#f4faf7!important;border-bottom-color:#24434a!important;}
+
+
+/* Global AskPearls logo accent */
+html:root body .ap-uniform-brand
+.ap-uniform-name .ap-uniform-accent,
+html:root body .ap-public .ap-header
+.ap-brand strong span,
+html:root body .atelier-header
+.atelier-brand strong span,
+html:root body #developerShell
+.portal-brand-copy .brand-green {
+    color: #16866F !important;
+}

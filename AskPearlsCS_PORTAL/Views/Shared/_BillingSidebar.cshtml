@@ -1,11 +1,30 @@
+<style>
+    #apBillingAccordion { margin: 0 9px 8px; }
+    #apBillingToggle { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 40px; padding: 10px; border: 0; border-radius: 7px; background: #132c34; color: #e1ebee; font: inherit; font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; }
+    #apBillingToggle > .bi { font-size: 19px; line-height: 1; flex: 0 0 20px; }
+    #apBillingToggle > span { flex: 1; }
+    #apBillingToggle .ap-billing-chevron { flex: 0 0 9px; width: 9px; height: 9px; border-right: 1.5px solid currentColor; border-top: 1.5px solid currentColor; transform: rotate(45deg); margin-right: 5px; transition: transform .18s ease; }
+    #apBillingToggle[aria-expanded="true"] .ap-billing-chevron { transform: rotate(135deg); }
+    #apBillingToggle:hover { background: #1b3941; }
+    #apBillingToggle:focus-visible { outline: 2px solid #20c979; outline-offset: 2px; }
+    #apBillingAccordion .ap-global-navigation { padding: 5px 0 0; }
+    #apBillingAccordion .ap-nav-link { display: flex; align-items: center; gap: 10px; padding-left: 24px; }
+</style>
 <div class="ap-sidebar-heading ap-global-heading">SUBSCRIPTION &amp; BILLING</div>
-<details class="ap-billing-accordion" id="apBillingAccordion">
-<summary><i class="bi bi-credit-card"></i> Subscription &amp; Billing</summary>
-<nav class="ap-global-navigation" aria-label="Subscription and billing">
-<a href="#" class="ap-nav-link" data-page="subscription"><span>My Subscription</span></a>
-<a href="#" class="ap-nav-link" data-page="subscription-plans"><span>Plans &amp; Pricing</span></a>
-<a href="#" class="ap-nav-link" data-page="subscription-usage"><span>Usage &amp; Limits</span></a>
-<a href="#" class="ap-nav-link" data-page="billing-payments"><span>Billing &amp; Payments</span></a>
-<a href="#" class="ap-nav-link" data-page="billing-invoices"><span>Invoices &amp; Receipts</span></a>
-<a href="#" class="ap-nav-link" data-page="billing-settings"><span>Payment Settings</span></a>
-</nav></details>
+<div id="apBillingAccordion">
+    <button type="button" id="apBillingToggle" class="collapsed" data-bs-toggle="collapse" data-bs-target="#apBillingCollapse" aria-expanded="false" aria-controls="apBillingCollapse">
+        <i class="bi bi-credit-card" aria-hidden="true"></i>
+        <span>Subscription &amp; Billing</span>
+        <span class="ap-billing-chevron" aria-hidden="true"></span>
+    </button>
+    <div id="apBillingCollapse" class="collapse accordion-collapse" aria-labelledby="apBillingToggle">
+        <nav class="ap-global-navigation" aria-label="Subscription and billing">
+            <a href="#" class="ap-nav-link" data-page="subscription"><i class="bi bi-person-check" aria-hidden="true"></i><span>My Subscription</span></a>
+            <a href="#" class="ap-nav-link" data-page="subscription-plans"><i class="bi bi-layers" aria-hidden="true"></i><span>Plans &amp; Pricing</span></a>
+            <a href="#" class="ap-nav-link" data-page="subscription-usage"><i class="bi bi-speedometer2" aria-hidden="true"></i><span>Usage &amp; Limits</span></a>
+            <a href="#" class="ap-nav-link" data-page="billing-payments"><i class="bi bi-wallet2" aria-hidden="true"></i><span>Billing &amp; Payments</span></a>
+            <a href="#" class="ap-nav-link" data-page="billing-invoices"><i class="bi bi-receipt" aria-hidden="true"></i><span>Invoices &amp; Receipts</span></a>
+            <a href="#" class="ap-nav-link" data-page="billing-settings"><i class="bi bi-credit-card" aria-hidden="true"></i><span>Payment Settings</span></a>
+        </nav>
+    </div>
+</div>

@@ -4,7 +4,7 @@
 .ap-uniform-brand img { display:block!important; width:var(--ap-uniform-icon)!important; height:var(--ap-uniform-icon)!important; min-width:var(--ap-uniform-icon)!important; max-width:var(--ap-uniform-icon)!important; flex:0 0 var(--ap-uniform-icon)!important; margin:0!important; padding:0!important; object-fit:contain!important; }
 .ap-uniform-brand .ap-uniform-copy { display:flex!important; flex-direction:column!important; justify-content:center!important; align-items:flex-start!important; gap:3px!important; margin:0!important; padding:0!important; min-width:0!important; line-height:1!important; }
 .ap-uniform-brand .ap-uniform-name { display:block!important; margin:0!important; padding:0!important; font-family:'Segoe UI',Arial,sans-serif!important; font-size:25px!important; font-weight:700!important; letter-spacing:-1px!important; line-height:1.05!important; color:#f4faf7!important; }
-.ap-uniform-brand .ap-uniform-name .ap-uniform-accent { color:#20c979!important; }
+.ap-uniform-brand .ap-uniform-name .ap-uniform-accent { color:#16866F!important; }
 .ap-uniform-brand .ap-uniform-slogan { display:block!important; margin:0!important; padding:0!important; font-family:'Segoe UI',Arial,sans-serif!important; font-size:10px!important; font-weight:500!important; letter-spacing:0!important; line-height:1.2!important; color:#b4c9c0!important; white-space:nowrap!important; }
 /* Keep the logo white/green and header dark teal in both themes. */
 html[data-theme='light'] .ap-uniform-brand .ap-uniform-name, html[data-theme='dark'] .ap-uniform-brand .ap-uniform-name {color:#f4faf7!important;}

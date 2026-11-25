@@ -115,8 +115,8 @@ namespace AskPearlsCS_PORTAL.Controllers
 
             // Render the selected homepage
          
-             return View(DesignViews[designIndex]);
- // return View("Index_13");
+            return View(DesignViews[designIndex]);
+ //  return View("Index_3");
 
         }
 

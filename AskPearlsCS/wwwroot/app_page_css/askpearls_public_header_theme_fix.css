@@ -47,7 +47,7 @@ html[data-theme="dark"] #apPublic .ap-header .ap-brand strong {
 }
 html[data-theme="dark"] #apPublic .ap-header .ap-uniform-brand .ap-uniform-accent,
 html[data-theme="dark"] #apPublic .ap-header .ap-brand strong span {
-    color: #20c979 !important;
+    color: #16866F !important;
 }
 html[data-theme="dark"] #apPublic .ap-header .ap-uniform-slogan,
 html[data-theme="dark"] #apPublic .ap-header .ap-brand small {
@@ -64,6 +64,6 @@ html[data-theme="dark"] #apPublic .ap-header .ap-theme {
     color: #f4faf7 !important;
 }
 html[data-theme="dark"] #apPublic .ap-header .ap-join {
-    background: #20c979 !important;
+    background: #16866F !important;
     color: #071713 !important;
 }

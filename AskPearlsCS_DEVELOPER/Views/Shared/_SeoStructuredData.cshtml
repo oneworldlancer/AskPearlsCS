@@ -7,16 +7,24 @@
     var canonical = baseUrl + (page is null ? "/docs/overview" : "/docs/" + Uri.EscapeDataString(page.Slug));
     var title = ViewData["SeoTitle"]?.ToString() ?? (page is null ? "AskPearls Developer Center" : page.Title + " | AskPearls Developer Center");
     var description = ViewData["SeoDescription"]?.ToString() ?? page?.Description ?? "AskPearls developer documentation and integration guides.";
-    var schema = new Dictionary<string, object?> {
-        ["@context"] = "https://schema.org",
-        ["@type"] = "TechArticle",
-        ["headline"] = title,
-        ["description"] = description,
-        ["url"] = canonical,
-        ["inLanguage"] = "en",
-        ["isPartOf"] = new { @type = "WebSite", name = "AskPearls Developer Center", url = baseUrl + "/docs/overview" },
-        ["publisher"] = new { @type = "Organization", name = "AskPearls Limited", url = "https://askpearls.com/" }
-    };
+    var prefix = ((char)64).ToString();
+    var website = new Dictionary<string, object?>();
+    website.Add(prefix + "type", "WebSite");
+    website.Add("name", "AskPearls Developer Center");
+    website.Add("url", baseUrl + "/docs/overview");
+    var publisher = new Dictionary<string, object?>();
+    publisher.Add(prefix + "type", "Organization");
+    publisher.Add("name", "AskPearls Limited");
+    publisher.Add("url", "https://askpearls.com/");
+    var schema = new Dictionary<string, object?>();
+    schema.Add(prefix + "context", "https://schema.org");
+    schema.Add(prefix + "type", "TechArticle");
+    schema.Add("headline", title);
+    schema.Add("description", description);
+    schema.Add("url", canonical);
+    schema.Add("inLanguage", "en");
+    schema.Add("isPartOf", website);
+    schema.Add("publisher", publisher);
     var json = JsonSerializer.Serialize(schema, new JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Default });
 }
-<script type="application/ld+json">@Html.Raw(json)</script>
+<script type="application/ld+json">@(Html.Raw(json))</script>

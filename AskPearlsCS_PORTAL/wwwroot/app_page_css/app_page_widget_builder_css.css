@@ -317,7 +317,7 @@ body[data-theme="dark"] .page-widget-builder .wb-theme-option input:checked + sp
 body.dark-mode .page-widget-builder .wb-theme-option input:checked + span {
     background-color: #18392d;
     color: #ffffff;
-    border-color: #20c979;
+    border-color: #16866F;
     box-shadow: 0 0 0 1px rgba(32, 201, 121, .15);
     -webkit-text-fill-color: #ffffff;
 }

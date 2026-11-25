@@ -18,4 +18,4 @@
 #developerShell .portal-sidebar-toggle .menu-lines span:nth-child(3) {width:9px;}
 #developerShell .portal-sidebar-toggle:hover .menu-lines span:nth-child(2),
 #developerShell .portal-sidebar-toggle:hover .menu-lines span:nth-child(3) {width:100%;}
-#developerShell .portal-sidebar-toggle:focus-visible {outline:2px solid #20c979;outline-offset:2px;}
+#developerShell .portal-sidebar-toggle:focus-visible {outline:2px solid #16866F;outline-offset:2px;}
