@@ -1,7 +1,7 @@
 (() => {
 'use strict';
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!=null)n.textContent=text;if(cls)n.className=cls;return n;};
-const card=(title,...nodes)=>{const n=el('article',null,'ap-billing-card');n.append(el('h3',title),...nodes);return n;};
+const card=(title,...nodes)=>{const n=el('article',null,'ap-card ap-billing-card');n.append(el('h3',title,'ap-card-title'),...nodes);return n;};
 const grid=(...nodes)=>{const n=el('div',null,'ap-billing-grid');n.append(...nodes);return n;};
 const date=v=>v?new Date(v).toLocaleDateString():'Not scheduled';
 const button=(label,page)=>{const n=el('button',label);n.type='button';if(page)n.addEventListener('click',()=>window.loadPortalSection?.(page));else n.disabled=true;return n;};
@@ -9,8 +9,8 @@ const money=v=>v==null?'Price not configured':new Intl.NumberFormat('en-US',{sty
 function plans(body,d){
  const intro=el('div',null,'ap-billing-plans-intro');intro.append(el('h3','Grow at your own pace'),el('p','Compare your available AskPearls plans.'),el('p','Preview prices only — paid checkout is not enabled.'));body.append(intro);
  const list=el('div',null,'ap-billing-plan-grid');
- for(const p of d.plans){const current=d.current.isProvisioned && String(d.current.status).toLowerCase()==='active' && [p.name,p.code].some(v=>String(v).toLowerCase()===String(d.current.plan).toLowerCase());const n=el('article',null,'ap-billing-card ap-billing-plan');if(current)n.classList.add('is-current');n.append(el('h3',p.name),el('span',current?'Current plan':'', 'ap-billing-plan-status'),el('strong',money(p.monthlyPriceUsd),'ap-billing-plan-price'),el('small',p.monthlyPriceUsd==null?'':'/ month'),el('p',p.description,'ap-billing-plan-description'),button(current?'Your current plan':'Checkout unavailable'));const features=el('ul',null,'ap-billing-plan-features');for(const l of p.limits){const item=el('li');const icon=el('i',null,'bi bi-check-circle');icon.setAttribute('aria-hidden','true');item.append(icon,document.createTextNode(' '+String(l.code).replace(/[_-]/g,' ')+': '+(l.value??'Not configured')));features.append(item);}n.append(features);list.append(n);}
- body.append(list);if(!d.plans.length)body.append(el('p','No active portal plans configured.'));
+ for(const p of d.plans){const current=d.current.isProvisioned && String(d.current.status).toLowerCase()==='active' && [p.name,p.code].some(v=>String(v).toLowerCase()===String(d.current.plan).toLowerCase());const n=el('article',null,'ap-card ap-billing-card ap-billing-plan');if(current)n.classList.add('is-current');n.append(el('h3',p.name,'ap-card-title'),el('span',current?'Current plan':'', 'ap-billing-plan-status'),el('strong',money(p.monthlyPriceUsd),'ap-billing-plan-price'),el('small',p.monthlyPriceUsd==null?'':'/ month'),el('p',p.description,'ap-billing-plan-description'),button(current?'Your current plan':'Checkout unavailable'));const features=el('ul',null,'ap-billing-plan-features');for(const l of p.limits){const item=el('li');const icon=el('i',null,'bi bi-check-circle');icon.setAttribute('aria-hidden','true');item.append(icon,document.createTextNode(' '+String(l.code).replace(/[_-]/g,' ')+': '+(l.value??'Not configured')));features.append(item);}n.append(features);list.append(n);}
+ body.append(list);if(!d.plans.length)body.append(el('div','No active portal plans configured.','ap-empty-state'));
 }
 async function init(root){if(root.dataset.loaded)return;root.dataset.loaded='1';const status=root.querySelector('[data-billing-status]'),body=root.querySelector('[data-billing-content]');
 try{const res=await fetch('/Account/Api/billing/overview',{credentials:'same-origin',cache:'no-store',headers:{Accept:'application/json'}});if(!res.ok)throw Error('Request failed ('+res.status+')');const d=await res.json();if(!root.isConnected)return;const c=d.current;status.textContent='';body.replaceChildren();

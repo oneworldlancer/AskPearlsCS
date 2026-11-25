@@ -606,10 +606,7 @@
             margin-bottom: 0 !important;
         }
 
-            #askPearlsSidebar .ap-global-navigation + * {
-                margin-top: 0 !important;
-            }
-
+     
             #askPearlsSidebar .ap-global-navigation .ap-nav-link {
                 margin-bottom: 0 !important;
             }
@@ -633,7 +630,91 @@
                 height: 1px;
                 background: rgba(160, 190, 185, 0.20);
             }
-    </style>
+  
+            
+        /* =========================================
+           ASKPEARLS GLOBAL SIDEBAR SPACING
+           Applies to both light and dark themes
+           ========================================= */
+
+        #askPearlsSidebar {
+            --ap-sidebar-section-gap: 20px;
+            --ap-sidebar-heading-gap: 10px;
+            --ap-sidebar-item-gap: 8px;
+            --ap-sidebar-divider-gap: 16px;
+        }
+
+            /* Agent accordion */
+            #askPearlsSidebar .ap-agent-accordion {
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+            }
+
+                #askPearlsSidebar .ap-agent-accordion > .ap-agent-item {
+                    margin-bottom: var(--ap-sidebar-item-gap) !important;
+                }
+
+                    #askPearlsSidebar .ap-agent-accordion > .ap-agent-item:last-child {
+                        margin-bottom: 0 !important;
+                    }
+
+            /* Global section headings */
+            #askPearlsSidebar .ap-sidebar-heading.ap-global-heading {
+                margin-top: var(--ap-sidebar-section-gap) !important;
+                margin-bottom: var(--ap-sidebar-heading-gap) !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+            }
+
+            /* Global navigation */
+            #askPearlsSidebar .ap-global-navigation {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+            }
+
+                #askPearlsSidebar .ap-global-navigation .ap-nav-link {
+                    margin-top: 0 !important;
+                    margin-bottom: 0 !important;
+                }
+
+                    #askPearlsSidebar .ap-global-navigation .ap-nav-link + .ap-nav-link {
+                        margin-top: 6px !important;
+                    }
+
+            /* Billing accordion */
+            #askPearlsSidebar #apBillingAccordion {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+            }
+
+            #askPearlsSidebar #apBillingToggle {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+
+            #askPearlsSidebar #apBillingCollapse .ap-global-navigation {
+                padding-top: 6px !important;
+            }
+
+            /* Account & Settings separator */
+            #askPearlsSidebar .ap-sidebar-bottom {
+                margin-top: var(--ap-sidebar-divider-gap) !important;
+                margin-bottom: 0 !important;
+                padding-top: var(--ap-sidebar-divider-gap) !important;
+            }
+
+                #askPearlsSidebar .ap-sidebar-bottom .ap-settings-link {
+                    margin-top: 0 !important;
+                    margin-bottom: 0 !important;
+                }
+
+
+
+</style>
 
     <aside id="askPearlsSidebar" class="sidebar ap-sidebar" style="margin-bottom:66px;-ms-overflow-style: none;scrollbar-width: none;border-bottom-right-radius:10px;border-top-right-radius:10px;">
 

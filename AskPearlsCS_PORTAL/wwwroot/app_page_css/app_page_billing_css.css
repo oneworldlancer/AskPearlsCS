@@ -1,24 +1,32 @@
-/* Billing uses the same host gutter and theme tokens as Account & Settings. */
-.ap-page.ap-billing-page {width:100%;min-width:0;margin:0;padding:24px 0;box-sizing:border-box;color:var(--ap-text,var(--bs-body-color));background:var(--ap-page-bg,transparent);--b-card:var(--ap-card-bg,var(--bs-body-bg));--b-text:var(--ap-text,var(--bs-body-color));--b-border:var(--ap-border,var(--bs-border-color));--b-accent:var(--ap-accent,#0da88b);}
-.ap-billing-page * {box-sizing:border-box;}
-.ap-billing-page .ap-page-header {margin-bottom:24px;}
-.ap-billing-page .ap-page-title {margin:0 0 7px;font-size:27px;font-weight:750;color:var(--b-text);}
-.ap-billing-page .ap-page-description {margin:0;font-size:13px;color:var(--ap-muted,var(--bs-secondary-color));}
+/* Use the existing shared portal page shell, breadcrumb, header and theme tokens. */
+#apMainContent .ap-page.ap-billing-page {
+    --b-card: var(--ap-surface, #ffffff);
+    --b-text: var(--ap-text);
+    --b-border: var(--ap-border);
+    --b-accent: var(--ap-primary);
+    text-align: left;
+    min-width: 0;
+}
 .ap-billing-page [data-billing-status]:empty {display:none;}
 .ap-billing-page [data-billing-content] {display:grid;gap:20px;min-width:0;}
 .ap-billing-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px;margin:0;}
-.ap-billing-card {background:var(--b-card);border:1px solid var(--b-border);border-radius:14px;padding:23px;min-width:0;overflow-wrap:anywhere;}
-.ap-billing-card h3 {font-size:16px;font-weight:750;margin:0 0 14px;color:var(--b-text);}
+.ap-billing-card {min-width:0;overflow-wrap:anywhere;}
+.ap-billing-card h3 {margin-bottom:14px;}
 .ap-billing-card p,.ap-billing-page [data-billing-content]>p {font-size:13px;line-height:1.6;color:var(--ap-muted,var(--bs-secondary-color));margin:8px 0;}
 .ap-billing-card strong {font-size:24px;font-weight:750;color:var(--b-text);}
 .ap-billing-page progress {display:block;width:100%;height:8px;margin:12px 0;appearance:none;border:0;border-radius:8px;overflow:hidden;background:var(--b-border);accent-color:var(--b-accent);}
 .ap-billing-page progress::-webkit-progress-bar {background:var(--b-border);border-radius:8px;}
 .ap-billing-page progress::-webkit-progress-value {background:var(--b-accent);border-radius:8px;}
 .ap-billing-page progress::-moz-progress-bar {background:var(--b-accent);border-radius:8px;}
-.ap-billing-card button {display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:39px;padding:9px 13px;border:1px solid var(--b-border);border-radius:9px;background:var(--b-card);color:var(--b-text);font:inherit;font-size:11px;font-weight:750;cursor:pointer;}
+.ap-billing-card button {display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:39px;padding:9px 13px;border:1px solid var(--b-accent);border-radius:var(--ap-radius-sm);background:transparent;color:var(--b-text);font:inherit;font-size:13px;font-weight:600;cursor:pointer;}
 .ap-billing-card button:hover:not(:disabled) {border-color:var(--b-accent);color:var(--b-accent);}
 .ap-billing-card button:disabled {opacity:.6;cursor:not-allowed;}
 .ap-billing-plans-intro{text-align:center;padding:24px 0}.ap-billing-plans-intro h3{font-size:1.65rem;font-weight:700}
 .ap-billing-plan-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.ap-billing-plan{display:flex;flex-direction:column;gap:10px}.ap-billing-plan.is-current{border:2px solid var(--b-accent)}.ap-billing-plan-status{min-height:1.25em;color:var(--b-accent);font-size:.8rem}.ap-billing-plan .ap-billing-plan-price{font-size:2rem;color:var(--b-text)}.ap-billing-plan-description{min-height:4em;flex:1}.ap-billing-plan-features{list-style:none;padding:16px 0 0;margin:8px 0 0;border-top:1px solid var(--b-border)}.ap-billing-plan-features li{padding:6px 0;font-size:.9rem}.ap-billing-plan-features i{color:var(--b-accent)}
 .as-billing-summary-meta{display:flex;flex-wrap:wrap;gap:24px;padding:16px 0}.as-billing-summary-meta>div{flex:1;min-width:150px;display:grid;gap:6px}.as-billing-summary-meta strong{font-size:1.1rem}.as-billing-summary-actions{display:flex;flex-wrap:wrap;gap:8px}.account-settings-page .as-plan-bottom{flex-wrap:wrap;gap:12px}.account-settings-page .as-plan-title>small{font-size:.75rem;letter-spacing:.06em;font-weight:600}.account-settings-page [data-summary-track][hidden]{display:none!important}
 @media(max-width:1100px){.ap-billing-plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.ap-billing-plan-grid{grid-template-columns:1fr}}
+
+.ap-billing-page .ap-billing-card {background:var(--ap-surface);border:1px solid var(--ap-border);border-radius:var(--ap-radius);}
+.ap-billing-page .ap-billing-plan.is-current {border:2px solid var(--ap-primary);}
+.ap-billing-page .ap-billing-plans-intro {text-align:left;padding:0;}
+.ap-billing-page .ap-billing-plan-grid:empty {display:none;}
