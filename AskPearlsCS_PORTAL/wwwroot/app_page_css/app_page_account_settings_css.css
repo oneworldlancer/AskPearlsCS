@@ -36,7 +36,7 @@
         .account-settings-page .as-page-header p {
             margin: 0;
             color: var(--ap-muted, var(--bs-secondary-color, #718096));
-            font-size: 13px;
+            font-size: 14px;
         }
 
     .account-settings-page .as-header-actions {
@@ -50,7 +50,7 @@
     .account-settings-page .as-save-status {
         margin-right: 5px;
         color: var(--ap-muted, #718096);
-        font-size: 11px;
+        font-size: 14px;
     }
 
         .account-settings-page .as-save-status i {
@@ -68,7 +68,7 @@
         min-height: 39px;
         padding: 9px 13px;
         border-radius: 9px;
-        font-size: 11px;
+        font-size: 14px;
         font-weight: 750;
         cursor: pointer;
         transition: .2s ease;
@@ -149,7 +149,7 @@
             display: block;
             overflow-wrap: anywhere;
             color: var(--ap-text, var(--bs-body-color, #17212b));
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 750;
         }
 
@@ -157,13 +157,13 @@
             display: block;
             margin-top: 4px;
             color: var(--ap-muted, #718096);
-            font-size: 10px;
+            font-size: 13px;
         }
 
     .account-settings-page .as-nav-label {
         padding: 13px 10px 7px;
         color: var(--ap-muted, #718096);
-        font-size: 9px;
+        font-size: 12px;
         font-weight: 800;
         letter-spacing: 1px;
     }
@@ -180,7 +180,7 @@
         background: transparent;
         color: var(--ap-muted, #718096);
         text-align: left;
-        font-size: 11px;
+        font-size: 14px;
         font-weight: 650;
         cursor: pointer;
         transition: background .18s ease, color .18s ease;
@@ -234,12 +234,12 @@
         .account-settings-page .as-nav-bottom strong {
             display: block;
             color: var(--ap-text, var(--bs-body-color, #17212b));
-            font-size: 10px;
+            font-size: 13px;
         }
 
         .account-settings-page .as-nav-bottom p {
             margin: 5px 0 0;
-            font-size: 9px;
+            font-size: 12px;
             line-height: 1.6;
         }
 
@@ -267,14 +267,14 @@
         .account-settings-page .as-panel-heading h4 {
             margin: 0 0 6px;
             color: var(--ap-text, var(--bs-body-color, #17212b));
-            font-size: 15px;
+            font-size: 18px;
             font-weight: 750;
         }
 
         .account-settings-page .as-panel-heading p {
             margin: 0;
             color: var(--ap-muted, #718096);
-            font-size: 11px;
+            font-size: 14px;
             line-height: 1.6;
         }
 
@@ -313,20 +313,20 @@
 
     .account-settings-page .as-avatar-editor strong {
         color: var(--ap-text, var(--bs-body-color, #17212b));
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .account-settings-page .as-avatar-editor p {
         margin: 5px 0;
         color: var(--ap-muted, #718096);
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .account-settings-page .as-muted-note {
         display: block;
         margin-top: 5px;
         color: var(--ap-muted, #718096);
-        font-size: 9px;
+        font-size: 12px;
         line-height: 1.6;
     }
 
@@ -348,7 +348,7 @@
         display: block;
         margin-bottom: 8px;
         color: var(--ap-text, var(--bs-body-color, #17212b));
-        font-size: 11px;
+        font-size: 14px;
         font-weight: 750;
     }
 
@@ -369,7 +369,7 @@
         background-color: var(--ap-input-bg, var(--bs-tertiary-bg, #f4f8f7));
         color: var(--ap-text, var(--bs-body-color, #17212b));
         font: inherit;
-        font-size: 11px;
+        font-size: 14px;
         outline: none;
         transition: border-color .2s ease, box-shadow .2s ease;
     }
@@ -401,7 +401,7 @@
         display: block;
         margin-top: 6px;
         color: var(--ap-muted, #718096);
-        font-size: 9px;
+        font-size: 12px;
         line-height: 1.5;
     }
 
@@ -416,7 +416,7 @@
         border-radius: 10px;
         background: rgba(217,154,48,.08);
         color: var(--ap-muted, #718096);
-        font-size: 10px;
+        font-size: 13px;
         line-height: 1.7;
     }
 
@@ -466,7 +466,7 @@
         .account-settings-page .as-setting-copy strong {
             display: block;
             color: var(--ap-text, var(--bs-body-color, #17212b));
-            font-size: 11px;
+            font-size: 14px;
             font-weight: 750;
         }
 
@@ -474,7 +474,7 @@
         .account-settings-page .as-setting-copy p {
             margin: 5px 0 0;
             color: var(--ap-muted, #718096);
-            font-size: 10px;
+            font-size: 13px;
             line-height: 1.7;
         }
 
@@ -484,7 +484,7 @@
         border-radius: 30px;
         background: rgba(13,168,139,.12);
         color: #0d9278;
-        font-size: 9px;
+        font-size: 12px;
         font-weight: 750;
         white-space: nowrap;
     }
@@ -585,7 +585,7 @@
 
     .account-settings-page .as-plan-title > span {
         color: var(--ap-muted, #718096);
-        font-size: 9px;
+        font-size: 12px;
         font-weight: 800;
         letter-spacing: .8px;
     }
@@ -597,14 +597,14 @@
         gap: 9px;
         margin: 5px 0;
         color: var(--ap-text, var(--bs-body-color, #17212b));
-        font-size: 16px;
+        font-size: 20px;
         font-weight: 800;
     }
 
     .account-settings-page .as-plan-title p {
         margin: 0;
         color: var(--ap-muted, #718096);
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .account-settings-page .as-plan-usage {
@@ -623,11 +623,11 @@
     .account-settings-page .as-usage-heading {
         margin-bottom: 10px;
         color: var(--ap-text, var(--bs-body-color, #17212b));
-        font-size: 10px;
+        font-size: 13px;
     }
 
         .account-settings-page .as-usage-heading strong {
-            font-size: 12px;
+            font-size: 14px;
         }
 
         .account-settings-page .as-usage-heading small {
@@ -650,7 +650,7 @@
     .account-settings-page .as-usage-foot {
         margin-top: 8px;
         color: var(--ap-muted, #718096);
-        font-size: 9px;
+        font-size: 12px;
     }
 
     .account-settings-page .as-plan-bottom {
@@ -665,7 +665,7 @@
 
         .account-settings-page .as-plan-bottom > span {
             color: var(--ap-muted, #718096);
-            font-size: 10px;
+            font-size: 13px;
         }
 
             .account-settings-page .as-plan-bottom > span i {
@@ -676,7 +676,7 @@
     .account-settings-page .as-plan-disclaimer {
         margin-top: 12px;
         color: var(--ap-muted, #718096);
-        font-size: 9px;
+        font-size: 12px;
         line-height: 1.6;
     }
 
@@ -691,7 +691,7 @@
         border-radius: 10px;
         background: #087f68;
         color: #fff;
-        font-size: 12px;
+        font-size: 14px;
         box-shadow: 0 8px 24px rgba(0,0,0,.2);
     }
 
@@ -801,7 +801,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-field select {
     .account-settings-page .as-nav-item {
         gap: 7px;
         padding: 10px 7px;
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .account-settings-page .as-panel-heading {
@@ -893,14 +893,14 @@ body[data-bs-theme="dark"] .account-settings-page .as-field select {
 
     .account-settings-page .as-modal-header h4 {
         margin: 0 0 5px;
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 750;
         color: var(--ap-text, var(--bs-body-color, #17212b));
     }
 
     .account-settings-page .as-modal-header p {
         margin: 0;
-        font-size: 11px;
+        font-size: 14px;
         line-height: 1.6;
         color: var(--ap-muted, #718096);
     }
@@ -928,7 +928,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-field select {
     .account-settings-page .as-password-field > label {
         display: block;
         margin-bottom: 7px;
-        font-size: 11px;
+        font-size: 14px;
         font-weight: 750;
         color: var(--ap-text, #17212b);
     }
@@ -956,7 +956,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-field select {
         background: transparent;
         color: var(--ap-text, #17212b);
         font: inherit;
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .account-settings-page .as-password-input button {
@@ -990,7 +990,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-field select {
     display: block;
     margin-top: 6px;
     color: var(--ap-muted, #718096);
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .account-settings-page .as-password-rules {
@@ -1003,7 +1003,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-field select {
 }
 
     .account-settings-page .as-password-rules li {
-        font-size: 10px;
+        font-size: 13px;
         color: var(--ap-muted, #718096);
     }
 
@@ -1025,7 +1025,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-field select {
     min-height: 0;
     margin-top: 5px;
     color: #d94d58;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .account-settings-page .as-password-notice {
@@ -1036,7 +1036,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-field select {
     border-radius: 9px;
     background: rgba(13, 168, 139, .08);
     color: var(--ap-muted, #718096);
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.6;
 }
 
@@ -1046,7 +1046,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-field select {
 
 .account-settings-page .as-password-form-message {
     margin-top: 12px;
-    font-size: 11px;
+    font-size: 14px;
     color: #d94d58;
 }
 
@@ -1220,7 +1220,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-password-input {
     align-items: center;
     gap: 7px;
     color: #0d9278;
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 800;
     letter-spacing: 1px;
 }
@@ -1235,7 +1235,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-password-input {
 .account-settings-page .as-plans-intro > p {
     margin: 0;
     color: var(--ap-muted, #718096);
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.6;
 }
 
@@ -1248,7 +1248,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-password-input {
     border-radius: 20px;
     background: rgba(13, 168, 139, .09);
     color: var(--ap-muted, #718096);
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .account-settings-page .as-plans-grid {
@@ -1297,7 +1297,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-password-input {
 
 .account-settings-page .as-plan-name {
     color: var(--ap-text, #17212b);
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 800;
 }
 
@@ -1308,7 +1308,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-password-input {
     border-radius: 20px;
     background: rgba(13, 168, 139, .12);
     color: #0d9278;
-    font-size: 8px;
+    font-size: 11px;
     font-weight: 800;
     white-space: nowrap;
 }
@@ -1339,14 +1339,14 @@ body[data-bs-theme="dark"] .account-settings-page .as-password-input {
 
     .account-settings-page .as-plan-price span {
         color: var(--ap-muted, #718096);
-        font-size: 10px;
+        font-size: 13px;
     }
 
 .account-settings-page .as-plan-description {
     min-height: 49px;
     margin: 8px 0 16px;
     color: var(--ap-muted, #718096);
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.65;
 }
 
@@ -1354,7 +1354,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-password-input {
     width: 100%;
     min-height: 39px;
     padding: 9px 7px;
-    font-size: 10px;
+    font-size: 13px;
 }
 
     .account-settings-page .as-plan-select:disabled {
@@ -1381,7 +1381,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-password-input {
         align-items: flex-start;
         gap: 7px;
         color: var(--ap-text, #17212b);
-        font-size: 10px;
+        font-size: 13px;
         line-height: 1.5;
     }
 
@@ -1432,13 +1432,13 @@ body[data-bs-theme="dark"] .account-settings-page .as-password-input {
     .account-settings-page .as-plan-confirmation-copy strong {
         display: block;
         color: var(--ap-text, #17212b);
-        font-size: 11px;
+        font-size: 14px;
     }
 
     .account-settings-page .as-plan-confirmation-copy p {
         margin: 4px 0 0;
         color: var(--ap-muted, #718096);
-        font-size: 10px;
+        font-size: 13px;
         line-height: 1.6;
     }
 
@@ -1456,7 +1456,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-password-input {
 
     .account-settings-page .as-plans-footer > span {
         color: var(--ap-muted, #718096);
-        font-size: 10px;
+        font-size: 13px;
         line-height: 1.6;
     }
 
@@ -1617,14 +1617,14 @@ body[data-bs-theme="dark"] .account-settings-page .as-plan-confirmation {
     .account-settings-page .as-org-branding-details > strong {
         display: block;
         color: var(--ap-text, #17212b);
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 800;
     }
 
     .account-settings-page .as-org-branding-details > p {
         margin: 5px 0 10px;
         color: var(--ap-muted, #718096);
-        font-size: 10px;
+        font-size: 13px;
         line-height: 1.6;
     }
 
@@ -1643,7 +1643,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-plan-confirmation {
     display: block;
     margin-top: 8px;
     color: var(--ap-muted, #718096);
-    font-size: 9px;
+    font-size: 12px;
     line-height: 1.5;
 }
 
@@ -1663,7 +1663,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-plan-confirmation {
     display: block;
     margin-bottom: 12px;
     color: var(--ap-muted, #718096);
-    font-size: 9px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: .8px;
 }
@@ -1705,7 +1705,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-plan-confirmation {
     display: block;
     overflow-wrap: anywhere;
     color: var(--ap-text, #17212b);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 800;
 }
 
@@ -1713,7 +1713,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-plan-confirmation {
     display: block;
     margin-top: 4px;
     color: var(--ap-muted, #718096);
-    font-size: 10px;
+    font-size: 13px;
 }
 
 @media (max-width: 575.98px) {
@@ -1732,7 +1732,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-plan-confirmation {
 
     .account-settings-page .as-org-branding-actions .as-btn {
         padding: 8px 10px;
-        font-size: 10px;
+        font-size: 13px;
     }
 }
 
@@ -1800,14 +1800,14 @@ body[data-bs-theme="dark"] .account-settings-page .as-org-brand-card {
     .account-settings-page .as-security-overview-copy strong {
         display: block;
         color: var(--ap-text, #17212b);
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 800;
     }
 
     .account-settings-page .as-security-overview-copy p {
         margin: 4px 0 0;
         color: var(--ap-muted, #718096);
-        font-size: 10px;
+        font-size: 13px;
         line-height: 1.6;
     }
 
@@ -1819,7 +1819,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-org-brand-card {
     border-radius: 20px;
     background: rgba(224, 162, 60, .12);
     color: #b27a17;
-    font-size: 9px;
+    font-size: 12px;
     font-weight: 700;
     white-space: nowrap;
 }
@@ -1874,14 +1874,14 @@ body[data-bs-theme="dark"] .account-settings-page .as-org-brand-card {
 .account-settings-page .as-security-modal .as-modal-body h5 {
     margin: 0 0 8px;
     color: var(--ap-text, #17212b);
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 800;
 }
 
 .account-settings-page .as-security-modal .as-modal-body > p {
     margin: 0;
     color: var(--ap-muted, #718096);
-    font-size: 11px;
+    font-size: 14px;
     line-height: 1.8;
 }
 
@@ -1894,7 +1894,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-org-brand-card {
     border-radius: 10px;
     background: rgba(13, 168, 139, .07);
     color: var(--ap-muted, #718096);
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.7;
 }
 
@@ -1930,14 +1930,14 @@ body[data-bs-theme="dark"] .account-settings-page .as-org-brand-card {
 .account-settings-page .as-sessions-summary strong {
     display: block;
     color: var(--ap-text, #17212b);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 800;
 }
 
 .account-settings-page .as-sessions-summary p {
     margin: 4px 0 0;
     color: var(--ap-muted, #718096);
-    font-size: 10px;
+    font-size: 13px;
 }
 
 /* Session list */
@@ -1978,19 +1978,19 @@ body[data-bs-theme="dark"] .account-settings-page .as-org-brand-card {
         display: block;
         overflow-wrap: anywhere;
         color: var(--ap-text, #17212b);
-        font-size: 11px;
+        font-size: 14px;
         font-weight: 800;
     }
 
     .account-settings-page .as-session-details p {
         margin: 4px 0;
         color: var(--ap-muted, #718096);
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .account-settings-page .as-session-details > span {
         color: var(--ap-muted, #718096);
-        font-size: 9px;
+        font-size: 12px;
         line-height: 1.6;
     }
 
@@ -1999,7 +1999,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-org-brand-card {
     border-radius: 20px;
     background: rgba(13, 168, 139, .12);
     color: #0d9278;
-    font-size: 8px;
+    font-size: 11px;
     font-weight: 800;
     white-space: nowrap;
 }
@@ -2011,7 +2011,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-org-brand-card {
     border-radius: 7px;
     background: transparent;
     color: #d04c56;
-    font-size: 9px;
+    font-size: 12px;
     font-weight: 700;
     cursor: pointer;
 }
@@ -2034,7 +2034,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-org-brand-card {
     border-radius: 9px;
     background: rgba(13, 168, 139, .1);
     color: #0d9278;
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.6;
 }
 
@@ -2047,7 +2047,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-org-brand-card {
     gap: 8px;
     margin-top: 15px;
     color: var(--ap-muted, #718096);
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.7;
 }
 
@@ -2185,7 +2185,7 @@ body[data-bs-theme="dark"] .account-settings-page .as-session-item {
 .account-settings-page .ap-page-description {
     margin: 0;
     color: var(--ap-muted, var(--bs-secondary-color, #718096));
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.6;
 }
 
@@ -2270,13 +2270,13 @@ body[data-bs-theme="dark"] .account-settings-page .as-session-item {
     .account-settings-page [data-as-panel="companies"] .as-field > label {
         display: block;
         margin-bottom: 8px;
-        font-size: 11px;
+        font-size: 14px;
         font-weight: 750;
     }
 
     .account-settings-page [data-as-panel="companies"] #asBusinessStatus {
         color: var(--ap-muted, var(--bs-secondary-color, #718096));
-        font-size: 11px;
+        font-size: 14px;
         min-height: 20px;
     }
 
