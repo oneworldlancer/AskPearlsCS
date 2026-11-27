@@ -90,8 +90,14 @@ builder.Services.AddScoped<ICurrentUserContext_Service, CurrentUserContext_Servi
 
 
 builder.Services.Configure<AskPearlsCS_DOMAIN.app_ContractsManager.PaddleOptions>(builder.Configuration.GetSection("Paddle"));
-builder.Services.AddScoped<AskPearlsCS_DAL.app_Repository.IPaddle_Repository, AskPearlsCS_DAL.app_Repository.Paddle_Repository>();
+builder.Services.AddScoped<IPaddle_Repository, Paddle_Repository>();
 builder.Services.AddHttpClient<AskPearlsCS_BLL.app_Service.Paddle_Service>(client => client.Timeout = TimeSpan.FromSeconds(20));
+
+builder.Services.AddScoped<    IPaddleWebhook_Repository,    PaddleWebhook_Repository>();
+
+builder.Services.AddHttpClient<    PaddleWebhook_Service>(        client => client.Timeout = TimeSpan.FromSeconds(30));
+
+builder.Services.AddHostedService<    AskPearlsCS_API.Workers.PaddleWebhookBackgroundWorker>();
 
 
 

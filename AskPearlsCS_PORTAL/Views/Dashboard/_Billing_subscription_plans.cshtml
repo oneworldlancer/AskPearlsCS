@@ -1,15 +1,8 @@
 <div class="ap-page ap-billing-page" data-ap-page="subscription-plans" data-billing-section="subscription-plans">
-    <nav class="ap-breadcrumb" aria-label="Breadcrumb">
-        <a href="/Dashboard">AskPearls</a>
-        <span class="ap-breadcrumb-separator" aria-hidden="true">/</span>
-        <span class="ap-breadcrumb-current" aria-current="page">Plans &amp; Pricing</span>
-    </nav>
-    <header class="ap-page-header">
-        <div>
-            <h1 class="ap-page-title">Plans &amp; Pricing</h1>
-            <p class="ap-page-description">Compare available plans and find the right fit for your business.</p>
-        </div>
-    </header>
-    <p role="status" data-billing-status>Loading account information…</p>
+    <nav class="ap-breadcrumb" aria-label="Breadcrumb"><a href="/Dashboard">AskPearls</a><span class="ap-breadcrumb-separator" aria-hidden="true">/</span><span class="ap-breadcrumb-current" aria-current="page">Plans &amp; Pricing</span></nav>
+    <header class="ap-page-header"><div><h1 class="ap-page-title">Plans &amp; Pricing</h1><p class="ap-page-description">Compare available plans.</p></div></header>
+    <div hidden>@Html.AntiForgeryToken()</div>
+    <p role="status" aria-live="polite" data-billing-status>Loading account information…</p>
+    <button type="button" class="btn btn-outline-secondary btn-sm mb-3" data-billing-refresh>Refresh</button>
     <div data-billing-content></div>
 </div>
