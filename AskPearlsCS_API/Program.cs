@@ -88,6 +88,13 @@ builder.Services.AddScoped<IGoogleAuth_Service, GoogleAuth_Service>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserContext_Service, CurrentUserContext_Service>();
 
+
+builder.Services.Configure<AskPearlsCS_DOMAIN.app_ContractsManager.PaddleOptions>(builder.Configuration.GetSection("Paddle"));
+builder.Services.AddScoped<AskPearlsCS_DAL.app_Repository.IPaddle_Repository, AskPearlsCS_DAL.app_Repository.Paddle_Repository>();
+builder.Services.AddHttpClient<AskPearlsCS_BLL.app_Service.Paddle_Service>(client => client.Timeout = TimeSpan.FromSeconds(20));
+
+
+
 // Application database
 builder.Services.AddDbContext<DBContextModel>(options =>
 {

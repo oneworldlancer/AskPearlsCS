@@ -19,6 +19,16 @@ public partial class AskpearlsPortalApplicationSubscriptionPlanLimitList
 
     public string? SubscriptionPlanLimitCode { get; set; }
 
+    public string? SubscriptionPlanLimitName { get; set; }
+
+    public string? SubscriptionPlanLimitTitle { get; set; }
+
+    public string? SubscriptionPlanLimitText { get; set; }
+
+    public string? SubscriptionPlanLimitDescription { get; set; }
+
+    public string? SubscriptionPlanLimitResetPeriodCode { get; set; }
+
     public long? SubscriptionPlanLimitValue { get; set; }
 
     public int? ItemOrder { get; set; }
