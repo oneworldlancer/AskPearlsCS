@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+
 using AskPearlsCS_DAL.DBModels;
 
+using Microsoft.EntityFrameworkCore;
 
 namespace AskPearlsCS_DAL.DBContext;
 
@@ -42,8 +43,6 @@ public partial class DBContextModel : DbContext
     public virtual DbSet<AskpearlsPortalApplicationResourceSectionList> AskpearlsPortalApplicationResourceSectionLists { get; set; }
 
     public virtual DbSet<AskpearlsPortalApplicationSessionList> AskpearlsPortalApplicationSessionLists { get; set; }
-
-    public virtual DbSet<AskpearlsPortalApplicationSubscriptionBillingWebhookEventList> AskpearlsPortalApplicationSubscriptionBillingWebhookEventLists { get; set; }
 
     public virtual DbSet<AskpearlsPortalApplicationSubscriptionPlanLimitList> AskpearlsPortalApplicationSubscriptionPlanLimitLists { get; set; }
 
@@ -566,6 +565,8 @@ public partial class DBContextModel : DbContext
     public virtual DbSet<AskpearlsPortalUserSubscriptionBillingCheckoutList> AskpearlsPortalUserSubscriptionBillingCheckoutLists { get; set; }
 
     public virtual DbSet<AskpearlsPortalUserSubscriptionBillingProviderList> AskpearlsPortalUserSubscriptionBillingProviderLists { get; set; }
+
+    public virtual DbSet<AskpearlsPortalUserSubscriptionBillingWebhookEventList> AskpearlsPortalUserSubscriptionBillingWebhookEventLists { get; set; }
 
     public virtual DbSet<AskpearlsPortalUserSubscriptionList> AskpearlsPortalUserSubscriptionLists { get; set; }
 
@@ -1276,110 +1277,6 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_SESSION_UploadYear");
         });
 
-        modelBuilder.Entity<AskpearlsPortalApplicationSubscriptionBillingWebhookEventList>(entity =>
-        {
-            entity.HasKey(e => e.UsubscriptionBillingWebhookEventId).HasName("PK_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST");
-
-            entity.ToTable("ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST");
-
-            entity.Property(e => e.UsubscriptionBillingWebhookEventId).HasColumnName("USubscriptionBillingWebhookEventID");
-            entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_AccountType");
-            entity.Property(e => e.ActiveStatus).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_ActiveStatus");
-            entity.Property(e => e.CompanyTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_CompanyTokenID")
-                .HasColumnName("CompanyTokenID");
-            entity.Property(e => e.CustomerUserTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_CustomerUserTokenID")
-                .HasColumnName("CustomerUserTokenID");
-            entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_IsActive");
-            entity.Property(e => e.IsCheckoutEnabled).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_IsCheckoutEnabled");
-            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_IsVisible");
-            entity.Property(e => e.ItemOrder).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_ItemOrder");
-            entity.Property(e => e.LastAttemptUtc)
-                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload15")
-                .HasColumnName("LastAttemptUTC");
-            entity.Property(e => e.LastErrorCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload13");
-            entity.Property(e => e.LastErrorMessage).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload12");
-            entity.Property(e => e.NextRetryUtc)
-                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload14")
-                .HasColumnName("NextRetryUTC");
-            entity.Property(e => e.OccurredUtc)
-                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_ProviderPriceID")
-                .HasColumnName("OccurredUTC");
-            entity.Property(e => e.OrganizationTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_OrganizationTokenID")
-                .HasColumnName("OrganizationTokenID");
-            entity.Property(e => e.OwnerMobileNumberTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_OwnerMobileNumberTokenID")
-                .HasColumnName("OwnerMobileNumberTokenID");
-            entity.Property(e => e.OwnerUserTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload24")
-                .HasColumnName("OwnerUserTokenID");
-            entity.Property(e => e.PaymentProviderCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload27");
-            entity.Property(e => e.PaymentProviderCodeText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_PaymentProviderCode1");
-            entity.Property(e => e.PaymentProviderCodeTitle).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_PaymentProviderCode2");
-            entity.Property(e => e.ProcessedUtc)
-                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_BillingPeriodName")
-                .HasColumnType("smalldatetime")
-                .HasColumnName("ProcessedUTC");
-            entity.Property(e => e.ProcessingAttempts).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload18");
-            entity.Property(e => e.ProcessingLeaseUntilUtc)
-                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload16")
-                .HasColumnName("ProcessingLeaseUntilUTC");
-            entity.Property(e => e.ProcessingStartedUtc)
-                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload17")
-                .HasColumnName("ProcessingStartedUTC");
-            entity.Property(e => e.ProcessingStatusCode).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload20");
-            entity.Property(e => e.ProcessingStatusText).HasDefaultValue("Pending", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload19");
-            entity.Property(e => e.ProviderCustomerTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload23")
-                .HasColumnName("ProviderCustomerTokenID");
-            entity.Property(e => e.ProviderEventTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload26")
-                .HasColumnName("ProviderEventTokenID");
-            entity.Property(e => e.ProviderNotificationTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload25")
-                .HasColumnName("ProviderNotificationTokenID");
-            entity.Property(e => e.ProviderSubscriptionTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload22")
-                .HasColumnName("ProviderSubscriptionTokenID");
-            entity.Property(e => e.ProviderTransactionTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload21")
-                .HasColumnName("ProviderTransactionTokenID");
-            entity.Property(e => e.ReceivedUtc)
-                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_BillingPeriodCode")
-                .HasColumnType("smalldatetime")
-                .HasColumnName("ReceivedUTC");
-            entity.Property(e => e.RowDataTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_RowDataTokenID")
-                .HasColumnName("RowDataTokenID");
-            entity.Property(e => e.RowViewTokenId)
-                .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_RowViewTokenID")
-                .HasColumnName("RowViewTokenID");
-            entity.Property(e => e.SubscriptionPlanTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanTokenID")
-                .HasColumnName("SubscriptionPlanTokenID");
-            entity.Property(e => e.UploadDate)
-                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_UploadDate")
-                .HasColumnType("smalldatetime");
-            entity.Property(e => e.UploadDateTimeMilliSec).HasDefaultValue("0", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_UploadDateTimeMilliSec");
-            entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_UploadDay");
-            entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_UploadMonth");
-            entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_UploadYear");
-            entity.Property(e => e.WebhookEventCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderCode");
-            entity.Property(e => e.WebhookEventDescriptionLong).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderDescriptionLong");
-            entity.Property(e => e.WebhookEventDescriptionShort).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderDescriptionShort");
-            entity.Property(e => e.WebhookEventEnvironment).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_PaymentEnvironment");
-            entity.Property(e => e.WebhookEventName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderName");
-            entity.Property(e => e.WebhookEventPayload).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_ProviderProductID");
-            entity.Property(e => e.WebhookEventText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderText");
-            entity.Property(e => e.WebhookEventTitle).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderTitle");
-            entity.Property(e => e.WebhookEventTokenId)
-                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderTokenID")
-                .HasColumnName("WebhookEventTokenID");
-            entity.Property(e => e.WebhookEventType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderType");
-        });
-
         modelBuilder.Entity<AskpearlsPortalApplicationSubscriptionPlanLimitList>(entity =>
         {
             entity.HasKey(e => e.UsubscriptionPlanLimitId);
@@ -1469,9 +1366,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UsubscriptionPlanPriceId).HasColumnName("USubscriptionPlanPriceID");
             entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PRICE_LIST_AccountType");
             entity.Property(e => e.ActiveStatus).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PRICE_LIST_ActiveStatus");
-            entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PRICE_LIST_CreatedDate")
-                .HasColumnType("smalldatetime");
+            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PRICE_LIST_CreatedDate");
             entity.Property(e => e.CurrencyCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PRICE_LIST_CurrencyCode");
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PRICE_LIST_IsActive");
             entity.Property(e => e.IsCheckoutEnabled).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PRICE_LIST_IsCheckoutEnabled");
@@ -1518,9 +1413,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.SubscriptionPlanTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PRICE_LIST_SubscriptionPlanTokenID")
                 .HasColumnName("SubscriptionPlanTokenID");
-            entity.Property(e => e.UpdatedDate)
-                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PRICE_LIST_UpdatedDate")
-                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PRICE_LIST_UpdatedDate");
             entity.Property(e => e.UploadDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PRICE_LIST_UploadDate")
                 .HasColumnType("smalldatetime");
@@ -1543,9 +1436,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.BillingPeriodName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PROVIDER_LIST_SubscriptionPlanMonthlyPriceUSD");
             entity.Property(e => e.BillingPeriodText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PROVIDER_LIST_BillingPeriodName3");
             entity.Property(e => e.BillingPeriodTitle).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PROVIDER_LIST_BillingPeriodName4");
-            entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PROVIDER_LIST_BillingPeriodName11")
-                .HasColumnType("smalldatetime");
+            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PROVIDER_LIST_BillingPeriodName11");
             entity.Property(e => e.CurrencyCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PROVIDER_LIST_BillingPeriodName2");
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PROVIDER_LIST_IsActive");
             entity.Property(e => e.IsCheckoutEnabled).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PROVIDER_LIST_IsCheckoutEnabled");
@@ -1578,9 +1469,7 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.SubscriptionPlanTokenId)
                 .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PROVIDER_LIST_SubscriptionPlanTokenID")
                 .HasColumnName("SubscriptionPlanTokenID");
-            entity.Property(e => e.UpdatedDate)
-                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PROVIDER_LIST_BillingPeriodName1")
-                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PROVIDER_LIST_BillingPeriodName1");
             entity.Property(e => e.UploadDate)
                 .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_PLAN_PROVIDER_LIST_UploadDate")
                 .HasColumnType("smalldatetime");
@@ -18667,15 +18556,11 @@ public partial class DBContextModel : DbContext
                 .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_USER_BILLING_CHECKOUT_LIST_CreatedDate1")
                 .HasColumnName("CreatedUTC");
             entity.Property(e => e.CurrencyCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_BILLING_CHECKOUT_LIST_CurrencyCode");
-            entity.Property(e => e.ErrorCode)
-                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_BILLING_CHECKOUT_LIST_CreatedUTC2")
-                .HasColumnType("smalldatetime");
-            entity.Property(e => e.ErrorMessage)
-                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_BILLING_CHECKOUT_LIST_CreatedUTC1")
-                .HasColumnType("smalldatetime");
+            entity.Property(e => e.ErrorCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_BILLING_CHECKOUT_LIST_CreatedUTC2");
+            entity.Property(e => e.ErrorMessage).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_BILLING_CHECKOUT_LIST_CreatedUTC1");
             entity.Property(e => e.ExpectedAmountMinor).HasDefaultValue(0L, "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_BILLING_CHECKOUT_LIST_SubscriptionPlanTransactionTokenID10");
             entity.Property(e => e.ExpiresUtc)
-                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_BILLING_CHECKOUT_LIST_CreatedUTC3")
+                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_USER_SUBSCRIPTION_BILLING_CHECKOUT_LIST_CreatedUTC3")
                 .HasColumnName("ExpiresUTC");
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_BILLING_CHECKOUT_LIST_IsActive");
             entity.Property(e => e.IsCheckoutEnabled).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_BILLING_CHECKOUT_LIST_IsCheckoutEnabled");
@@ -18884,6 +18769,110 @@ public partial class DBContextModel : DbContext
             entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_USER_BILLING_PROVIDER_LIST_UploadDay");
             entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_USER_BILLING_PROVIDER_LIST_UploadMonth");
             entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_USER_BILLING_PROVIDER_LIST_UploadYear");
+        });
+
+        modelBuilder.Entity<AskpearlsPortalUserSubscriptionBillingWebhookEventList>(entity =>
+        {
+            entity.HasKey(e => e.UsubscriptionBillingWebhookEventId).HasName("PK_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST");
+
+            entity.ToTable("ASKPEARLS_PORTAL_USER_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST");
+
+            entity.Property(e => e.UsubscriptionBillingWebhookEventId).HasColumnName("USubscriptionBillingWebhookEventID");
+            entity.Property(e => e.AccountType).HasDefaultValue("personal", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_AccountType");
+            entity.Property(e => e.ActiveStatus).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_ActiveStatus");
+            entity.Property(e => e.CompanyTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_CompanyTokenID")
+                .HasColumnName("CompanyTokenID");
+            entity.Property(e => e.CustomerUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_CustomerUserTokenID")
+                .HasColumnName("CustomerUserTokenID");
+            entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_IsActive");
+            entity.Property(e => e.IsCheckoutEnabled).HasDefaultValue(false, "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_IsCheckoutEnabled");
+            entity.Property(e => e.IsVisible).HasDefaultValue(true, "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_IsVisible");
+            entity.Property(e => e.ItemOrder).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_ItemOrder");
+            entity.Property(e => e.LastAttemptUtc)
+                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload15")
+                .HasColumnName("LastAttemptUTC");
+            entity.Property(e => e.LastErrorCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload13");
+            entity.Property(e => e.LastErrorMessage).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload12");
+            entity.Property(e => e.NextRetryUtc)
+                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload14")
+                .HasColumnName("NextRetryUTC");
+            entity.Property(e => e.OccurredUtc)
+                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_ProviderPriceID")
+                .HasColumnName("OccurredUTC");
+            entity.Property(e => e.OrganizationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_OrganizationTokenID")
+                .HasColumnName("OrganizationTokenID");
+            entity.Property(e => e.OwnerMobileNumberTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_OwnerMobileNumberTokenID")
+                .HasColumnName("OwnerMobileNumberTokenID");
+            entity.Property(e => e.OwnerUserTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload24")
+                .HasColumnName("OwnerUserTokenID");
+            entity.Property(e => e.PaymentProviderCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload27");
+            entity.Property(e => e.PaymentProviderCodeText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_PaymentProviderCode1");
+            entity.Property(e => e.PaymentProviderCodeTitle).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_PaymentProviderCode2");
+            entity.Property(e => e.ProcessedUtc)
+                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_BillingPeriodName")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("ProcessedUTC");
+            entity.Property(e => e.ProcessingAttempts).HasDefaultValue(0, "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload18");
+            entity.Property(e => e.ProcessingLeaseUntilUtc)
+                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload16")
+                .HasColumnName("ProcessingLeaseUntilUTC");
+            entity.Property(e => e.ProcessingStartedUtc)
+                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload17")
+                .HasColumnName("ProcessingStartedUTC");
+            entity.Property(e => e.ProcessingStatusCode).HasDefaultValue("pending", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload20");
+            entity.Property(e => e.ProcessingStatusText).HasDefaultValue("Pending", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload19");
+            entity.Property(e => e.ProviderCustomerTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload23")
+                .HasColumnName("ProviderCustomerTokenID");
+            entity.Property(e => e.ProviderEventTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload26")
+                .HasColumnName("ProviderEventTokenID");
+            entity.Property(e => e.ProviderNotificationTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload25")
+                .HasColumnName("ProviderNotificationTokenID");
+            entity.Property(e => e.ProviderSubscriptionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload22")
+                .HasColumnName("ProviderSubscriptionTokenID");
+            entity.Property(e => e.ProviderTransactionTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_SUBSCRIPTION_BILLING_WEBHOOK_EVENT_LIST_WebhookEventPayload21")
+                .HasColumnName("ProviderTransactionTokenID");
+            entity.Property(e => e.ReceivedUtc)
+                .HasDefaultValueSql("(sysutcdatetime())", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_BillingPeriodCode")
+                .HasColumnType("smalldatetime")
+                .HasColumnName("ReceivedUTC");
+            entity.Property(e => e.RowDataTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_RowDataTokenID")
+                .HasColumnName("RowDataTokenID");
+            entity.Property(e => e.RowViewTokenId)
+                .HasDefaultValueSql("(newid())", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_RowViewTokenID")
+                .HasColumnName("RowViewTokenID");
+            entity.Property(e => e.SubscriptionPlanTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanTokenID")
+                .HasColumnName("SubscriptionPlanTokenID");
+            entity.Property(e => e.UploadDate)
+                .HasDefaultValueSql("(getdate())", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_UploadDate")
+                .HasColumnType("smalldatetime");
+            entity.Property(e => e.UploadDateTimeMilliSec).HasDefaultValue("0", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_UploadDateTimeMilliSec");
+            entity.Property(e => e.UploadDay).HasDefaultValueSql("(datepart(day,getdate()))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_UploadDay");
+            entity.Property(e => e.UploadMonth).HasDefaultValueSql("(datepart(month,getdate()))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_UploadMonth");
+            entity.Property(e => e.UploadYear).HasDefaultValueSql("(datepart(year,getdate()))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_UploadYear");
+            entity.Property(e => e.WebhookEventCode).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderCode");
+            entity.Property(e => e.WebhookEventDescriptionLong).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderDescriptionLong");
+            entity.Property(e => e.WebhookEventDescriptionShort).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderDescriptionShort");
+            entity.Property(e => e.WebhookEventEnvironment).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_PaymentEnvironment");
+            entity.Property(e => e.WebhookEventName).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderName");
+            entity.Property(e => e.WebhookEventPayload).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_ProviderProductID");
+            entity.Property(e => e.WebhookEventText).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderText");
+            entity.Property(e => e.WebhookEventTitle).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderTitle");
+            entity.Property(e => e.WebhookEventTokenId)
+                .HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderTokenID")
+                .HasColumnName("WebhookEventTokenID");
+            entity.Property(e => e.WebhookEventType).HasDefaultValueSql("((0))", "DF_ASKPEARLS_PORTAL_APPLICATION_BILLING_WEBHOOK_EVENT_LIST_SubscriptionPlanProviderType");
         });
 
         modelBuilder.Entity<AskpearlsPortalUserSubscriptionList>(entity =>

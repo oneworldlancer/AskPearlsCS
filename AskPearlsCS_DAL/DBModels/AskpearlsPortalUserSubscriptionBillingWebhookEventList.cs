@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AskPearlsCS_DAL.DBModels;
 
-public partial class AskpearlsPortalApplicationSubscriptionBillingWebhookEventList
+public partial class AskpearlsPortalUserSubscriptionBillingWebhookEventList
 {
     public long UsubscriptionBillingWebhookEventId { get; set; }
 
